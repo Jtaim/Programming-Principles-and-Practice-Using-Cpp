@@ -33,5 +33,6 @@ int main()
 	cout << "Hello, " << first_name
 		 << " (age " << age << ")"
 		 << "(age in months " << age_months << ")\n";
+	keep_window_open();
 	return 0;
 }

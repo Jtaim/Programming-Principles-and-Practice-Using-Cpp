@@ -19,6 +19,6 @@ int main()
 {
 	cout << "Hello, World!\n"		//output "Hello, World!"
 	     << "Here we go again.\n";
-	keep_window_open();			//wait for a character to be entered
+	keep_window_open();				//wait for a character to be entered
 	return 0;
 }

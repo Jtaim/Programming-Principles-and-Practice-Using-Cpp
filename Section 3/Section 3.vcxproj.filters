@@ -15,6 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="sect3_4_try.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="3_3try_NameAge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

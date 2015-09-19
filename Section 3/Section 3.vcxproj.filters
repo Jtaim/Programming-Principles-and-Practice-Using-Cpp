@@ -18,7 +18,13 @@
     <ClCompile Include="sect3_4_try.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="3_3try_NameAge.cpp">
+    <ClCompile Include="sect3_7_try.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect3_3_try.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect3_5_try.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

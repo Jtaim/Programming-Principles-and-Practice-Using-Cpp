@@ -27,5 +27,8 @@
     <ClCompile Include="sect3_5_try.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sect3_9_try.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

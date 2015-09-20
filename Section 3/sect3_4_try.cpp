@@ -6,15 +6,7 @@
 Section 3.4 try this exercise
 */
 
-//#include "std_lib_facilities.h" //custom header
-#include<iostream>
-#include<string>
-#include<vector>
-#include<algorithm>
-#include<cmath>
-
-using namespace std;
-inline void keep_window_open() { char ch; cin >> ch; }
+#include "section3.h" //custom header
 
 //C++ programs start by executing the function main
 int main()

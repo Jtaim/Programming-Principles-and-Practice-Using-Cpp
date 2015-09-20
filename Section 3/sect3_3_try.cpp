@@ -11,15 +11,7 @@ Read the age into a double to allow for children who can be very
 proud of being five and a half years old rather than just five.
 */
 
-//#include "std_lib_facilities.h" //custom header
-#include<iostream>
-#include<string>
-#include<vector>
-#include<algorithm>
-#include<cmath>
-
-using namespace std;
-inline void keep_window_open() { char ch; cin >> ch; }
+#include "section3.h" //custom header
 
 //C++ programs start by executing the function main
 int main()

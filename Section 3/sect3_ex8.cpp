@@ -13,17 +13,13 @@ like The value 4 is an even number. Hint: See the remainder (modulo) operator in
 
 //C++ programs start by executing the function main
 int main()
-try
 {
     cout << "Enter an integer:" << endl;
     int val = 0;
     cin >> val;
-    if(!cin) error("something went bad with the read");
-    string res = (val%2) ? "odd" : "even";
-        
-    cout << "The value " << val << " is an " << res << " number" << endl;
+    if(!cin) simple_error("something went bad with the read\n");
+    string res = (val%2) ? "odd" : "even";   
+    cout << "The value " << val << " is an " << res << " number\n";
+	keep_window_open();
     return 0;
-}
-catch (runtime_error e) {	// this code is to produceerror messages; it will be described in Chapter 5
-	cout << e.what() << endl;
 }

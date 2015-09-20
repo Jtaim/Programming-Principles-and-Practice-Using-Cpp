@@ -21,9 +21,8 @@ The value of all of your coins is 573 cents.
 
 //C++ programs start by executing the function main
 int main()
-try
 {
-    cout << "Lets count some change $$$$!" << endl;
+	cout << "Lets count some change $$$$!\n";
     int penny = 0;
     int nickel = 0;
     int dime = 0;
@@ -44,43 +43,29 @@ try
     cin >> dollar;
     
     string denomination = "???";
-    if(penny == 1)  denomination = "penny";
-    else    denomination = "pennies";
-    if(penny > 0)
-        cout << "you have " << penny << " " << denomination << endl;
-        
-    if(nickel == 1)  denomination = "nickel";
-    else    denomination = "nickels";
-    if(nickel > 0)
-        cout << "you have " << nickel << " " << denomination << endl;
-        
-    if(dime == 1)  denomination = "dime";
-    else    denomination = "dimes";
-    if(dime > 0)
-        cout << "you have " << dime << " " << denomination << endl;
-        
-    if(quarter == 1)  denomination = "quarter";
-    else    denomination = "quarters";
-    if(quarter > 0)
-        cout << "you have " << quarter << " " << denomination << endl;
-        
-    if(half_dollar == 1)  denomination = "half dollar";
-    else    denomination = "half dollars";
-    if(half_dollar > 0)
-        cout << "you have " << half_dollar << " " << denomination << endl;
-        
-    if(dollar == 1)  denomination = "dollar";
-    else    denomination = "dollars";
-    if(dollar > 0)
-        cout << "you have " << dollar << " " << denomination << endl;
-        
+	if (penny == 1) { denomination = "penny"; }
+	else { denomination = "pennies"; }
+	if (penny > 0) { cout << "you have " << penny << " " << denomination << endl; }
+	if (nickel == 1) { denomination = "nickel"; }
+	else { denomination = "nickels"; }
+	if (nickel > 0) { cout << "you have " << nickel << " " << denomination << endl; }
+	if (dime == 1) { denomination = "dime"; }
+	else { denomination = "dimes"; }
+	if (dime > 0) { cout << "you have " << dime << " " << denomination << endl; }
+	if (quarter == 1) { denomination = "quarter"; }
+	else { denomination = "quarters"; }
+	if (quarter > 0) { cout << "you have " << quarter << " " << denomination << endl; }
+	if (half_dollar == 1) { denomination = "half dollar"; }
+	else { denomination = "half dollars"; }
+	if (half_dollar > 0) { cout << "you have " << half_dollar << " " << denomination << endl; }
+	if (dollar == 1) { denomination = "dollar"; }
+	else { denomination = "dollars"; }
+	if (dollar > 0) { cout << "you have " << dollar << " " << denomination << endl; }
+
     double total;
-    total = penny+nickel*5+dime*10+quarter*25+half_dollar*50+dollar*100;
+	total = penny + nickel * 5 + dime * 10 + quarter * 25 + half_dollar * 50 + dollar * 100;
     total /= 100;
-    cout << "your total is $" << fixed << setprecision(2) << total << endl;
-    
+	cout << "your total is $" << total << endl;
+	keep_window_open();
     return 0;
-}
-catch (runtime_error e) {	// this code is to producer error messages; it will be described in Chapter 5
-	cout << e.what() << endl;
 }

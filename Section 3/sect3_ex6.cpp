@@ -70,5 +70,6 @@ int main()
         }
     }
     cout << min << ", " << mid << ", " << max << endl;
+	keep_window_open();
     return 0;
 }

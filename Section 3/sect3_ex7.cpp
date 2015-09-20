@@ -14,7 +14,7 @@ Fitzgerald, Hemingway, Steinbeck.
 //C++ programs start by executing the function main
 int main()
 {
-    cout << "Enter three words:" << endl;
+    cout << "Enter three words:\n";
     string val1 = "???";
     string val2 = "???";
     string val3 = "???";
@@ -68,5 +68,6 @@ int main()
         }
     }
     cout << min << ", " << mid << ", " << max << endl;
+	keep_window_open();
     return 0;
 }

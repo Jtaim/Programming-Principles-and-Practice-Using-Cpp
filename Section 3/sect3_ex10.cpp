@@ -16,9 +16,8 @@ with their obvious meanings.
 
 //C++ programs start by executing the function main
 int main()
-try
 {
-    cout << "Enter an operation (+, -, *, /, plus, minus, mul, and div) followed by 2 operands separated by spaces: " << endl;
+    cout << "Enter an operation (+, -, *, /, plus, minus, mul, and div) followed by 2 operands separated by spaces:\n";
     string operation;
     double val1 = 0;
     double val2 = 0;
@@ -34,18 +33,16 @@ try
         else if(operation == "/" || operation == "div")
         {
             if(val2 == 0)
-                error("divide by zero");
+                simple_error("divide by zero");
             res = val1 / val2;
         }
         else
-            error("bad operation: ", operation);
+            simple_error("bad operation: " + operation);
         
         cout << val1 << " " << operation << " " << val2 << " = " << res << endl;
-        cout << "do another" << endl;
+        cout << "do another\n";
     }
     cout << "exit bad operands";
+	keep_window_open();
     return 0;
-}
-catch (runtime_error e) {	// this code is to producer error messages; it will be described in Chapter 5
-	cout << e.what() << endl;
 }

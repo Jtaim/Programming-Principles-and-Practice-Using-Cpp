@@ -13,9 +13,8 @@ something that doesn’t correspond, such as stupid computer!.
 
 //C++ programs start by executing the function main
 int main()
-try
 {
-    cout << "Enter an spelled out number (example \"two\" for 2) type \"quit\" to exit:" << endl;
+    cout << "Enter an spelled out number (example \"two\" for 2) type \"quit\" to exit:\n";
     string spell_num;
     while(cin >> spell_num)
     {
@@ -33,12 +32,9 @@ try
         else if(spell_num == "quit")
             exit(0);
         else
-            cout << "spelled out number does not compute try again" << endl;
+            cout << "spelled out number does not compute try again\n";
         if(val>=0&&val<=4)    
         cout << "The entered number " << spell_num << " is the number " << val << endl;
     }
     return 0;
-}
-catch (runtime_error e) {	// this code is to producer error messages; it will be described in Chapter 5
-	cout << e.what() << endl;
 }

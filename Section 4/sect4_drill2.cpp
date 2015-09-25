@@ -1,11 +1,13 @@
 //written by Jtaim
-//date 22 Sept 2015
+//date 23 Sept 2015
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
-Section 4 Drill step 1. 
-Write a program that consists of a while-loop that (each time around the loop) reads in 
-two INTs and then prints them. Exit the program when a terminating '|' is entered.
+Section 4 Drill step 2. 
+1. Write a program that consists of a while-loop that (each time around the loop) 
+reads in two INTs and then prints them. Exit the program when a terminating '|' is entered.
+2. Change the program to write out the smaller value is: followed by the smaller of the 
+numbers and the larger value is: followed by the larger value.
 */
 
 #include "section4.h" //custom header
@@ -27,7 +29,22 @@ int main()
 		else if (!(cin >> val2))
 			terminate = check_input(termVal);
 		else
-			cout << "Integer inputs were " << val1 << " and " << val2 << "\n\n";
+		{
+			int smallVal = 0;
+			int largeVal = 0;
+			if(val1 <= val2)
+			{
+				smallVal = val1;
+				largeVal = val2;
+			}
+			else
+			{
+				smallVal = val2;
+				largeVal = val1;
+			}
+			cout << "The smaller value is: " << smallVal << '\n'
+				 << "The larger value is: " << largeVal << "\n\n";
+		}
 	}
 	keep_window_open();
 	return 0;

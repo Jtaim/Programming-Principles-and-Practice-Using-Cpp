@@ -31,23 +31,9 @@ int main()
 			terminate = check_input(termVal);
 		else
 		{
-			int smallVal = 0;
-			int largeVal = 0;
-			if(val1 != val2)
-			{
-				if(val1 <= val2)
-				{
-					smallVal = val1;
-					largeVal = val2;
-				}
-				else
-				{
-					smallVal = val2;
-					largeVal = val1;
-				}
-				cout << "The smaller value is: " << smallVal << '\n'
-					 << "The larger value is: " << largeVal << "\n\n";
-			}
+			if (val1 != val2)
+				cout << "The smaller value is: " << (val1 < val2 ? val1 : val2) << '\n'
+					 << "The larger value is: " << (val1 > val2 ? val1 : val2) << "\n\n";
 			else
 				cout << "The numbers are equal.\n\n";
 		}

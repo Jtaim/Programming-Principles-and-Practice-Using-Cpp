@@ -1,9 +1,9 @@
 //written by Jtaim
-//date 24 Sept 2015
+//date 25 Sept 2015
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
-Section 4 Drill step 5.
+Section 4 Drill step 6.
 1. Write a program that consists of a while-loop that (each time around the loop)
    reads in two int numbers and then prints them. Exit the program when a terminating '|' is entered.
 2. Change the program to write out the smaller value is: followed by the smaller of the
@@ -12,6 +12,11 @@ Section 4 Drill step 5.
 4. Change the program so that it uses double instead of int.
 5. Change the program so that it writes out the numbers are almost equal after writing
    out which is the larger and the smaller if the two numbers differ by less than 1.0 / 100.
+6. Now change the body of the loop so that it reads just one double each time around.
+   Define two variables to keep track of which is the smallest and which is the largest
+   value you have seen so far. Each time through the loop write out the value entered.
+   If it’s the smallest so far, write the smallest so far after the number.
+   If it is the largest so far, write the largest so far after the number.
 */
 
 #include "section4.h" //custom header
@@ -20,28 +25,43 @@ bool check_input(const char);
 //C++ programs start by executing the function main
 int main()
 {
-	double val1 = 0.0;
-	double val2 = 0.0;
+	double enterVal = 0.0;
+	double smallVal = 0.0;
+	double largeVal = 0.0;
 	const char termVal = '|';
 	const double tolerance = 1.0 / 100;  //close enough for floating point comparison
 	bool terminate = true;
+	bool firstItr = true;
 
 	while (terminate)
 	{
-		cout << "Enter two integer numbers. Enter " << termVal << " to exit.\n";
-		if (!(cin >> val1))
-			terminate = check_input(termVal);
-		else if (!(cin >> val2))
+		cout << "Enter a number. Enter " << termVal << " to exit.\n";
+		if (!(cin >> enterVal))
 			terminate = check_input(termVal);
 		else
 		{
-			if (val1 != val2)
-				cout << "The smaller value is: " << (val1 < val2 ? val1 : val2) << '\n'
-				     << "The larger value is: " << (val1 > val2 ? val1 : val2) << "\n\n";
-			else
-				cout << "The numbers are equal.\n\n";
-			if (fabs(val1 - val2) <= tolerance)	//fabs is absolute value of double
-				cout << val1 << " and " << val2 << " are close enough.\n\n";
+			cout << "Number entered was " << enterVal << '.';
+			if (firstItr)  // check first loop itr set small and large to that val
+			{
+				firstItr = false;
+				cout << " This is the first number entered!\n\n";
+				smallVal = enterVal;
+				largeVal = enterVal;
+			}
+			if (enterVal < smallVal || enterVal > largeVal)  // check if have new smaller or larger value
+			{
+				if (enterVal < smallVal)
+				{
+					smallVal = enterVal;
+					cout << " This is the smallest number entered so far!\n\n";
+				}
+				else
+				{
+					largeVal = enterVal;
+					cout << " This is the largest number entered so far!\n\n";
+				}
+			}
+			cout << "\n\n"; //provide newline to enter next value
 		}
 	}
 	keep_window_open();

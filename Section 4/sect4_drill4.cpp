@@ -34,7 +34,7 @@ int main()
 		{
 			if (val1 != val2)
 				cout << "The smaller value is: " << (val1 < val2 ? val1 : val2) << '\n'
-					 << "The larger value is: " << (val1 > val2 ? val1 : val2) << "\n\n";
+				     << "The larger value is: " << (val1 > val2 ? val1 : val2) << "\n\n";
 			else
 				cout << "The numbers are equal.\n\n";
 		}

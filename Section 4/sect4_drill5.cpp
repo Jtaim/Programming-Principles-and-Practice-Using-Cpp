@@ -3,7 +3,7 @@
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
-Section 4 Drill step 3.
+Section 4 Drill step 5.
 1. Write a program that consists of a while-loop that (each time around the loop)
    reads in two int numbers and then prints them. Exit the program when a terminating '|' is entered.
 2. Change the program to write out the smaller value is: followed by the smaller of the
@@ -37,7 +37,7 @@ int main()
 		{
 			if (val1 != val2)
 				cout << "The smaller value is: " << (val1 < val2 ? val1 : val2) << '\n'
-				<< "The larger value is: " << (val1 > val2 ? val1 : val2) << "\n\n";
+				     << "The larger value is: " << (val1 > val2 ? val1 : val2) << "\n\n";
 			else
 				cout << "The numbers are equal.\n\n";
 			if (fabs(val1 - val2) <= tolerance)	//fabs is absolute value of double

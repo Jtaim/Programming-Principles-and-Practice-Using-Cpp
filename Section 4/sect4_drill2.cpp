@@ -30,7 +30,7 @@ int main()
 			terminate = check_input(termVal);
 		else
 			cout << "The smaller value is: " << (val1 < val2 ? val1 : val2) << '\n'
-				 << "The larger value is: " << (val1 > val2 ? val1 : val2) << "\n\n";
+			     << "The larger value is: " << (val1 > val2 ? val1 : val2) << "\n\n";
 	}
 	keep_window_open();
 	return 0;

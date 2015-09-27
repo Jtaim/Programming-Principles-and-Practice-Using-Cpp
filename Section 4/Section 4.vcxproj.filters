@@ -56,7 +56,7 @@
     <ClCompile Include="sect4_drill6.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sect4_drill7_8.cpp">
+    <ClCompile Include="sect4_drill7_8.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

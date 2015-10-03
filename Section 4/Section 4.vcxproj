@@ -160,7 +160,7 @@
     <ClCompile Include="sect4_drill7_8.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="sect4_drill11.cpp">
+    <ClCompile Include="sect4_drill9_11.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="sect4_ex2.cpp">

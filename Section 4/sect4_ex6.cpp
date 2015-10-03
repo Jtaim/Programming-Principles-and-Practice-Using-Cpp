@@ -17,9 +17,9 @@ int main()
 {
 	while(true)
 	{
-		int val = -1;
+		int nVal = -1;
 		cout << "enter a number between 0 and 9: \n";
-		cin >> val;
+		cin >> nVal;
 		if (cin.eof()) {
 			cin.clear();
 			//cin.ignore(INT_MAX, '\n');
@@ -30,18 +30,18 @@ int main()
 			cin.clear();  // clear cin error flags so can accept new data
 			string sVal{ "??" };
 			cin >> sVal;
+			for (decltype(sVal.length()) i = 0; i < sVal.length(); ++i) { // set string to lower case
+				sVal[i] = tolower(sVal[i]);
+			}
 			for (decltype(numbers.size()) i = 0; i < numbers.size(); ++i) {
 				if (sVal == numbers[i]) {
-					cout << sVal << " is " << i << endl;
+					nVal = i; // enter index as the number value
 					break;  // match found break from for loop
 				}
 			}
-			if (sVal != "??") {  // no match found
-				cout << "Number entered must be between 0 and 9.\n";
-			}
 		}
-		else if(val >= 0 && val < numbers.size()) {
-			cout << val << " is " << numbers[val] << endl;
+		if(nVal >= 0 && nVal < numbers.size()) {
+			cout << nVal << " is " << numbers[nVal] << endl;
 		}
 		else {
 			cout << "Number entered must be between 0 and 9.\n";

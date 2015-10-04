@@ -80,5 +80,11 @@
     <ClCompile Include="sect4_drill9_11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sect4_ex7.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect4_ex8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

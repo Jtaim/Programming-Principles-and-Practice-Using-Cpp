@@ -33,17 +33,17 @@ int main()
 			for (decltype(sVal.length()) i = 0; i < sVal.length(); ++i) { // set string to lower case
 				sVal[i] = tolower(sVal[i]);
 			}
-			for (decltype(numbers.size()) i = 0; i < numbers.size(); ++i) {
+			for (decltype(numbers.size()) i = 0; i < numbers.size(); ++i) {  // check if valid spelled out number
 				if (sVal == numbers[i]) {
 					nVal = i; // enter index as the number value
 					break;  // match found break from for loop
 				}
 			}
 		}
-		if(nVal >= 0 && nVal < numbers.size()) {
+		if(nVal >= 0 && nVal < numbers.size()) {  // valid number found
 			cout << nVal << " is " << numbers[nVal] << endl;
 		}
-		else {
+		else {  // try again
 			cout << "Number entered must be between 0 and 9.\n";
 		}
 	}

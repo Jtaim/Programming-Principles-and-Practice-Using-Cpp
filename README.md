@@ -1,5 +1,6 @@
 # Programming: Principles and Pratices Using C++
-My solutions for the try its, drills and exercises.
+http://www.amazon.com/Programming-Principles-Practice-Using-C/dp/0321543726
+Thought was nice to learn Git plus good place to share my solutions for the try its, drills and exercises.
 
 I'm currently using Microsoft Visual Studio Community 2015 to go thru this book.
 I created a solution folder named PPP and will be adding projects for each section.  The sections or projects will contain Try Its, Drills and Exercises for that section.

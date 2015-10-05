@@ -1,5 +1,6 @@
 # Programming: Principles and Pratices Using C++
-http://www.amazon.com/Programming-Principles-Practice-Using-C/dp/0321543726
+http://www.amazon.com/Programming-Principles-Practice-Using-2nd/dp/0321992784/ref=sr_1_1?s=books&ie=UTF8&qid=1444058171&sr=1-1&keywords=Programming%3A+Principles+and+Practice+Using+C%2B%2B
+
 Thought was nice to learn Git plus good place to share my solutions for the try its, drills and exercises.
 
 I'm currently using Microsoft Visual Studio Community 2015 to go thru this book.

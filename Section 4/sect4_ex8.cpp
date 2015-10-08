@@ -18,13 +18,23 @@ Section 4 exercise 8.
 
 int main()
 {
-	uint64_t grains = 0;
-	uint64_t new_grains = 0;
-	int stop = 64;
-	for(int squares=1 ; squares<=stop; squares++) {
-		new_grains==0 ? new_grains++ : new_grains*=2; //ternary operation to deal with first iteration
-		grains = grains + new_grains;
-		cout << squares << " squares will give " << grains << " grains.\n";
+	int current_square_grains = 0;
+	int previous_square_grains = 0;
+	int const max_squares = 64;
+	for(int square=0; square<max_squares; square++) {
+		current_square_grains = pow(2,square);  //powers of 2 will provide double of previous number 2^0=1, 2^1=2, 2^2=4 2^3=8 ...
+		cout << "square " << square+1 << " has " <<  current_square_grains << " grains.\n" 
+		     << "Sum of the previous squares is " << previous_square_grains << " grains.\n\n";
+		previous_square_grains += current_square_grains;  //add them up
+		if(current_square_grains <= 1000 && previous_square_grains >= 1000) {
+			cout << square+1 << " provides approximately 1000 grains.\n\n";
+		}
+		else if(current_square_grains <= 1000000 && previous_square_grains >= 1000000) {
+			cout << square+1 << " provides approximately 1,000,000 grains.\n\n";
+		}
+		else if(current_square_grains <= 1000000000 && previous_square_grains >= 1000000000) {
+			cout << square+1 << " provides approximately 1,000,000,000 grains.\n\n";
+		}	
 	}
 	keep_window_open();
 	return 0;

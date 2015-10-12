@@ -23,7 +23,8 @@ int main()
 			if(cin.eof()) break;
 			cout << "entered an invalid number. Re-enter the number.\n";
 			cin.clear();
-			cin.ignore(INT_MAX, '\n');
+			string junk;
+			cin >> junk; // collects garbage upto a space or new line is detected.
 		}
 		else {
 			pos_ints.push_back(n);

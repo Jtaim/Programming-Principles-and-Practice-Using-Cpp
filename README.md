@@ -3,7 +3,7 @@
 
 Thought was nice to learn Git plus good place to share my solutions for the try its, drills and exercises.
 
-I'm currently using Microsoft Visual Studio Community 2015 to go thru this book.
+I'm currently using [Microsoft Visual Studio Community 2015] (https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx) to go thru this book.
 I created a solution folder named PPP and will be adding projects for each section.  The sections or projects will contain Try Its, Drills and Exercises for that section.
 
 If don't like Visual Studio a good solution for a GCC compiler is a varient of [MinGW distribution] (http://nuwen.net/mingw.html).

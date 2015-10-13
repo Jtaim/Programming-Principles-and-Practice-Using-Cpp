@@ -107,5 +107,8 @@
     <ClCompile Include="sect4_ex15.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sect4_ex16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

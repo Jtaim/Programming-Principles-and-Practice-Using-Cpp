@@ -24,7 +24,7 @@ int main()
 			cout << "entered an invalid number. Re-enter the number.\n";
 			cin.clear();
 			string junk;
-			cin >> junk; // collects garbage upto a space or new line is detected.
+			cin >> junk; // collects garbage up to a space or new line is detected.
 		}
 		else {
 			pos_ints.push_back(n);

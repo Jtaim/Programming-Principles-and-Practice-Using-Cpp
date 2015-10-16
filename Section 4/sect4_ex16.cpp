@@ -3,7 +3,7 @@
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
-Section 4 exercise 15. 
+Section 4 exercise 16. 
 A program that finds the mode of a set of positive integers
 The "mode" is the value that occurs most often. 
 If no number is repeated, then there is no mode for the list.
@@ -58,7 +58,7 @@ int main()
 	}
 	cout << "Numbers entered and sorted were:\n";
 	int j = 1;
-	for (auto x : pos_ints) { // print out the prime numbers
+	for (auto x : pos_ints) { // print out the entered numbers
 		if (j % 10) {  //10 per row
 			cout << x << '\t';
 		}

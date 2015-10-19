@@ -3,6 +3,7 @@
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
+Section 4 exercise 21.
 Modify exercise 19 so that when you enter an integer, the program will output all the 
 names with that score or score not found.
 */
@@ -12,12 +13,11 @@ names with that score or score not found.
 int main()
 {
 	int score{ -1 };
-	vector<string> names{ "Moe", "Curly", "Larry", "Shemp" }; //was really 3 stooges
-	vector<int> scores{ 1,2,3,2 };
+	vector<string> names{ "Moe", "Curly", "Larry", "Shemp" }; //was there really 4 stooges not 3
+	vector<int> scores{ 1,2,5,5 };
 	cout << "Enter a name to find a score.\n";
 	// collect valid data
-	while (true) {
-		bool entry_good = true;
+	while (names.size() == scores.size()) { // just to insure 2 vectors are the same size
 		cin >> score;
 		if (cin.eof()) {  // escape if EOF
 			break;
@@ -28,14 +28,16 @@ int main()
 			cin.ignore(INT_MAX, '\n');
 		}
 		else {  // check for name
-			for (int i = 0; i < (names.end() - names.begin()) && names.size() != 0; ++i) {
-				if (scores[i] == score) {  // find who has that score
-					cout << names[i] << "'s score is " << scores[i] << ".\n";
-					entry_good = false;
+			auto result = find(begin(scores), end(scores), score);
+			if (result != end(scores)) { // found a name match
+				while (result != end(scores)) { //find all names with that score
+					auto name_to_score = names[(names.size() - (end(scores) - result))];
+					cout << name_to_score << "'s score is " << score << ".\n";
+					result = find(result+1, end(scores), score); // update to find additional names matching that score
 				}
 			}
-			if (entry_good) { // no one has that score
-				cout << "Score not found.\n";
+			else { // no scores found
+				cout << "Name not found.\n";
 			}
 		}
 	}

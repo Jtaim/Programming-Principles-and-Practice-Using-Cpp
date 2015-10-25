@@ -1,10 +1,10 @@
 // Written by Jtaim
-// 8 Oct 2015
+// 19 Oct 2015
 // Header file used for Programming: Principles and Practice Using C++ Second Edition
-// section 4
+// section 5
 
-#ifndef SECTION4_H     // begin header guard
-#define SECTION4_H
+#ifndef SECTION5_H     // begin header guard
+#define SECTION5_H
 
 #include<iostream>
 #include<iomanip>
@@ -23,6 +23,8 @@
 #include<random>
 #include<stdexcept>
 
+#include<numeric> // for MVS 2015 not under algorithm
+
 using namespace std;
 
 inline void keep_window_open()
@@ -32,5 +34,10 @@ inline void keep_window_open()
 	char ch;
 	cin >> ch;
 	return;
+}
+// error() simply disguises throws:
+inline void error(const string &s)
+{
+	throw runtime_error(s);
 }
 #endif              // close header guard

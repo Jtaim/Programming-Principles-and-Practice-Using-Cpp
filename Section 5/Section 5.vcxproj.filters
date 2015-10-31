@@ -35,5 +35,11 @@
     <ClCompile Include="sect5_7a_try.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scaffolding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect5_drill.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

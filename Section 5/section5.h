@@ -22,6 +22,8 @@
 #include<regex>
 #include<random>
 #include<stdexcept>
+#include <cstdlib> // for rand() and srand()
+#include <ctime> // for time()
 
 #include<numeric> // for MVS 2015 not under algorithm
 
@@ -30,6 +32,7 @@ using namespace std;
 inline void keep_window_open()
 {
 	cin.clear();
+	cin.ignore(INT8_MAX, '\n');
 	cout << "Please enter a character to exit\n";
 	char ch;
 	cin >> ch;

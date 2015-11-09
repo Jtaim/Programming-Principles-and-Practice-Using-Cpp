@@ -3,7 +3,7 @@
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
-Section 5 exercise 12
+Section 5 exercise 13
 Bulls and Cows game.
 Guess the 4 numbers range(0 to 9)
 */
@@ -47,7 +47,7 @@ try
 				int bulls = get_bulls(guesses, scratch);
 				int cows = get_cows(guesses, scratch);
 				cout << "The result is " << cows << (cows == 1 ? " Cow" : " Cows")
-					<< " and " << bulls << (bulls == 1 ? " Bull" : " Bulls") << ". Try again.\n";
+					 << " and " << bulls << (bulls == 1 ? " Bull" : " Bulls") << ". Try again.\n";
 				guesses = {}; // clear for new set of guesses
 			}
 		}
@@ -167,7 +167,7 @@ bool try_again(const string &s)
 	cout << s;
 	char again = '?';
 	cin >> again;
-	tolower(again);
+	again = tolower(again);
 	if (again == 'n') {
 		cout << "Thanks for playing, goodbye.\n\n";
 		return false;

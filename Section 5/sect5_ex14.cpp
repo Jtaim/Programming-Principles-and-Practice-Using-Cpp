@@ -88,7 +88,7 @@ catch (...) {
 int handle_input(string day, int val, days &week)
 {
 	for (string::size_type i = 0; i < day.size(); ++i)
-		tolower(day[i]);
+		day[i] = tolower(day[i]);
 	if (day == "sunday" || day == "sun") {
 		week.d[0].first.push_back(val);
 	}

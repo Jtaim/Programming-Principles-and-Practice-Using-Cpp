@@ -49,14 +49,23 @@ Token Token_stream::get()    // read a token from cin
 	switch (ch) {
 	case ';':    // for "print"
 		return Token(ch);
+		break;
 	case 'q':    // for "quit"
-
-	case '(': case ')': case '*': case '/': case '+':
+		return Token(ch);
+		break;
+	case '(': case ')': case '*': case '/': case '+': //case '-':
+		// negative numbers will cause and issue if negative number is listed first or next number after a Token.
 		return Token(ch);        // let each character represent itself
 	case '-':
+		// This case I tried to catch negative numbers but still a bug if negative number is after '*' or '/'.
+		// the get() see's Token.kind as '8' so return Token '-' back to prmary()
+		// primary() will flag as error.  Term '*' or '/' at this point and list as a number '8'
+		// Even if '(' next token
+		// the way the grammer is set it multiplies or divides and looks for next primary ('(' or '8')
 	{
-		if (Token_stream::buffer.kind != '\0' && Token_stream::buffer.kind != '8') { //handle cases were - is first character or proceeds a * or /
-			return Token(ch);  
+		char k = Token_stream::buffer.kind;
+		if (k != '\0' && k != '(' && k != '*' && k != '/' && k != '+' && k != '-' && k != ';') { //catch negative numbers
+			return Token(ch);
 		}
 	}
 	case '.':
@@ -76,7 +85,7 @@ Token Token_stream::get()    // read a token from cin
 
 Token_stream ts;  // provides get() and putback()
 
-// Function declarations -------------------------------------------------------
+// Forward Function declarations -------------------------------------------------------
 double primary();     // deal with numbers and parentheses
 double term();        // deal with * and /
 double expression();  // deal with + and -

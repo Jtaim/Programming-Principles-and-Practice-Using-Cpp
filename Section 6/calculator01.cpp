@@ -48,26 +48,9 @@ Token Token_stream::get()    // read a token from cin
 
 	switch (ch) {
 	case ';':    // for "print"
-		return Token(ch);
-		break;
 	case 'q':    // for "quit"
-		return Token(ch);
-		break;
-	case '(': case ')': case '*': case '/': case '+': //case '-':
-		// negative numbers will cause and issue if negative number is listed first or next number after a Token.
+	case '(': case ')': case '*': case '/': case '+': case '-':
 		return Token(ch);        // let each character represent itself
-	case '-':
-		// This case I tried to catch negative numbers but still a bug if negative number is after '*' or '/'.
-		// the get() see's Token.kind as '8' so return Token '-' back to prmary()
-		// primary() will flag as error.  Term '*' or '/' at this point and list as a number '8'
-		// Even if '(' next token
-		// the way the grammer is set it multiplies or divides and looks for next primary ('(' or '8')
-	{
-		char k = Token_stream::buffer.kind;
-		if (k != '\0' && k != '(' && k != '*' && k != '/' && k != '+' && k != '-' && k != ';') { //catch negative numbers
-			return Token(ch);
-		}
-	}
 	case '.':
 	case '0': case '1': case '2': case '3': case '4':
 	case '5': case '6': case '7': case '8': case '9':
@@ -79,7 +62,7 @@ Token Token_stream::get()    // read a token from cin
 	}
 	default:
 		error("Bad token");
-		return 0;
+		return 0;  // will never get here just to suppress compile warning for not having return
 	}
 }
 
@@ -96,15 +79,14 @@ try {
 	double val = 0;
 	while (cin) {
 		Token t = ts.get();
-		if (t.kind == 'q') {
-			break;
-		}
+		if (t.kind == 'q') 
+            break;
 		if (t.kind == ';') {
 			cout << "=" << val << '\n';
 		}
 		else {
 			ts.putback(t);
-			val = expression();
+            val = expression();
 		}
 	}
     keep_window_open("~0");
@@ -132,11 +114,13 @@ double primary()  // deal with numbers and parentheses
 		if (t.kind != ')') error("')' expected");
 		return d;
 	}
+    case '-':  // handle negative numbers
+        return -primary();
 	case '8':            // we use '8' to represent a number
 		return t.value;  // return the number's value
 	default:
 		error("primary expected");
-		return 0;
+		return 0;  // will never get here just to suppress compile warning for not having return
 	}
 }
 

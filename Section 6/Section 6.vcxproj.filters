@@ -32,5 +32,17 @@
     <ClCompile Include="sect6_drill1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sect6_drill2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_drill3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_drill4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_drill5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

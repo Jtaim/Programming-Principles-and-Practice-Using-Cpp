@@ -79,8 +79,8 @@ try {
 	double val = 0;
 	while (cin) {
 		Token t = ts.get();
-		if (t.kind == 'q') 
-            break;
+		if (t.kind == 'q')
+			break;
 		if (t.kind == ';') {
 			cout << "=" << val << '\n';
 		}

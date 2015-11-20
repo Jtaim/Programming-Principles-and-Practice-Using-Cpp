@@ -45,7 +45,6 @@ Token Token_stream::get()    // read a token from cin
 	}
 	char ch;
 	cin >> ch;    // note that >> skips whitespace (space, newline, tab, etc.)
-
 	switch (ch) {
 	case ';':    // for "print"
 	case 'q':    // for "quit"
@@ -62,7 +61,7 @@ Token Token_stream::get()    // read a token from cin
 	}
 	default:
 		error("Bad token");
-		return 0;  // will never get here just to suppress compile warning for not having return
+		return 0;
 	}
 }
 
@@ -79,14 +78,15 @@ try {
 	double val = 0;
 	while (cin) {
 		Token t = ts.get();
-		if (t.kind == 'q')
+		if (t.kind == 'q') {
 			break;
+		}
 		if (t.kind == ';') {
-			cout << "=" << val << '\n';
+			cout << " = " << val << '\n';
 		}
 		else {
 			ts.putback(t);
-            val = expression();
+			val = expression();
 		}
 	}
     keep_window_open("~0");
@@ -109,18 +109,21 @@ double primary()  // deal with numbers and parentheses
 	switch (t.kind) {
 	case '(':    // handle '(' expression ')'
 	{
+		cout << " ()";
 		double d = expression();
 		t = ts.get();
 		if (t.kind != ')') error("')' expected");
 		return d;
 	}
-    case '-':  // handle negative numbers
-        return -primary();
 	case '8':            // we use '8' to represent a number
+		cout << " number";
 		return t.value;  // return the number's value
+	case '-':
+		cout << " negative";
+		return -primary(); //handle negative numbers
 	default:
 		error("primary expected");
-		return 0;  // will never get here just to suppress compile warning for not having return
+		return 0;
 	}
 }
 
@@ -129,15 +132,16 @@ double term()  // deal with * and /
 {
 	double left = primary();
 	Token t = ts.get();     // get the next token
-
 	while (true) {
 		switch (t.kind) {
 		case '*':
+			cout << " expression(*)";
 			left *= primary();
 			t = ts.get();
 			break;
 		case '/':
 		{
+			cout << " expression(/)";
 			double d = primary();
 			if (d == 0) error("divide by zero");
 			left /= d;
@@ -145,6 +149,7 @@ double term()  // deal with * and /
 			break;
 		}
 		default:
+			cout << " primary";
 			ts.putback(t);
 			return left;
 		}
@@ -159,16 +164,36 @@ double expression()  // deal with + and -
 	while (true) {
 		switch (t.kind) {
 		case '+':
+			cout << " expression(+)";
 			left += term();    // evaluate Term and add
 			t = ts.get();
 			break;
 		case '-':
+			cout << " expression(-)";
 			left -= term();    // evaluate Term and subtract
 			t = ts.get();
 			break;
 		default:
+			cout << " term";
 			ts.putback(t);
 			return left;       // finally: no more + or -: return the answer
 		}
 	}
 }
+/*
+// a simple expression grammar:
+Expression:
+Term
+Expression "+" Term       // addition
+Expression "–" Term       // subtraction
+Term :
+Primary
+Term "*" Primary             // multiplication
+Term "/" Primary             // division
+Term "%" Primary            // remainder (modulo)
+Primary :
+Number
+"(" Expression ")"            // grouping
+Number :
+	floating - point - literal
+*/

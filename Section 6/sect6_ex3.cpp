@@ -1,16 +1,16 @@
-
-// Section 6 Drill 5
-// This is example code from Chapter 6.7 "Trying the second version" of
-// "Software - Principles and Practice using C++" by Bjarne Stroustrup
-// Change to exit from 'q' to 'x'
-// Change print command from ';' to '='
-// Add a greeting in main():
-// Add message for available operators and commands
+/*
+  written by Jtaim
+  date 19 Nov 2015
+  Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
+ 
+  Section 6 exercise 3
+  Added to Section 6 exercise 2
+  Add the ability to do factorials
+*/
 
 #include "section6.h"
 
 //------------------------------------------------------------------------------
-
 class Token {
 public:
     char kind;        // what kind of token
@@ -22,7 +22,6 @@ public:
 };
 
 //------------------------------------------------------------------------------
-
 class Token_stream {
 public: 
     // The constructor just sets full to indicate that the buffer is empty:
@@ -36,7 +35,6 @@ private:
 };
 
 //------------------------------------------------------------------------------
-
 // The putback() member function puts its argument back into the Token_stream's buffer:
 void Token_stream::putback(Token t)
 {
@@ -46,7 +44,6 @@ void Token_stream::putback(Token t)
 }
 
 //------------------------------------------------------------------------------
-
 Token Token_stream::get()
 {
     if (full) {       // do we already have a Token ready?
@@ -59,11 +56,12 @@ Token Token_stream::get()
 	switch (ch) {
     case '=':    // for "print"
     case 'x':    // for "quit"
-    case '(': case ')': case '+': case '-': case '*': case '/': 
+	case '{': case '}':case '(': case ')': case '+': case '-': case '*': case '/':
+	case '!':
         return Token(ch);        // let each character represent itself
     case '.':
     case '0': case '1': case '2': case '3': case '4':
-    case '5': case '6': case '7': case '9':
+    case '5': case '6': case '7': case '8': case '9':
         {    
             cin.putback(ch);         // put digit back into the input stream
             double val;
@@ -91,6 +89,13 @@ double primary()
 {
     Token t = ts.get();
     switch (t.kind) {
+	case '{':    // handle '{' expression '}'
+	{
+		double d = expression();
+		t = ts.get();
+		if (t.kind != '}') error("'}' expected");
+		return d;
+	}
     case '(':    // handle '(' expression ')'
         {    
             double d = expression();
@@ -100,6 +105,9 @@ double primary()
         }
 	case '-':  // so can use negative numbers
 		return -primary();
+	case '!':  // if have factorial with no primary before it
+		cin.putback('1'); // a 1 back into cin stream because a 0 or 1 factorial is 1
+		return primary();
     case '8':            // we use '8' to represent a number
         return t.value;  // return the number's value
     default:
@@ -110,21 +118,46 @@ double primary()
 
 //------------------------------------------------------------------------------
 
-// deal with *, and /
+double factorial() // factorial tighter bound than * and /
+{
+	double left = primary();
+	Token t = ts.get();        // get the next token from token stream
+	while (true) {
+		switch (t.kind) {
+		case '!':
+		{
+			int temp = 1;
+			for (int i = static_cast<int>(left); i != 0; --i) {
+				temp *= i;
+			}
+			left = temp;
+			t = ts.get();
+			break;
+		}
+		default:
+			ts.putback(t);     // put t back into the token stream
+			return left;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+
+// deal with * and /
 // % not implemented yet
 double term()
 {
-    double left = primary();
+    double left = factorial();
     Token t = ts.get();        // get the next token from token stream
     while(true) {
         switch (t.kind) {
-        case '*':
-            left *= primary();
+		case '*':
+            left *= factorial();
             t = ts.get();
 			break;
         case '/':
             {    
-                double d = primary();
+                double d = factorial();
                 if (d == 0) error("divide by zero");
                 left /= d; 
                 t = ts.get();
@@ -168,8 +201,8 @@ try
 {
 	cout << "Welcome to our simple calculator.\n"
 		<< "Please enter expressions using floating-point numbers.\n"
-		<< "Operations available are +, -, * and /.\n"
-		<< "Can change order of operations using ( ).\n"
+		<< "Operations available are +, -, *, / and !.\n"
+		<< "Can change order of operations using {} and ().\n"
 		<< "Use the = to show results and x to exit.\n\n";
 
 	double val = 0;
@@ -195,5 +228,3 @@ catch (...) {
 	keep_window_open();
     return 2;
 }
-
-//------------------------------------------------------------------------------

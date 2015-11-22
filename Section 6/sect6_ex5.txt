@@ -1,0 +1,18 @@
+// Written by Jtaim
+// Date 21 Nov 2015
+// Programming: Principles and Practice Using C++ Second Edition
+
+Article:
+	"the"
+Conjunction:
+	"and"
+	"or"
+	"but"
+Noun:
+	"birds"
+	"fish"
+	"C++"
+Verb:
+	"rules"
+	"fly"
+	"swim"

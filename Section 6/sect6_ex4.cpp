@@ -18,11 +18,12 @@ Write out all the (name, score) pairs, one per line.
 
 class Name_value {
 public:
-	string name{};
-	int value{ 0 };
-	Name_value() : name{}, value{ 0 } {}   // constructor for init values
+	string name;
+	int value;
+	Name_value()
+		: name{}, value{ 0 } {}   // constructor for init values
 	Name_value(string n, int val)
-		:name{n}, value(val) { }
+		: name{n}, value(val) { }
 };
 
 int main() 

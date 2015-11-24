@@ -44,17 +44,19 @@ int main()
 			cin.clear();
 			cin.ignore(INT_MAX, '\n');
 		}
-		auto i = vNS.begin();
-		for (; i < vNS.end(); ++i) {
-			auto a = *i;
-			if (a.name == n) break;
-		}
-		if (i == vNS.end()) {
-			NS = { n,v };
-			vNS.push_back(NS);
-		}
 		else {
-			cout << "Entered duplicate name.\n";
+			auto i = vNS.begin();
+			for (; i < vNS.end(); ++i) {
+				auto a = *i;
+				if (a.name == n) break;
+			}
+			if (i == vNS.end()) {
+				NS = { n,v };
+				vNS.push_back(NS);
+			}
+			else {
+				cout << "Entered duplicate name.\n";
+			}
 		}
 	}
 // print contents to screen

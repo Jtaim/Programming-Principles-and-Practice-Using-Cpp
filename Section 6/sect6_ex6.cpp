@@ -120,7 +120,7 @@ bool verb()
 		str s = ss.get();
 		if (s.compare(test) && check) return true;
 	}
-	else return check;
+	return check;
 }
 
 //------------------------------------------------------------------------------
@@ -162,5 +162,5 @@ bool conjunction()
 		test = { "." };
 		if (s.compare(test) && check) return true;
 	}
-    else return check;
+    return check;
 }

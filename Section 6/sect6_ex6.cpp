@@ -115,14 +115,17 @@ bool noun()
 bool verb()
 {
 	bool check = noun();
-	vector<string> test{ "rules","fly","swim" };
-	str s = ss.get();
-	if (s.compare(test) && check) return true;
-	return false;
+	if (check) {
+		vector<string> test{ "rules","fly","swim" };
+		str s = ss.get();
+		if (s.compare(test) && check) return true;
+	}
+	else return check;
 }
 
 //------------------------------------------------------------------------------
-int main() 
+int main()
+try
 {
 	cout << "Enter a sentence terminated with . surrounded by space.\n";
 	if (conjunction()) {
@@ -134,18 +137,30 @@ int main()
 	keep_window_open("~0");
 	return 0;
 }
+catch (exception& e) {
+	cerr << "error: " << e.what() << '\n';
+	keep_window_open();
+	return 1;
+}
+catch (...) {
+	cerr << "Oops: unknown exception!\n";
+	keep_window_open();
+	return 2;
+}
 
 //------------------------------------------------------------------------------
 bool conjunction()
 {
 	bool check = verb();
-	vector<string> test{ "and","or","but" };
-	str s = ss.get();
-    if (s.compare(test) && check) { 
-        check = verb();
-        s = ss.get();
-    }
-	test = { "." };
-    if (s.compare(test) && check) return true;
-    return false;
+	if (check) {
+		vector<string> test{ "and","or","but" };
+		str s = ss.get();
+		if (s.compare(test) && check) {
+			check = verb();
+			s = ss.get();
+		}
+		test = { "." };
+		if (s.compare(test) && check) return true;
+	}
+    else return check;
 }

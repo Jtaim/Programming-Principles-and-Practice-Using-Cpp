@@ -61,5 +61,8 @@
     <Text Include="sect6_ex5.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="sect6_ex7.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

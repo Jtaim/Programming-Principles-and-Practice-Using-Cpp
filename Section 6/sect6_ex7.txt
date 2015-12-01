@@ -8,21 +8,21 @@ Expression
 
 OR :
 XOR
-OR "|" XOR	       			// OR
+OR "|" XOR		// OR
 
 XOR :
 AND
-XOR "^" AND            		// exclusive or
+XOR "^" AND		// exclusive or
 
 AND :
 Primary
-And "&" Primary            	// And
+And "&" Primary		// And
 
 Primary :
 Number
-"(" Expression ")"			// grouping
-Number "!" Primary          // NOT
-Number "~" Primary          // Complement
+"(" Expression ")"	// grouping
+Number "!" Primary	// NOT
+Number "~" Primar	// Complement
 
 Number :
 	number

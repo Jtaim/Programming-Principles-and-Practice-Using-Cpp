@@ -8,11 +8,11 @@ Expression
 
 OR :
 XOR
-OR "|" XOR		// OR
+OR "|" XOR			// OR
 
 XOR :
 AND
-XOR "^" AND		// exclusive or
+XOR "^" AND			// exclusive or
 
 AND :
 Primary
@@ -22,7 +22,7 @@ Primary :
 Number
 "(" Expression ")"	// grouping
 Number "!" Primary	// NOT
-Number "~" Primar	// Complement
+Number "~" Primary	// Complement
 
 Number :
 	number

@@ -59,6 +59,9 @@
     <ClCompile Include="sect6_ex8.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sect6_ex9.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="sect6_ex5.txt">

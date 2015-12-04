@@ -157,7 +157,10 @@
     <ClCompile Include="sect6_ex6.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="sect6_ex8.cpp" />
+    <ClCompile Include="sect6_ex8.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="sect6_ex9.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="sect6_ex5.txt">

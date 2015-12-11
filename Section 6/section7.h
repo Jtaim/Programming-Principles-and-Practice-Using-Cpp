@@ -1,10 +1,10 @@
 // Written by Jtaim
-// 11 Nov 2015
+// 10 Dec 2015
 // Header file used for Programming: Principles and Practice Using C++ Second Edition
-// section 6
+// section 7
 
-#ifndef SECTION6_H     // begin header guard
-#define SECTION6_H
+#ifndef SECTION7_H     // begin header guard
+#define SECTION7_H
 
 #include<iostream>
 #include<iomanip>

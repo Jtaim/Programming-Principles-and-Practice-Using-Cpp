@@ -1,5 +1,6 @@
 // written by Jtaim
 //date 19 Sept 2015
+//updated 2 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -14,11 +15,12 @@ Fitzgerald, Hemingway, Steinbeck.
 //C++ programs start by executing the function main
 int main()
 {
-    cout << "Enter three words:\n";
+	using std::string;
+	std::cout << "Enter three words:\n";
     string val1 = "???";
     string val2 = "???";
     string val3 = "???";
-    cin >> val1 >> val2 >> val3;
+    std::cin >> val1 >> val2 >> val3;
     string min = "???";
     string mid = "???";
     string max = "???";
@@ -67,7 +69,7 @@ int main()
             max = val1;
         }
     }
-    cout << min << ", " << mid << ", " << max << endl;
+    std::cout << min << ", " << mid << ", " << max << std::endl;
 	keep_window_open();
     return 0;
 }

@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 19 Sept 2015
+//updated 2 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 /*
 Section 3 exercise 10.
@@ -17,11 +18,11 @@ with their obvious meanings.
 //C++ programs start by executing the function main
 int main()
 {
-    cout << "Enter an operation (+, -, *, /, plus, minus, mul, and div) followed by 2 operands separated by spaces:\n";
-    string operation;
+    std::cout << "Enter an operation (+, -, *, /, plus, minus, mul, and div) followed by 2 operands separated by spaces:\n";
+    std::string operation;
     double val1 = 0;
     double val2 = 0;
-    while(cin >> operation >> val1 >> val2)
+    while(std::cin >> operation >> val1 >> val2)
     {
         double res = 0;
         if(operation == "+" || operation == "plus")
@@ -39,10 +40,10 @@ int main()
         else
             simple_error("bad operation: " + operation);
         
-        cout << val1 << " " << operation << " " << val2 << " = " << res << endl;
-        cout << "do another\n";
+        std::cout << val1 << " " << operation << " " << val2 << " = " << res << std::endl;
+        std::cout << "do another\n";
     }
-    cout << "exit bad operands";
+    std::cout << "exit bad operands";
 	keep_window_open();
     return 0;
 }

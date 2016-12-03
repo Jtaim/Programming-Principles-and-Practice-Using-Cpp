@@ -1,5 +1,6 @@
 // written by Jtaim
 //date 19 Sept 2015
+//updated 2 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 /*
 Section 3 exercise 8.
@@ -14,12 +15,12 @@ like The value 4 is an even number. Hint: See the remainder (modulo) operator in
 //C++ programs start by executing the function main
 int main()
 {
-    cout << "Enter an integer:" << endl;
+    std::cout << "Enter an integer: ";
     int val = 0;
-    cin >> val;
-    if(!cin) simple_error("something went bad with the read\n");
-    string res = (val%2) ? "odd" : "even";   
-    cout << "The value " << val << " is an " << res << " number\n";
+    std::cin >> val;
+	if(!std::cin) simple_error("Error entered a none integer value\n");
+    std::string res = (val%2) ? "odd" : "even";   
+    std::cout << "The value " << val << " is an " << res << " number\n";
 	keep_window_open();
     return 0;
 }

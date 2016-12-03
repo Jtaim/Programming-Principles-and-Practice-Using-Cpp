@@ -1,5 +1,6 @@
 // written by Jtaim
 //date 19 Sept 2015
+//updated 2 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -16,11 +17,11 @@ So, the input 4 5 4 should give 4, 4, 5.
 //C++ programs start by executing the function main
 int main()
 {
-    cout << "Enter three integer values:" << endl;
+	std::cout << "Enter three integer values:\n";
     int val1 = 0;
     int val2 = 0;
     int val3 = 0;
-    cin >> val1 >> val2 >> val3;
+    std::cin >> val1 >> val2 >> val3;
     int min = 0;
     int mid = 0;
     int max = 0;
@@ -69,7 +70,7 @@ int main()
             max = val1;
         }
     }
-    cout << min << ", " << mid << ", " << max << endl;
+    std::cout << min << ", " << mid << ", " << max << std::endl;
 	keep_window_open();
     return 0;
 }

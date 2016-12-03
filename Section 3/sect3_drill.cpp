@@ -1,17 +1,21 @@
 //written by Jtaim
 //date 19 Sept 2015
+//updated 1 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 /*
 Section 3 Drill. This drill is to write a program that produces a 
 simple form letter based on user input.
 */
 
+#include <iostream>
+#include <string>
 #include "section3.h" //custom header
 
 //C++ programs start by executing the function main
 int main()
 {
-    cout << "Enter the name of the person you want to write to:" << endl;
+	using namespace std;
+	cout << "Enter the name of the person you want to write to:" << endl;
     string first_name = "???";     // first_name is a variable of type string
     cin >> first_name;             // read characters into first_name
     cout << "Dear " << first_name << ',' << endl;

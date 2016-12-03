@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 19 Sept 2015
+//updated 2 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -22,6 +23,7 @@ The value of all of your coins is 573 cents.
 //C++ programs start by executing the function main
 int main()
 {
+	using namespace std;
 	cout << "Lets count some change $$$$!\n";
     int penny = 0;
     int nickel = 0;

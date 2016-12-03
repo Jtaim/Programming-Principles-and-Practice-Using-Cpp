@@ -12,7 +12,6 @@ something that does’t correspond, such as stupid computer!.
 
 #include "section3.h" //custom header
 
-//C++ programs start by executing the function main
 int main()
 {
     std::cout << "Enter an spelled out number (example \"two\" for 2) type \"quit\" to exit:\n";

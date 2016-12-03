@@ -9,7 +9,8 @@ Section 3.4 try this exercise
 
 #include <iostream>
 #include <string>
-#include "section3.h" //custom header
+#include <cmath>		//for sqrt function
+#include "section3.h"	//custom header
 
 //C++ programs start by executing the function main
 int main()

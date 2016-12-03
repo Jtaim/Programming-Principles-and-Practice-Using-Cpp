@@ -20,7 +20,6 @@ The value of all of your coins is 573 cents.
 
 #include "section3.h" //custom header
 
-//C++ programs start by executing the function main
 int main()
 {
 	using namespace std;

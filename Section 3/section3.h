@@ -10,13 +10,18 @@
 #include<iostream>
 #include<string>
 
-inline void keep_window_open() { char ch; std::cin >> ch; }
+void keep_window_open()
+{ 
+	std::cout << "\n\nEnter a char to exit.\n";
+	char ch;
+	std::cin >> ch;
+}
 
 // error function to be used (only) until error() is introduced in Chapter 5:
-inline void simple_error(std::string s)	// write ``error: s and exit program
+void simple_error(std::string s)	// write error: s and exit program
 {
 	std::cerr << "error: " << s << '\n';
-	keep_window_open();		// for some Windows environments
-	exit(1);
+	keep_window_open();
+	exit(1);						// for some Windows environments
 }
 #endif              // close header guard

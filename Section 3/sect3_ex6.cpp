@@ -17,6 +17,8 @@ So, the input 4 5 4 should give 4, 4, 5.
 //C++ programs start by executing the function main
 int main()
 {
+	std::cout << "A program that prompts the user to enter three integer values,\n"
+			  << "and then outputs the values in numerical sequence separated by commas.\n\n";
 	std::cout << "Enter three integer values:\n";
     int val1 = 0;
     int val2 = 0;

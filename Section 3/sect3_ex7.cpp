@@ -16,6 +16,7 @@ Fitzgerald, Hemingway, Steinbeck.
 int main()
 {
 	using std::string;
+	std::cout << "Enter 3 words and output will place in alphebetic order.\n\n";
 	std::cout << "Enter three words:\n";
     string val1 = "???";
     string val2 = "???";

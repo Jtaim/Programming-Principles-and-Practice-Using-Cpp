@@ -16,6 +16,8 @@ int main()
 {
 	std::string previous = "";
 	std::string current;
+	std::cout << "A program to check for repeating words. EOF to exit\n";
+	std::cout << "Enter a sentance to check: ";
 	while (std::cin >> current)
 	{
 		if(previous == current)

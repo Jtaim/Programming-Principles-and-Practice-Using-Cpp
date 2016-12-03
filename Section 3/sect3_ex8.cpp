@@ -20,7 +20,7 @@ int main()
     std::cin >> val;
 	if(!std::cin) simple_error("Error entered a none integer value\n");
     std::string res = (val%2) ? "odd" : "even";   
-    std::cout << "The value " << val << " is an " << res << " number\n";
+    std::cout << "The value " << val << " is a " << res << " number\n";
 	keep_window_open();
     return 0;
 }

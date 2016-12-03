@@ -26,23 +26,29 @@ int main()
     cout << "What is your friends gender?" << "(Enter m for male and f for female)\n";
     char gender = 'o';
     cin >> gender;
-    if(gender == 'm')
+    if (gender == 'm') {
         cout << "If you see " << first_name << " ask him to call me.\n";
-    if(gender == 'f')
+	}
+    if (gender == 'f') {
         cout << "If you see " << first_name << " ask her to call me.\n";
+	}
     cout << "How old are you?\n";
     int age = -1;
     cin >> age;
-    if(age <=0 || age >= 110)
+    if (age <= 0 || age >= 110) {
         simple_error("you're kidding! ");
+	}
     cout << "I hear you just had a birthday and you are " << age << " years old.\n";
-    if(age < 12)
-        cout << "Next year you will be " << age+1 << ".\n";
-    if(age == 17)
+    if (age < 12) {
+        cout << "Next year you will be " << age + 1 << ".\n";
+	}
+    if (age == 17) {
         cout << "Next year you will be able to vote.\n";
-    if(age > 70)
+	}
+    if (age > 70) {
         cout << "I hope you are enjoying retirement.\n";
-	cout << "Yours sincerely,\n\n\nJtaim\n";     //add 2 blank lines for a signature
+	}
+	cout << "Yours sincerely,\n\n\nJohn\n";     //add 2 blank lines for a signature
 	keep_window_open();
     return 0;
 }

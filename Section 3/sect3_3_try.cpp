@@ -19,12 +19,14 @@ proud of being five and a half years old rather than just five.
 //C++ programs start by executing the function main
 int main()
 {
-	std::cout << "Please enter your first name and age\n";
+	std::cout << "Please enter your first name: ";
 	std::string first_name = "???"; 		//string variable
 											//("???" means "don't know the name")
+	std::cin >> first_name;
+	std::cout << "Please enter your age: ";
 	double age = -1;						//integer variable (-1 means "don't know the age")
-	std::cin >> first_name >> age;
-	double age_months = age * 12;
+	std::cin >> age;
+	double age_months = (age * 12);
 	std::cout << "Hello, " << first_name
 			  << " (age " << age << ")"
 			  << "(age in months " << age_months << ")\n";

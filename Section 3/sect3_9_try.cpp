@@ -16,16 +16,17 @@ int main()
 {
 	using namespace std;
 	double d = 0;
+	std::cout << "show some basic of how C++ converts types. EOF to exit\n";
     while (cin>>d)	            		
 	{
         int i = d;						// try to squeeze a double into an int
 		//int i {d};						// the {} enforce error narrowing error
 		char c = i;            			// try to squeeze an int into a char
 		int i2 = c;             		// get the integer value of the character
-        cout << "d==" << d      		// the original double
-             << " i=="<< i      		// converted to int
-             << " i2==" << i2   		// int value of char
-             << " char(" << c << ")\n"; // the char
+        cout << "the entered double value " << d << "\n"
+             << "double converted to int " << i << "\n"
+			 << "int converted to char (" << c << ")\n"
+             << "char converted to int " << i2 << "\n";             
     }
 	return 0;
 }

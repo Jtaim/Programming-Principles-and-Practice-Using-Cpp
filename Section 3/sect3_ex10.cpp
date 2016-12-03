@@ -15,7 +15,6 @@ with their obvious meanings.
 
 #include "section3.h" //custom header
 
-//C++ programs start by executing the function main
 int main()
 {
     std::cout << "Enter an operation (+, -, *, /, plus, minus, mul, and div) followed by 2 operands separated by spaces:\n";

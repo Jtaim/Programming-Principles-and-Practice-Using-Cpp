@@ -6,11 +6,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-# added these files to ignore
-*.VC.db
-*.sln
-*.vcxproj
-*.vcxproj.filters
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

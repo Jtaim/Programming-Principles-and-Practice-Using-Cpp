@@ -1,5 +1,6 @@
 // Written by Jtaim
 // 8 Oct 2015
+// updated 4 Dec 2016
 // Header file used for Programming: Principles and Practice Using C++ Second Edition
 // section 4
 
@@ -7,30 +8,20 @@
 #define SECTION4_H
 
 #include<iostream>
-#include<iomanip>
-#include<fstream>
-#include<sstream>
-#include<cmath>
-#include<cstdlib>
 #include<string>
-#include<list>
-#include<forward_list>
-#include<vector>
-#include<unordered_map>
-#include<algorithm>
-#include<array>
-#include<regex>
-#include<random>
-#include<stdexcept>
 
-using namespace std;
-
-inline void keep_window_open()
+void keep_window_open()
 {
-	cin.clear();
-	cout << "Please enter a character to exit\n";
-	char ch;
-	cin >> ch;
-	return;
+	std::cout << "\n\nEnter something to exit.\n";
+	std::cin.ignore(32765, '\n');
+	std::cin.get();
+}
+
+// error function to be used (only) until error() is introduced in Chapter 5:
+void simple_error(std::string s)	// write error: s and exit program
+{
+	std::cerr << "error: " << s << '\n';
+	keep_window_open();
+	exit(1);						// for some Windows environments
 }
 #endif              // close header guard

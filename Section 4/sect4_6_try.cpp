@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 22 Sept 2015
+//updated 4 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -12,24 +13,26 @@ string disliked = “Broccoli”;
 When that works, add a few more.
 */
 
+#include <vector>
 #include "section4.h" //custom header
 
 int main()
 {
+	using namespace std;
 	const vector<string> disliked { "you", "I", "me" };	//list of disliked words
 	vector<string> words;
-	for (string word; cin >> word; )	// read whitespace-separated words
+	for (string word; cin >> word; )// read whitespace-separated words
 	{
-		words.push_back(word);	// put into vector
+		words.push_back(word);		// put into vector
 	}
-	cin.clear();  // clear EOF (ctrl-z) flag so next cin will accept data
+	cin.clear();					// clear EOF (ctrl-z) flag so next cin will accept data
 	cout << "Number of words: " << words.size() << endl;
-	for(unsigned int i=0;i<words.size();++i)
+	for (unsigned int i = 0; i < words.size(); ++i)
     {
-		for(string word : disliked)
+		for (string word : disliked)
 		{
-			if(word == words[i])
-				words[i]="BLEEP";
+			if (word == words[i])
+				words[i] = "BLEEP";
 		}
 		cout << words[i] << endl;
 	}

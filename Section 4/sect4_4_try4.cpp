@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 22 Sept 2015
+//updated 4 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -11,14 +12,15 @@ b     98
 z     122
 */
 
-#include "section4.h" //custom header
+#include "section4.h"	//custom header
 
 int main()
 {
-    for(int index=97;index<=122;++index)  //do to down conversion limit index < 256
+	using std::cout;
+	for (int index = 97;index <= 122; ++index)	//do to down conversion limit index < 256
     {
-		cout << char(index) << '\t' << index << '\t';			//lower case letters
-		cout << char(index - 32) << '\t' << index - 32 << endl; //upper case letters
+		cout << char(index) << '\t' << index << '\t';					//lower case letters
+		cout << char(index - 32) << '\t' << index - 32 << std::endl;	//upper case letters
     }
 	keep_window_open();
     return 0;

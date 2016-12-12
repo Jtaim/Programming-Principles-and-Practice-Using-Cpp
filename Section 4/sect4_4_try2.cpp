@@ -1,17 +1,19 @@
 //written by Jtaim
 //date 21 Sept 2015
+//updated 4 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
 Section 4 Try This 4.4.1.3
-program that converts yen, euros, pounds, yuan, and kroner into dollars
+program that converts yen, euro, pound, yuan, and kroner into dollar
 */
 
 #include "section4.h" //custom header
 
 int main()
 {
-    constexpr double yen_to_dollar = 120.36;	//to a dollar
+	using namespace std;
+	constexpr double yen_to_dollar = 120.36;	//to a dollar
     constexpr double euro_to_dollar = 0.89;
     constexpr double pound_to_dollar = 0.64;
     constexpr double krone_to_dollar = 6.68;	//danish Krone
@@ -43,10 +45,10 @@ int main()
     {
     case '$':
         
-        cout << amount << " " << currency << " == $" << 1/rate*amount << endl;
+        cout << amount << " " << currency << " == $" << 1 / rate * amount << endl;
         break;
     case 'o':
-        cout << "$" << amount << " == " << currency << " " << rate*amount << endl;
+        cout << "$" << amount << " == " << currency << " " << rate * amount << endl;
         break;
     default:
         cout << "Sorry don't know how to convert.  Please select correct command.\n";

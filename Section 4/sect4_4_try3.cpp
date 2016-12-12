@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 22 Sept 2015
+//updated 4 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -15,8 +16,9 @@ z     122
 
 int main()
 {
-    int index = 97;
-    while(index<=122)
+	using namespace std;
+	int index = 97;
+    while (index <= 122)
     {
         cout << char(index) << "\t" << index << endl;
         ++index;

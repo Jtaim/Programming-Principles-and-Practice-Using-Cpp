@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Section 2", "Section 2\Section 2.vcxproj", "{CEC19A41-4817-423B-B9AD-47B29A6D1671}"
+	ProjectSection(ProjectDependencies) = postProject
+		{50669785-90EB-4418-83D6-1E11F1F03A07} = {50669785-90EB-4418-83D6-1E11F1F03A07}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Section 3", "Section 3\Section 3.vcxproj", "{C8BD4682-9553-42FD-970D-AD95B767FD1E}"
 EndProject

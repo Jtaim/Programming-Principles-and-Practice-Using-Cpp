@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 24 Sept 2015
+//updated 10 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -13,79 +14,101 @@ Section 4 Drill step 5.
 5. Change the program so that it writes out the numbers are almost equal after writing
    out which is the larger and the smaller if the two numbers differ by less than 1.0 / 100.
 */
+		
+#include "section4.h"		//custom header
+#include <vector>
+#include <cmath>			// needed for fabs() "floating point absolute number"
 
-#include "section4.h" //custom header
-bool check_input(const char);
+typedef double num_type;	// set type to work with
 
-//C++ programs start by executing the function main
+// return true if got valid numbers. 
+// send reference for number and termination character
+bool get_number(num_type& in_value, char term);
+
 int main()
 {
-	double val1 = 0.0;
-	double val2 = 0.0;
-	const char termVal = '|';
-	const double tolerance = 1.0 / 100;  //close enough for floating point comparison
-	bool terminate = true;
+	using namespace std;
+	const char TERMINATION_VALUE = '|';	// termination character
+	const int HOW_MANY = 2;				// get 2 numbers per loop
+	const double TOLERANCE = 1.0 / 100;	//close enough for floating point comparison
 
-	while (terminate)
+	vector<num_type> values;			// vector to hold valid input numbers
+	num_type temp;						// temp memory for input numbers
+	bool more = true;					// false when term character is entered
+	while (more)
 	{
-		cout << "Enter two integer numbers. Enter " << termVal << " to exit.\n";
-		if (!(cin >> val1))
-			terminate = check_input(termVal);
-		else if (!(cin >> val2))
-			terminate = check_input(termVal);
-		else
+		num_type small_num;
+		num_type large_num;
+		cout << "Enter two integer numbers. Enter " << TERMINATION_VALUE << " to exit.\n";
+		int amount = 0;
+		while ((amount < HOW_MANY) && more)	// get numbers
 		{
-			if (val1 != val2)
-				cout << "The smaller value is: " << (val1 < val2 ? val1 : val2) << '\n'
-				     << "The larger value is: " << (val1 > val2 ? val1 : val2) << "\n\n";
-			else
-				cout << "The numbers are equal.\n\n";
-			if (fabs(val1 - val2) <= tolerance)	//fabs is absolute value of double
-				cout << val1 << " and " << val2 << " are close enough.\n\n";
+			more = get_number(temp, TERMINATION_VALUE);
+			if (more)
+			{
+				if (amount == 0)
+					small_num = large_num = temp;
+				else if (temp < small_num)
+					small_num = temp;
+				else if (temp > large_num)
+					large_num = temp;
+				values.push_back(temp);
+				amount++;
+			}
 		}
+		if (more)
+		{
+			cout << "The numbers entered: ";
+			for (auto i : values)
+			{
+				cout << i << " ";
+			}
+			cout << "\n";
+			// assuming only 2 entries total
+			if (values.front() == values.back())
+			{
+				cout << "The values entered are equal.\n\n";
+			}
+			else if (std::fabs(values.front() - values.back()) <= TOLERANCE)	//fabs() is absolute value of double
+			{
+				cout << values.front() << " and " << values.back() << " are close enough to be equal.\n\n";
+			}
+			else
+			{
+				cout << "The largest number:  " << large_num << endl;
+				cout << "The smaller number:  " << small_num << "\n\n";
+			}
+		}
+		values.clear();
 	}
+	cout << "bye\n";
 	keep_window_open();
 	return 0;
 }
 
-bool check_input(const char termVal)
+bool get_number(num_type& in_value, char term)
 {
-	bool goodBad = true;
-	if (cin.eof())
+	while (1)
 	{
-		cin.clear();
-		//cin.ignore(INT_MAX, '\n');
-		cout << "EOF found\n";
-		goodBad = false;
-	}
-	else if (cin.fail())
-	{
-		char x = '?';
-		cin.clear();
-		cin >> x;
-		cin.ignore(INT_MAX, '\n');	//clear cin buffer until find new line char
-		if (termVal == x)
+		if (!(std::cin >> in_value))
 		{
-			cout << "Program terminated, detected entered " << x << " key press\n";
-			goodBad = false;
-		}
-		else if (x == 26) // 26 = ctrl-z and  ctrl-d = 04 wonder why i need this
-		{
-			cout << "EOF 26 found\n";
-			goodBad = false;
+			std::cin.clear();
+			char termination;
+			std::cin >> termination;
+			if (termination == term)
+			{
+				std::cout << "Program terminated\n";
+				return false;
+			}
+			else
+			{
+				std::cout << "Entered an incorrect value try again:\n";
+				std::cin.ignore(32765, '\n');
+			}
 		}
 		else
 		{
-			cout << "Entered value is not valid\n";
-			goodBad = true;
+			return true;
 		}
 	}
-	else if (cin.bad())
-	{
-		cin.clear();
-		//cin.ignore(INT_MAX, '\n');
-		cout << "unknown termination\n";
-		goodBad = false;
-	}
-	return goodBad;
 }

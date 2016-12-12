@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 22 Sept 2015
+//updated 4 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -14,9 +15,9 @@ int square(int);
 
 int main()
 {
-    for(int num=1;num<=100;num++)
+    for (int num = 1; num <= 100; num++)
     {
-        cout << square(num) << endl;
+        std::cout << square(num) << std::endl;
     }
 	keep_window_open();
     return 0;
@@ -25,7 +26,7 @@ int main()
 int square(int i)
 {
 	int result = 0;
-		for(int j=0;j<i;j++) // do repeat addition not multiplication
+		for (int j = 0; j < i ; j++) // do repeat addition not multiplication
 		{
 			result += i;
 		}

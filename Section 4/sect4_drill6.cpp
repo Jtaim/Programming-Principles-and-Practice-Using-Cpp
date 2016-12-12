@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 25 Sept 2015
+//updated 10 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -19,93 +20,91 @@ Section 4 Drill step 6.
    If it is the largest so far, write the largest so far after the number.
 */
 
-#include "section4.h" //custom header
-bool check_input(const char);
+#include "section4.h"		//custom header
+#include <vector>
 
-//C++ programs start by executing the function main
+typedef double num_type;	// set type to work with
+
+							// return true if got valid numbers. 
+							// send reference for number and termination character
+bool get_number(num_type& in_value, char term);
+
 int main()
 {
-	double enterVal = 0.0;
-	double smallVal = 0.0;
-	double largeVal = 0.0;
-	const char termVal = '|';
-	const double tolerance = 1.0 / 100;  //close enough for floating point comparison
-	bool terminate = true;
-	bool firstItr = true;
-
-	while (terminate)
+	using namespace std;
+	const char TERMINATION_VALUE = '|';	// termination character
+	
+	vector<num_type> values;			// vector to hold valid input numbers
+	num_type temp;						// temp memory for input numbers
+	bool more = true;					// false when term character is entered
+	
+	num_type small_num;
+	num_type large_num;
+	while (more)	// get numbers
 	{
-		cout << "Enter a number. Enter " << termVal << " to exit.\n";
-		if (!(cin >> enterVal))
-			terminate = check_input(termVal);
-		else
+		cout << "Enter two numbers. Enter " << TERMINATION_VALUE << " to exit.\n";
+		more = get_number(temp, TERMINATION_VALUE);
+		if (more)
 		{
-			cout << "Number entered was " << enterVal << '.';
-			if (firstItr)  // check first loop itr set small and large to that val
+			cout << "The currently entered number: " << temp << endl;
+			if (values.size() == 0)
 			{
-				firstItr = false;
-				cout << " This is the first number entered!\n\n";
-				smallVal = enterVal;
-				largeVal = enterVal;
+				cout << temp << " is now the smallest number.\n";
+				cout << temp << " is now the largest number.\n";
+				small_num = large_num = temp;
 			}
-			if (enterVal < smallVal || enterVal > largeVal)  // check if have new smaller or larger value
+			else if (temp < small_num)
 			{
-				if (enterVal < smallVal)
-				{
-					smallVal = enterVal;
-					cout << " This is the smallest number entered so far!\n\n";
-				}
-				else
-				{
-					largeVal = enterVal;
-					cout << " This is the largest number entered so far!\n\n";
-				}
+				cout << temp << " is now the smallest number.\n";
+				small_num = temp;
 			}
-			cout << "\n\n"; //provide newline to enter next value
+			else if (temp > large_num)
+			{
+				cout << temp << " is now the largest number.\n";
+				large_num = temp;
+			}
+			values.push_back(temp);
 		}
 	}
+	if (values.size() != 0)
+	{
+		cout << "The numbers entered: ";
+		for (auto i : values)
+		{
+			cout << i << " ";
+		}
+		cout << "\n";
+		cout << "The largest number:  " << large_num << endl;
+		cout << "The smaller number:  " << small_num << "\n\n";
+	}
+	cout << "bye\n";
 	keep_window_open();
 	return 0;
 }
 
-bool check_input(const char termVal)
+bool get_number(num_type& in_value, char term)
 {
-	bool goodBad = true;
-	if (cin.eof())
+	while (1)
 	{
-		cin.clear();
-		//cin.ignore(INT_MAX, '\n');
-		cout << "EOF found\n";
-		goodBad = false;
-	}
-	else if (cin.fail())
-	{
-		char x = '?';
-		cin.clear();
-		cin >> x;
-		cin.ignore(INT_MAX, '\n');	//clear cin buffer until find new line char
-		if (termVal == x)
+		if (!(std::cin >> in_value))
 		{
-			cout << "Program terminated, detected entered " << x << " key press\n";
-			goodBad = false;
-		}
-		else if (x == 26) // 26 = ctrl-z and  ctrl-d = 04 wonder why i need this
-		{
-			cout << "EOF 26 found\n";
-			goodBad = false;
+			std::cin.clear();
+			char termination;
+			std::cin >> termination;
+			if (termination == term)
+			{
+				std::cout << "Program terminated\n";
+				return false;
+			}
+			else
+			{
+				std::cout << "Entered an incorrect value try again:\n";
+				std::cin.ignore(32765, '\n');
+			}
 		}
 		else
 		{
-			cout << "Entered value is not valid\n";
-			goodBad = true;
+			return true;
 		}
 	}
-	else if (cin.bad())
-	{
-		cin.clear();
-		//cin.ignore(INT_MAX, '\n');
-		cout << "unknown termination\n";
-		goodBad = false;
-	}
-	return goodBad;
 }

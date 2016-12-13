@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 26 Sept 2015
+//updated 12 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -26,68 +27,56 @@ Section 4 Drill step 7 and 8.
    such as y, yard, meter, km, and gallons.
 */
 
-#include "section4.h" //custom header
-void conversion(string, double, const vector<string>);
+#include "section4.h"	//custom header
+#include <vector>
+#include <string>
+#include <algorithm>
+
+void conversion(std::string&, double, const std::vector<std::string>&);
 
 int main()
 {
-    double inNum{0};
-    string inUnit{""};
-    bool stop = false;  //loop control
-    const vector<string> approved_units{"cm", "m", "in", "ft"};  // approved units
-    cout << "Enter a number with unit of measure (cm, m, in, ft).\n";
-    cout << "Press | to quit.\n";
-    while(!stop)
+	using namespace std;
+	const char TERMINATION_VALUE = '|';	// termination character
+	const vector<string> APPROVED_UNITS{ "cm", "m", "in", "ft" };	// approved units
+	
+    bool more = true;		//loop control
+    while(more)
     {
-        cin >> inNum;
-        if(cin.eof())  // added so EOF is captured
-            return 0;  // for now just just exit program
-        else
-        {
-            cin.clear();
-            cin >> inUnit;
-            if(cin.eof())  // added so EOF is captured
-                return 0;  // for now just exit program
-            else if(inUnit == "|")
-                stop = true;
-            else if(inNum == 0)  //make sure we have a measurement before a unit
-            {
-                cout << "Enter a measurement before the unit.\n";
-            }
-            else
-            {
-                bool good_unit = false;  // check for valid unit
-                for(string comp : approved_units)
-                {
-                    if(comp == inUnit)
-                    {
-                        good_unit = true;
-                        break;  // if found exit the for loop
-                    }
-                    else
-                        good_unit = false;
-                }
-				if (good_unit)
-				{
-					conversion(inUnit, inNum, approved_units);
-					inNum = 0;
-					inUnit = {""};
-				}
-				else
-				{
-					cout << "Unexpected unit of measurement.\n";
-					inNum = 0;
-					inUnit = {""};
-				}
-            }
-        }
+		cout << "Enter a number with unit of measure (cm, m, in, ft).\n";
+		cout << "Press | to quit.\n";
+		double in_num{ 0 };
+		string in_unit;
+		cin >> in_num;
+		cin.clear();	// clear error from entered units
+		cin >> in_unit;
+		//check for termination character
+		if (in_unit.find_first_of(TERMINATION_VALUE) != std::string::npos)
+		{
+			cout << "Program terminated\n";
+			break;
+		}
+		else if (in_num == 0)  //assume input is 1
+		{
+			in_num = 1.0;
+		}
+		// check for valid unit of measure
+		if (find(begin(APPROVED_UNITS), end(APPROVED_UNITS), in_unit) != end(APPROVED_UNITS))
+		{
+			conversion(in_unit, in_num, APPROVED_UNITS);
+		}
+		else
+		{
+			cout << "Unexpected unit of measurement, try again.\n\n";
+		}
     }
+	keep_window_open();
     return 0;
 }
 // Print the correct entries plus the converted value for other units
 // Assume conversion factors
 // 1m == 100cm, 1in == 2.54cm, 1ft == 12in. Read the unit indicator into a string.
-void conversion(string unit, double val, const vector<string> units)
+void conversion(std::string& unit, double val, const std::vector<std::string>& units)
 {
     double meter = 1;
     double centimeter = 1;
@@ -122,8 +111,8 @@ void conversion(string unit, double val, const vector<string> units)
         meter = centimeter / 100;
     }
     else
-        cerr << "error no such unit exists to convert.\n";
-    for(string converts : units)
+		simple_error("no such unit exists to convert.\n");
+    for(std::string converts : units)
     {
         if(converts == "m")
             val = meter;
@@ -133,6 +122,7 @@ void conversion(string unit, double val, const vector<string> units)
             val = feet;
         else if(converts == "in")
             val = inch;
-        cout << "Entered measurement is " << val << " " << converts << endl;
+        std::cout << "Entered measurement is " << val << converts << std::endl;
     }
+	std::cout << std::endl;
 }

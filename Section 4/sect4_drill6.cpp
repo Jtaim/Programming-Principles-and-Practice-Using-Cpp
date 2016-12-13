@@ -25,8 +25,8 @@ Section 4 Drill step 6.
 
 typedef double num_type;	// set type to work with
 
-							// return true if got valid numbers. 
-							// send reference for number and termination character
+// return true if got valid numbers. 
+// send reference for number and termination character
 bool get_number(num_type& in_value, char term);
 
 int main()

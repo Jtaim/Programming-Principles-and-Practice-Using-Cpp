@@ -18,10 +18,10 @@ int main()
 {
 	using std::cout;
 	for (int index = 97;index <= 122; ++index)	//do to down conversion limit index < 256
-    {
+	{
 		cout << char(index) << '\t' << index << '\t';					//lower case letters
 		cout << char(index - 32) << '\t' << index - 32 << std::endl;	//upper case letters
-    }
+	}
 	keep_window_open();
-    return 0;
+	return 0;
 }

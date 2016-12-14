@@ -18,11 +18,11 @@ int main()
 {
 	using namespace std;
 	int index = 97;
-    while (index <= 122)
-    {
-        cout << char(index) << "\t" << index << endl;
-        ++index;
-    }
+	while (index <= 122)
+	{
+		cout << char(index) << "\t" << index << endl;
+		++index;
+	}
 	keep_window_open();
-    return 0;
+	return 0;
 }

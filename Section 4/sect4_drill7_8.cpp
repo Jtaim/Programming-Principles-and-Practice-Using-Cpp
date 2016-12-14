@@ -36,93 +36,118 @@ void conversion(std::string&, double, const std::vector<std::string>&);
 
 int main()
 {
-	using namespace std;
-	const char TERMINATION_VALUE = '|';	// termination character
-	const vector<string> APPROVED_UNITS{ "cm", "m", "in", "ft" };	// approved units
-	
-    bool more = true;		//loop control
-    while(more)
-    {
+	using std::cout;
+	using std::cin;
+	// termination character
+	const char TERMINATION_VALUE = '|';
+	// approved units
+	const std::vector<std::string> APPROVED_UNITS{ "cm", "m", "in", "ft" };
+
+	bool exit = false;	//loop control
+	while (!exit)
+	{
 		cout << "Enter a number with unit of measure (cm, m, in, ft).\n";
 		cout << "Press | to quit.\n";
 		double in_num{ 0 };
-		string in_unit;
-		cin >> in_num;
-		cin.clear();	// clear error from entered units
+		std::string in_unit;
+		// checks if user entered a zero
+		// will let fall through if entered units with out a number
+		while (cin >> in_num)
+		{
+			if (in_num == 0)
+			{
+				cout << "Can not convert zero to anything, try again.\n";
+				// clear out everything in buffer
+				cin.clear();
+				cin.ignore(32768, '\n');
+			}
+			else
+			{
+				break;
+			}
+		}
+		// clear error to get units
+		cin.clear();
 		cin >> in_unit;
 		//check for termination character
 		if (in_unit.find_first_of(TERMINATION_VALUE) != std::string::npos)
 		{
 			cout << "Program terminated\n";
-			break;
-		}
-		else if (in_num == 0)  //assume input is 1
-		{
-			in_num = 1.0;
-		}
-		// check for valid unit of measure
-		if (find(begin(APPROVED_UNITS), end(APPROVED_UNITS), in_unit) != end(APPROVED_UNITS))
-		{
-			conversion(in_unit, in_num, APPROVED_UNITS);
+			exit = true;
 		}
 		else
 		{
-			cout << "Unexpected unit of measurement, try again.\n\n";
+			// check for valid unit of measure
+			if (find(begin(APPROVED_UNITS), end(APPROVED_UNITS), in_unit) != end(APPROVED_UNITS))
+			{
+				//got a good unit but no number assume input is 1
+				if (in_num == 0)
+				{
+					in_num = 1.0;
+				}
+				conversion(in_unit, in_num, APPROVED_UNITS);
+			}
+			else
+			{
+				cout << "Unexpected unit of measurement, try again.\n\n";
+			}
 		}
-    }
+
+	}
+	cout << "Bye\n";
 	keep_window_open();
-    return 0;
+	return 0;
 }
 // Print the correct entries plus the converted value for other units
 // Assume conversion factors
 // 1m == 100cm, 1in == 2.54cm, 1ft == 12in. Read the unit indicator into a string.
 void conversion(std::string& unit, double val, const std::vector<std::string>& units)
 {
-    double meter = 1;
-    double centimeter = 1;
-    double feet = 1;
-    double inch = 1;
-    if(unit == "m")
-    {
-        meter = val;
-        centimeter = meter * 100;
-        inch = centimeter / 2.54;
-        feet = inch / 12;
-    }
-    else if(unit == "cm")
-    {
-        centimeter = val;
-        meter = centimeter / 100;
-        inch = centimeter / 2.54;
-        feet = inch / 12;
-    }
-    else if(unit == "in")
-    {
-        inch = val;
-        feet = inch / 12;
-        centimeter = inch * 2.54;
-        meter = centimeter / 100;
-    }
-    else if(unit == "ft")
-    {
-        feet = val;
-        inch = feet * 12;
-        centimeter = inch * 2.54;
-        meter = centimeter / 100;
-    }
-    else
+	double meter = 1;
+	double centimeter = 1;
+	double feet = 1;
+	double inch = 1;
+	if (unit == "m")
+	{
+		meter = val;
+		centimeter = meter * 100;
+		inch = centimeter / 2.54;
+		feet = inch / 12;
+	}
+	else if (unit == "cm")
+	{
+		centimeter = val;
+		meter = centimeter / 100;
+		inch = centimeter / 2.54;
+		feet = inch / 12;
+	}
+	else if (unit == "in")
+	{
+		inch = val;
+		feet = inch / 12;
+		centimeter = inch * 2.54;
+		meter = centimeter / 100;
+	}
+	else if (unit == "ft")
+	{
+		feet = val;
+		inch = feet * 12;
+		centimeter = inch * 2.54;
+		meter = centimeter / 100;
+	}
+	else
 		simple_error("no such unit exists to convert.\n");
-    for(std::string converts : units)
-    {
-        if(converts == "m")
-            val = meter;
-        else if(converts == "cm")
-            val = centimeter;
-        else if(converts == "ft")
-            val = feet;
-        else if(converts == "in")
-            val = inch;
-        std::cout << "Entered measurement is " << val << converts << std::endl;
-    }
+	for (std::string converts : units)
+	{
+		if (converts == "m")
+			val = meter;
+		else if (converts == "cm")
+			val = centimeter;
+		else if (converts == "ft")
+			val = feet;
+		else if (converts == "in")
+			val = inch;
+		std::cout << "Entered measurement is " << val << converts << std::endl;
+	}
 	std::cout << std::endl;
 }

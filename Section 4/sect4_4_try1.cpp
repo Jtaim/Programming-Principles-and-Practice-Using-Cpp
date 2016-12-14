@@ -14,12 +14,12 @@ int main()
 {
 	using namespace std;
 	constexpr double yen_to_dollar = 120.36;  //to a dollar
-    constexpr double euro_to_dollar = 0.89;
-    constexpr double pound_to_dollar = 0.64;
-    double amount = 1.0;
-    string currency = "???";
-    cout<< "Please enter an amount followed by a currency:\n";
-    cin >> amount >> currency;
+	constexpr double euro_to_dollar = 0.89;
+	constexpr double pound_to_dollar = 0.64;
+	double amount = 1.0;
+	string currency = "???";
+	cout << "Please enter an amount followed by a currency:\n";
+	cin >> amount >> currency;
 
 	if (currency == "yen") {
 		cout << amount << " " << currency << " == $"

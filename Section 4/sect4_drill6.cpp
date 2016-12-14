@@ -33,11 +33,11 @@ int main()
 {
 	using namespace std;
 	const char TERMINATION_VALUE = '|';	// termination character
-	
+
 	vector<num_type> values;			// vector to hold valid input numbers
 	num_type temp;						// temp memory for input numbers
 	bool more = true;					// false when term character is entered
-	
+
 	num_type small_num;
 	num_type large_num;
 	while (more)	// get numbers

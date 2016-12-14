@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 26 Sept 2015
+//updated 13 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -34,99 +35,123 @@ Section 4 Drill step 9 - 11.
    in increasing order).
 */
 
-#include "section4.h" //custom header
-double convert_meter(string, double);
+#include "section4.h"	//custom header
+#include <vector>
+#include <string>
+#include <algorithm>
+
+double convert_meter(double, const std::string&);
 
 int main()
 {
-    double inNum{0};
-    string inUnit{""};
-	vector<double> entered_values{};
+	using std::cout;
+	using std::cin;
+	// termination character
+	const char TERMINATION_VALUE = '|';
+	// approved units
+	const std::vector<std::string> APPROVED_UNITS{ "cm", "m", "in", "ft" };
+	// tolerance to determine numbers are close enough to be equal
+	constexpr double TOLERANCE = 1.0 / 1000;
+
+	double in_num = 0;
+	std::string in_unit;
+	double temp_num = 0;
+	std::vector<double> entered_values{};
 	double small = 0;
 	double large = 0;
-	const double tol = 1.0 / 1000;  //close enough
 	double sum = 0;
-    bool stop = false;  //loop control
-    const vector<string> approved_units{"cm", "m", "in", "ft"};  // approved units
-    cout << "Enter a number with unit of measure (cm, m, in, ft).\n";
-    cout << "Press | to quit.\n";
-    while(!stop)
-    {
-        cin >> inNum;
-        if(cin.eof())  // added so EOF is captured
-            return 0;  // for now just exit program
-        else
-        {
-            cin.clear();
-            cin >> inUnit;
-            if(cin.eof())  // added so EOF is captured
-                return 0;  // for now just exit program
-            else if(inUnit == "|")
-                stop = true;
-            else if(inNum == 0)  //make sure we have a measurement before a unit
-            {
-                cout << "Enter a measurement before the unit.\n";
-            }
-            else
-            {
-                bool good_unit = false;  // check for valid unit
-                for(string comp : approved_units)
-                {
-                    if(comp == inUnit)
-                    {
-                        good_unit = true;
-                        break;  // if found exit the for loop
-                    }
-                    else
-                        good_unit = false;
-                }
-				if (good_unit)
+
+	bool exit = false;	//loop control
+	while (!exit)
+	{
+		cout << "Enter a number with unit of measure (cm, m, in, ft).\n";
+		cout << "Press | to quit.\n";
+		in_num = 0;
+		in_unit = "";
+		temp_num = 0;
+		// checks if user entered a zero
+		// will let fall through if entered units with out a number
+		while (cin >> in_num)
+		{
+			if (in_num == 0)
+			{
+				cout << "Can not convert zero to anything, try again.\n";
+				// clear out everything in buffer
+				cin.clear();
+				cin.ignore(32768, '\n');
+			}
+			else
+			{
+				break;
+			}
+		}
+		// clear error to get units
+		cin.clear();
+		cin >> in_unit;
+		//check for termination character
+		if (in_unit.find_first_of(TERMINATION_VALUE) != std::string::npos)
+		{
+			cout << "Show summary of data entered\n";
+			exit = true;
+		}
+		else
+		{
+			// check for valid unit of measure
+			if (find(begin(APPROVED_UNITS), end(APPROVED_UNITS), in_unit) != end(APPROVED_UNITS))
+			{
+				// got a good unit but no number assume input is 1
+				if (in_num == 0)
 				{
-					double temp = convert_meter(inUnit, inNum);
-					sum += temp;
-					if (temp < small || temp > large)  // check if have new smaller or larger value
-					{
-						if (((temp - small) < 0 && fabs(temp - small) > tol) || small == 0)
-						{
-							small = temp;
-							cout << " This is the smallest number entered so far!\n\n";
-						}
-						if (((temp - large) > 0 && fabs(temp - large) > tol) || large == 0)
-						{
-							large = temp;
-							cout << " This is the largest number entered so far!\n\n";
-						}
-					}
-					entered_values.push_back(temp);
-					inNum = 0;
-					inUnit = {""};
+					in_num = 1.0;
 				}
-				else
+				temp_num = convert_meter(in_num, in_unit);
+				// if sum == 0 means this is first number entered
+				if (sum == 0)
 				{
-					cout << "Unexpected unit of measurement.\n";
-					inNum = 0;
-					inUnit = {""};
+					small = large = temp_num;
+					cout << "This is the smallest number entered so far!\n";
+					cout << "This is the largest number entered so far!\n\n";
 				}
-            }
-        }
-    }
-	inUnit = "m";
-	cout << small << inUnit << " was the smallest number entered.\n";
-	cout << large << inUnit << " was the largest number entered.\n";
-	cout << sum << inUnit << " was the sum of all the numbers entered.\n\n";
-	sort(entered_values.begin(),entered_values.end());
+				// check for new small number
+				else if ((temp_num - small) < 0 && fabs(temp_num - small) > TOLERANCE)
+				{
+					small = temp_num;
+					cout << "This is the smallest number entered so far!\n\n";
+				}
+				// check for new large number
+				else if ((temp_num - large) > 0 && fabs(temp_num - large) > TOLERANCE)
+				{
+					large = temp_num;
+					cout << "This is the largest number entered so far!\n\n";
+				}
+				sum += temp_num;
+				entered_values.push_back(temp_num);
+			}
+			else
+			{
+				cout << "Unexpected unit of measurement, try again.\n\n";
+			}
+		}
+	}
+	cout << small << "m was the smallest number entered.\n";
+	cout << large << "m was the largest number entered.\n";
+	cout << sum << "m was the sum of all the numbers entered.\n\n";
+	sort(entered_values.begin(), entered_values.end());
+	cout << "All numbers entered where:\n";
 	for (double i : entered_values)
-		cout << i << inUnit << endl;
+	{
+		cout << i << "m\n";
+	}
 	keep_window_open();
-    return 0;
+	return 0;
 }
 // Assume conversion factors
 // 1m == 100cm, 1in == 2.54cm, 1ft == 12in.
-double convert_meter(string unit, double val)
+double convert_meter(double val, const std::string& unit)
 {
-    if (unit == "cm")
+	if (unit == "cm")
 		val /= 100;
-	if (unit == "m")			//put all units in units of meters (m)
+	if (unit == "m")	//put all units in units of meters (m)
 		val *= 1.0;
 	if (unit == "in")
 		val = val*2.54 / 100;

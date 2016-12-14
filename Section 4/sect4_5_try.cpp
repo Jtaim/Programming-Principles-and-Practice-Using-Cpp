@@ -15,20 +15,20 @@ int square(int);
 
 int main()
 {
-    for (int num = 1; num <= 100; num++)
-    {
-        std::cout << square(num) << std::endl;
-    }
+	for (int num = 1; num <= 100; num++)
+	{
+		std::cout << square(num) << std::endl;
+	}
 	keep_window_open();
-    return 0;
+	return 0;
 }
 
 int square(int i)
 {
 	int result = 0;
-		for (int j = 0; j < i ; j++) // do repeat addition not multiplication
-		{
-			result += i;
-		}
+	for (int j = 0; j < i; j++) // do repeat addition not multiplication
+	{
+		result += i;
+	}
 	return result;
 }

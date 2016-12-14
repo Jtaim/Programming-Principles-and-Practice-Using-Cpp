@@ -19,7 +19,7 @@ When that works, add a few more.
 int main()
 {
 	using namespace std;
-	const vector<string> disliked { "you", "I", "me" };	//list of disliked words
+	const vector<string> disliked{ "you", "I", "me" };	//list of disliked words
 	vector<string> words;
 	for (string word; cin >> word; )// read whitespace-separated words
 	{
@@ -28,7 +28,7 @@ int main()
 	cin.clear();					// clear EOF (ctrl-z) flag so next cin will accept data
 	cout << "Number of words: " << words.size() << endl;
 	for (unsigned int i = 0; i < words.size(); ++i)
-    {
+	{
 		for (string word : disliked)
 		{
 			if (word == words[i])

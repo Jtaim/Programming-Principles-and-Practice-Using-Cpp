@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 29 Sept 2015
+//updated 13 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 
@@ -11,31 +12,52 @@ Hint: A median need not be an element of the sequence.
 */
 
 #include "section4.h" //custom header
+#include <vector>
+#include <algorithm>
 
 // read some temperatures into a vector
 int main()
 {
-    vector<double> temps;          // temperatures
-    for (double temp; cin>>temp; ) // read into temp
-        temps.push_back(temp);     // put temp into vector
-	if (cin.eof())    // EOF is captured
+	using std::cin;
+	using std::cout;
+	using std::endl;
+
+	std::vector<double> temps;			// temperatures
+	for (double temp; cin >> temp; )	// read into temp
+		temps.push_back(temp);			// put temps into vector
+	// EOF is captured when using txt file
+	if (cin.eof())
 	{
 		cin.clear();
-		cin.ignore(INT_MAX, '\n');
+		cin.ignore(32768, '\n');
 	}
-    // compute mean temperature:
-    double sum = 0;
-    for (int x : temps) sum += x;
-        cout << "Average number: " << sum/temps.size() << endl;
-
-    // compute median temperature:
-	// If n is odd then Median (M) = value of ((n + 1)/2)th item term.
-	// If n is even then Median (M) = value of [((n)/2)th item term + ((n)/2 + 1)th item term ]/2
-    sort(temps.begin(), temps.end()); // sort numbers
-	if(temps.size()%2)
-		cout << "Median number: " << temps[temps.size()/2] << endl;
+	// compute mean temperature:
+	double sum = 0;
+	for (int x : temps)
+	{
+		sum += x;
+	}
+	if (temps.size() != 0)
+	{
+		cout << "Average number: " << sum / temps.size() << endl;
+		// compute median temperature:
+		// If n is odd then Median (M) = value of ((n + 1)/2)th item term.
+		// If n is even then Median (M) = value of [((n)/2)th item term + ((n)/2 + 1)th item term ]/2
+		std::sort(temps.begin(), temps.end());	// sort numbers
+		if (temps.size() % 2)
+		{
+			cout << "Median number: " << temps[temps.size() / 2] << endl;
+		}
+		else
+		{
+			// if have even amount, remember vector index starts at zero
+			cout << "Median number: " << (temps[temps.size() / 2 - 1] + temps[temps.size() / 2]) / 2 << endl;
+		}
+	}
 	else
-		cout << "Median number: " << (temps[temps.size()/2-1]+temps[temps.size()/2])/2 << endl; // if have even amount, remember vector index starts at zero
+	{
+		simple_error("No data was found\n");
+	}
 	keep_window_open();
 	return 0;
 }

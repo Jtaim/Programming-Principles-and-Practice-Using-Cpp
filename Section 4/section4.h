@@ -4,7 +4,7 @@
 // Header file used for Programming: Principles and Practice Using C++ Second Edition
 // section 4
 
-#ifndef SECTION4_H     // begin header guard
+#ifndef SECTION4_H	// begin header guard
 #define SECTION4_H
 
 #include<iostream>
@@ -24,4 +24,4 @@ void simple_error(std::string s)	// write error: s and exit program
 	keep_window_open();
 	exit(1);						// for some Windows environments
 }
-#endif              // close header guard
+#endif	// close header guard

@@ -15,7 +15,7 @@ int main()
 {
 	using namespace std;
 	string s = "Goodbye, cruel world! ";
-    cout << s << endl;
+	cout << s << endl;
 	keep_window_open();
 	return 0;
 }

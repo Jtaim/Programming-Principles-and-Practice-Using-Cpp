@@ -11,7 +11,7 @@
 #include<string>
 
 void keep_window_open()
-{ 
+{
 	std::cout << "\n\nEnter a char to exit.\n";
 	char ch;
 	std::cin >> ch;

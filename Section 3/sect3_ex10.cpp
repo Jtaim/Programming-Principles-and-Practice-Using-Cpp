@@ -17,32 +17,32 @@ with their obvious meanings.
 
 int main()
 {
-    std::cout << "Enter an operation (+, -, *, /, plus, minus, mul, and div) followed by 2 operands separated by spaces:\n";
-    std::string operation;
-    double val1 = 0;
-    double val2 = 0;
-    while(std::cin >> operation >> val1 >> val2)
-    {
-        double res = 0;
-        if(operation == "+" || operation == "plus")
-            res = val1 + val2;
-        else if(operation == "-" || operation == "minus")
-            res = val1 - val2;
-        else if(operation == "*" || operation == "mul")
-            res = val1 * val2;
-        else if(operation == "/" || operation == "div")
-        {
-            if(val2 == 0)
-                simple_error("divide by zero");
-            res = val1 / val2;
-        }
-        else
-            simple_error("bad operation: " + operation);
-        
-        std::cout << val1 << " " << operation << " " << val2 << " = " << res << std::endl;
-        std::cout << "do another\n";
-    }
-    std::cout << "exit bad operands";
+	std::cout << "Enter an operation (+, -, *, /, plus, minus, mul, and div) followed by 2 operands separated by spaces:\n";
+	std::string operation;
+	double val1 = 0;
+	double val2 = 0;
+	while (std::cin >> operation >> val1 >> val2)
+	{
+		double res = 0;
+		if (operation == "+" || operation == "plus")
+			res = val1 + val2;
+		else if (operation == "-" || operation == "minus")
+			res = val1 - val2;
+		else if (operation == "*" || operation == "mul")
+			res = val1 * val2;
+		else if (operation == "/" || operation == "div")
+		{
+			if (val2 == 0)
+				simple_error("divide by zero");
+			res = val1 / val2;
+		}
+		else
+			simple_error("bad operation: " + operation);
+
+		std::cout << val1 << " " << operation << " " << val2 << " = " << res << std::endl;
+		std::cout << "do another\n";
+	}
+	std::cout << "exit bad operands";
 	keep_window_open();
-    return 0;
+	return 0;
 }

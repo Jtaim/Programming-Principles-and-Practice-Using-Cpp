@@ -12,7 +12,7 @@
 int main()
 {
 	std::cout << "Hello, World!\n"		//output "Hello, World!"
-			  << "Here we go again.\n";
+		<< "Here we go again.\n";
 	std::cin.get();						//wait for a character to be entered
 	return 0;
 }

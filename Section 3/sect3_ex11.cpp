@@ -24,26 +24,26 @@ int main()
 {
 	using namespace std;
 	cout << "Lets count some change $$$$!\n";
-    int penny = 0;
-    int nickel = 0;
-    int dime = 0;
-    int quarter =0;
-    int half_dollar = 0;
-    int dollar = 0;
-    cout << "Enter number of pennies: ";
-    cin >> penny;
-    cout << "Enter number of nickels: ";
-    cin >> nickel;
-    cout << "Enter number of dimes: ";
-    cin >> dime;
-    cout << "Enter number of quarters: ";
-    cin >> quarter;
-    cout << "Enter number of half dollars: ";
-    cin >> half_dollar;
-    cout << "Enter number of dollar coins: ";
-    cin >> dollar;
-    
-    string denomination = "???";
+	int penny = 0;
+	int nickel = 0;
+	int dime = 0;
+	int quarter = 0;
+	int half_dollar = 0;
+	int dollar = 0;
+	cout << "Enter number of pennies: ";
+	cin >> penny;
+	cout << "Enter number of nickels: ";
+	cin >> nickel;
+	cout << "Enter number of dimes: ";
+	cin >> dime;
+	cout << "Enter number of quarters: ";
+	cin >> quarter;
+	cout << "Enter number of half dollars: ";
+	cin >> half_dollar;
+	cout << "Enter number of dollar coins: ";
+	cin >> dollar;
+
+	string denomination = "???";
 	if (penny == 1) { denomination = "penny"; }
 	else { denomination = "pennies"; }
 	if (penny > 0) { cout << "you have " << penny << " " << denomination << endl; }
@@ -63,10 +63,10 @@ int main()
 	else { denomination = "dollars"; }
 	if (dollar > 0) { cout << "you have " << dollar << " " << denomination << endl; }
 
-    double total;
+	double total;
 	total = penny + nickel * 5 + dime * 10 + quarter * 25 + half_dollar * 50 + dollar * 100;
-    total /= 100;
+	total /= 100;
 	cout << "your total is $" << total << endl;
 	keep_window_open();
-    return 0;
+	return 0;
 }

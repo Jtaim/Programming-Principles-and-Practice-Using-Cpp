@@ -28,8 +28,8 @@ int main()
 	std::cin >> age;
 	double age_months = (age * 12);
 	std::cout << "Hello, " << first_name
-			  << " (age " << age << ")"
-			  << "(age in months " << age_months << ")\n";
+		<< " (age " << age << ")"
+		<< "(age in months " << age_months << ")\n";
 	keep_window_open();
 	return 0;
 }

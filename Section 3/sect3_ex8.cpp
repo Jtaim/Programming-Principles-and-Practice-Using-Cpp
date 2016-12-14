@@ -15,12 +15,12 @@ like The value 4 is an even number. Hint: See the remainder (modulo) operator in
 //C++ programs start by executing the function main
 int main()
 {
-    std::cout << "Enter an integer: ";
-    int val = 0;
-    std::cin >> val;
-	if(!std::cin) simple_error("Error entered a none integer value\n");
-    std::string res = (val%2) ? "odd" : "even";   
-    std::cout << "The value " << val << " is a " << res << " number\n";
+	std::cout << "Enter an integer: ";
+	int val = 0;
+	std::cin >> val;
+	if (!std::cin) simple_error("Error entered a none integer value\n");
+	std::string res = (val % 2) ? "odd" : "even";
+	std::cout << "The value " << val << " is a " << res << " number\n";
 	keep_window_open();
-    return 0;
+	return 0;
 }

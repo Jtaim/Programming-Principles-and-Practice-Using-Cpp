@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 30 Sept 2015
+//date 15 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -11,55 +12,68 @@ Your program should be able to identify the number after asking no more than sev
 Hint: Use the < and <= operators and the if-else construct.
 */
 
-#include "section4.h"     // custom header
-int const MAX = 100;      // maximum number can select
-int const MIN = 1;        // minimum number can guess
-int const MAX_GUESS = 7;  // maximum number of times to ask before identifying the number
+#include "section4.h"
 
 int main()
 {
-	char choice{};
-	int high = MAX;           // keeps track of a new high
-	int low = MIN;            // keeps track of a new low
-	int guess = (MAX - MIN) / 2 + low;  // keeps track of the next guess
-	int mguess = MAX_GUESS;   // keeps count of guess count
+	using std::cout;
+	using std::cin;
+	using std::endl;
+
+	int constexpr MAX = 255;      // maximum number can select
+	int constexpr MIN = 1;        // minimum number can guess
+	int constexpr MAX_GUESS = 7;  // maximum number of times to ask before identifying the number
+
+	char choice{ '?' };
+	int high = MAX;						// keeps track of a new high
+	int low = MIN;						// keeps track of a new low
+	int guess = (high - low) / 2 + low;	// keeps track of the next guess
+	int mguess = 0;						// keeps count of guess count
 	cout << "Pick a number between " << low << " and " << high << " and let me try to guess it by asking some questions.\n";
-	cout << "Is your number <= " << guess << " (y or n)? ";  // ask for user input
-	while(cin >> choice && mguess > 0)  // runs until maximum guess is zero
+	bool exit = false;
+	while (!exit && mguess != MAX_GUESS)
 	{
-		choice = tolower(choice);
-		if(choice=='y' || choice=='n')
+		cout << "Is your number <= " << guess << " (y or n)? ";
+		cin >> choice;
+		if (cin.eof() || cin.bad())
 		{
-			mguess--;  // decrement here to not include invalid yes now answer
-			if (choice == 'y')
-				high = guess;  // update high value
+			cin.clear();
+			exit = true;
+		}
+		else
+		{
+			choice = tolower(choice);
+			if (choice == 'y' || choice == 'n')
+			{
+				mguess++;
+				if (choice == 'y')
+				{
+					high = guess;		// update high value
+				}
+				else
+				{
+					low = guess + 1;	// update low value
+				}
+				if (high == low)
+				{
+					cout << "Found the answer in " << MAX_GUESS << " guesses.\n";
+					exit = true;
+				}
+				else
+				{
+					guess = (high - low) / 2 + low;
+				}
+			}
+			// gives user option to select correct response yes or no
 			else
-				low = guess+1;  // update low value
-		}
-		else  // gives user option to select correct response yes or no
-		{
-			cout << "You did not pick a valid (y or n) answer.  Select again.\n";
-		}
-		if(high==low)  // found the value
-			break;
-		else
-		{
-			guess = (high - low) / 2 + low;
-			cout << "Is your number <= " << guess << " (y or n)? ";  // ask for user input
+			{
+				cout << "You did not pick a valid (y or n) answer.  Select again.\n";
+			}
 		}
 	}
-	if (cin.eof())  // EOF is captured
+	if (mguess > MAX_GUESS)
 	{
-		cin.clear();
-		cin.ignore(INT_MAX, '\n');
-		cout << "eof found\n";
-	}
-	else
-	{
-		if (high == low)
-			cout << "The answer is " << high << endl;  //could have picked low also (high == low)
-		else
-			cerr << "exceeded max number of guesses\n";  //exceed max number of guesses
+		cout << "Exceeded max number of guesses\n";
 	}
 	keep_window_open();
 	return 0;

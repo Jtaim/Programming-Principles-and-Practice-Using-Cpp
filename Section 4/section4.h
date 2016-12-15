@@ -13,6 +13,7 @@
 void keep_window_open()
 {
 	std::cout << "\n\nEnter something to exit.\n";
+	std::cin.clear();
 	std::cin.ignore(32765, '\n');
 	std::cin.get();
 }

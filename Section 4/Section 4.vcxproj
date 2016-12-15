@@ -120,7 +120,7 @@
     <ClInclude Include="section4.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect4_ex3.cpp" />
+    <ClCompile Include="sect4_ex4.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

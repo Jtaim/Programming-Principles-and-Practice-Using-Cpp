@@ -22,22 +22,45 @@ int main()
 	using std::cout;
 	using std::endl;
 
-	std::vector<double> temps;			// temperatures
-	cout << "Enter some temperature values and find the medium.\n";
-	for (double temp; cin >> temp; )	// read into temp
-		temps.push_back(temp);			// put temps into vector
-	// EOF is captured when using txt file
-	if (cin.eof())
+	constexpr char TERMINATION = '|';
+
+	std::vector<double> temps;	// temperatures
+	cout << "Enter some temperature values and find the medium. " << TERMINATION << " to exit\n";
+	double sum = 0;
+	double temperature;
+	bool exit_temperature_collect = false;
+	while (!exit_temperature_collect)
 	{
-		cin.clear();
-		cin.ignore(32768, '\n');
+		if (cin >> temperature)
+		{
+			sum += temperature;
+			temps.push_back(temperature);
+		}
+		else
+		{
+			// EOF is captured when using txt file
+			if (cin.eof() || cin.bad())
+			{
+				cin.clear();
+				exit_temperature_collect = true;
+			}
+			else
+			{
+				cin.clear();
+				std::string s;
+				getline(cin, s);
+				if (find(s.begin(), s.end(), TERMINATION) != s.end())
+				{
+					exit_temperature_collect = true;
+				}
+				else
+				{
+					cout << "Entered incorrect value.\n";
+				}
+			}
+		}
 	}
 	// compute mean temperature:
-	double sum = 0;
-	for (int x : temps)
-	{
-		sum += x;
-	}
 	if (temps.size() != 0)
 	{
 		cout << "Average number: " << sum / temps.size() << endl;

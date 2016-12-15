@@ -21,33 +21,59 @@ int main()
 	using std::cin;
 	using std::endl;
 
+	constexpr char TERMINATION = '|';
+
 	std::vector<double> dist;
 	double sum = 0;
 	double min = 0;
 	double max = 0;
 
-	cout << "please enter sequence of doubles (representing distances):\n";
+	cout << "Please enter sequence of doubles (representing distances). '" << TERMINATION << "' to exit:\n";
 	double distance = 0;
-	while (cin >> distance)
+	bool exit = false;
+	while (!exit)
 	{
-		if (distance <= 0)
-			cout << "a distance of zero or less is not allowed.\n";
+		if (cin >> distance)
+		{
+			if (distance <= 0)
+				cout << "a distance of zero or less is not allowed.\n";
+			else
+			{
+				if (sum == 0)
+				{
+					min = max = distance;
+				}
+				else if (distance < min)
+					min = distance;
+				if (distance > max)
+					max = distance;
+				sum += distance;
+				dist.push_back(distance);
+			}
+		}
 		else
 		{
-			if (sum == 0)
+			if (cin.eof() || cin.bad())
 			{
-				min = max = distance;
+				cin.clear();
+				exit = true;
 			}
-			else if (distance < min)
-				min = distance;
-			if (distance > max)
-				max = distance;
-			sum += distance;
-			dist.push_back(distance);
+			else
+			{
+				cin.clear();
+				std::string temp;
+				getline(cin, temp);
+				if (find(temp.begin(), temp.end(), TERMINATION) != temp.end())
+				{
+					exit = true;
+				}
+				else
+				{
+					cout << "Entered incorrect value.\n";
+				}
+			}
 		}
 	}
-	cin.clear();
-	cin.ignore(32768, '\n');
 	if (dist.size() == 0)
 		cout << "no distances entered\n";
 	else

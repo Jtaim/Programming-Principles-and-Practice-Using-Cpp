@@ -23,6 +23,7 @@ int main()
 	using std::endl;
 
 	std::vector<double> temps;			// temperatures
+	cout << "Enter some temperature values and find the medium.\n";
 	for (double temp; cin >> temp; )	// read into temp
 		temps.push_back(temp);			// put temps into vector
 	// EOF is captured when using txt file

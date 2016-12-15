@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 29 Sept 2015
+//updated 14 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -12,37 +13,43 @@ Find and print the mean distance between two neighboring cities.
 */
 
 #include "section4.h" //custom header
+#include <vector>
 
 int main()
 {
-	vector<double> dist;
-	double sum = 0;	
+	using std::cout;
+	using std::cin;
+	using std::endl;
+
+	std::vector<double> dist;
+	double sum = 0;
 	double min = 0;
 	double max = 0;
-	
+
 	cout << "please enter sequence of doubles (representing distances):\n";
-	double val = 0;
-    while(cin>>val)  // read into val
+	double distance = 0;
+	while (cin >> distance)
 	{
-        if(val<=0)
-			cerr << "What really number 0 or less for distance.\n";
+		if (distance <= 0)
+			cout << "a distance of zero or less is not allowed.\n";
 		else
 		{
-			dist.push_back(val);
-			sum += val;
-			if (val < min || min == 0) // includes how to deal with initial value zero
-			    min = val;
-			if (max < val)
-			    max = val;
+			if (sum == 0)
+			{
+				min = max = distance;
+			}
+			else if (distance < min)
+				min = distance;
+			if (distance > max)
+				max = distance;
+			sum += distance;
+			dist.push_back(distance);
 		}
 	}
-	if (cin.eof())    // EOF is captured
-	{
-		cin.clear();
-		cin.ignore(INT_MAX, '\n');
-	}
-    if(dist.size() == 0)
-		cerr << "no distances\n";
+	cin.clear();
+	cin.ignore(32768, '\n');
+	if (dist.size() == 0)
+		cout << "no distances entered\n";
 	else
 	{
 		cout << "total distance " << sum << endl;

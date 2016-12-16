@@ -20,7 +20,7 @@ int main()
 	using std::cin;
 	using std::endl;
 
-	int constexpr MAX = 255;      // maximum number can select
+	int constexpr MAX = 100;      // maximum number can select
 	int constexpr MIN = 1;        // minimum number can guess
 	int constexpr MAX_GUESS = 7;  // maximum number of times to ask before identifying the number
 
@@ -31,16 +31,11 @@ int main()
 	int mguess = 0;						// keeps count of guess count
 	cout << "Pick a number between " << low << " and " << high << " and let me try to guess it by asking some questions.\n";
 	bool exit = false;
-	while (!exit && mguess != MAX_GUESS)
+	while (!exit && mguess < MAX_GUESS)
 	{
 		cout << "Is your number <= " << guess << " (y or n)? ";
 		cin >> choice;
-		if (cin.eof() || cin.bad())
-		{
-			cin.clear();
-			exit = true;
-		}
-		else
+		if (!cin.eof() || !cin.fail())
 		{
 			choice = tolower(choice);
 			if (choice == 'y' || choice == 'n')
@@ -48,15 +43,15 @@ int main()
 				mguess++;
 				if (choice == 'y')
 				{
-					high = guess;		// update high value
+					high = guess;
 				}
-				else
+				else if (choice == 'n')
 				{
-					low = guess + 1;	// update low value
+					low = guess + 1;
 				}
 				if (high == low)
 				{
-					cout << "Found the answer in " << MAX_GUESS << " guesses.\n";
+					cout << "Found the answer " << high << " in " << mguess << " guesses.\n";
 					exit = true;
 				}
 				else
@@ -64,16 +59,20 @@ int main()
 					guess = (high - low) / 2 + low;
 				}
 			}
-			// gives user option to select correct response yes or no
 			else
 			{
 				cout << "You did not pick a valid (y or n) answer.  Select again.\n";
 			}
 		}
+		else
+		{
+			cin.clear();
+			exit = true;
+		}
 	}
 	if (mguess > MAX_GUESS)
 	{
-		cout << "Exceeded max number of guesses\n";
+		simple_error("Exceeded max number of guesses\n");
 	}
 	keep_window_open();
 	return 0;

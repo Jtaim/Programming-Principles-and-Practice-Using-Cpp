@@ -12,51 +12,86 @@ If the entry arguments are 35.6, 24.1, and '+', the program output should be The
 
 #include "section4.h"  // custom header
 
+bool get_number(double& num);
 void print_result(double);
 
 int main()
 {
-	cout << "Enter 2 numbers and an operation (+, -, *, /): ";
-	double num1 = 0;
-	double num2 = 0;
-	char operation = '?';
-	cin >> num1 >> num2 >> operation;
-	switch(operation) {
-		case '+':
-			print_result(num1 + num2);
-			break;
-		case '-':
-			print_result(num1 - num2);
-			break;
-		case '*':
-			print_result(num1 * num2);
-			break;
-		case '/':
-			if (!num2) {
-				cout << "Division by zero.\n";
-			}
-			print_result(num1 / num2);
-			break;
-		default: {
-			if (cin.eof()) {  // EOF is captured
-				cin.clear();
-				cin.ignore(INT_MAX, '\n');
-				cout << "eof found\n";
-			}
-			else if(cin.fail()) {  // bad input is captured
-				cin.clear();
-				cin.ignore(INT_MAX, '\n');
-				cout << "Invalid input found\n";
-			}
-			else {
-				cout << "Wrong operation selected.\n";
+	using std::cout;
+	using std::cin;
+
+	constexpr char TERMINATION = '|';
+
+	double num1{ 0 };
+	double num2{ 0 };
+	char operation{ '?' };
+	bool exit = false;
+	while (!exit)
+	{
+		cout << "Enter 2 numbers and an operation (+, -, *, /). Use " << TERMINATION << " to exit.\n";
+		if (get_number(num1) && get_number(num2))
+		{
+			cin >> operation;
+			switch (operation)
+			{
+			case '+': print_result(num1 + num2);
+				break;
+			case '-': print_result(num1 - num2);
+				break;
+			case '*': print_result(num1 * num2);
+				break;
+			case '/':
+				if (num2 != 0)
+				{
+					print_result(num1 / num2);
+				}
+				else
+				{
+					simple_error("division by zero is not allowed.\n");
+				}
+				break;
+			case TERMINATION :
+				exit = true;
+				break;
+			default:
+				cout << "Wrong operator selected.\n";
 			}
 		}
+		else
+		{
+			// EOF is captured
+			if (cin.eof())
+			{
+				exit = true;
+				cout << "EOF found\n";
+			}
+			cin.clear();
+			char c;
+			cin >> c;
+			if (c == TERMINATION)
+			{
+				exit = true;
+				cout << "termination found\n";
+			}
+			cin.ignore(32768, '\n');
+		}
 	}
-    keep_window_open();
+	keep_window_open();
 	return 0;
 }
+
+bool get_number(double & num)
+{
+	if (std::cin >> num)
+		return true;
+	else
+	{
+		std::cout << "Incorrect number entry\n";
+		return false;
+	}
+}
+
 void print_result(double result)
 {
-	cout << "Your result is " << result << endl;
+	std::cout << "Your result is " << result << std::endl;
 }

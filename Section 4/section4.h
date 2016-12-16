@@ -19,7 +19,7 @@ void keep_window_open()
 }
 
 // error function to be used (only) until error() is introduced in Chapter 5:
-void simple_error(std::string s)	// write error: s and exit program
+void simple_error(const std::string s)	// write error: s and exit program
 {
 	std::cerr << "error: " << s << '\n';
 	keep_window_open();

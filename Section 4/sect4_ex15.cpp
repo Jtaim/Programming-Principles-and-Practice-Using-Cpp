@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 10 Oct 2015
+//update 17 Dec 2015
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -15,7 +16,7 @@ int main()
 	int n = 1;
 	cout << "enter number of primes you want to find.\n";
 	cin >> n;
-	if (cin.fail()  || n<=0) {
+	if (cin.fail() || n <= 0) {
 		cout << "entered an invalid number.\n";
 		cin.clear();
 		cin.ignore(INT_MAX, '\n');
@@ -23,7 +24,7 @@ int main()
 	else {
 		int count = 1; // keep track of primes found, no 2 is a prime
 		int i = 3;
-		while(count < n) { // loop to found n primes.  already have 2 as prime.
+		while (count < n) { // loop to found n primes.  already have 2 as prime.
 			bool is_prime = true;
 			for (auto prime : primes) { // find if prime and add to prime vector if so.
 				if (i%prime == 0) {

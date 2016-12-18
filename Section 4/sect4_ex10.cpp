@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 8 Oct 2015
+//update 17 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -14,48 +15,52 @@ Section 4 exercise 10.
  Try variations to make it less easy for the user to guess which move the machine will make next.
 */
 
-#include "section4.h"  // custom header
+#include "section4.h"
+#include <vector>
+#include <ctime>
 
-//uses rand() function to generate random number
-unsigned int RanNum(int);
+unsigned int ran_num(int);
 
 int main()
 {
+	using std::cout;
+	using std::cin;
+
+	const std::vector<std::string> RPS{ "ROCK","PAPER","SCISSORS" };
+	
 	char play_again = 'y';
 	unsigned pselect = 1;
 	unsigned cselect = 1;
-	
-	const vector<string> rps {"ROCK","PAPER","SCISSORS"};
-		
 	do
 	{
 		cout << "Select (1) for Rock (2) for Paper (3) for Scissors ";
-		while(cin>>pselect)  // check for proper input
+		while (cin >> pselect)  // check for proper input
 		{
-			if(pselect>=1 && pselect<=3)
+			if (pselect >= 1 && pselect <= 3)
 				break;
 			else
 				cout << "You did not make the proper selection. Try again ";
 		}
-		cselect = RanNum(3);  //have only 3 selections gets random selection between 1 and 3
-		cout << "Your selection was " << rps[pselect-1] << " the computer selected " << rps[cselect-1] << '\n';  // -1 to get proper index
+		cselect = ran_num(3);  //have only 3 selections gets random selection between 1 and 3
+		cout << "Your selection was " << RPS.at(pselect - 1) << " the computer selected " << RPS.at(cselect - 1) << '\n';  // -1 to get proper index
 		cout << "Would you like to play again (y or n) ";
-		while(cin>>play_again)
+		while (cin >> play_again)
 		{
-			if(play_again=='y'||play_again=='n')
+			if (play_again == 'y' || play_again == 'n')
 				break;
 			else
 				cout << "You did not make the proper selection. Try again ";
 		}
 		cout << "\n\n\n";
-	} while(play_again == 'y');
+	} while (play_again == 'y');
 	keep_window_open();
 	return 0;
 }
+
 // function to generate random number
-unsigned int RanNum(int nHigh)
+unsigned int ran_num(int nHigh)
 {
-	srand(time(0)); // set initial seed value to system clock
-	return (rand() % nHigh + 1);
-	//(rand() % (nHigh - nLow + 1)) + nLow;  //if want low number something otherthan 1
+	std::srand(std::time(0)); // set initial seed value to system clock
+	return (std::rand() % nHigh + 1);
+	//(rand() % (nHigh - nLow + 1)) + nLow;  //if want low number something other than 1
 }

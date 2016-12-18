@@ -1,92 +1,154 @@
 //written by Jtaim
 //date 3 Oct 2015
+//update 17 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
 Section 4 exercise 7.
 Modify the "mini calculator from exercise 5 to accept (just) single-digit numbers written as either digits
 or spelled out.
-Write a program that performs as a very simple calculator.
-Your calculator should be able to handle the four basic math operations — add, subtract, multiply, and divide — on two input values.
-Your program should prompt the user to enter three arguments: two double values and a character to represent an operation.
-If the entry arguments are 35.6, 24.1, and '+', the program output should be The sum of 35.6 and 24.1 is 59.7.
 */
 
 #include "section4.h"  // custom header
+#include <vector>
 
-void print_result(double);
-bool check_input(int &inNum);
-
-const vector<string> numbers{ "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+void print_result(const int result);
+bool get_number(int& num, const char term = '|');
 
 int main()
 {
-	cout << "Enter 2 integer numbers between 0 and 9 and an operation (+, -, *, /): ";
-	int num1 = 0;
-	int num2 = 0;
-	char operation = '?';
-	while (check_input(num1) || check_input(num2)) {
-		cout << "Invalid number selected.\n";
-	}
-	cin >> operation;
-	switch (operation) {
-	case '+':
-		print_result(num1 + num2);
-		break;
-	case '-':
-		print_result(num1 - num2);
-		break;
-	case '*':
-		print_result(num1 * num2);
-		break;
-	case '/':
-		if (!num2) {
-			cout << "Division by zero.\n";
+	using std::cout;
+
+	constexpr char TERM = '|';
+
+	cout << "will loop to try more.  use '|' to exit.\n";
+	bool exit = false;
+	while (!exit)
+	{
+		cout << "Enter a number between 0 and 9.\n";
+		cout << "Can either be spelled out or as a number followed by an operation (+, -, *, /)\n";
+		int num1 = 0;
+		int num2 = 0;
+		char operation = '?';
+		if (get_number(num1, TERM) && get_number(num2, TERM))
+		{
+			std::cin >> operation;
+			switch (operation)
+			{
+			case '+':
+				print_result(num1 + num2);
+				break;
+			case '-':
+				print_result(num1 - num2);
+				break;
+			case '*':
+				print_result(num1 * num2);
+				break;
+			case '/':
+				if (num2 == 0)
+				{
+					simple_error("Division by zero.\n");
+				}
+				print_result(num1 / num2);
+				break;
+			case TERM:
+				std::cout << "termination found\n";
+				exit = true;
+				break;
+			default:
+				simple_error("Wrong operation selected.\n");
+			}
 		}
-		print_result(num1 / num2);
-		break;
-	default:
-		cout << "Wrong operation selected.\n";
+		else
+		{
+			exit = true;
+		}
+		if (exit)
+		{
+			cout << "termination found.\n";
+		}
 	}
 	keep_window_open();
 	return 0;
 }
-// function to print result
-void print_result(double result)
+
+// find number
+bool get_number(int& num, const char term)
 {
-	cout << "Your result is " << result << endl;
+	const std::vector<std::string> NUMBERS{ "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+
+	bool good = false;
+	std::string str{ '?' };
+	if (std::cin >> str)
+	{
+		// checking numbers
+		if (isdigit(str.front()))
+		{
+			num = std::stoi(str);
+			if (str.size() == 1)
+			{
+				good = true;
+			}
+			else
+			{
+				std::cout << "Was expecting single digit number.\n";
+				good = true;	// letting < 1 valid number pass
+			}
+		}
+		// check for termination
+		else if (str.front() == term)
+		{
+			good = false;
+		}
+		else
+			// check if number is spelled out
+		{
+			for (auto& i : str)
+			{
+				// cast to suppress conversion warning
+				i = static_cast<char>(tolower(i));
+			}
+			// check if has a spelled out number
+			auto num_index = NUMBERS.begin();
+			for (; num_index != NUMBERS.end(); num_index++)
+			{
+				if (*num_index == str)
+				{
+					// cast to suppress conversion warning
+					num = static_cast<int>(num_index - NUMBERS.begin());
+					good = true;
+					break;
+				}
+			}
+			// check for termination
+			if (num_index == NUMBERS.end())
+			{
+				auto i = str.begin();
+				for (; i != str.end(); i++)
+				{
+					if (*i == term)
+					{
+						good = false;
+						break;
+					}
+				}
+				if (i == str.end())
+				{
+					simple_error("Input is junk\n");
+				}
+			}
+		}
+	}
+	else
+	{
+		std::cin.clear();
+		simple_error("cin error flag set\n");
+	}
+	return good;
 }
-// function to find correct number
-bool check_input(int &inNum)
+
+// function to print result
+void print_result(const int result)
 {
-	cin >> inNum;
-	bool good_num = false;
-	if (cin.eof()) {  // EOF is captured
-		cin.clear();
-		//cin.ignore(INT_MAX, '\n');
-		cout << "eof found\n";
-		exit(1);  // exit program
-	}
-	else if (cin.fail()) { // invalid nonINT entry. check if correct spelled out
-		cin.clear();  // clear cin error flags so can accept new data
-		string sVal{ "??" };
-		cin >> sVal;
-		for (decltype(sVal.length()) i = 0; i < sVal.length(); ++i) { // set string to lower case
-			sVal[i] = tolower(sVal[i]);
-		}
-		for (decltype(numbers.size()) i = 0; i < numbers.size(); ++i) {  // check if valid spelled out number
-			if (sVal == numbers[i]) {
-				inNum = i; // enter index as the number value
-				good_num = false;
-				break;  // match found break from for loop
-			}
-			else {
-				good_num = true;
-			}
-		}
-		if (good_num) {
-			cin.ignore(INT_MAX, '\n');
-		}
-	}
-	return good_num;
+	std::cout << "Your result is " << result << "\n\n";
 }

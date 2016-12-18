@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 6 Oct 2015
+//updated 17 Dec 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -11,13 +12,20 @@ Section 4 exercise 9.
  What is the largest number of squares for which you can calculate the approximate number of grains (using a double)?
 */
 
-#include "section4.h" // custom header
+#include "section4.h"
+#include <cmath>
+#include <limits>
 
 int main()
 {
+	using std::cout;
+	using std::endl;
+
+	int const MAX_SQUARES = 64;
+
 	unsigned long long int n_grains = 0;
-	double d_grains = 0;
-	int const max_squares = 64;
+	long double d_grains = 0;
+
 	cout << "The maximum number represented int on this PC is " << INT_MAX << endl;
 	cout << "The maximum number represented double on this PC is " << DBL_MAX << endl;
 	cout << "The maximum number represented unsigned int on this PC is " << UINT_MAX << endl;
@@ -26,10 +34,11 @@ int main()
 	cout << "The maximum number represented long long int on this PC is " << LLONG_MAX << endl;
 	cout << "The maximum number represented unsigned long long int on this PC is " << ULLONG_MAX << endl;
 	cout << "The maximum number represented long double on this PC is " << LDBL_MAX << "\n\n";
-	for (int square = 0; square<max_squares; square++) {
-		n_grains = n_grains + pow(2, square);  //powers of 2 will provide double of previous number 2^0=1, 2^1=2, 2^2=4 2^3=8 ...
+	for (int square = 0; square < MAX_SQUARES; square++)
+	{
+		n_grains = n_grains + powl(2, square);  //powers of 2 will provide double of previous number 2^0=1, 2^1=2, 2^2=4 2^3=8 ...
 		cout << "square " << square + 1 << " has " << n_grains << " grains as int.\n\n";
-		d_grains = d_grains + pow(2, square);
+		d_grains = d_grains + powl(2, square);
 		cout << "square " << square + 1 << " has " << d_grains << " grains as double.\n\n";
 	}
 	keep_window_open();

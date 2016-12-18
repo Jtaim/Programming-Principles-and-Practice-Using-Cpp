@@ -8,46 +8,59 @@ Section 4 exercise 15.
 A program that takes an input value n and then finds the first n primes
 */
 
-#include "section4.h" // custom header
+#include "section4.h"
+#include <vector>
 
 int main()
 {
-	vector<int> primes{ 2 };  // set first known prime of 2
-	int n = 1;
+	using std::cout;
+	using std::cin;
+
+	std::vector<int> primes{ 2 };  // set first known prime of 2
+	int num_of_primes;
 	cout << "enter number of primes you want to find.\n";
-	cin >> n;
-	if (cin.fail() || n <= 0) {
+	while (!(cin >> num_of_primes))
+	{
 		cout << "entered an invalid number.\n";
 		cin.clear();
-		cin.ignore(INT_MAX, '\n');
+		cin.ignore(32768, '\n');
 	}
-	else {
-		int count = 1; // keep track of primes found, no 2 is a prime
-		int i = 3;
-		while (count < n) { // loop to found n primes.  already have 2 as prime.
-			bool is_prime = true;
-			for (auto prime : primes) { // find if prime and add to prime vector if so.
-				if (i%prime == 0) {
-					is_prime = false;  // not a prime
-					break;
-				}
+	int count = 1; // keep track of primes found, no 2 is a prime
+	int i = 3;
+	// loop to found n primes.  already have 2 as prime.
+	while (count < num_of_primes)
+	{
+		bool is_prime = true;
+		// find if prime and add to prime vector if so.
+		for (auto prime : primes)
+		{
+			if (i % prime == 0)
+			{
+				is_prime = false;  // not a prime
+				break;
 			}
-			if (is_prime) {
-				primes.push_back(i);  // found prime add to vector
-				++count;
-			}
-			++i;
 		}
-		int j = 1;
-		for (auto x : primes) { // print out the prime numbers
-			if (j % 10) {  //10 per row
-				cout << x << '\t';
-			}
-			else {
-				cout << x << '\n';
-			}
-			j++;
+		if (is_prime)
+		{
+			primes.push_back(i);  // found prime add to vector
+			++count;
 		}
+		++i;
+	}
+	// print out the prime numbers
+	int j = 1;
+	for (auto x : primes)
+	{
+		//10 per row
+		if (j % 10)
+		{
+			cout << x << '\t';
+		}
+		else
+		{
+			cout << x << '\n';
+		}
+		j++;
 	}
 	cout << '\n';
 	keep_window_open();

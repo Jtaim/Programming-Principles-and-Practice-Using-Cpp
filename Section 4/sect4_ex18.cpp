@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 13 Oct 2015
+//updated 18 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -17,12 +18,14 @@ x = -b +/- sqrt(b^2-4ac)/2a
 
 int main()
 {
-	cout << "Enter the a, b and c variables to solve the quadratic equation: ";
+	std::cout << "Enter the a, b and c variables to solve the quadratic equation: ";
 	double a = 0;
 	double b = 1;
 	double c = 0;
-	cin >> a >> b >> c;
-	cout << "x = " << (-1*b + sqrt(b*b-4*a*c))/(2*a) << " and x = " << (-1*b - sqrt(b*b-4*a*c))/(2*a) << '\n';
+	std::cin >> a >> b >> c;
+	double x1 = (-1 * b + sqrt(b * b - 4 * a * c)) / (2 * a);
+	double x2 = (-1 * b - sqrt(b * b - 4 * a * c)) / (2 * a);
+	std::cout << "x = " << x1 << " and x = " << x2 << '\n';
 	keep_window_open();
 	return 0;
 }

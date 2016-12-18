@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 14 Oct 2015
+//update 18 Dec 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -12,39 +13,53 @@ Check that each name is unique and terminated with an error message if a name is
 Write out all the (name, score) pairs, one per line.
 */
 
-#include "section4.h" // custom header
+#include "section4.h"
+#include <vector>
+#include <algorithm>
 
 int main()
 {
-	string name{};
+	using std::cout;
+	using std::cin;
+
+	std::string name;
 	int score{ 0 };
-	vector<string> names;
-	vector<int> scores;
+	std::vector<std::string> names;
+	std::vector<int> scores;
 	cout << "Enter names and scores. \n";
 	// collect valid data
-	while (true) {
+	while (true)
+	{
 		cin >> name >> score;
-		if (cin.eof() || (name == "NoName" && score == 0)) {  // escape if NoName or EOF
+		// escape if NoName or EOF
+		if (cin.eof() || (name == "NoName" && score == 0))
+		{
 			break;
 		}
-		if (cin.fail()) {  // redo if bad input non number for score
+		// redo if bad input non number for score
+		if (cin.fail())
+		{
 			cout << "Entered invalid name or score.  Please reenter.\n";
 			cin.clear();
-			cin.ignore(INT_MAX, '\n');
+			cin.ignore(32768, '\n');
 		}
-		auto result = find(begin(names), end(names), name);
-		if (result != end(names)) {
+		auto result = find(names.begin(), names.end(), name);
+		if (result != names.end())
+		{
 			cout << "Entered duplicate data.\n";
 		}
-		else {
+		else
+		{
 			names.push_back(name);
 			scores.push_back(score);
 		}
 	}
-// if no duplicates print contents to screen
-	if (names.size() != 0) {
-		for (int i = 0; i < (names.end() - names.begin()); ++i) {
-			cout << names[i] << " " << scores[i] << endl;
+	// if no duplicates print contents to screen
+	if (names.size() != 0)
+	{
+		for (int i = 0; i < (names.end() - names.begin()); ++i)
+		{
+			cout << names.at(i) << " " << scores.at(i) << std::endl;
 		}
 	}
 	keep_window_open();

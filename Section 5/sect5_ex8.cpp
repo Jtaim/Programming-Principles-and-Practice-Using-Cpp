@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 2 Nov 2015
+//updated 19 Dec 2016
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
@@ -9,61 +10,93 @@ Ask user to enter number(N) of integers want to sum.
 Compute the sum of the first N integers.
 Create a vector of the first N integers.
 From that vector calculate the sum of those N integers.
-Instruct user to terminate series with 'I' when finished entering numbers.
+Instruct user to terminate series with '|' when finished entering numbers.
 Handle all inputs and provide and error N is larger than input vector
 */
 
 #include "section5.h"
 
 int main()
-try 
+try
 {
-	cout << "Enter how many integers that you would like to sum: " << endl;
+	using std::cout;
+	using std::cin;
+	using std::endl;
+
+	constexpr char TERMINATION = '|';
+
+	cout << "Enter how many integers that you would like to sum (press '|' to stop)\n";
 	int num_sum = 0;
+	std::vector<int> nums_entered;
 	/* while loop to get input and validate entry */
-	while(true) {
+	bool exit = false;
+	while (!exit)
+	{
 		cin >> num_sum;
-		if (num_sum < 0) {
-			cout << "Number to sum must be >= 0.\n";
-		}
-		else if (cin.fail()) {
+		if (!cin.good())
+		{
 			cin.clear();
+			char c;
+			cin.get(c);
 			cin.ignore(INT8_MAX, '\n');
+			if (c == TERMINATION)
+			{
+				exit = true;
+			}
+			else
+			{
+				cout << "Invalid entry!\n";
+			}
+		}
+		else if (num_sum <= 0)
+		{
 			cout << "Invalid entry!\n";
 		}
-		else {
+		else 
+		{
 			break; //found valid number
 		}
 	}
-	cout << "Enter some integers (press '|' to stop): " << endl;
-	vector<int> nums_entered;
-	/* while loop to get integers to place in a vector, validate and exit on an '|' entry */
-	while (true) {
+	if (!exit)
+	{
+		cout << "Enter some integers (press '|' to stop)\n";
+		/* while loop to get integers to place in a vector, validate and exit on an '|' entry */
 		int entered_num = 0;
-		if (cin >> entered_num) {
-			nums_entered.push_back(entered_num); // loads entered numbers into a container vector
-		}
-		else {
-			cin.clear(); // clear cin error
-			char termination;
-			cin >> termination; // get termination char
-			if (termination == '|') {
-				break;  // found valid termination
+		while (!exit)
+		{
+			// loads entered numbers into a container vector
+			if (cin >> entered_num)
+			{
+				nums_entered.push_back(entered_num);
 			}
-			else {
-				cout << termination << " is an invalid entry\n";
+			else
+			{
+				cin.clear();
+				char c;
+				cin.get(c);
+				cin.ignore(INT8_MAX, '\n');
+				if (c == TERMINATION)
+				{
+					exit = true;
+				}
+				else
+				{
+					cout << "Invalid entry!\n";
+				}
 			}
 		}
 	}
-	int sum = 0;  //summed numbers
-	/* if vector not large enough to sum N numbers error, else sum N numbers */
-	if (nums_entered.size() < static_cast<decltype(nums_entered.size())>(num_sum)) { // cast to suppress warning
+	int sum = 0;	//summed numbers
+	/* check vector size to wanted number to sum */
+	if (nums_entered.size() < num_sum)
+	{	// cast to suppress warning
 		error("not enough integers entered to sum.\n");
 	}
-	else { //sum the numbers
+	else
+	{	//sum the numbers
 		for (int i = 0; i < num_sum; i++)
 		{
-			sum += nums_entered[i];
+			sum += nums_entered.at(i);
 		}
 	}
 	cout << "*********************************************************************\n";
@@ -72,21 +105,22 @@ try
 	cout << "The sum of the selected integers: \t" << sum << '\n';
 	cout << "*********************************************************************\n";
 	/* for to print all valid entries */
-	for (auto x : nums_entered) {
+	for (auto x : nums_entered)
+	{
 		cout << x << '\n';
 	}
 	keep_window_open();
 	return 0;
 }
-catch (exception& e) 
+catch (std::exception& e)
 {
-	cerr << "error: " << e.what() << '\n';
-//	keep_window_open();
+	std::cerr << "error: " << e.what() << '\n';
+	//	keep_window_open();
 	return 1;
 }
-catch (...) 
+catch (...)
 {
-	cerr << "Oops: unknown exception!\n";
-//	keep_window_open();
+	std::cerr << "Oops: unknown exception!\n";
+	//	keep_window_open();
 	return 2;
 }

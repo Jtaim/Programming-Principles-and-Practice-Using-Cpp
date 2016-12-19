@@ -1,5 +1,6 @@
 //written by Jtaim
 //date 1 Nov 2015
+//updated 19 Dec 2016
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
@@ -12,17 +13,22 @@ Write a function that print out the roots of a quadratic equation, given a,b,c.
 If no real roots print out a message.
 */
 
-#include "section5.h" // custom header
+#include "section5.h"
+
 void quadratic(const double &a, const double &b, const double &c)
 {
-	if (a == 0) {
+	using std::cout;
+	if (a == 0)
+	{
 		error("a = 0; so can not derive any roots\n");
 	}
-	else if (c == 0) {
+	else if (c == 0)
+	{
 		cout << "x = 0\n";
-        cout << "x = " << -1 * b / a << '\n';
+		cout << "x = " << -1 * b / a << '\n';
 	}
-	else {
+	else
+	{
 		double sq = b*b - 4 * a*c;
 		if (sq >= 0)
 		{
@@ -40,30 +46,34 @@ void quadratic(const double &a, const double &b, const double &c)
 int main()
 try
 {
+	using std::cout;
+	using std::cin;
+
 	cout << "Enter the a, b and c variables to solve the quadratic equation:\n";
 	double a = 0;
 	double b = 1;
 	double c = 0;
 	cin >> a >> b >> c;
-	if (cin.fail()) {
-			cin.clear();
-			cin.ignore(INT8_MAX, '\n');
-			error("EOF found or non-numeric entered. Good bye.\n");
+	if (!cin.good())
+	{
+		cin.clear();
+		cin.ignore(INT8_MAX, '\n');
+		error("non-numeric entered.\n");
 	}
 	quadratic(a, b, c);
-	
+
 	keep_window_open();
 	return 0;
 }
-catch (exception& e)
+catch (std::exception& e)
 {
-	cerr << "error: " << e.what() << '\n';
+	std::cerr << "error: " << e.what() << '\n';
 	keep_window_open();
 	return 1;
 }
 catch (...)
 {
-	cerr << "Oops: unknown exception!\n";
+	std::cerr << "Oops: unknown exception!\n";
 	keep_window_open();
 	return 2;
 }

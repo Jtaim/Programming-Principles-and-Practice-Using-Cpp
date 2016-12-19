@@ -6,9 +6,12 @@
 Section 5 drills
 */
 #include "section5.h"
+
 int main()
 try
 {
+	using namespace std;
+
 	//DRILL 1
 	//Cout<<"Success!\n"; //compile error: identifier "Cout" is undefined
 	cout << "Drill 1 Success!\n";
@@ -48,7 +51,8 @@ try
 	//legal but hard to read plus if statement seems wrong
 	vector<int>v6(10); //initialize vector with 10 elements
 	v6[5] = 7;         //be careful of a range error
-	if (v6[5] == 7) {  //seems to make more sense
+	if (v6[5] == 7)
+	{  //seems to make more sense
 		cout << "Drill 6 Success!\n";
 	}
 
@@ -71,7 +75,8 @@ try
 	//compile error: identified "boo" is undefined
 	//hard to read and variables not very descriptive.
 	string strDrill9 = "ape";
-	if (strDrill9 <= "fool") { //magic comparison
+	if (strDrill9 <= "fool")
+	{ //magic comparison
 		cout << "Drill 9 Success!\n";
 	}
 
@@ -80,7 +85,8 @@ try
 	//legal but does not make sense
 	//hard to read and variables not very descriptive.
 	string strDrill10 = "ape";
-	if (strDrill10 != "fool") {
+	if (strDrill10 != "fool")
+	{
 		cout << "Drill 10 Success!\n";
 	}
 
@@ -90,7 +96,8 @@ try
 	//string s = "ape"; if (s == "fool")cout << "Success!\n";
 	//legal but question if condition and code hard to read
 	string strDrill11 = "ape";
-	if (strDrill11 != "fool") {
+	if (strDrill11 != "fool")
+	{
 		cout << "Drill 11 Success!\n";
 	}
 
@@ -100,7 +107,8 @@ try
 	//compile error: no operator "<" matches these operands
 	//not logic error in if statement condition
 	string strDrill12 = "ape";
-	if (strDrill12 != "fool") {
+	if (strDrill12 != "fool")
+	{
 		cout << "Drill 12 Success!\n";
 	}
 
@@ -108,7 +116,8 @@ try
 	//vector<char>v(5);for(int i = 0;0 < v.size();++i);cout << "Success!\n";
 	//compiled but condition in for loop cause loop forever 0 aways less than size()
 	vector<char>v13(5);
-	for (decltype(v13.size()) i = 0;i < v13.size();++i) {
+	for (decltype(v13.size()) i = 0;i < v13.size();++i)
+	{
 		cout << i << " ";
 	}
 	cout << "Drill 13 Success!\n";
@@ -118,10 +127,12 @@ try
 	//compiled but condition in for loop would cause range error if accessing something from the vector
 	//v.size() = 5 but iterations are 0 - 4
 	vector<char>v14(5);
-	for (decltype(v14.size()) i = 0;i < v14.size();++i) {
+	for (decltype(v14.size()) i = 0;i < v14.size();++i)
+	{
 		v14.at(i) = static_cast<char>(97 + i); // 97 = ASCII 'a'
 	}
-	for (auto i : v14) {
+	for (auto i : v14)
+	{
 		cout << i << " ";
 	}
 	cout << "Drill 14 Success!\n";
@@ -132,7 +143,8 @@ try
 	//or use s.at(i) to throw exception if out of bounds
 	string strDrill15 = "Drill 15 Success!\n";
 	decltype(strDrill15.size()) dMax = 1024; //max characters I want
-	for (decltype(strDrill15.size()) i = 0; i < dMax && i < strDrill15.size(); ++i) {
+	for (decltype(strDrill15.size()) i = 0; i < dMax && i < strDrill15.size(); ++i)
+	{
 		cout << strDrill15.at(i);
 	}
 
@@ -140,10 +152,12 @@ try
 	//if(true)then cout << "Success!\n";else cout << "Fail!\n";
 	//compile error: identifier "then" is undefined
 	//compile error: expected a ';'
-	if (true) {  //checking something
+	if (true)
+	{  //checking something
 		cout << "Drill 16 Success!\n";
 	}
-	else {
+	else
+	{
 		cout << "Drill 16 Fail!\n";
 	}
 
@@ -152,10 +166,12 @@ try
 	//narrowing error going from int to a char
 	int nDrill17 = 100;
 	char cDrill17 = nDrill17;
-	if (nDrill17 != cDrill17) { //limit is -128 to 127
+	if (nDrill17 != cDrill17)
+	{ //limit is -128 to 127
 		error(string("info loss"));
 	}
-	else {
+	else
+	{
 		cout << "Drill 17 Success!\n";
 	}
 
@@ -167,7 +183,8 @@ try
 	//string s = "Success!\n";for (int i = 0;i < s.size();++i)cout << s.at(i);
 	//compare against vector size is safer.
 	string strDrill18 = "Drill 18 Success!\n";
-	for (auto i : strDrill18) {
+	for (auto i : strDrill18)
+	{
 		cout << i;
 	}
 	//range for is best way to iterate threw the string in this case
@@ -179,7 +196,8 @@ try
 	//no compile errors now but have a out of range issue
 	//vector<int> v(5);for (int i = 0;i < v.size();++i);cout << "Success!\n";
 	vector<int> v19(5);
-	for (decltype(v19.size()) i = 0; i < v19.size();++i) {
+	for (decltype(v19.size()) i = 0; i < v19.size();++i)
+	{
 		cout << i << " ";
 	}
 	cout << "Drill 19 Success!\n";
@@ -190,8 +208,9 @@ try
 	//if statement will never be true also with j incrementing
 	int nDrill20a = 0;
 	int nDrill20b = 9;
-	while (nDrill20a < 10) {
-		++nDrill20a;  
+	while (nDrill20a < 10)
+	{
+		++nDrill20a;
 	}
 	if (nDrill20b < nDrill20a) {  // dDrill20a should now be 10
 		cout << nDrill20a << " Drill 20 Success!\n";
@@ -210,7 +229,7 @@ try
 	}
 	double dDrill21 = 0;
 	dDrill21 = static_cast<double>(5) / (nDrill21 - 2);
-	if (dDrill21 == static_cast<double>(2 * nDrill21 + 0.5)/10) { //adjusted and solved quadratic to get a pass
+	if (dDrill21 == static_cast<double>(2 * nDrill21 + 0.5) / 10) { //adjusted and solved quadratic to get a pass
 		cout << "Drill 21 Success!\n";
 	}
 
@@ -224,7 +243,8 @@ try
 	//for (int i = 0;i <= 10;++i)cout << vDrill22.at(i);
 	//now got runtime error in both compilers
 	vector<char>vDrill22 = { 'D','r','i','l','l',' ','2','2',' ','S','u','c','c','e','s','s','!','\n' };
-	for (auto i : vDrill22) {
+	for (auto i : vDrill22)
+	{
 		cout << i;
 	}
 
@@ -233,9 +253,11 @@ try
 	//Holy cow someone was up late drinking
 	int nDrill23a = 0;
 	int nDrill23b = 8; //mark last iteration
-	while (nDrill23a < 10) {
+	while (nDrill23a < 10)
+	{
 		cout << nDrill23a << " ";
-		if (nDrill23b < nDrill23a) {
+		if (nDrill23b < nDrill23a)
+		{
 			cout << "Drill 23 Success!\n";
 		}
 		++nDrill23a;
@@ -247,13 +269,15 @@ try
 	//narrowing error with d
 	//divide check not made
 	//if will always be true.  d == not d =
-	int nDrill24 = 4;  //why 6, cant do all for you
-	if (nDrill24 == 2) { //check for divide by zero error
+	int nDrill24 = 4;	//why 6, cant do all for you
+	if (nDrill24 == 2)
+	{ //check for divide by zero error
 		error(string("divide by zero error"));
 	}
 	double dDrill24 = 0;
 	dDrill24 = static_cast<double>(5) / (nDrill24 - 2);
-	if (dDrill24 == static_cast<double>(2 * nDrill24 + 0.5) / 3.4) { //adjusted and solved quadratic to get a pass
+	if (dDrill24 == static_cast<double>(2 * nDrill24 + 0.5) / 3.4)
+	{ //adjusted and solved quadratic to get a pass
 		cout << "Drill 24 Success!\n";
 	}
 
@@ -261,19 +285,19 @@ try
 	//cin << "Success!\n";
 	//Compile error: no operator "<<" matches these operands
 	cout << "Drill 25 Success!\n";
-	
+
 	keep_window_open();
 	return 0;
 }
-catch (exception& e)
+catch (std::exception& e)
 {
-	cerr << "error: " << e.what() << '\n';
+	std::cerr << "error: " << e.what() << '\n';
 	keep_window_open();
 	return 1;
 }
 catch (...)
 {
-	cerr << "Oops: unknown exception!\n";
+	std::cerr << "Oops: unknown exception!\n";
 	keep_window_open();
 	return 2;
 }

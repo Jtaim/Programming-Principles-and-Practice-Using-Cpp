@@ -6,11 +6,10 @@
 sect 5 exercise 2
 find errors and document
 */
-#include "section5.h" //custom header
+#include "section5.h"
 
 //double ctok(double c) // converts Celsius to Kelvin
-//just style but set variable c as constant
-double ctok(const double c) // converts Celsius to Kelvin
+double ctok(double c)	// converts Celsius to Kelvin
 {
 	//int k = c + 273.15;
 	//use double prevent narrow errors
@@ -26,14 +25,14 @@ int main()
 	double c = 0; //input variable
 	//cin >> d;
 	//compile error: identifier "d" is undefined
-	cin >> c;
+	std::cin >> c;
 	//double k = ctok("c");
 	//compile error: argument error
 	double k = ctok(c);
 	//Cout << k << '\n';
 	//compile error: identifier "Cout" is undefined
-	cout << k << '\n';
-	
+	std::cout << k << '\n';
+
 	keep_window_open();
 	return 0;
 }

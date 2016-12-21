@@ -17,9 +17,9 @@ int get_cows(std::vector<int>&, std::vector<int>&);
 int main()
 try
 {
-	const char TERM = '|';
-
 	using std::cout;
+
+	const char TERM = '|';
 
 	std::vector<int> set_numbers{ 2, 5, 8, 1 };
 	std::vector<int> guesses{};					// initialize as empty
@@ -109,15 +109,18 @@ INPUT: vector<int> reference to user input guesses.
        vector<int> reference to number to guess.
 OUPUT: int for number of bulls found
 ERROR: no error.
-modifies the temp vector by deleting matching element
+modifies the vectors by deleting matching elements
 */
 int get_bulls(std::vector<int>& g, std::vector<int>& temp)
 {
 	int bulls = 0;
+	// be carefull of rollover of unsigned i
 	for (auto i = g.size(); i > 0; --i)
 	{
 		//find Bulls starting from back 
-		//if find match erase that element in temp
+		//if find match erase elements from back to front
+		//do back to front so dont cause error from going outside vector bounds
+		//adjust i from size to element (i-1)
 		if (g[i-1] == temp[i-1])
 		{
 			temp.erase(temp.begin() + i-1);
@@ -133,6 +136,7 @@ INPUT: vector<int> reference to user input guesses.
        vector<int> reference to number to guess.
 OUPUT: int for number of cows found
 ERROR: no error.
+delete vector temp matching elements to vector g
 */
 int get_cows(std::vector<int>& g, std::vector<int>& temp)
 {

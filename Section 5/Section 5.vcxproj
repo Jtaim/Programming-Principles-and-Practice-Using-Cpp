@@ -120,7 +120,26 @@
     <ClInclude Include="section5.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="scaffolding.cpp" />
+    <ClCompile Include="sect5_3_1_try.cpp" />
+    <ClCompile Include="sect5_3_2_try.cpp" />
+    <ClCompile Include="sect5_5_try.cpp" />
+    <ClCompile Include="sect5_6_try.cpp" />
+    <ClCompile Include="sect5_7a_try.cpp" />
+    <ClCompile Include="sect5_drill.cpp" />
+    <ClCompile Include="sect5_ex10.cpp" />
+    <ClCompile Include="sect5_ex11.cpp" />
+    <ClCompile Include="sect5_ex12.cpp" />
+    <ClCompile Include="sect5_ex13.cpp" />
     <ClCompile Include="sect5_ex14.cpp" />
+    <ClCompile Include="sect5_ex2.cpp" />
+    <ClCompile Include="sect5_ex3.cpp" />
+    <ClCompile Include="sect5_ex4.cpp" />
+    <ClCompile Include="sect5_ex5.cpp" />
+    <ClCompile Include="sect5_ex6.cpp" />
+    <ClCompile Include="sect5_ex7.cpp" />
+    <ClCompile Include="sect5_ex8.cpp" />
+    <ClCompile Include="sect5_ex9.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

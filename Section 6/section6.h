@@ -1,5 +1,6 @@
 // Written by Jtaim
 // 11 Nov 2015
+// updated 21 Dec 2016
 // Header file used for Programming: Principles and Practice Using C++ Second Edition
 // section 6
 
@@ -22,39 +23,41 @@
 #include<regex>
 #include<random>
 #include<stdexcept>
-#include <cstdlib> // for rand() and srand()
-#include <ctime> // for time()
+#include <cstdlib>	// for rand() and srand()
+#include <ctime>	// for time()
 #include <utility>
 
-#include<numeric> // for MVS 2015 not under algorithm
-
-using namespace std;
+#include<numeric>	// for MVS 2015 not under algorithm
 
 inline void keep_window_open()
 {
-	cin.clear();
-	cin.ignore(INT8_MAX, '\n');
-	cout << "Please enter a character to exit\n";
-	char ch;
-	cin >> ch;
-	return;
+	std::cout << "\n\nhit enter key to exit.\n";
+	std::cin.clear();
+	std::cin.ignore(INT16_MAX, '\n');
+	std::cin.get();
 }
-inline void keep_window_open(string s)
+
+inline void keep_window_open(const std::string s)
 {
 	if (s == "") return;
-	cin.clear();
-	cin.ignore(120, '\n');
-	for (;;) {
-		cout << "Please enter " << s << " to exit\n";
-		string ss;
-		while (cin >> ss && ss != s)
-			cout << "Please enter " << s << " to exit\n";
+	std::cin.clear();
+	std::cin.ignore(INT16_MAX, '\n');
+	for (;;)
+	{
+		std::cout << "Please enter " << s << " to exit\n";
+		std::string ss;
+		while (std::cin >> ss && ss != s)
+		{
+			std::cout << "Please enter " << s << " to exit\n";
+		}
 		return;
 	}
 }
+
 // error() simply disguises throws:
-inline void error(const string &s)
+inline void error(const std::string &s)
 {
-	throw runtime_error(s);
+	throw std::runtime_error(s);
 }
+
 #endif              // close header guard

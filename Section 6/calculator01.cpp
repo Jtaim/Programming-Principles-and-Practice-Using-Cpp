@@ -105,7 +105,7 @@ int main()		// main loop
 			}
 			else if (t.kind == ';')
 			{
-				std::cout << " = " << val << '\n';
+				std::cout << "= " << val << '\n';
 			}
 			else
 			{

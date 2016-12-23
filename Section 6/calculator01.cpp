@@ -153,6 +153,9 @@ double primary()	// deal with numbers and parentheses
 	case '-':
 		//std::cout << "negative\n";
 		return -primary(); //handle negative numbers
+	case '+':
+		//std::cout << "positive\n";
+		return +primary(); //handle positive numbers if + enetered before a number
 	default:
 		error("primary expected");
 		return 0;

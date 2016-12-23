@@ -6,22 +6,34 @@
 #include "section6.h"
 
 //------------------------------------------------------------------------------
-class Token {
+class Token
+{
 public:
-    char kind;        // what kind of token
-    double value;     // for numbers: a value 
-    Token(char ch)    // make a Token from a char
-        :kind(ch), value(0) { }    
-    Token(char ch, double val)     // make a Token from a char and a double
-        :kind(ch), value(val) { }
+	char kind;					// what kind of token
+	double value;				// for numbers: a value 
+	Token(char ch)				// make a Token from a char
+		:kind(ch), value(0)
+	{
+		//std::cout << "token only created\n";
+	}
+	Token(char ch, double val)	// make a Token from a char and a double
+		:kind(ch), value(val)
+	{
+		//std::cout << "token and value created\n";
+	}
 };
 
 //------------------------------------------------------------------------------
-class Token_stream {
+class Token_stream
+{
 public:
-	Token_stream()  // make a Token_stream that reads cin
-		:full(false), buffer(0) { } // The constructor just sets full to indicate that the buffer is empty:
-	Token get();     // get a Token
+	// The constructor just sets full to indicate that the buffer is empty:
+	Token_stream()		// make a Token_stream that reads cin
+		:full(false), buffer(0)
+	{
+		//std::cout << "token_stream created\n";
+	}
+	Token get();		// get a Token
 	void putback(Token t);
 private:
 	bool full{ false };
@@ -31,33 +43,40 @@ private:
 //------------------------------------------------------------------------------
 void Token_stream::putback(Token t)
 {
-	if (full) error("putback() into full buffer"); // precondition check
+	// precondition check
+	if (full)
+	{
+		error("putback() into full buffer");
+	}
 	buffer = t;
 	full = true;
 }
 
 //------------------------------------------------------------------------------
-Token Token_stream::get()    // read a token from cin
+Token Token_stream::get()	// read a token from cin
 {
-	if (full) {         // do we already have a Token ready
-		full = false;   // remove Token from buffer
+	// do we already have a Token ready
+	if (full)
+	{
+		full = false;		// remove Token from buffer
 		return buffer;
 	}
 	char ch;
-	cin >> ch;    // note that >> skips whitespace (space, newline, tab, etc.)
-	switch (ch) {
-	case ';':    // for "print"
-	case 'q':    // for "quit"
+	std::cin >> ch;			// note that >> skips whitespace (space, newline, tab, etc.)
+	switch (ch)
+	{
+	case ';':		// for "print"
+	case 'q':		// for "quit"
 	case '(': case ')': case '*': case '/': case '+': case '-':
-		return Token(ch);        // let each character represent itself
+		return Token(ch);	// let each character represent itself
 	case '.':
 	case '0': case '1': case '2': case '3': case '4':
 	case '5': case '6': case '7': case '8': case '9':
 	{
-		cin.putback(ch);         // put digit back into the input stream
+		std::cin.putback(ch);		// put digit back into the input stream
 		double val;
-		cin >> val;              // read a floating-point number
-		return Token('8', val);   // let '8' represent "a number"
+		std::cin >> val;			// read a floating-point number
+		return Token('8', val);		// let '8' represent "a number"
 	}
 	default:
 		error("Bad token");
@@ -65,61 +84,74 @@ Token Token_stream::get()    // read a token from cin
 	}
 }
 
-Token_stream ts;  // provides get() and putback()
+Token_stream ts;		// provides get() and putback()
 
 // Forward Function declarations -------------------------------------------------------
-double primary();     // deal with numbers and parentheses
-double term();        // deal with * and /
-double expression();  // deal with + and -
+double expression();	// deal with + and -
+double primary();		// deal with numbers and parentheses
+double term();			// deal with * and /
 
 //------------------------------------------------------------------------------
-int main()  // main loop
-try {
-	double val = 0;
-	while (cin) {
-		Token t = ts.get();
-		if (t.kind == 'q') {
-			break;
-		}
-		if (t.kind == ';') {
-			cout << " = " << val << '\n';
-		}
-		else {
-			ts.putback(t);
-			val = expression();
+int main()		// main loop
+{
+	try {
+		double val = 0;
+		while (std::cin)
+		{
+			Token t = ts.get();
+			if (t.kind == 'q')
+			{
+				break;
+			}
+			else if (t.kind == ';')
+			{
+				std::cout << " = " << val << '\n';
+			}
+			else
+			{
+				ts.putback(t);
+				val = expression();
+			}
 		}
 	}
-    keep_window_open("~0");
-}
-catch (exception& e) {
-    cerr << e.what() << endl;
-    keep_window_open ("~1");
-    return 1;
-}
-catch (...) {
-    cerr << "exception \n";
-    keep_window_open ("~2");
-    return 2;
+	catch (std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+		keep_window_open("~1");
+		return 1;
+	}
+	catch (...)
+	{
+		std::cerr << "exception \n";
+		keep_window_open("~2");
+		return 2;
+	}
+	keep_window_open();
+	return 0;
 }
 
 //------------------------------------------------------------------------------
-double primary()  // deal with numbers and parentheses
+double primary()	// deal with numbers and parentheses
 {
 	Token t = ts.get();
-	switch (t.kind) {
+	switch (t.kind)
+	{
 	case '(':    // handle '(' expression ')'
 	{
-		cout << " ()";
+		//std::cout << "()\n";
 		double d = expression();
 		t = ts.get();
-		if (t.kind != ')') error("')' expected");
+		if (t.kind != ')')
+		{
+			error("')' expected");
+		}
 		return d;
 	}
 	case '8':            // we use '8' to represent a number
-		cout << " number";
+		//std::cout << "number\n";
 		return t.value;  // return the number's value
 	case '-':
-		cout << " negative";
+		//std::cout << "negative\n";
 		return -primary(); //handle negative numbers
 	default:
 		error("primary expected");
@@ -128,28 +160,33 @@ double primary()  // deal with numbers and parentheses
 }
 
 //------------------------------------------------------------------------------
-double term()  // deal with * and /
+double term()	// deal with * and /
 {
 	double left = primary();
-	Token t = ts.get();     // get the next token
-	while (true) {
-		switch (t.kind) {
+	Token t = ts.get();		// get the next token
+	while (true)
+	{
+		switch (t.kind)
+		{
 		case '*':
-			cout << " expression(*)";
+			//std::cout << "expression(*)\n";
 			left *= primary();
 			t = ts.get();
 			break;
 		case '/':
 		{
-			cout << " expression(/)";
+			//std::cout << "expression(/)\n";
 			double d = primary();
-			if (d == 0) error("divide by zero");
+			if (d == 0)
+			{
+				error("divide by zero");
+			}
 			left /= d;
 			t = ts.get();
 			break;
 		}
 		default:
-			cout << " primary";
+			//std::cout << "primary\n";
 			ts.putback(t);
 			return left;
 		}
@@ -157,29 +194,32 @@ double term()  // deal with * and /
 }
 
 //------------------------------------------------------------------------------
-double expression()  // deal with + and -
+double expression()		// deal with + and -
 {
-	double left = term();      // read and evaluate a Term
-	Token t = ts.get();     // get the next token
-	while (true) {
-		switch (t.kind) {
+	double left = term();	// read and evaluate a Term
+	Token t = ts.get();		// get the next token
+	while (true)
+	{
+		switch (t.kind)
+		{
 		case '+':
-			cout << " expression(+)";
-			left += term();    // evaluate Term and add
+			//std::cout << "expression(+)\n";
+			left += term();	// evaluate Term and add
 			t = ts.get();
 			break;
 		case '-':
-			cout << " expression(-)";
-			left -= term();    // evaluate Term and subtract
+			//std::cout << "expression(-)\n";
+			left -= term();	// evaluate Term and subtract
 			t = ts.get();
 			break;
 		default:
-			cout << " term";
+			//std::cout << "term\n";
 			ts.putback(t);
-			return left;       // finally: no more + or -: return the answer
+			return left;	// finally: no more + or -: return the answer
 		}
 	}
 }
+
 /*
 // a simple expression grammar:
 Expression:

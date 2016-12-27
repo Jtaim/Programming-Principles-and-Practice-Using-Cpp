@@ -87,15 +87,15 @@ Token Token_stream::get()
 
 //------------------------------------------------------------------------------
 
-Token_stream ts;        // provides get() and putback() 
+Token_stream ts;		// provides get() and putback()
 
-						//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-double expression();    // declaration so that primary() can call expression()
+double expression();	// declaration so that primary() can call expression()
 
-						//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-						// deal with numbers and parentheses
+// deal with numbers and parentheses
 double primary()
 {
 	Token t = ts.get();

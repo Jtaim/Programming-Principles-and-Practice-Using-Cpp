@@ -28,7 +28,7 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect6_ex3.cpp">
+    <ClCompile Include="sect6_ex8.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

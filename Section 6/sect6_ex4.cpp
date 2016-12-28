@@ -14,57 +14,82 @@ Check that each name is unique and terminated with an error message if a name is
 Write out all the (name, score) pairs, one per line.
 */
 
-#include "section6.h" // custom header
+#include "section6.h"
 
-class Name_value {
+class Name_value
+{
 public:
-	string name;
+	std::string name;
 	int value;
 	Name_value()
-		: name{}, value{ 0 } {}   // constructor for init values
-	Name_value(string n, int val)
-		: name{n}, value(val) { }
+		: name{}, value{ 0 } {}
+	Name_value(std::string n, int val)
+		: name{ n }, value(val) { }
 };
 
-int main() 
+int main()
 {
+	using std::cout;
+	using std::cin;
+
 	Name_value NS;
-	vector<Name_value> vNS;
-	cout << "Enter names and scores. \n";
+	std::vector<Name_value> vNS;
+	cout << "Enter names and scores. Terminate input with NoName 0\n";
 	// collect valid data
-	while (true) {
-		string n;
+	bool exit = false;
+	while (!exit)
+	{
+		std::string n;
 		int v;
 		cin >> n >> v;
-		if (cin.eof() || (n == "NoName" && v == 0)) {  // escape if NoName or EOF
-			break;
+		// escape if NoName or EOF
+		if (cin.eof() || (n == "NoName" && v == 0))
+		{
+			cin.clear();
+			exit = true;
 		}
-		if (cin.fail()) {  // redo if bad input non number for score
+		// redo if bad input non number for score
+		else if (!cin.good())
+		{
 			cout << "Entered invalid name or score.  Please reenter.\n";
 			cin.clear();
-			cin.ignore(INT_MAX, '\n');
+			cin.ignore(UINT_MAX, '\n');
 		}
-		else {
-			auto i = vNS.begin();
-			for (; i < vNS.end(); ++i) {
-				auto a = *i;
-				if (a.name == n) break;
+		else
+		{
+			std::transform(n.begin(), n.end(), n.begin(), ::tolower);
+			auto itr = vNS.begin();
+			for (; itr < vNS.end(); ++itr)
+			{
+				if (itr->name == n)
+				{
+					break;
+				}
 			}
-			if (i == vNS.end()) {
+			if (itr == vNS.end())
+			{
 				NS = { n,v };
 				vNS.push_back(NS);
 			}
-			else {
+			else
+			{
 				cout << "Entered duplicate name.\n";
 			}
 		}
 	}
-// print contents to screen
-	if (vNS.size() != 0) {
-		for (vector<Name_value>::size_type i = 0; i < vNS.size(); ++i) {
-			cout << vNS.at(i).name << " " << vNS.at(i).value << endl;
+	// print contents to screen
+	if (vNS.size() != 0)
+	{
+		for (auto i : vNS)
+		{
+			cout << i.name << " " << i.value << std::endl;
 		}
 	}
+	else
+	{
+		cout << "no names or scores entered\n";
+	}
+	cout << "Bye\n";
 	keep_window_open();
 	return 0;
 }

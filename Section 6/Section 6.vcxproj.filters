@@ -20,15 +20,55 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="sect6_ex5.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="sect6_ex7.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="sect6_ex5.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="sect6_ex10.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="calculator00.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="calculator01.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="calculator02buggy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_drill1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_drill2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_drill3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_drill4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_drill5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_ex2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_ex3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_ex4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_ex6.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="sect6_ex8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sect6_ex9.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

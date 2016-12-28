@@ -8,85 +8,100 @@ Rewrite Section 5 exercise 12 Bulls and Cows game to use 4 letters not 4 numbers
 */
 
 #include "section6.h"
-bool get_guesses(vector<char>&, const unsigned);
-int get_bulls(const vector<char>&, vector<char>&);
-int get_cows(const vector<char>&, vector<char>&);
+bool get_guesses(std::vector<char>& input, const size_t x, const char term = '|');
+int get_bulls(std::vector<char>&, std::vector<char>&);
+int get_cows(std::vector<char>&, std::vector<char>&);
 
 int main()
-try
 {
-	vector<char> set_letters{ 'a', 'b', 'c', 'd' };
-	vector<char> guesses{}; // initialize as empty
-	cout << "Guess " << set_letters.size() << " letters in the range of a - z to guess what I have.\n";
-	cout << "If guess a correct letter and the correct location will get a Bull.\n";
-	cout << "If guess a correct letter but not the correct location then will get a Cow.\n";
-	cout << "Example: My set is abcd and your guess was acbe, so there are 2 Cows (b and c)  1 Bull (a).\n\n";
-	cout << "Enter your guess.  To quit enter |.\n";
-	bool status = true;
-	while (status)
+	try
 	{
-		status = get_guesses(guesses, set_letters.size());
+		using std::cout;
 
-		if (status && guesses == set_letters) {
-			cout << "You have " << set_letters.size() << " Bulls, Congratulations!\n";
-			status = false;
+		const char TERM = '|';
+
+		std::vector<char> set_letters{ 'a', 'b', 'c', 'd' };
+		std::vector<char> guesses{};
+		cout << "Guess " << set_letters.size() << " letters in the range of a - z to guess what I have.\n";
+		cout << "If guess a correct letter and the correct location will get a Bull.\n";
+		cout << "If guess a correct letter but not the correct location then will get a Cow.\n";
+		cout << "Example: My set is abcd and your guess was acbe, so there are 2 Cows (b and c)  1 Bull (a).\n\n";
+		cout << "Enter your guess.  To quit enter |.\n";
+
+		while (get_guesses(guesses, set_letters.size(), TERM))
+		{
+			if (guesses == set_letters)
+			{
+				cout << "You have " << set_letters.size() << " Bulls, Congratulations!\n";
+				break;
+			}
+			else
+			{
+				std::vector<char> scratch = set_letters;
+				int bulls = get_bulls(guesses, scratch);
+				int cows = get_cows(guesses, scratch);
+				cout << "The result is " << cows << (cows == 1 ? " Cow" : " Cows");
+				cout << " and " << bulls << (bulls == 1 ? " Bull" : " Bulls") << ". Try again.\n";
+				guesses.clear();	// clear for new set of guesses
+			}
 		}
-		else if (status) {
-			vector<char> scratch = set_letters;
-			int bulls = get_bulls(guesses, scratch);
-			int cows = get_cows(guesses, scratch);
-			cout << "The result is " << cows << (cows == 1 ? " Cow" : " Cows")
-				 << " and " << bulls << (bulls == 1 ? " Bull" : " Bulls") << ". Try again.\n";
-			guesses = {}; // clear for new set of guesses
-		}
+		cout << "Bye\n";
+		keep_window_open();
+		return 0;
 	}
-	keep_window_open();
-	return 0;
-}
-catch (exception& e) 
-{
-	cerr << "error: " << e.what() << '\n';
-	keep_window_open();
-	return 1;
-}
-catch (...) 
-{
-	cerr << "Oops: unknown exception!\n";
-	keep_window_open();
-	return 2;
+	catch (std::exception& e)
+	{
+		std::cerr << "error: " << e.what() << '\n';
+		keep_window_open();
+		return 1;
+	}
+	catch (...)
+	{
+		std::cerr << "Oops: unknown exception!\n";
+		keep_window_open();
+		return 2;
+	}
 }
 /* function to get user input for letters a - z.
 INPUT: vector<char> reference to place valid guesses in.
        int for how many guesses needed
-OUPUT: bool true = got valid integers placed into the vector of int size
+OUPUT: bool true = got valid char placed into the vector of int size
        bool false = got early termination.
-ERROR: if given reference vector is not empty.
+ERROR: none
 */
-bool get_guesses(vector<char>&input, const unsigned x)
+bool get_guesses(std::vector<char> &input, const size_t x, const char term)
 {
-	if (!input.empty()) {
-		error("Function get_guesses() reference to vector not empty.\n");
+	if (!input.empty())
+	{
+		input.clear();
 	}
-	while(true) {
-		char guess = '|';
-		cin >> guess;
-		if (isalpha(guess) || guess == '|') { //check for valid number or escape entry
-			if (guess == '|') {
-				return false; // found a termination
-			}
-			else { //convert number char to integer and place into a vector
-				input.push_back(guess);
-				if (input.size() == x) { //checks if have correct number of guesses
-					return true; // got all guesses
-				}
-			}
+	char guess;
+	auto itr = x;
+	bool guess_qualified = true;
+	while (guess_qualified && itr > 0)
+	{
+		std::cin >> guess;
+		//check for valid number or escape entry
+		if (guess == term)
+		{
+			guess_qualified = false;
 		}
-		else { //bad entry clear vector and purge input buffer
-			cout << "bad entry try again.\n";
+		else if (isalpha(guess))
+		{	//check for valid number or escape entry
+			guess = static_cast<char>(tolower(guess));
+			input.push_back(guess);
+			--itr;
+		}
+		else
+		{	//bad entry clear vector and purge input buffer
+			std::cout << "bad entry try again.\n";
+			std::cin.clear();
+			std::cin.ignore(INT16_MAX, '\n');
 			input.clear();
-			cin.ignore(INT8_MAX, '\n');
+			itr = x;
 		}
 	}
+	return guess_qualified;
 }
 
 /* function to bulls.
@@ -94,23 +109,23 @@ INPUT: vector<char> reference to user input guesses.
        vector<char> reference to number to guess.
 OUPUT: int for number of bulls found
 ERROR: no error.
-modifies the temp vector by placing ? when finds a bull
+modifies the vectors by deleting matching elements
 */
-int get_bulls(const vector<char>&g, vector<char>&temp)
+int get_bulls(std::vector<char> &g, std::vector<char> &temp)
 {
 	int bulls = 0;
-	for (auto itrg = begin(g); itrg != end(g); ++itrg) {
-		for (auto itrt = begin(temp); itrt != end(temp); ++itrt)  //find Bulls
+	// be careful of rollover of unsigned i
+	for (auto i = g.size(); i > 0; --i)
+	{
+		//find Bulls starting from back 
+		//if find match erase elements from back to front
+		//do back to front so don't cause error from going outside vector bounds
+		//adjust i from size to element (i-1)
+		if (g[i - 1] == temp[i - 1])
 		{
-			itrt = find(itrt, end(temp), *itrg);
-			if (itrt == end(temp)) {
-				break;
-			}
-			else if ((itrt - begin(temp)) == (itrg - begin(g))) {
-				++bulls;
-				*itrt = '?';
-				break;
-			}
+			temp.erase(temp.begin() + i - 1);
+			g.erase(g.begin() + i - 1);
+			++bulls;
 		}
 	}
 	return bulls;
@@ -121,22 +136,21 @@ INPUT: vector<char> reference to user input guesses.
        vector<char> reference to number to guess.
 OUPUT: int for number of cows found
 ERROR: no error.
-modifies the temp vector by placing ? when finds a cow
+delete vector temp matching elements to vector g
 */
-int get_cows(const vector<char>&g, vector<char>&temp)
+int get_cows(std::vector<char> &g, std::vector<char> &temp)
 {
 	int cows = 0;
-	for (auto itrg = begin(g); itrg != end(g); ++itrg) {
-		for (auto itrt = begin(temp); itrt != end(temp); ++itrt)  //find Cows
+	for (auto i : g)
+	{
+		//find Cows
+		if (!temp.empty())
 		{
-			itrt = find(itrt, end(temp), *itrg);
-			if (itrt == end(temp)) {
-				break;
-			}
-			else {
+			auto pos = find(begin(temp), end(temp), i);
+			if (pos != end(temp))
+			{
+				temp.erase(pos);
 				++cows;
-				*itrt = '?';
-				break;
 			}
 		}
 	}

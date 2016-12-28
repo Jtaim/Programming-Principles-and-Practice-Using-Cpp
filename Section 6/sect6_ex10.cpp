@@ -1,5 +1,6 @@
 //Written by Jtaim
 //Date 9 Dec 2015
+//updated 28 Dec 2016
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
@@ -8,42 +9,59 @@ Ask user for 2 numbers.
 Ask if want to do permutation or combination
 p(a,b) = a!/(a-b)!
 c(a,b) = p(a,b)/b!
+https://www.mathsisfun.com/combinatorics/combinations-permutations.html
 */
 
 #include "section6.h"
 
-
-int get_integer()  // get valid integers from user
+// get validated user input
+template<typename T>
+bool get_input(T& val)
 {
-	int x = 0;
-	if (cin >> x) {
-		return x;
+	bool valid = false;
+	while (!(std::cin >> val))
+	{
+		std::cout << "invalid entry. reenter\n";
+		std::cin.clear();
+		std::cin.ignore(INT_MAX, '\n');
+		valid = false;
 	}
-	else
-		error("Invalid number entry.\n");
+		valid = true;
+	return valid;
 }
 
-char perm_or_comb() // check for valid input from user for selection of permutation or combination
+// check for valid input from user for selection of permutation or combination
+void get_selection(char& val)
 {
-	char pc = '?';
-	cin >> pc;
-	pc = tolower(pc);
-	if (pc == 'p' || pc == 'c') {
-		return pc;
-	}
-	else
-		error("Invalid permutation or combination entry.\n");
+	bool valid = false;
+	do
+	{
+		get_input(val);
+		val = static_cast<char>(std::tolower(val));
+		if (val != 'p' && val != 'c')
+		{
+			std::cout << "Invalid permutation or combination entry.\n";
+		}
+		else
+		{
+			valid = true;
+		}
+	} while (!valid);
 }
 
-int factoral(int start, int end)  // do factorial to a selected stop
+// do factorial to a selected stop
+int factoral(int start, int end)
 {
 	int fact = 1;
-	for (auto i = start; i > (start-end); --i) {
+	for (auto i = start; i > (start - end); --i)
+	{
 		fact *= i;
-		if ((i > 0) && (fact > INT_MAX - i)) {
+		if ((i > 0) && (fact > INT_MAX - i))
+		{
 			error("int overflow error");
 		}
-		if ((i < 0) && (fact < INT_MAX - i)) {
+		if ((i < 0) && (fact < INT_MAX - i))
+		{
 			error("int overflow error");
 		}
 	}
@@ -53,49 +71,64 @@ int factoral(int start, int end)  // do factorial to a selected stop
 int permutation(int a, int b)
 {
 	if (a <= 0 || (a - b) < 0)
+	{
 		error("Negative term in the permutation.\n");
-	return factoral(a,b);
+	}
+	return factoral(a, b);
 }
 
 int combination(int a, int b)
 {
 	int c;
-	c = permutation(a, b)/factoral(b,b);
+	c = permutation(a, b) / factoral(b, b);
 	return c;
 }
 
 int main()
-try
 {
-	cout << "Enter 2 numbers\n";
-	int a = 0;
-	int b = 0;
-	a = get_integer();
-	b = get_integer();
-	cout << "Do you want to do a permutation (p) or combination (c)?\n";
-	char p_c;
-	p_c = perm_or_comb();
-	int answer = 0;
-	if (p_c == 'p') {
-		answer = permutation(a,b);
-	}
-	else {
-		answer = combination(a, b);
-	}
-	cout << "The " << (p_c == 'p' ? "permutation" : "combination") << " is " << answer << ".\n";
+	try
+	{
+		std::cout << "Enter 2 numbers\n";
+		int a = 0;
+		int b = 0;
+		while (!(a > b))
+		{
+			std::cout << "'a' must be > 'b'\n";
+			get_input(a);
+			get_input(b);
+		}
+		std::cout << "Do you want to do a permutation (p) or combination (c)?\n";
+		char p_c;
+		get_selection(p_c);
 
-	keep_window_open();
-	return 0;
-}
-catch (exception& e) 
-{
-	cerr << "error: " << e.what() << '\n';
-	keep_window_open();
-	return 1;
-}
-catch (...) 
-{
-	cerr << "Oops: unknown exception!\n";
-	keep_window_open();
-	return 2;
+		int answer = 0;
+		if (p_c == 'p')
+		{
+			answer = permutation(a, b);
+		}
+		else if (p_c == 'c')
+		{
+			answer = combination(a, b);
+		}
+		else
+		{
+			error("should not get here.\n");
+		}
+		std::cout << "The " << (p_c == 'p' ? "permutation" : "combination") << " is " << answer << ".\n";
+
+		keep_window_open();
+		return 0;
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "error: " << e.what() << '\n';
+		keep_window_open();
+		return 1;
+	}
+	catch (...)
+	{
+		std::cerr << "Oops: unknown exception!\n";
+		keep_window_open();
+		return 2;
+	}
 }

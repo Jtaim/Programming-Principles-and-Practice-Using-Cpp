@@ -121,15 +121,27 @@
     <ClInclude Include="section6.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="sect6_ex5.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </Text>
+    <Text Include="sect6_ex5.txt" />
     <Text Include="sect6_ex7.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </Text>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="calculator00.cpp" />
+    <ClCompile Include="calculator01.cpp" />
+    <ClCompile Include="calculator02buggy.cpp" />
+    <ClCompile Include="sect6_drill1.cpp" />
+    <ClCompile Include="sect6_drill2.cpp" />
+    <ClCompile Include="sect6_drill3.cpp" />
+    <ClCompile Include="sect6_drill4.cpp" />
+    <ClCompile Include="sect6_drill5.cpp" />
+    <ClCompile Include="sect6_ex10.cpp" />
+    <ClCompile Include="sect6_ex2.cpp" />
+    <ClCompile Include="sect6_ex3.cpp" />
+    <ClCompile Include="sect6_ex4.cpp" />
+    <ClCompile Include="sect6_ex6.cpp" />
     <ClCompile Include="sect6_ex8.cpp" />
+    <ClCompile Include="sect6_ex9.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -86,7 +86,7 @@ bool input_check(std::vector<int>& dig, const char term)
 			break;
 		}
 		// check if entry is an integer
-		else if (std::all_of(str.begin(), str.end(), std::isdigit))
+		else if (std::all_of(str.begin(), str.end(), ::isdigit))
 		{
 			// check that string is <= integer vector capacity
 			if (str.size() > dig.capacity())

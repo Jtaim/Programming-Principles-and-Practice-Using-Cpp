@@ -20,15 +20,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="sect6_ex7.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="sect6_ex5.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="sect6_ex10.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="calculator00.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -71,5 +62,12 @@
     <ClCompile Include="sect6_ex9.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sect6_ex10.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="sect6_ex5.txt" />
+    <Text Include="sect6_ex7.txt" />
   </ItemGroup>
 </Project>

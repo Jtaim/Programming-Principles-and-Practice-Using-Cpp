@@ -121,12 +121,6 @@
     <ClInclude Include="section6.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="sect6_ex5.txt" />
-    <Text Include="sect6_ex7.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="calculator00.cpp" />
     <ClCompile Include="calculator01.cpp" />
     <ClCompile Include="calculator02buggy.cpp" />
@@ -142,6 +136,10 @@
     <ClCompile Include="sect6_ex6.cpp" />
     <ClCompile Include="sect6_ex8.cpp" />
     <ClCompile Include="sect6_ex9.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="sect6_ex5.txt" />
+    <Text Include="sect6_ex7.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

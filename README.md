@@ -6,8 +6,8 @@ I thought GitHub was a good place to share my solutions for the try its, drills,
 I'm currently using [Microsoft Visual Studio Community 2015] (https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx) to go through this book.
 I created a solution folder named PPP and will be adding projects for each section.  The sections or projects will contain Try Its, Drills and Exercises for that section.
 
-If you don't like Visual Studio an alternant solution for a C++ compiler is a variant of [MinGW distribution] (http://nuwen.net/mingw.html) listed here.
-When I last checked the distribution it was x64-native and GCC 6.3.0, Boost 1.63.0, and other neat librarys.  Can use with your favorite IDE or just a command line compiler.
+If you don't like Visual Studio an alternative solution for a C++ compiler is a variant of [MinGW distribution] (http://nuwen.net/mingw.html) listed here.
+When I last checked the distribution it was x64-native and GCC 6.3.0, Boost 1.63.0, and other neat library's.  Can use with your favorite IDE or just a command line compiler.
 Hey call me crazy but maybe use both.  It helped me find some errors.
 
 If you're reading along you will notice I intentionally left out the header file mentioned in the book.  Instead created a section header file for each of the sections, just for fun.

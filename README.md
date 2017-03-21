@@ -11,12 +11,12 @@ I created a solution folder named PPP and will be adding projects for each secti
 
 An alternative solution for a C++ compiler is a variant of [MinGW distribution](https://nuwen.net/mingw.html) listed here.
 This distribution supports the latest GNU GCC compiler also packaged with Boost and other neat libraries.
-This distribution also comes with the lates GNU Make so can create custome command line compiles created via you favorite editor.
+This distribution also comes with the latest GNU Make program so you can create custom command line compiles from C++ files created via your favorite editor.
 
 #### Deviations
-If you're reading along you will notice I intentionally left out the header file mentioned in the book.  Instead created a section header file for each of the sections 
-because in book header has been implimented into most compilers now, plus wanted some experiance dealing with custom header files.
-If want can get header file from books website www.stroustrup.com/Programming
+If you're reading along you will notice I intentionally left out the header file mentioned in the book.  Instead I created a section header file for each of the sections 
+because in the book's presented header file the functions have been implimented into most modern compilers, plus I wanted some experiance dealing with custom header files.
+If you want, you can get the header file from book's website www.stroustrup.com/Programming
 
 #### Some web sites I found helpfull
 - https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet 

@@ -6,12 +6,17 @@
 I thought GitHub would be a good place to share my solutions for the try its, review questions, drills, and exercises for the afore mentioned book.
 
 #### Usefull tools
-I'm currently using [Microsoft Visual Studio Community](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx) to go through this book.
-I created a solution folder named PPP and will be adding projects for each section.
+- [Microsoft Visual Studio Community](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx)
+- [MinGW varient distribution](https://nuwen.net/mingw.html) that supports the latest GNU GCC compiler also is packaged with Boost and other neat libraries.
+	Also, the distribution comes with the latest GNU Make program so you can create custom command line compiles from C++ files created via your favorite editor.
 
-An alternative solution for a C++ compiler is a variant of [MinGW distribution](https://nuwen.net/mingw.html) listed here.
-This distribution supports the latest GNU GCC compiler also packaged with Boost and other neat libraries.
-This distribution also comes with the latest GNU Make program so you can create custom command line compiles from C++ files created via your favorite editor.
+#### Notes
+I will be using Microsoft Visual Studio Community to go through this book. 
+I created a solution folder named PPP and added projects under the PPP solution for each section.
+In the solution Configuration Properties I selected build for the section I'm working on and deselect the others.
+If the sections contain mutliple files with a main function I just select Exclude from Project for the files I'm not working on 
+in the solution explorer tab.  Can always go back and add files back by selecting Include in Project. In the Solution Explorer tab you
+can select view all files to see all the included and excluded files.
 
 #### Deviations
 If you're reading along you will notice I intentionally left out the header file mentioned in the book.  Instead I created a section header file for each of the sections 
@@ -23,6 +28,5 @@ If you want, you can get the header file from book's website www.stroustrup.com/
 - https://isocpp.org/
 - http://en.cppreference.com/w/Main_Page
 
-
-
-I'm new at this so any suggestions are greatly appreciated.
+#### Disclaimer
+I'm new at this so any suggestions or comments are appreciated.

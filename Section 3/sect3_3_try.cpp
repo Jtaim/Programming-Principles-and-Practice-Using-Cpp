@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 15 Sept 2015
-//updated 1 Dec 2016
+//date 22 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -12,24 +11,23 @@ Read the age into a double to allow for children who can be very
 proud of being five and a half years old rather than just five.
 */
 
-#include <iostream>
-#include <string>
-#include "section3.h" //custom header
+#include "section3.h"	//custom header
 
-//C++ programs start by executing the function main
 int main()
 {
 	std::cout << "Please enter your first name: ";
-	std::string first_name = "???"; 		//string variable
-											//("???" means "don't know the name")
+	std::string first_name = "???";
 	std::cin >> first_name;
+
 	std::cout << "Please enter your age: ";
-	double age = -1;						//integer variable (-1 means "don't know the age")
+	double age = 0.0;		//integer variable (0.0 means "don't know the age")
 	std::cin >> age;
+
 	double age_months = (age * 12);
 	std::cout << "Hello, " << first_name
 		<< " (age " << age << ")"
 		<< "(age in months " << age_months << ")\n";
+
 	keep_window_open();
 	return 0;
 }

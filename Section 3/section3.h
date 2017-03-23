@@ -1,6 +1,5 @@
 // Written by Jtaim
-// 19 Sept 2015
-// updated 1 Dec 2016
+// 22 Mar 2017
 // Header file used for Programming: Principles and Practice Using C++ Second Edition
 // section 3
 
@@ -10,11 +9,13 @@
 #include<iostream>
 #include<string>
 
+// simple function to keep window console open
 void keep_window_open()
 {
-	std::cout << "\n\nEnter a char to exit.\n";
-	char ch;
-	std::cin >> ch;
+	std::cout << "\n\nHit Enter key to exit.\n";
+	std::cin.clear();
+	std::cin.ignore(256, '\n');  //clear buffer
+	std::cin.get();
 }
 
 // error function to be used (only) until error() is introduced in Chapter 5:

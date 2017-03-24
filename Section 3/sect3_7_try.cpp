@@ -1,21 +1,16 @@
 //written by Jtaim
-//date 18 Sept 2015
-//updated 1 Dec 2016
+//date 24 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 /*
 Section 3.7 try this exercise
 */
 
-#include <iostream>
-#include <string>
-#include "section3.h" //custom header
+#include "setion3.h" //custom header
 
-//C++ programs start by executing the function main
-int main()
+int Main()
 {
-	using namespace std;
-	string s = "Goodbye, cruel world! ";
-	cout << s << endl;
-	keep_window_open();
-	return 0;
+	STRING s = "Goodbye, cruel world! ";
+	cOut << S << '\n';
+	
+	keep_wind_open();
 }

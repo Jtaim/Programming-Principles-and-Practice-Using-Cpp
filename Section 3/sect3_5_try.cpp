@@ -1,31 +1,38 @@
 //written by Jtaim
-//date 18 Sept 2015
-//updated 1 Dec 2016
+//date 23 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 /*
 Section 3.5 try this exercise
 */
 
-#include <iostream>
-#include <string>
 #include "section3.h" //custom header
 
-//C++ programs start by executing the function main
-//exit using EOF ctrl-z
 int main()
 {
-	std::string previous = "";
-	std::string current;
-	std::cout << "A program to check for repeating words. EOF to exit\n";
-	std::cout << "Enter a sentance to check: ";
-	while (std::cin >> current)
+	using namespace std;
+
+	string previous = "";
+	string current;
+	cout << "A program to check for repeating words. EOF or ctrl-z to exit\n";
+	cout << "Enter a sentance to check: ";
+	while (cin >> current)
 	{
-		if(previous == current)
+		if (current.size() == previous.size())
 		{
 			// what if word is repeated but one is capitalized?
-			std::cout << "repeated word: " << current << std::endl;
+			int i = 0;
+			while (i < current.size())
+			{
+				if (tolower(current[i]) != tolower(previous[i])) { break; }
+				++i;
+			}
+			if (i == current.size())
+			{
+				cout << "repeated word: " << current << endl;
+			}
+			else { previous = current; }
 		}
-		previous = current;
+		else { previous = current; }
 	}
 	return 0;
 }

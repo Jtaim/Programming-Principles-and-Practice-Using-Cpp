@@ -1,24 +1,22 @@
 //written by Jtaim
-//date 17 Sept 2015
-//updated 1 Dec 2016
+//date 23 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
 Section 3.4 try this exercise
 */
 
-#include <iostream>
-#include <string>
-#include <cmath>		//for sqrt function
 #include "section3.h"	//custom header
 
 //C++ programs start by executing the function main
 int main()
 {
 	using namespace std;
+
 	cout << "Please enter a value: ";
-	int n;
+	int n{ 0 };
 	cin >> n;
+
 	cout << "n == " << n << endl
 		 << "n+1 == " << n+1 << endl
 		 << "three times n == " << 3*n << endl

@@ -119,14 +119,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="sect3_3_try.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="section3.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sect3_3_try.cpp" />
+    <ClCompile Include="sect3_4_try.cpp" />
+    <ClCompile Include="sect3_5_try.cpp" />
+    <ClCompile Include="sect3_7_try.cpp" />
+    <ClCompile Include="sect3_9_try.cpp" />
+    <ClCompile Include="sect3_drill.cpp" />
+    <ClCompile Include="sect3_ex10.cpp" />
+    <ClCompile Include="sect3_ex11.cpp" />
+    <ClCompile Include="sect3_ex2.cpp" />
+    <ClCompile Include="sect3_ex4.cpp" />
+    <ClCompile Include="sect3_ex5.cpp" />
+    <ClCompile Include="sect3_ex6.cpp" />
+    <ClCompile Include="sect3_ex7.cpp" />
+    <ClCompile Include="sect3_ex8.cpp" />
+    <ClCompile Include="sect3_ex9.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

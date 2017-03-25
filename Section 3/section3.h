@@ -8,6 +8,8 @@
 
 #include<iostream>
 #include<string>
+#include<cmath>
+#include<vector>
 
 // simple function to keep window console open
 void keep_window_open()

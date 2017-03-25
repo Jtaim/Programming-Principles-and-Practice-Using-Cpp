@@ -19,7 +19,7 @@ int main()
 		int i{ static_cast<int>(d) };	// try to squeeze a double into an int
 		//int j {d};						// the {} enforce error narrowing error
 		char c{ static_cast<char>(i) }; // try to squeeze an int into a char
-		int i2 = c;             		// get the integer value of the character
+		int i2{ c };             		// get the integer value of the character
 		cout << "the entered double value " << d << "\n"
 			 << "double converted to int " << i << "\n"
 			 << "int converted to char (" << c << ")\n"

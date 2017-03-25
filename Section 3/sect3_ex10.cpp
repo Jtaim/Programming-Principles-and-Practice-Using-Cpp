@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 19 Sept 2015
-//updated 2 Dec 2016
+//date 24 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 /*
 Section 3 exercise 10.
@@ -17,32 +16,58 @@ with their obvious meanings.
 
 int main()
 {
-	std::cout << "Enter an operation (+, -, *, /, plus, minus, mul, and div) followed by 2 operands separated by spaces:\n";
-	std::string operation;
-	double val1 = 0;
-	double val2 = 0;
-	while (std::cin >> operation >> val1 >> val2)
-	{
-		double res = 0;
-		if (operation == "+" || operation == "plus")
-			res = val1 + val2;
-		else if (operation == "-" || operation == "minus")
-			res = val1 - val2;
-		else if (operation == "*" || operation == "mul")
-			res = val1 * val2;
-		else if (operation == "/" || operation == "div")
-		{
-			if (val2 == 0)
-				simple_error("divide by zero");
-			res = val1 / val2;
-		}
-		else
-			simple_error("bad operation: " + operation);
+	using namespace std;
 
-		std::cout << val1 << " " << operation << " " << val2 << " = " << res << std::endl;
-		std::cout << "do another\n";
+	const vector<string> op{ "+", "-", "*", "/", "plus", "minus", "mul", "div" };
+	cout << "Enter an operation (+, -, *, /, plus, minus, mul, and div) followed by 2 operands separated by spaces:\n";
+
+	string operation{ "??" };
+	// check for good operation
+	bool goodOperation{ false };
+	cin >> operation;
+	for (auto i : op) {
+		if (i == operation) {
+			goodOperation = true;
+			break;
+		}
 	}
-	std::cout << "exit bad operands";
+	if (goodOperation == false) { simple_error("Bad Operation"); }
+
+	double val1{ 0.0 };
+	double val2{ 0.0 };
+	// check for good operands
+	if (!(cin >> val1 >> val2)) { simple_error("Bad Operands"); }
+
+	double res{ 0.0 };
+	// compute result
+	if (operation == "+" || operation == "plus")
+	{
+		res = val1 + val2;
+		operation = "+";
+	}
+	else if (operation == "-" || operation == "minus")
+	{
+		res = val1 - val2;
+		operation = "-";
+	}
+	else if (operation == "*" || operation == "mul")
+	{
+		res = val1 * val2;
+		operation = "*";
+	}
+	else if (operation == "/" || operation == "div")
+	{
+		if (val2 == 0)
+			simple_error("divide by zero");
+		res = val1 / val2;
+		operation = "/";
+	}
+	else
+		simple_error("not sure how I got here");
+
+	// print results
+	cout << val1 << " " << operation << " " << val2 << " = " << res << endl;
+
 	keep_window_open();
 	return 0;
 }

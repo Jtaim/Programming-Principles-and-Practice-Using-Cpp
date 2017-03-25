@@ -2,9 +2,10 @@
 //date 24 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 /*
-Section 3 exercise 4.
-A program that prompts the user to enter two integer values. 
-Store these values in int variables named val1 and val2. 
+Section 3 exercise 5
+repeat exercise 4 using double values
+Write your program to determine the smaller, larger, sum, difference, 
+product, and ratio of these values and report them to the user.
 */
 
 #include "section3.h" //custom header
@@ -13,9 +14,9 @@ int main()
 {
 	using namespace std;
 
-	cout << "Enter two integer values:\n";
-	int val1{ 0 };
-	int val2{ 0 };
+	cout << "Enter two double values:\n";
+	double val1{ 0.0 };
+	double val2{ 0.0 };
 
 	if (!(cin >> val1 >> val2)) { simple_error("Invalide entry!"); }
 	if (val1 < val2) {

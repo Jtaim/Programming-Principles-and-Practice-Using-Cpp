@@ -1,6 +1,5 @@
 // written by Jtaim
-//date 19 Sept 2015
-//updated 2 Dec 2016
+//date 24 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -14,19 +13,21 @@ So, the input 4 5 4 should give 4, 4, 5.
 
 #include "section3.h" //custom header
 
-//C++ programs start by executing the function main
 int main()
 {
-	std::cout << "A program that prompts the user to enter three integer values,\n"
-		<< "and then outputs the values in numerical sequence separated by commas.\n\n";
-	std::cout << "Enter three integer values:\n";
-	int val1 = 0;
-	int val2 = 0;
-	int val3 = 0;
-	std::cin >> val1 >> val2 >> val3;
-	int min = 0;
-	int mid = 0;
-	int max = 0;
+	using namespace std;
+
+	cout << "A program that prompts the user to enter three integer values,\n"
+		 << "and then outputs the values in numerical sequence separated by commas.\n\n"
+		 << "Enter three integer values:\n";
+	int val1{ 0 };
+	int val2{ 0 };
+	int val3{ 0 };
+	if (!(cin >> val1 >> val2 >> val3)) { simple_error("Invalide entry"); }
+
+	int min{ 0 };
+	int mid{ 0 };
+	int max{ 0 };
 	if ((val1 <= val2) && (val1 <= val3))
 	{
 		if (val2 <= val3)
@@ -72,7 +73,7 @@ int main()
 			max = val1;
 		}
 	}
-	std::cout << min << ", " << mid << ", " << max << std::endl;
+	cout << min << ", " << mid << ", " << max << endl;
 	keep_window_open();
 	return 0;
 }

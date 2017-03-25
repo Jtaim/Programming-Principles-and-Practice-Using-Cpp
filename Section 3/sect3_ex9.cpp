@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 19 Sept 2015
-//updated 2 Dec 2016
+//date 24 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 /*
 Section 3 exercise 9.
@@ -14,27 +13,24 @@ something that does’t correspond, such as stupid computer!.
 
 int main()
 {
-	std::cout << "Enter an spelled out number (example \"two\" for 2) type \"quit\" to exit:\n";
-	std::string spell_num;
-	while (std::cin >> spell_num)
+	using namespace std;
+
+	cout << "Enter a spelled out number (example \"two\" for 2) type \"quit\" to exit:\n";
+	string spell_num;
+	while (cin >> spell_num)
 	{
-		int val = -1;
-		if (spell_num == "zero")
-			val = 0;
-		else if (spell_num == "one")
-			val = 1;
-		else if (spell_num == "two")
-			val = 2;
-		else if (spell_num == "three")
-			val = 3;
-		else if (spell_num == "four")
-			val = 4;
-		else if (spell_num == "quit")
-			exit(0);
-		else
-			std::cout << "spelled out number does not compute try again\n";
-		if (val >= 0 && val <= 4)
-			std::cout << "The entered number " << spell_num << " is the number " << val << std::endl;
+		int val{ -1 };
+		if (spell_num == "zero") { val = 0; }
+		else if (spell_num == "one") { val = 1; }
+		else if (spell_num == "two") { val = 2; }
+		else if (spell_num == "three") { val = 3; }
+		else if (spell_num == "four") { val = 4; }
+		else if (spell_num == "quit") { break; }
+		else { cout << "spelled out number does not compute try again\n"; }
+
+		if (val >= 0) { 
+			cout << "The entered number " << spell_num << " is the number " << val << endl;
+		}
 	}
 	return 0;
 }

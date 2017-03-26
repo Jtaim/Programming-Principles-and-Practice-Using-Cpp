@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 21 Sept 2015
-//updated 4 Dec 2016
+//date 26 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -13,45 +12,50 @@ program that converts yen, euro, pound, yuan, and kroner into dollar
 int main()
 {
 	using namespace std;
-	constexpr double yen_to_dollar = 120.36;	//to a dollar
-	constexpr double euro_to_dollar = 0.89;
-	constexpr double pound_to_dollar = 0.64;
-	constexpr double krone_to_dollar = 6.68;	//danish Krone
-	constexpr double yuan_to_dollar = 6.38;
-	double amount = 1.0;
-	char convert = '?';
-	string currency = "???";
-	double rate = 1.0;
+	const vector<pair<const string, const double>> convertRate {
+		{"yen", 111.33},
+		{"euro", 0.93},
+		{"pound", 0.8},
+		{"danish krone", 6.8835},
+		{"yuan", 6.89}
+	};
+	double amount{ 1.0 };
+	char convertTo{ '?' };
+	string currency{ "???" };
+	double rate{ -1.0 };
 	cout << "Please enter an amount and currency to convert ('$' is to dollars 'o' to other:\n";
-	cin >> amount >> currency >> convert;
-	if (currency == "yen")
-		rate = yen_to_dollar;
-	else if (currency == "euro")
-		rate = euro_to_dollar;
-	else if (currency == "pound")
-		rate = pound_to_dollar;
-	else if (currency == "krone")
-		rate = krone_to_dollar;
-	else if (currency == "yuan")
-		rate = yuan_to_dollar;
-	else
-	{
-		cout << "Sorry, I don't know a currency called " << currency << endl;
-		keep_window_open();
-		exit(0);
+	// get currency amount
+	if (!(cin >> amount)) {
+		simple_error("entered amount unknown");
 	}
-
-	switch (convert)
+	// get currency to covert
+	cin >> currency;
+	// change entered currency to lower case
+	for (auto& c : currency) {
+		c = static_cast<char>(tolower(c));
+	}
+	// find rate for entered currency
+	auto i = convertRate.begin();
+	for (; i < convertRate.end(); ++i) {
+		if (i->first == currency) {
+			rate = i->second;
+			break;
+		}
+	}
+	// check if found valid currency
+	if (i == convertRate.end()) {
+		simple_error("unknown currency: " + currency);
+	}
+	// get conversion cammand
+	cin >> convertTo;
+	
+	switch (convertTo)
 	{
-	case '$':
-
-		cout << amount << " " << currency << " == $" << 1 / rate * amount << endl;
-		break;
-	case 'o':
-		cout << "$" << amount << " == " << currency << " " << rate * amount << endl;
-		break;
-	default:
-		cout << "Sorry don't know how to convert.  Please select correct command.\n";
+	case '$':	cout << amount << " " << currency << " == $" << 1 / rate * amount << endl;
+				break;
+	case 'o':	cout << "$" << amount << " == " << currency << " " << rate * amount << endl;
+				break;
+	default:	simple_error("unknown conversion command");
 	}
 	keep_window_open();
 }

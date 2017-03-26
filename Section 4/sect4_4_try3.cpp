@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 22 Sept 2015
-//updated 4 Dec 2016
+//date 26 Mar 2016
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -12,15 +11,14 @@ b     98
 z     122
 */
 
-#include "section4.h" //custom header
+#include "section4.h"	//custom header
 
 int main()
 {
 	using namespace std;
-	int index = 97;
-	while (index <= 122)
-	{
-		cout << char(index) << "\t" << index << endl;
+	int index{ 97 };	// 97 = 'a' lower case letters 122 = 'z'
+	while (index <= 122) {
+		cout << static_cast<char>(index) << "\t" << index << endl;
 		++index;
 	}
 	keep_window_open();

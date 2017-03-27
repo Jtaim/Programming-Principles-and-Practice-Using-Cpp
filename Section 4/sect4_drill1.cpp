@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 22 Sept 2015
-//update 10 Dec 2016
+//date 26 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -10,75 +9,50 @@ two INTs and then prints them. Exit the program when a terminating '|' is entere
 */
 
 #include "section4.h"	//custom header
-#include <vector>
-
-typedef int num_type;
-
-// return true if got valid numbers. 
-// send reference for number and termination character
-bool get_number(num_type& in_value, char term);
 
 int main()
 {
 	using namespace std;
-	const char TERMINATION_VALUE = '|';	//termination character
-	const int HOW_MANY = 2;				//get 2 numbers per loop
+	const char terminationChar = '|';	//termination character
+	const int howMany = 2;				//numbers to get per loop iteration
 
-	vector<num_type> values;
-	num_type temp;
-	bool more = true;
-	while (more)
+	int enteredNumber;
+	vector<decltype(enteredNumber)> enteredNumbers;
+	bool stop = false;
+	while (!stop)
 	{
-		cout << "Enter two integer numbers. Enter " << TERMINATION_VALUE << " to exit.\n";
-		int amount = 0;
-		while ((amount < HOW_MANY) && more)
+		cout << "Enter two numbers. Enter " << terminationChar << " to exit.\n";
+		for (int itr = 0; itr < howMany; ++itr)
 		{
-			more = get_number(temp, TERMINATION_VALUE);
-			if (more)
-			{
-				values.push_back(temp);
-				amount++;
+			if (cin >> enteredNumber) {
+				enteredNumbers.push_back(enteredNumber);
+			}
+			else {	//check for valid termination
+				cin.clear();	//clear cin errors
+				char c;
+				cin >> c;
+				if (c == terminationChar) {
+					enteredNumbers.clear();
+					stop = true;
+					break;
+				}
+				else {
+					simple_error("invalid number entry");
+				}
 			}
 		}
-		if (more)
-		{
-			cout << "The numbers entered: ";
-			for (auto i : values)
-			{
+		// print numbers if valid
+		if (!stop) {
+			cout << "Entered numbers: ";
+			for (auto i : enteredNumbers) {
 				cout << i << " ";
 			}
-			cout << "\n\n";
+			cout << endl;
 		}
-		values.clear();
+		//clear vector for next set of numbers
+		enteredNumbers.clear();
 	}
-	cout << "bye\n";
+	cout << "Bye\n";
 	keep_window_open();
 	return 0;
-}
-
-bool get_number(num_type& in_value, char term)
-{
-	while (1)
-	{
-		if (!(std::cin >> in_value))
-		{
-			std::cin.clear();
-			char termination;
-			std::cin >> termination;
-			if (termination == term)
-			{
-				std::cout << "Program terminated\n";
-				return false;
-			}
-			else
-			{
-				std::cout << "Entered an incorrect value try again:\n";
-				std::cin.ignore(32765, '\n');
-			}
-		}
-		else
-		{
-			return true;
-		}
-	}
 }

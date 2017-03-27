@@ -14,93 +14,58 @@ Section 4 Drill step 4.
 */
 
 #include "section4.h"	//custom header
-#include <vector>
-
-typedef double num_type;	// set type to work with
-
-// return true if got valid numbers. 
-// send reference for number and termination character
-bool get_number(num_type& in_value, char term);
 
 int main()
 {
 	using namespace std;
-	const char TERMINATION_VALUE = '|';	// termination character
-	const int HOW_MANY = 2;				// get 2 numbers per loop
+	const char terminationChar = '|';	//termination character
+	const int howMany = 2;				//numbers to get per loop iteration
 
-	vector<num_type> values;			// vector to hold valid input numbers
-	num_type temp;						// temp memory for input numbers
-	bool more = true;					// false when term character is entered
-	while (more)
+	double enteredNumber;
+	vector<decltype(enteredNumber)> enteredNumbers;
+	bool stop{ false };
+	while (!stop)
 	{
-		num_type small_num;
-		num_type large_num;
-		cout << "Enter two integer numbers. Enter " << TERMINATION_VALUE << " to exit.\n";
-		int amount = 0;
-		while ((amount < HOW_MANY) && more)	// get numbers
+		cout << "Enter two numbers. Enter " << terminationChar << " to exit.\n";
+		for (int itr = 0; itr < howMany; ++itr)
 		{
-			more = get_number(temp, TERMINATION_VALUE);
-			if (more)
-			{
-				if (amount == 0)
-					small_num = large_num = temp;
-				else if (temp < small_num)
-					small_num = temp;
-				else if (temp > large_num)
-					large_num = temp;
-				values.push_back(temp);
-				amount++;
+			if (cin >> enteredNumber) {
+				enteredNumbers.push_back(enteredNumber);
+			}
+			else {	//check for valid termination
+				cin.clear();	//clear cin errors
+				char c;
+				cin >> c;
+				if (c == terminationChar) {
+					enteredNumbers.clear();
+					stop = true;
+					break;
+				}
+				else {
+					simple_error("invalid number entry");
+				}
 			}
 		}
-		if (more)
-		{
-			cout << "The numbers entered: ";
-			for (auto i : values)
-			{
+		// print numbers if valid
+		if (!stop) {
+			cout << "Entered numbers: ";
+			for (auto i : enteredNumbers) {
 				cout << i << " ";
 			}
-			cout << "\n";
-			// assuming only 2 entries total
-			if (values.front() == values.back())
-			{
-				cout << "The values entered are equal.\n\n";
+			cout << endl;
+			sort(enteredNumbers.begin(), enteredNumbers.end());
+			if (enteredNumbers.front() == enteredNumbers.back()) {
+				cout << "The entered numbers are equal.\n";
 			}
-			else
-			{
-				cout << "The largest number:  " << large_num << endl;
-				cout << "The smaller number:  " << small_num << "\n\n";
+			else {
+				cout << "smaller value is: " << enteredNumbers.front() << endl;
+				cout << "larger value is: " << enteredNumbers.back() << endl;
 			}
 		}
-		values.clear();
+		//clear vector for next set of numbers
+		enteredNumbers.clear();
 	}
-	cout << "bye\n";
+	cout << "Bye\n";
 	keep_window_open();
 	return 0;
-}
-
-bool get_number(num_type& in_value, char term)
-{
-	while (1)
-	{
-		if (!(std::cin >> in_value))
-		{
-			std::cin.clear();
-			char termination;
-			std::cin >> termination;
-			if (termination == term)
-			{
-				std::cout << "Program terminated\n";
-				return false;
-			}
-			else
-			{
-				std::cout << "Entered an incorrect value try again:\n";
-				std::cin.ignore(32765, '\n');
-			}
-		}
-		else
-		{
-			return true;
-		}
-	}
 }

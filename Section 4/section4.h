@@ -1,28 +1,31 @@
 // Written by Jtaim
-// 8 Oct 2015
-// updated 4 Dec 2016
+// 25 Mar 2017
 // Header file used for Programming: Principles and Practice Using C++ Second Edition
 // section 4
 
-#ifndef SECTION4_H	// begin header guard
+#ifndef SECTION4_H		// begin header guard
 #define SECTION4_H
 
 #include<iostream>
 #include<string>
+#include<cmath>
+#include<vector>
+#include <algorithm>
 
+// simple function to keep window console open
 void keep_window_open()
 {
-	std::cout << "\n\nhit enter key to exit.\n";
+	std::cout << "\n\nHit Enter key to exit.\n";
 	std::cin.clear();
-	std::cin.ignore(32765, '\n');
+	std::cin.ignore(256, '\n');	//clear buffer
 	std::cin.get();
 }
 
 // error function to be used (only) until error() is introduced in Chapter 5:
-void simple_error(const std::string s)	// write error: s and exit program
+void simple_error(std::string s)	// write error: s and exit program
 {
 	std::cerr << "error: " << s << '\n';
 	keep_window_open();
 	exit(1);						// for some Windows environments
 }
-#endif	// close header guard
+#endif		// close header guard

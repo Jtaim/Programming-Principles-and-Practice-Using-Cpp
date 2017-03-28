@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 25 Sept 2015
-//updated 10 Dec 2016
+//date 27 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -20,91 +19,64 @@ Section 4 Drill step 6.
    If it is the largest so far, write the largest so far after the number.
 */
 
-#include "section4.h"		//custom header
-#include <vector>
-
-typedef double num_type;	// set type to work with
-
-// return true if got valid numbers. 
-// send reference for number and termination character
-bool get_number(num_type& in_value, char term);
+#include "section4.h"	//custom header
 
 int main()
 {
 	using namespace std;
-	const char TERMINATION_VALUE = '|';	// termination character
+	const char terminationChar = '|';	//termination character
+	const int howMany = 1;				//numbers to get per loop iteration
+	const double tolerance = 1.0 / 100;	//close enough for floating point comparison
 
-	vector<num_type> values;			// vector to hold valid input numbers
-	num_type temp;						// temp memory for input numbers
-	bool more = true;					// false when term character is entered
 
-	num_type small_num;
-	num_type large_num;
-	while (more)	// get numbers
+	double enteredNumber;
+	vector<decltype(enteredNumber)> enteredNumbers;
+	bool stop{ false };
+	while (!stop)
 	{
-		cout << "Enter two numbers. Enter " << TERMINATION_VALUE << " to exit.\n";
-		more = get_number(temp, TERMINATION_VALUE);
-		if (more)
+		cout << "Enter a number. Enter " << terminationChar << " to exit.\n";
+		for (int itr = 0; itr < howMany; ++itr)
 		{
-			cout << "The currently entered number: " << temp << endl;
-			if (values.size() == 0)
-			{
-				cout << temp << " is now the smallest number.\n";
-				cout << temp << " is now the largest number.\n";
-				small_num = large_num = temp;
+			if (cin >> enteredNumber) {
+				enteredNumbers.push_back(enteredNumber);
 			}
-			else if (temp < small_num)
-			{
-				cout << temp << " is now the smallest number.\n";
-				small_num = temp;
+			else {	//check for valid termination
+				cin.clear();	//clear cin errors
+				char c;
+				cin >> c;
+				if (c == terminationChar) {
+					enteredNumbers.clear();
+					stop = true;
+					break;
+				}
+				else {
+					simple_error("invalid number entry");
+				}
 			}
-			else if (temp > large_num)
-			{
-				cout << temp << " is now the largest number.\n";
-				large_num = temp;
+		}
+		// print numbers if valid
+		if (enteredNumbers.size() > 0) {
+			cout << "value entered: " << enteredNumber << endl;
+			//sort will place largest at end and smallest at begin.
+			sort(enteredNumbers.begin(), enteredNumbers.end());
+			//first entry so is smallest and largest
+			if (enteredNumbers.size() == 1) {
+				cout << enteredNumber << " is the smallest so far\n";
+				cout << enteredNumber << " is the largest so far\n\n";
 			}
-			values.push_back(temp);
+			//check for new smallest
+			else if (enteredNumbers.front() == enteredNumber) {
+				cout << enteredNumber << " is the smallest so far\n";
+			}
+			//check for new largest
+			else if (enteredNumbers.back() == enteredNumber) {
+				cout << enteredNumber << " is the largest so far\n\n";
+			}
+			//the else is optional :)
+			else { continue; }
 		}
 	}
-	if (values.size() != 0)
-	{
-		cout << "The numbers entered: ";
-		for (auto i : values)
-		{
-			cout << i << " ";
-		}
-		cout << "\n";
-		cout << "The largest number:  " << large_num << endl;
-		cout << "The smaller number:  " << small_num << "\n\n";
-	}
-	cout << "bye\n";
+	cout << "Bye\n";
 	keep_window_open();
 	return 0;
-}
-
-bool get_number(num_type& in_value, char term)
-{
-	while (1)
-	{
-		if (!(std::cin >> in_value))
-		{
-			std::cin.clear();
-			char termination;
-			std::cin >> termination;
-			if (termination == term)
-			{
-				std::cout << "Program terminated\n";
-				return false;
-			}
-			else
-			{
-				std::cout << "Entered an incorrect value try again:\n";
-				std::cin.ignore(32765, '\n');
-			}
-		}
-		else
-		{
-			return true;
-		}
-	}
 }

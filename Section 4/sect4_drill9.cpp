@@ -1,9 +1,9 @@
 //written by Jtaim
-//date 28 Mar 2017
+//date 29 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
-Section 4 Drill step 8.
+Section 4 Drill step 9.
 1. Write a program that consists of a while-loop that (each time around the loop)
    reads in two int numbers and then prints them. Exit the program when a terminating '|' is entered.
 2. Change the program to write out the smaller value is: followed by the smaller of the
@@ -24,6 +24,10 @@ Section 4 Drill step 8.
    You may consider 12 m (with a space between the number and the unit) equivalent to 12m (without a space).
 8. Reject values without units or with “illegal” representations of units, 
    such as y, yard, meter, km, and gallons.
+9. Keep track of the sum of values entered (as well as the smallest and the largest)
+   and the number of values entered. When the loop ends, print the smallest, the largest,
+   the number of values, and the sum of values. Note that to keep the sum, you have to
+   decide on a unit to use for that sum; use meters.
 */
 
 #include "section4.h"	//custom header
@@ -32,15 +36,17 @@ int main()
 {
 	using namespace std;
 	const char terminationChar = '|';	//termination character
+	const string convetToUnit{ "m" };
 	const vector<pair<string, double>> convert{
-		{ "m", 100.0 },	//covert to cm
-		{ "cm", 1.00 },	//leave as is
-		{ "in", 2.54 },	//convert to cm
-		{ "ft", 12.0 }	//convert to in
+		{ "m", 1.0 },			//leave as is
+		{ "cm", 1.0/100 },		//convert to m
+		{ "in", 2.54/100 },		//convert to m
+		{ "ft", 12.0*2.54/100 }	//convert to m
 	};
-
+	
 	double enteredNumber{ 0.0 };
 	string unit;
+	double sum{ 0.0 };
 	vector<pair<double, string>> enteredMeasurements;
 	bool stop{ false };
 	while (!stop)
@@ -51,53 +57,59 @@ int main()
 			// get number
 			if ((cin >> enteredNumber)) {
 				// get unit of measure
-				cin >> unit;
-				// look for termination char
-				if (unit.find(terminationChar) != string::npos) {
-					cout << "termination '" << terminationChar << "' found\n";
-					stop = true;
-					break;
-				}
-				// check for valid unit of measure and convert
-				else {
-					auto i = convert.begin();
-					for (; i < convert.end(); ++i) {
-						//valid unit finds correct index into the vector convert 
-						if (i->first == unit) {
-							enteredNumber *= i->second;
-							// m and in converts to cm
-							if (unit == "m" || unit == "in" || unit == "cm") {
-								unit = "cm";
+				if (enteredNumber > 0) {
+					cin >> unit;
+					// look for termination char
+					if (unit.find(terminationChar) != string::npos) {
+						cout << "termination '" << terminationChar << "' found\n";
+						stop = true;
+						break;
+					}
+					// check for valid unit of measure and convert
+					else {
+						auto i = convert.begin();
+						for (; i < convert.end(); ++i) {
+							//valid unit finds correct index into the vector convert 
+							if (i->first == unit) {
+								cout << enteredNumber << unit << " converts to ";
+								enteredNumber *= i->second;
+								cout << enteredNumber << convetToUnit << endl;
+								enteredMeasurements.push_back({ enteredNumber, convetToUnit });
+								sum += enteredNumber;
+								break;
 							}
-							// ft converts to in
-							else if (unit == "ft") {
-								unit = "in";
-							}
-							else {
-								simple_error("should not get here\n");
-							}
-							enteredMeasurements.push_back({ enteredNumber, unit });
-							break;
+						}
+						if (i == convert.end()) {
+							cout << "illegal units. Measurement was discarded.\n";
 						}
 					}
-					if (i == convert.end()) {
-						cout << "illegal units. Measurement was discarded.\n";
-					}
+				}
+				else {
+					cin.clear();			//clear cin error if is one
+					cin.ignore(256, '\n');	//clear all entries untill new line is found
+					cout << "can not enter a zero or negative distance.  Please renter a number\n";
 				}
 			}
 			else {
 				cin.clear();	// clear cin errors
 				if (cin.peek() != terminationChar) {
-					simple_error("no number entered");
+					cin.clear();			//clear cin error if is one
+					cin.ignore(256, '\n');	//clear all entries untill new line is found
+					cout << "invalid entry.  Please renter a number\n";
 				}
-				else { stop = true; }
+				else {
+					stop = true;
+				}
 			}
 		}
 		// print measurements
-		if (!enteredMeasurements.empty())
-			cout << "convert valid measurements.\n";
-		for (auto pm : enteredMeasurements) {
-			cout << pm.first << pm.second << endl;
+		if (!enteredMeasurements.empty()) {
+			sort(enteredMeasurements.begin(), enteredMeasurements.end(), [](auto &left, auto &right) {
+				return left.first < right.first;
+			});
+			cout << "The smallest valid value entered is " << enteredMeasurements.front().first << convetToUnit << endl;
+			cout << "The largest valid value entered is " << enteredMeasurements.back().first << convetToUnit << endl;
+			cout << "The sum of all valid entered measurements is " << sum << convetToUnit << endl;
 		}
 	}
 	cout << "Bye\n";

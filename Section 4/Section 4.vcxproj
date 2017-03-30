@@ -121,41 +121,7 @@
     <ClInclude Include="section4.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect4_4_try1.cpp" />
-    <ClCompile Include="sect4_4_try2.cpp" />
-    <ClCompile Include="sect4_4_try3.cpp" />
-    <ClCompile Include="sect4_4_try4.cpp" />
-    <ClCompile Include="sect4_5_try.cpp" />
-    <ClCompile Include="sect4_6_try.cpp" />
-    <ClCompile Include="sect4_drill1.cpp" />
-    <ClCompile Include="sect4_drill2.cpp" />
-    <ClCompile Include="sect4_drill3.cpp" />
-    <ClCompile Include="sect4_drill4.cpp" />
-    <ClCompile Include="sect4_drill5.cpp" />
-    <ClCompile Include="sect4_drill6.cpp" />
-    <ClCompile Include="sect4_drill7_8.cpp" />
-    <ClCompile Include="sect4_drill9_11.cpp" />
-    <ClCompile Include="sect4_ex10.cpp" />
-    <ClCompile Include="sect4_ex11.cpp" />
-    <ClCompile Include="sect4_ex12.cpp" />
-    <ClCompile Include="sect4_ex13.cpp" />
-    <ClCompile Include="sect4_ex14.cpp" />
-    <ClCompile Include="sect4_ex15.cpp" />
-    <ClCompile Include="sect4_ex16.cpp" />
-    <ClCompile Include="sect4_ex17.cpp" />
-    <ClCompile Include="sect4_ex18.cpp" />
-    <ClCompile Include="sect4_ex19.cpp" />
-    <ClCompile Include="sect4_ex2.cpp" />
-    <ClCompile Include="sect4_ex20.cpp" />
-    <ClCompile Include="sect4_ex21.cpp" />
-    <ClCompile Include="sect4_ex3.cpp" />
-    <ClCompile Include="sect4_ex4.cpp" />
-    <ClCompile Include="sect4_ex4_debug.cpp" />
-    <ClCompile Include="sect4_ex5.cpp" />
-    <ClCompile Include="sect4_ex6.cpp" />
-    <ClCompile Include="sect4_ex7.cpp" />
-    <ClCompile Include="sect4_ex8.cpp" />
-    <ClCompile Include="sect4_ex9.cpp" />
+    <ClCompile Include="sect4_drill11.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

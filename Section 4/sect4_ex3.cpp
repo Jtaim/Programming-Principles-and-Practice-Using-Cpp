@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 29 Sept 2015
-//updated 14 Dec 2016
+//date 31 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -13,71 +12,65 @@ Find and print the mean distance between two neighboring cities.
 */
 
 #include "section4.h" //custom header
-#include <vector>
 
 int main()
 {
-	using std::cout;
-	using std::cin;
-	using std::endl;
+	using namespace std;
 
-	constexpr char TERMINATION = '|';
+	constexpr auto termination{ '|' };
 
 	std::vector<double> dist;
-	double sum = 0;
-	double min = 0;
-	double max = 0;
+	auto sum{ 0.0 };
+	auto min{ 0.0 };
+	auto max{ 0.0 };
 
-	cout << "Please enter sequence of doubles (representing distances). '" << TERMINATION << "' to exit:\n";
-	double distance = 0;
-	bool exit = false;
-	while (!exit)
-	{
-		if (cin >> distance)
-		{
-			if (distance <= 0)
+	cout << "Please enter sequence of doubles (representing distances). '" << termination << "' to exit:\n";
+	auto distance{ 0.0 };
+	auto exit{ false };
+	while (!exit) {
+		if (cin >> distance) {
+			if (distance <= 0) {
 				cout << "a distance of zero or less is not allowed.\n";
-			else
-			{
-				if (sum == 0)
-				{
+			}
+			else {
+				if (sum == 0) {
 					min = max = distance;
 				}
-				else if (distance < min)
+				else if (distance < min) {
 					min = distance;
-				if (distance > max)
+				}
+				else if (distance > max) {
 					max = distance;
+				}
+				else {
+					simple_error("should not be here.\n");
+				}
 				sum += distance;
 				dist.push_back(distance);
 			}
 		}
-		else
-		{
-			if (cin.eof() || cin.bad())
-			{
+		else {
+			if (cin.eof()) {
 				cin.clear();
 				exit = true;
 			}
-			else
-			{
+			else {
 				cin.clear();
-				std::string temp;
-				getline(cin, temp);
-				if (find(temp.begin(), temp.end(), TERMINATION) != temp.end())
-				{
+				char temp;
+				cin >> temp;
+				if (temp == termination) {
 					exit = true;
 				}
-				else
-				{
+				else {
 					cout << "Entered incorrect value.\n";
 				}
 			}
 		}
 	}
-	if (dist.size() == 0)
+	if (dist.size() == 0) {
 		cout << "no distances entered\n";
-	else
-	{
+	}
+	else {
 		cout << "total distance " << sum << endl;
 		cout << "smallest distance " << min << endl;
 		cout << "greatest distance " << max << endl;

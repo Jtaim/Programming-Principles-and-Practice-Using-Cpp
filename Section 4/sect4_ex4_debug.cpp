@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 30 Sept 2015
-//updated 15 Dec 2016
+//date 31 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 /*
 Section 4 exercise 4 debug is to try all iterations of possible guesses. 
@@ -15,72 +14,60 @@ Hint: Use the < and <= operators and the if-else construct.
 
 int main()
 {
-	using std::cout;
-	using std::cin;
-	using std::endl;
+	using namespace std;
 
-	int constexpr MAX = 100;      // maximum number can select
-	int constexpr MIN = 1;        // minimum number can guess
-	int constexpr MAX_GUESS = 7;  // maximum number of times to ask before identifying the number
+	auto constexpr max{ 100 };      // maximum number can select
+	auto constexpr min{ 1 };        // minimum number can guess
+	auto constexpr max_guess{ 7 };  // maximum number of times to ask before identifying the number
 
-	char choice{ '?' };
+	auto choice{ '?' };
 //********************************************************************************************
-	for (int iteration = MIN; iteration <= MAX; iteration++)
-	{	// for loop to debug all combinations
+	for (auto iteration = min; iteration <= max; iteration++) {
+		// for loop to debug all combinations
 		//cout << "\niteration is " << iteration << endl;
 //********************************************************************************************
-		int high = MAX;						// keeps track of a new high
-		int low = MIN;						// keeps track of a new low
-		int guess = (high - low) / 2 + low;	// keeps track of the next guess
-		int mguess = 0;						// keeps count of guess count
+		auto high = max;						// keeps track of a new high
+		auto low = min;							// keeps track of a new low
+		auto guess = (high - low) / 2 + low;	// keeps track of the next guess
+		auto mguess{ 0 };						// keeps count of guess count
 		//cout << "Pick a number between " << low << " and " << high << " and let me try to guess it by asking some questions.\n";
-		bool exit = false;
-		while (!exit && mguess < MAX_GUESS)
-		{
+		auto exit{ false };
+		while (!exit && mguess < max_guess) {
 //********************************************************************************************
-			if (iteration <= guess) choice = 'y';    // added the if statement for debug to auto give yes or no
-			else if (iteration > guess) choice = 'n';
+			if (iteration <= guess) { choice = 'y'; }    // added the if statement for debug to auto give yes or no
+			else if (iteration > guess) { choice = 'n'; }
+			cin.putback(choice);
 			//cout << "Is " << iteration << " <= " << guess << " " << choice << '\n';
 //********************************************************************************************
 			//cout << "Is your number <= " << guess << " (y or n)? ";
-			//cin >> choice;
-			if (!cin.eof() || !cin.fail())
-			{
-				choice = tolower(choice);
-				if (choice == 'y' || choice == 'n')
-				{
+			if(cin >> choice) {
+				choice = static_cast<decltype(choice)>(tolower(choice));
+				if (choice == 'y' || choice == 'n') {
 					mguess++;
-					if (choice == 'y')
-					{
+					if (choice == 'y') {
 						high = guess;
 					}
-					else if (choice == 'n')
-					{
+					else if (choice == 'n') {
 						low = guess + 1;
 					}
-					if (high == low)
-					{
+					if (high == low) {
 						cout << "Found the answer " << high << " in " << mguess << " guesses.\n";
 						exit = true;
 					}
-					else
-					{
+					else {
 						guess = (high - low) / 2 + low;
 					}
 				}
-				else
-				{
+				else {
 					cout << "You did not pick a valid (y or n) answer.  Select again.\n";
 				}
 			}
-			else
-			{
+			else {
 				cin.clear();
 				exit = true;
 			}
 		}
-		if (mguess > MAX_GUESS)
-		{
+		if (high != low) {
 			simple_error("Exceeded max number of guesses\n");
 		}
 	} // need extra bracket to close for loop

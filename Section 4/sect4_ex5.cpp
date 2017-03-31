@@ -1,5 +1,5 @@
 //written by Jtaim
-//date 1 Oct 2015
+//date 31 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -12,86 +12,94 @@ If the entry arguments are 35.6, 24.1, and '+', the program output should be The
 
 #include "section4.h"  // custom header
 
-bool get_number(double& num);
-void print_result(double);
+bool get_numbers(std::pair<double,double>&);
+bool check_term(const char);
+void print_result(const double);
 
 int main()
 {
-	using std::cout;
-	using std::cin;
+	using namespace std;
 
-	constexpr char TERMINATION = '|';
+	constexpr auto termination = '|';
+	const vector<char> ops{ '+','-','*','/' };
 
-	double num1{ 0 };
-	double num2{ 0 };
-	char operation{ '?' };
-	bool exit = false;
-	while (!exit)
-	{
-		cout << "Enter 2 numbers and an operation (+, -, *, /). Use " << TERMINATION << " to exit.\n";
-		if (get_number(num1) && get_number(num2))
-		{
-			cin >> operation;
-			switch (operation)
-			{
-			case '+': print_result(num1 + num2);
-				break;
-			case '-': print_result(num1 - num2);
-				break;
-			case '*': print_result(num1 * num2);
-				break;
-			case '/':
-				if (num2 != 0)
-				{
-					print_result(num1 / num2);
-				}
-				else
-				{
-					simple_error("division by zero is not allowed.\n");
-				}
-				break;
-			case TERMINATION :
-				exit = true;
-				break;
-			default:
-				cout << "Wrong operator selected.\n";
+	pair<double, double> numbers{ 0.0, 0.0 };
+	auto exit{ false };
+	while (!exit) {
+		cout << "Enter 2 numbers and an operation (+, -, *, /). Use " << termination << " to exit.\n";
+		while (!get_numbers(numbers)) {
+			exit = check_term(termination);
+			if (exit == false) {
+				cout << "a bad number was entered. please re-enter numbers or exit\n";
 			}
+			else { break; }
 		}
-		else
-		{
-			// EOF is captured
-			if (cin.eof())
-			{
-				exit = true;
-				cout << "EOF found\n";
+		if (exit == false) {
+			char op;
+			cin >> op;
+			if (find(ops.begin(), ops.end(), op) != ops.end()) {
+				switch (op) {
+				case '+': print_result(numbers.first + numbers.second);
+					break;
+				case '-': print_result(numbers.first - numbers.second);
+					break;
+				case '*': print_result(numbers.first * numbers.second);
+					break;
+				case '/':
+					if (numbers.second != 0) {
+						print_result(numbers.first / numbers.second);
+					}
+					else {
+						simple_error("division by zero is not allowed.\n");
+					}
+					break;
+				default:
+					simple_error("should not be here.\n");
+				}
 			}
-			cin.clear();
-			char c;
-			cin >> c;
-			if (c == TERMINATION)
-			{
-				exit = true;
-				cout << "termination found\n";
+			else {
+				cin.putback(op);
+				exit = check_term(termination);
+				if (exit == false) {
+					cout << "bad operation entered. please re-enter equation or exit\n";
+				}
 			}
-			cin.ignore(32768, '\n');
 		}
 	}
+	cout << "Bye\n";
 	keep_window_open();
 	return 0;
 }
 
-bool get_number(double & num)
+bool get_numbers(std::pair<double, double>& pd)
 {
-	if (std::cin >> num)
-		return true;
-	else
+	if (!(std::cin >> pd.first)) {
+		return false;
+	}
+	if (!(std::cin >> pd.second)) {
+		return false;
+	}
+	return true;
+}
+
+bool check_term(const char t)
+{
+	if (std::cin.eof() || std::cin.bad())
 	{
-		std::cout << "Incorrect number entry\n";
+		return true;
+	}
+	std::cin.clear();
+	std::string str;
+	std::cin >> str;
+	if (str.find(t) != std::string::npos) {
+		return true;
+	}
+	else {
 		return false;
 	}
 }
 
-void print_result(double result)
+void print_result(const double result)
 {
 	std::cout << "Your result is " << result << std::endl;
 }

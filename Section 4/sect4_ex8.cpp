@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 3 Oct 2015
-//update 17 Dec 2016
+//date 31 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -16,36 +15,32 @@ Section 4 exercise 8.
 */
 
 #include "section4.h"
-#include <cmath>
 
 int main()
 {
 	using std::cout;
 
-	int constexpr MAX_SQUARES = 64;
+	constexpr auto maxSquares{ 64 };
 
-	int current_square_grains = 0;
-	int previous_square_grains = 0;
-	for (int square = 0; square < MAX_SQUARES; square++)
-	{
-		current_square_grains = std::pow(2, square);  //powers of 2 will provide double of previous number 2^0=1, 2^1=2, 2^2=4 2^3=8 ...
-		//cout << "square " << square + 1 << " has " << current_square_grains << " grains.\n"
+	auto current_square_grains{ 0ULL };
+	auto previous_square_grains{ 0ULL };
+	for (auto square = 0; square < maxSquares; square++) {
+		//powers of 2 will provide double of previous number 2^0=1, 2^1=2, 2^2=4 2^3=8 ...
+		current_square_grains = static_cast<decltype(current_square_grains)>(std::pow(2, square));
+		//cout << "square " << square + 1 << " has " << current_square_grains << " grains.\n";
 		//cout << "Sum of the previous squares is " << previous_square_grains << " grains.\n\n";
-		previous_square_grains += current_square_grains;  //add them up
-		if (current_square_grains <= 1000 && previous_square_grains >= 1000)
-		{
+		//add them up
+		previous_square_grains += current_square_grains;
+		if (current_square_grains <= 1000 && previous_square_grains >= 1000) {
 			cout << square + 1 << " provides approximately 1000 grains.\n\n";
 		}
-		else if (current_square_grains <= 1000000 && previous_square_grains >= 1000000)
-		{
+		else if (current_square_grains <= 1000000 && previous_square_grains >= 1000000) {
 			cout << square + 1 << " provides approximately 1,000,000 grains.\n\n";
 		}
-		else if (current_square_grains <= 1000000000 && previous_square_grains >= 1000000000)
-		{
+		else if (current_square_grains <= 1000000000 && previous_square_grains >= 1000000000) {
 			cout << square + 1 << " provides approximately 1,000,000,000 grains.\n\n";
 		}
-		else
-		{
+		else {
 			continue;
 		}
 	}

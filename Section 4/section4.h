@@ -6,18 +6,23 @@
 #ifndef SECTION4_H		// begin header guard
 #define SECTION4_H
 
-#include<iostream>
-#include<string>
-#include<cmath>
-#include<vector>
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <vector>
 #include <algorithm>
+#include <climits>
+#include <cfloat>
+#include <typeinfo>
+#include <limits>
+#include <ctime>
 
 // simple function to keep window console open
 void keep_window_open()
 {
 	std::cout << "\n\nHit Enter key to exit.\n";
 	std::cin.clear();
-	std::cin.ignore(256, '\n');	//clear buffer
+	std::cin.ignore(UINT8_MAX, '\n');	//clear buffer
 	std::cin.get();
 }
 

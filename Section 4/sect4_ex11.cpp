@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 8 Oct 2015
-//updated 17 Dec 2016
+//date 31 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -15,46 +14,38 @@ Section 4 exercise 11.
 */
 
 #include "section4.h" // custom header
-#include <vector>
 
 int main()
 {
 	using std::cout;
 
-	const int MAX = 100;
+	auto const max = 100;
 
 	// set first known prime
 	std::vector<int> primes{ 2 };
 
 	// start with 3 know 2 is prime
-	for (int i = 3; i <= MAX; i++)
-	{
+	for (int i = 3; i <= max; i++) {
 		bool is_prime = true;
 		// find if prime and add to prime vector if so.
-		for (auto prime : primes)
-		{
-			if (i % prime == 0)
-			{
+		for (auto prime : primes) {
+			if (i % prime == 0) {
 				is_prime = false;  // not a prime
 				break;
 			}
 		}
-		if (is_prime)
-		{
+		if (is_prime) {
 			primes.push_back(i);
 		}
 	}
 	int j = 1;
 	// print out the prime numbers
-	for (auto x : primes)
-	{
+	for (auto x : primes) {
 		//10 per row
-		if (j % 10)
-		{
+		if (j % 10) {
 			cout << x << '\t';
 		}
-		else
-		{
+		else {
 			cout << x << '\n';
 		}
 		j++;

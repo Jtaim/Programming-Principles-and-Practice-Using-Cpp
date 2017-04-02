@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 3 Oct 2015
-//update 17 Dec 2016
+//date 31 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -10,145 +9,158 @@ or spelled out.
 */
 
 #include "section4.h"  // custom header
-#include <vector>
 
-void print_result(const int result);
-bool get_number(int& num, const char term = '|');
+struct Calc {
+	const char termination;
+	const std::vector<char> ops;
+	const std::vector<std::string> stn;
+	bool term_fnd{ false };
+	std::pair<int, int> nPair{ 0,0 };
+	char oper{ '?' };
+
+	Calc(char t, std::vector<char> o, std::vector<std::string> sn) :
+		termination(t), ops(o), stn(sn) {}
+};
+
+bool get_numbers(Calc&);
+bool get_num(int&, Calc&);
+bool check_term(Calc&, std::string s = "");
+void print_result(const int);
 
 int main()
 {
-	using std::cout;
+	using namespace std;
 
-	constexpr char TERM = '|';
+	Calc ccs{
+		'|',
+		{ '+','-','*','/' },
+		{	"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+	};
 
-	cout << "will loop to try more.  use '|' to exit.\n";
-	bool exit = false;
-	while (!exit)
-	{
-		cout << "Enter a number between 0 and 9.\n";
-		cout << "Can either be spelled out or as a number followed by an operation (+, -, *, /)\n";
-		int num1 = 0;
-		int num2 = 0;
-		char operation = '?';
-		if (get_number(num1, TERM) && get_number(num2, TERM))
-		{
-			std::cin >> operation;
-			switch (operation)
-			{
-			case '+':
-				print_result(num1 + num2);
-				break;
-			case '-':
-				print_result(num1 - num2);
-				break;
-			case '*':
-				print_result(num1 * num2);
-				break;
-			case '/':
-				if (num2 == 0)
-				{
-					simple_error("Division by zero.\n");
+	//pair<long long int, long long int> numbers{ 0, 0 };  // move to the struct
+	while (ccs.term_fnd == false) {
+		cout << "Enter 2 numbers and an operation (+, -, *, /). Use " << ccs.termination << " to exit.\n";
+		cout << "Number entered must be between 0 and 9 either spelled out or as the number.\n\n";
+		while (!get_numbers(ccs)) {
+			if (ccs.term_fnd == false) {
+				cout << "bad equation was entered. please re-enter or exit\n";
+			}
+			else { break; }
+		}
+		if (ccs.term_fnd == false) {
+			cin >> ccs.oper;
+			if (find(ccs.ops.begin(), ccs.ops.end(), ccs.oper) != ccs.ops.end()) {
+				switch (ccs.oper) {
+				case '+': print_result(ccs.nPair.first + ccs.nPair.second);
+					break;
+				case '-': print_result(ccs.nPair.first - ccs.nPair.second);
+					break;
+				case '*': print_result(ccs.nPair.first * ccs.nPair.second);
+					break;
+				case '/':
+					if (ccs.nPair.second != 0) {
+						print_result(ccs.nPair.first / ccs.nPair.second);
+					}
+					else {
+						cout << "division by zero is not allowed.\n";
+					}
+					break;
+				default:
+					simple_error("should not be here.\n");
 				}
-				print_result(num1 / num2);
-				break;
-			case TERM:
-				std::cout << "termination found\n";
-				exit = true;
-				break;
-			default:
-				simple_error("Wrong operation selected.\n");
+			}
+			else {
+				if (check_term(ccs) == false) {
+					cout << "bad operation entered. please re-enter equation or exit\n";
+				}
 			}
 		}
-		else
-		{
-			exit = true;
-		}
-		if (exit)
-		{
-			cout << "termination found.\n";
-		}
 	}
+	cout << "Bye\n";
 	keep_window_open();
 	return 0;
 }
 
-// find number
-bool get_number(int& num, const char term)
+bool get_numbers(Calc& cc)
 {
-	const std::vector<std::string> NUMBERS{ "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-
-	bool good = false;
-	std::string str{ '?' };
-	if (std::cin >> str)
-	{
-		// checking numbers
-		if (isdigit(str.front()))
-		{
-			num = std::stoi(str);
-			if (str.size() == 1)
-			{
-				good = true;
-			}
-			else
-			{
-				std::cout << "Was expecting single digit number.\n";
-				good = true;	// letting < 1 valid number pass
-			}
+	auto return_val{ true };
+	if (get_num(cc.nPair.first, cc)) {
+		if (get_num(cc.nPair.second, cc)) {
+			return_val = true;
 		}
-		// check for termination
-		else if (str.front() == term)
-		{
-			good = false;
-		}
-		else
-			// check if number is spelled out
-		{
-			for (auto& i : str)
-			{
-				// cast to suppress conversion warning
-				i = static_cast<char>(tolower(i));
-			}
-			// check if has a spelled out number
-			auto num_index = NUMBERS.begin();
-			for (; num_index != NUMBERS.end(); num_index++)
-			{
-				if (*num_index == str)
-				{
-					// cast to suppress conversion warning
-					num = static_cast<int>(num_index - NUMBERS.begin());
-					good = true;
-					break;
-				}
-			}
-			// check for termination
-			if (num_index == NUMBERS.end())
-			{
-				auto i = str.begin();
-				for (; i != str.end(); i++)
-				{
-					if (*i == term)
-					{
-						good = false;
-						break;
-					}
-				}
-				if (i == str.end())
-				{
-					simple_error("Input is junk\n");
-				}
-			}
-		}
+		else { return_val = false; }
 	}
-	else
-	{
-		std::cin.clear();
-		simple_error("cin error flag set\n");
-	}
-	return good;
+	else { return_val = false; }
+	return return_val;
 }
 
-// function to print result
+bool get_num(int& n, Calc& cc)
+{
+	using std::cin;
+	auto return_val{ false };
+	auto number{ -1 };
+	if (cin >> number) {
+		if (number >= 0 && number <= 9) {
+			n = number;
+			return_val = true;
+		}
+		else {
+			std::cout << "ops! out of range number.\n";
+			if (cin.peek() != 0) {
+				cin.ignore(256, '\n'); // clear anything remaining
+			}
+			return_val = false;
+		}
+	}
+	// check if number is spelled out
+	else {
+		if (check_term(cc) == false) {
+			cin.clear();	// clear io error because first check for an int above
+			std::string enteredNum;
+			cin >> enteredNum;
+			// convert to lower
+			std::transform(enteredNum.begin(), enteredNum.end(), enteredNum.begin(), [](unsigned char c) {
+				return static_cast<unsigned char>(tolower(c));
+			});
+			// check if has a spelled out number
+			auto num_index = std::find(cc.stn.begin(), cc.stn.end(), enteredNum);
+			if (num_index != cc.stn.end()) {
+				n = static_cast<int>(num_index - cc.stn.begin());
+				return_val = true;
+			}
+			// check for termination
+			else {
+				check_term(cc, enteredNum);
+				if (cin.peek() != 0) {
+					cin.ignore(256, '\n'); // clear anything remaining
+				}
+				return_val = false;
+			}
+		}
+	}
+	return return_val;
+}
+
+bool check_term(Calc& cc, std::string s)
+{
+	auto return_val{ false };
+	if (std::cin.eof() || std::cin.bad())
+	{
+		cc.term_fnd = true;
+		return_val = true;
+	}
+	else if (!s.empty() && (s.find(cc.termination) != std::string::npos)) {
+		cc.term_fnd = true;
+		return_val = true;
+	}
+	else {
+		cc.term_fnd = false;
+		return_val = false;
+	}
+	return return_val;
+}
+
 void print_result(const int result)
 {
-	std::cout << "Your result is " << result << "\n\n";
+	std::cout << "Your result is " << result << std::endl;
 }

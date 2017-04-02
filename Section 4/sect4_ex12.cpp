@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 9 Oct 2015
-//updated 17 Dec 2016
+//date 31 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -10,7 +9,6 @@ Section 4 exercise 12.
 */
 
 #include "section4.h"
-#include <vector>
 
 int main()
 {
@@ -20,43 +18,33 @@ int main()
 	// set first known prime
 	std::vector<int> primes{ 2 };
 
-	int max = 0;
+	auto max{ 0 };
 	cout << "enter number that want to find all primes up to it.\n";
-	while (!(cin >> max))
-	{
-		cout << "entered an invalid number.\n";
-		cin.clear();
-		cin.ignore(32768, '\n');
+	if (!(cin >> max)) {
+		simple_error("entered invalid int\n");
 	}
 	// start with 3 know 2 is prime
-	for (int i = 3; i <= max; i++)
-	{
+	for (int i = 3; i <= max; i++) {
 		bool is_prime = true;
 		// find if prime and add to prime vector if so.
-		for (auto prime : primes)
-		{
-			if (i % prime == 0)
-			{
+		for (auto prime : primes) {
+			if (i % prime == 0) {
 				is_prime = false;  // not a prime
 				break;
 			}
 		}
-		if (is_prime)
-		{
+		if (is_prime) {
 			primes.push_back(i);
 		}
 	}
 	int j = 1;
 	// print out the prime numbers
-	for (auto x : primes)
-	{
+	for (auto x : primes) {
 		//10 per row
-		if (j % 10)
-		{
+		if (j % 10) {
 			cout << x << '\t';
 		}
-		else
-		{
+		else {
 			cout << x << '\n';
 		}
 		j++;

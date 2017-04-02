@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 11 Oct 2015
-//updated 18 Dec 2016
+//date 2 Apr 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -12,91 +11,68 @@ Refer to drill 3
 */
 
 #include "section4.h"
-#include <vector>
-#include <algorithm>
 
 int main()
 {
 	using std::cout;
 	using std::cin;
 
-	std::vector<int> pos_ints{};  // hold numbers to check mode
-	int n = -1;
+	std::vector<int> pos_ints;  // hold numbers to check mode
 	cout << "Enter a set of positive integers so can find the MODE. (use any non number to exit)\n";
-	bool exit = false;
-	while (!exit)
-	{
-		while ((cin >> n) && n > 0)
-		{
-			pos_ints.push_back(n);
+	auto exit{ false };
+	while (!exit) {
+		auto number{ -1 };
+		while ((cin >> number) && number > 0) {
+			pos_ints.push_back(number);
 		}
-		if (!cin.good())
-		{
+		if (!cin.good()) {
 			exit = true;
 			break;
 		}
-		else
-		{
-			cout << "entered an invalid number or < 0.\n";
-			cin.clear();
-			cin.ignore(32768, ' ');
+		else {
+			cout << "must enter positive numbers.\n";
 		}
 	}
-	if (!pos_ints.empty())
-	{
+	if (!pos_ints.empty()) {
 		std::sort(pos_ints.begin(), pos_ints.end());
-		int count = 0;
-		int new_count = 0;
-		int temp = -1;
-		int mode = 0;
-		for (auto x : pos_ints)
-		{
-			if (x == temp || temp == -1)
-			{
-				++new_count;
-				temp = x;
-				if (new_count >= count)
-				{
-					mode = x;
-					count = new_count;
+		auto cnt{ 0U };
+		auto temp{ -1 };
+		auto mode{ 0 };
+		for (auto i : pos_ints) {
+			if (temp != i) {
+				temp = i;
+				auto t_cnt = std::count(pos_ints.begin(), pos_ints.end(), i);
+				if (cnt <= t_cnt) {
+					cnt = static_cast<unsigned>(t_cnt);
+					mode = i;
 				}
 			}
-			else
-			{
-				new_count = 1;
-				temp = x;
-			}
 		}
+			
 		// print out the MODE
-		if (count > 1)
-		{
+		if (cnt > 1) {
 			cout << "The MODE of entered integers is " << mode << ".\n";
-			cout << mode << " was found " << count << " times.\n";
+			cout << mode << " was found " << cnt << " times.\n";
 		}
-		else
-		{
+		else {
 			cout << "There is no MODE from this set.\n";
 		}
 		cout << "The sorted entered numbers:\n";
 		int j = 1;
 		// print out the entered numbers
-		for (auto x : pos_ints)
-		{
+		for (auto x : pos_ints) {
 			//10 per row
-			if (j % 10)
-			{
+			if (j % 10) {
 				cout << x << '\t';
 			}
-			else
-			{
+			else {
 				cout << x << '\n';
 			}
 			j++;
 		}
 	}
-	else
-	{
-		simple_error("nothing entered\n");
+	else {
+		cout << "nothing entered\n";
 	}
 	cout << '\n';
 	keep_window_open();

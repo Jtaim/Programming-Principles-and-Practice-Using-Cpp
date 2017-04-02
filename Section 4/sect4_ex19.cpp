@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 14 Oct 2015
-//update 18 Dec 2016
+//date 2 Apr 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -14,8 +13,6 @@ Write out all the (name, score) pairs, one per line.
 */
 
 #include "section4.h"
-#include <vector>
-#include <algorithm>
 
 int main()
 {
@@ -23,43 +20,46 @@ int main()
 	using std::cin;
 
 	std::string name;
-	int score{ 0 };
-	std::vector<std::string> names;
-	std::vector<int> scores;
-	cout << "Enter names and scores. \n";
+	auto score{ 0 };
+	std::vector<decltype(name)> names;
+	std::vector<decltype(score)> scores;
+	cout << "Enter names and scores:\n";
 	// collect valid data
-	while (true)
-	{
+	while (true) {
 		cin >> name >> score;
 		// escape if NoName or EOF
-		if (cin.eof() || (name == "NoName" && score == 0))
-		{
+		if (cin.eof() || (name == "NoName" && score == 0)) {
 			break;
 		}
 		// redo if bad input non number for score
-		if (cin.fail())
-		{
+		else if (cin.fail()) {
 			cout << "Entered invalid name or score.  Please reenter.\n";
 			cin.clear();
-			cin.ignore(32768, '\n');
+			cin.ignore(UINT8_MAX, '\n');
 		}
-		auto result = find(names.begin(), names.end(), name);
-		if (result != names.end())
-		{
-			cout << "Entered duplicate data.\n";
+		else if (cin.bad()) {
+			simple_error("input data error\n");
 		}
-		else
-		{
-			names.push_back(name);
-			scores.push_back(score);
+		else {
+			std::transform(name.begin(), name.end(), name.begin(),
+				[](unsigned char c) {return static_cast<unsigned char>(::tolower(c)); });
+			auto result = names.begin();
+			if (names.size() != 0) {
+				result = find(names.begin(), names.end(), name);
+			}
+			if (result != names.end()) {
+				simple_error("Entered duplicate name.\n");
+			}
+			else {
+				names.push_back(name);
+				scores.push_back(score);
+			}
 		}
 	}
-	// if no duplicates print contents to screen
-	if (names.size() != 0)
-	{
-		for (int i = 0; i < (names.end() - names.begin()); ++i)
-		{
-			cout << names.at(i) << " " << scores.at(i) << std::endl;
+	if (names.size() != 0) {
+		// print contents to screen
+		for (auto i = names.begin(); i < names.end(); ++i) {
+			cout << *i << " " << scores.at(i - names.begin()) << std::endl;
 		}
 	}
 	keep_window_open();

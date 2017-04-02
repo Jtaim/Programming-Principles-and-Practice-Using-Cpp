@@ -1,6 +1,5 @@
 // Written by Jtaim
-// 19 Oct 2015
-// updated 18 Dec 2016
+// 2 Apr 2017
 // Header file used for Programming: Principles and Practice Using C++ Second Edition
 // section 5
 
@@ -33,7 +32,7 @@ inline void keep_window_open()
 {
 	std::cout << "\n\nhit enter key to exit.\n";
 	std::cin.clear();
-	std::cin.ignore(INT16_MAX, '\n');
+	std::cin.ignore(UINT8_MAX, '\n');
 	std::cin.get();
 }
 

@@ -1,5 +1,5 @@
 //written by Jtaim
-//date 22 Oct 2015
+//date 2 Apr 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -13,38 +13,34 @@ What is the lease amount of input you can give it to get it to fail?
 
 int main()
 {
-	using std::cout;
-	using std::endl;
-	using std::cin;
+	using namespace std;
 
+	cout << "Enters some tempeatures in fahrenheit.  EOF to exit\n";
 	std::vector<double>temps;	// temperatures
 	while (true)
 	{
-		double temp;
-		cin >> temp;
-		if (cin.good())
-		{
+		auto temp{ 0.0 };
+		if (cin >> temp) {
 			temps.push_back(temp);
 		}
-		else
-		{  //found non-numeric entry
-			cout << "input complete.\n";
-			cin.clear();
-			cin.ignore(32768, '\n');  // blah, magic number but just to clear cin buffer
+		else if (cin.eof()) {
 			break;
 		}
+		else {
+			cout << "bad temperature entry\n";
+			cin.clear();
+			cin.get();
+		}
 	}
-	if (temps.size() != 0)
-	{  // check for empty vector
-		auto high_temp = *max_element(temps.begin(), temps.end());	// find high
-		auto low_temp = *min_element(temps.begin(), temps.end());	// find low
-		auto sum = accumulate(temps.begin(), temps.end(), 0.0);		// add up the elements 0.0 to initialize and as double
-		cout << "High temperature: " << high_temp << endl;
-		cout << "Low temperature: " << low_temp << endl;
+	// check for empty vector
+	if (temps.size() != 0) {
+		std::sort(temps.begin(), temps.end());
+		auto sum = std::accumulate(temps.begin(), temps.end(), 0.0);
+		cout << "High temperature: " << temps.back() << endl;
+		cout << "Low temperature: " << temps.front() << endl;
 		cout << "Average temperature: " << sum / temps.size() << endl;
 	}
-	else
-	{
+	else {
 		cout << "No temperatures entered.\n";
 	}
 	keep_window_open();

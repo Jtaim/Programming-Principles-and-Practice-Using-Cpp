@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 1 Nov 2015
-//updated 18 Dec 2016
+//date 5 Apr 2017
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
@@ -11,61 +10,62 @@ Added Kelvin to Celsius converter
 #include "section5.h"
 
 // converts Celsius to Kelvin
-double ctok(double c_to_k)
+double ctok(double c)
 {
-	if (c_to_k < -273.15)
-	{  //throw error if value given in Celsius is below -273.15
+	if (c < -273.15) {
+		//throw error if value given in Celsius is below -273.15
 		error("ctok can not convert below absolute zero!\n");
 	}
-	c_to_k += 273.15;
-	return c_to_k;
+	c += 273.15;
+	return c;
 }
 // converts Kelvin to Celsius
-double ktoc(double k_to_c)
+double ktoc(double k)
 {
-	if (k_to_c < 0)
-	{  //there are no negative kelvin values
+	if (k < 0) {
+		//there are no negative kelvin values
 		error("ktoc can not convert below absolute zero!\n");
 	}
-	k_to_c -= 273.15;
-	return k_to_c;
+	k -= 273.15;
+	return k;
 }
 
 int main()
 try
 {
-	std::cout << "Enter a temperature and unit of temperature (c = Celsius, k = Kelvin)\n";
-
-	double temp_to_convert = 0; //input temperature variable
-	std::cin >> temp_to_convert;
-	if (std::cin.fail())
-	{
-		std::cin.clear();  //clear cin error flags
-		std::cin.ignore(INT_MAX, '\n'); //clear cin buffer
-		error("entered non-numeric temperature!\n");
-	}
-
-	char entered_temp_unit = '?';
-	std::cin >> entered_temp_unit;
-	entered_temp_unit = tolower(entered_temp_unit);
-
-	double converted_temp = 0;
-	char converted_temp_unit = '?';
-	switch (entered_temp_unit)
-	{
-	case 'c':
-		converted_temp = ctok(temp_to_convert);
-		converted_temp_unit = 'k';
-		break;
-	case 'k':
-		converted_temp = ktoc(temp_to_convert);
-		converted_temp_unit = 'c';
-		break;
-	default:
-		error("entered wrong temperature unit of measure!\n");
-	}
-	std::cout << "Converted temperature is " << converted_temp << converted_temp_unit << '\n';
-
+	bool badConversion;
+	do {
+		badConversion = false;
+		std::cout << "Enter a temperature and unit of temperature (c = Celsius, k = Kelvin)\n";
+		double temp_to_convert{ 0 };
+		while (!(std::cin >> temp_to_convert)) {
+			std::cin.clear();  //clear cin error flags
+			std::cin.ignore(UINT8_MAX, '\n'); //clear cin buffer
+			std::cout << "entered non-numeric temperature. Re-eneter temperature\n";
+		}
+		char entered_temp_unit{ '?' };
+		std::cin >> entered_temp_unit;
+		double converted_temp{ 0 };
+		char converted_temp_unit{ '?' };
+		switch (entered_temp_unit) {
+		case 'c':
+		case 'C':
+			converted_temp = ctok(temp_to_convert);
+			converted_temp_unit = 'k';
+			break;
+		case 'k':
+		case 'K':
+			converted_temp = ktoc(temp_to_convert);
+			converted_temp_unit = 'c';
+			break;
+		default:
+			badConversion = true;
+			std::cout << "entered wrong temperature unit of measure.  Re-renter conversion\n";
+		}
+		if (badConversion == false) {
+			std::cout << "Converted temperature is " << converted_temp << converted_temp_unit << '\n';
+		}
+	} while (badConversion);
 	keep_window_open();
 	return 0;
 }

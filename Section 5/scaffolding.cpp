@@ -1,11 +1,9 @@
 //written by Jtaim
-//date 27 Oct 2015
-//updated 18 Dec 2016
+//date 2 Apr 2017
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
 Add comments here
-
 */
 
 #include "section5.h"

@@ -121,7 +121,7 @@
     <ClInclude Include="section5.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect5_drill.cpp" />
+    <ClCompile Include="sect5_ex6.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

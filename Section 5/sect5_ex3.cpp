@@ -1,5 +1,5 @@
 //written by Jtaim
-//date 1 Nov 2015
+//date 5 Apr 2017
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
@@ -11,22 +11,22 @@ throws error in main if input is below absolute 0
 
 double ctok(const double c)	// converts Celsius to Kelvin
 {
-	double c_to_k = c + 273.15;
-	return c_to_k;
+	double celsiusToKelvin = c + 273.15;
+	return celsiusToKelvin;
 }
 
 int main()
 try
 {
 	std::cout << "Enter a temperature in Celsius to covert to Kelvin:\n";
-	double c = 0; //input variable
-	std::cin >> c;
-	if (c < -273.15)
+	double celsius{ 0.0 }; //input variable
+	std::cin >> celsius;
+	if (celsius < -273.15)
 	{
 		error("Can not be below absolute zero!\n");
 	}
-	double k = ctok(c);
-	std::cout << k << '\n';
+	double kelvin = ctok(celsius);
+	std::cout << kelvin << '\n';
 
 	keep_window_open();
 	return 0;

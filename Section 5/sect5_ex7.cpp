@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 1 Nov 2015
-//updated 19 Dec 2016
+//date 6 Apr 2017
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
@@ -15,30 +14,25 @@ If no real roots print out a message.
 
 #include "section5.h"
 
-void quadratic(const double &a, const double &b, const double &c)
+void quadratic(const double a, const double b, const double c)
 {
 	using std::cout;
-	if (a == 0)
-	{
+	if (a == 0) {
 		error("a = 0; so can not derive any roots\n");
 	}
-	else if (c == 0)
-	{
+	else if (c == 0) {
 		cout << "x = 0\n";
-		cout << "x = " << -1 * b / a << '\n';
+		cout << "x = " << -1.0 * b / a << '\n';
 	}
-	else
-	{
-		double sq = b*b - 4 * a*c;
-		if (sq >= 0)
-		{
-			cout << "x = " << (-1 * b + sqrt(sq)) / (2 * a) << '\n';
-			cout << "x = " << (-1 * b - sqrt(sq)) / (2 * a) << '\n';
+	else {
+		auto sq = b*b - 4.0 * a*c;
+		if (sq >= 0) {
+			cout << "x = " << (-1.0 * b + sqrt(sq)) / (2.0 * a) << '\n';
+			cout << "x = " << (-1.0 * b - sqrt(sq)) / (2.0 * a) << '\n';
 		}
-		else
-		{
-			cout << "x = (" << -1 * b << " +i" << sqrt(fabs(sq)) << ")/" << (2 * a) << '\n';
-			cout << "x = (" << -1 * b << " -i" << sqrt(fabs(sq)) << ")/" << (2 * a) << '\n';
+		else {
+			cout << "x = (" << -1.0 * b << " +i" << sqrt(fabs(sq)) << ")/" << (2.0 * a) << '\n';
+			cout << "x = (" << -1.0 * b << " -i" << sqrt(fabs(sq)) << ")/" << (2.0 * a) << '\n';
 		}
 	}
 }
@@ -50,18 +44,15 @@ try
 	using std::cin;
 
 	cout << "Enter the a, b and c variables to solve the quadratic equation:\n";
-	double a = 0;
-	double b = 1;
-	double c = 0;
-	cin >> a >> b >> c;
-	if (!cin.good())
-	{
+	double a{ 0.0 };
+	double b{ 1.0 };
+	double c{ 0.0 };
+	while (!(cin >> a >> b >> c)) {
 		cin.clear();
-		cin.ignore(INT8_MAX, '\n');
-		error("non-numeric entered.\n");
+		cin.ignore(UINT8_MAX, '\n');
+		cout << "non-numeric entered. re-enter variables a, b and c:\n";
 	}
 	quadratic(a, b, c);
-
 	keep_window_open();
 	return 0;
 }

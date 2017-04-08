@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 6 Nov 2015
-//updated 20 Dec 2016
+//date 7 Apr 2017
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
@@ -10,15 +9,14 @@ A program that writes out the Fibonacci series up to largest to fit in an int ty
 
 #include "section5.h"
 
-unsigned int sum(unsigned int, unsigned int);
+unsigned sum(unsigned, unsigned);
 
 int main()
 try
 {
-	std::vector<unsigned int> fibonacci{ 0, 1 };
-	for (unsigned int i = 0; ; ++i)
-	{
-		std::cout << fibonacci[i+1] << '\n';
+	std::vector<unsigned> fibonacci{ 0,1 };
+	for (unsigned i = 0; ; ++i) {
+		std::cout << fibonacci[i] << '\n';
 		fibonacci.push_back(sum(fibonacci[i], fibonacci[i + 1]));
 	}
 	keep_window_open();	// yes I know will never get to this point
@@ -42,16 +40,10 @@ Inputs:		unsigned int, unsigned int
 Outputs:	sum
 Errors:		if the sums overflow unsigned int type
 */
-unsigned int sum(unsigned int var1, unsigned int var2)
+unsigned int sum(unsigned var1, unsigned var2)
 {
-	if ((var2 > 0) && (var1 > UINT_MAX - var2))
-	{
-		std::cout << var2 << " is the max Fibonacci series number to fit in an unsigned int type.\n";
+	if ((var2 > 0) && (var1 > UINT_MAX - var2)) {
 		error("unsigned int max overflow error");
 	}
-	//if ((var2 < 0) && (var1 < UINT_MAX - var2))
-	//{
-	//	error("unsigned int min overflow error");
-	//}
 	return var1 + var2;
 }

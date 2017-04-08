@@ -1,13 +1,11 @@
 //written by Jtaim
-//date 5 Nov 2015
-//updated 19 Dec 2016
+//date 7 Apr 2017
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
 Section 5 exercise 10
 A program that reads and stores a series of doubles.
 Ask user to enter number(N) of doubles want to sum.
-Compute the sum of the first N doubles.
 Create a vector of the first N doubles.
 From that vector calculate the sum of those N doubles.
 Also  provide a vector of the delta between delta[1] - delta[0], ..., delta[N] - delta[N-1].
@@ -26,100 +24,69 @@ try
 	using std::cin;
 	using std::endl;
 
-	constexpr char TERMINATION = '|';
+	constexpr char termination{ '|' };
 
-	cout << "Enter how many integers that you would like to sum (press '|' to stop)\n";
-	int num_sum = 0;
-	std::vector<int> nums_entered;
-	/* while loop to get input and validate entry */
-	bool exit = false;
-	while (!exit)
-	{
-		cin >> num_sum;
-		if (!cin.good())
-		{
-			cin.clear();
-			char c;
-			cin.get(c);
-			cin.ignore(INT8_MAX, '\n');
-			if (c == TERMINATION)
-			{
-				exit = true;
-			}
-			else
-			{
-				cout << "Invalid entry!\n";
-			}
+	cout << "Enter how many numbers that you would like to sum:\n";
+
+	int sumHowMany{ 0 };
+	while (!(cin >> sumHowMany)) {
+		if (cin.bad()) {
+			error("cin.bad() flag set");
 		}
-		else if (num_sum <= 0)
-		{
-			cout << "Invalid entry!\n";
+		cin.clear();
+		cin.get();
+		cout << "Invalid entry!\n";
+	}
+	std::vector<double> numbers;
+	std::vector<double> deltas;
+	cout << "Enter some numbers (press '" << termination << "' to stop)\n";
+	//while loop to get numbers to place in a vector, validate and exit on an '|' entry
+	while (true) {
+		double number;
+		// loads entered numbers into a container vector
+		if (cin >> number) {
+			if (numbers.size() != 0) {
+				deltas.push_back(numbers.back() - number);
+			}
+			numbers.push_back(number);
 		}
 		else
 		{
-			break; //found valid number
-		}
-	}
-	if (!exit)
-	{
-		cout << "Enter some integers (press '|' to stop)\n";
-		/* while loop to get integers to place in a vector, validate and exit on an '|' entry */
-		int entered_num = 0;
-		while (!exit)
-		{
-			// loads entered numbers into a container vector
-			if (cin >> entered_num)
-			{
-				nums_entered.push_back(entered_num);
+			if (cin.bad()) {
+				error("cin.bad() flag set");
 			}
-			else
-			{
-				cin.clear();
-				char c;
-				cin.get(c);
-				cin.ignore(INT8_MAX, '\n');
-				if (c == TERMINATION)
-				{
-					exit = true;
-				}
-				else
-				{
-					cout << "Invalid entry!\n";
-				}
+			cin.clear();
+			char c;
+			cin >> c;
+			if (c == termination) {
+				break;
+			}
+			else {
+				cout << "Invalid entry!\n";
 			}
 		}
 	}
-	if (nums_entered.size() < num_sum)
-	{
-		error("not enough numbers entered to sum.\n");
-	}
-	std::vector<double> subnums_entered(nums_entered.begin(), nums_entered.begin() + num_sum);
-	double sum = sum_up(num_sum, subnums_entered);	//summed numbers
-	std::vector<double> deltas;
-	for (unsigned i = 0; i < subnums_entered.size(); ++i)
-	{
-		if (i != 0)
+	if (numbers.size() >= sumHowMany) {
+		auto sum = sum_up(sumHowMany, numbers);
+		cout << "The sum of the first " << sumHowMany << " numbers ";
+		for (auto i = numbers.begin(); i < (numbers.begin() + sumHowMany); ++i) {
+			if ((sumHowMany - 1) == (i - numbers.begin())) {
+				cout << *i << " = " << sum << endl;
+			}
+			else {
+				cout << *i << " + ";
+			}
+		}
+		if (numbers.size() > 1)
 		{
-			deltas.push_back(subnums_entered[i] - subnums_entered[i - 1]);
+			cout << "Deltas between the numbers entered are:\n";
+			for (auto i = 0; i < (sumHowMany - 1); ++i) {
+				cout << numbers[i] << " - " << numbers[i+1] << " = " << deltas[i] << endl;
+			}
 		}
 	}
-
-	cout << "*********************************************************************\n";
-	cout << "Selected number of numbers to sum:\t" << num_sum << endl;
-	cout << "Size of the number container:\t\t" << nums_entered.size() << '\n';
-	cout << "Size of the sub number container:\t" << subnums_entered.size() << '\n';
-	cout << "The sum of the selected numbers:\t" << sum << '\n';
-	cout << "The deltas are:\t";
-	for (auto x : deltas)
-	{
-		cout << x << ' ';
-	}
-	cout << '\n';
-	cout << "*********************************************************************\n";
-	/* for to print all valid entries */
-	for (auto x : nums_entered)
-	{
-		cout << x << '\n';
+	else {
+		error("not enough integers entered to sum.\n");
 	}
 	keep_window_open();
 	return 0;

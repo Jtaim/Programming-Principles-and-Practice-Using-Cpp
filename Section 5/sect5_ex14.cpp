@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 8 Nov 2015
-//updated 21 Dec 2016
+//date 8 Apr 2017
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
@@ -14,10 +13,8 @@ count of and output rejected entries.
 
 #include "section5.h"
 
-struct days
-{
-	std::vector<std::pair<std::vector<int>, std::string>> d
-	{
+struct days {
+	std::vector<std::pair<std::vector<int>, std::string>> d {
 	{ {},"Sunday" },
 	{ {},"Monday" },
 	{ {},"Tuesday" },
@@ -29,14 +26,11 @@ struct days
 };
 int sum(std::pair<std::vector<int>, std::string> &day_values) {
 	int sum{ 0 };
-	for (auto i : day_values.first)
-	{
-		if ((i > 0) && (sum > INT_MAX - i))
-		{
+	for (auto i : day_values.first) {
+		if ((i > 0) && (sum > INT_MAX - i)) {
 			error("int max overflow error");
 		}
-		if ((i < 0) && (sum < INT_MAX - i))
-		{
+		if ((i < 0) && (sum < INT_MAX - i)) {
 			error("int min overflow error");
 		}
 		sum += i;
@@ -61,22 +55,15 @@ try
 	while (escape)
 	{
 		cin >> day;
-		if (day == "q")
-		{
+		if (day == "q") {
 			escape = false;
 		}
-		if (escape)
-		{
-			cin >> value;
-			if (!cin.good())
-			{
+		if (escape) {
+			if (!(cin >> value)) {
 				escape = false;
-				cin.clear();
-				cin.ignore(INT16_MAX, '\n');
 				error("Got some bad input day values.\n");
 			}
-			else
-			{
+			else {
 				rejects += handle_input(day, value, weekdays);
 			}
 		}
@@ -84,8 +71,7 @@ try
 		if (!escape)
 		{
 			//get vector of pairs from the struct
-			for (auto weekday : weekdays.d)
-			{
+			for (auto weekday : weekdays.d) {
 				cout << weekday.second << " has a sum of " << sum(weekday) << '\n';
 			}
 			cout << "The number of rejects was " << rejects << "\n\n";
@@ -109,36 +95,28 @@ catch (...)
 
 int handle_input(std::string day, int val, days &week)
 {
-	for (auto& i : day)
-	{
-		i = static_cast<char>(tolower(i));
+	for (auto& i : day) {
+		i = narrow_cast<char>(tolower(i));
 	}
-	if (day == "sunday" || day == "sun")
-	{
+	if (day == "sunday" || day == "sun") {
 		week.d[0].first.push_back(val);
 	}
-	else if (day == "monday" || day == "mon")
-	{
+	else if (day == "monday" || day == "mon") {
 		week.d[1].first.push_back(val);
 	}
-	else if (day == "tuesday" || day == "tue")
-	{
+	else if (day == "tuesday" || day == "tue") {
 		week.d[2].first.push_back(val);
 	}
-	else if (day == "wednesday" || day == "wed")
-	{
+	else if (day == "wednesday" || day == "wed") {
 		week.d[3].first.push_back(val);
 	}
-	else if (day == "thursday" || day == "thu")
-	{
+	else if (day == "thursday" || day == "thu") {
 		week.d[4].first.push_back(val);
 	}
-	else if (day == "friday" || day == "fri")
-	{
+	else if (day == "friday" || day == "fri") {
 		week.d[5].first.push_back(val);
 	}
-	else if (day == "saturday" || day == "sat")
-	{
+	else if (day == "saturday" || day == "sat") {
 		week.d[6].first.push_back(val);
 	}
 	else {

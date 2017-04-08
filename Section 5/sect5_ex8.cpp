@@ -1,13 +1,11 @@
 //written by Jtaim
-//date 2 Nov 2015
-//updated 19 Dec 2016
+//date 7 Apr 2017
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
 Section 5 exercise 8
 A program that reads and stores a series of integers.
 Ask user to enter number(N) of integers want to sum.
-Compute the sum of the first N integers.
 Create a vector of the first N integers.
 From that vector calculate the sum of those N integers.
 Instruct user to terminate series with '|' when finished entering numbers.
@@ -23,91 +21,59 @@ try
 	using std::cin;
 	using std::endl;
 
-	constexpr char TERMINATION = '|';
+	constexpr char termination{ '|' };
 
-	cout << "Enter how many integers that you would like to sum (press '|' to stop)\n";
-	int num_sum = 0;
-	std::vector<int> nums_entered;
-	/* while loop to get input and validate entry */
-	bool exit = false;
-	while (!exit)
-	{
-		cin >> num_sum;
-		if (!cin.good())
+	cout << "Enter how many integers that you would like to sum:\n";
+	
+	int sumHowMany{ 0 };
+	while (!(cin >> sumHowMany)) {
+		if (cin.bad()) {
+			error("cin.bad() flag set");
+		}
+		cin.clear();
+		cin.get();
+		cout << "Invalid entry!\n";
+	}
+	std::vector<int> numbers;
+	cout << "Enter some integers (press '" << termination << "' to stop)\n";
+	//while loop to get integers to place in a vector, validate and exit on an '|' entry
+	while (true) {
+		int number{ 0 };
+		// loads entered numbers into a container vector
+		if (cin >> number) {
+			numbers.push_back(number);
+		}
+		else
 		{
+			if (cin.bad()) {
+				error("cin.bad() flag set");
+			}
 			cin.clear();
 			char c;
 			cin.get(c);
-			cin.ignore(INT8_MAX, '\n');
-			if (c == TERMINATION)
-			{
-				exit = true;
+			if (c == termination) {
+				break;
 			}
-			else
-			{
+			else {
 				cout << "Invalid entry!\n";
 			}
 		}
-		else if (num_sum <= 0)
-		{
-			cout << "Invalid entry!\n";
-		}
-		else 
-		{
-			break; //found valid number
-		}
 	}
-	if (!exit)
-	{
-		cout << "Enter some integers (press '|' to stop)\n";
-		/* while loop to get integers to place in a vector, validate and exit on an '|' entry */
-		int entered_num = 0;
-		while (!exit)
-		{
-			// loads entered numbers into a container vector
-			if (cin >> entered_num)
-			{
-				nums_entered.push_back(entered_num);
+	if (numbers.size() >= sumHowMany) {
+		int sum{ 0 };
+		cout << "The sum of the first " << sumHowMany << " numbers ";
+		for (auto i = numbers.begin(); i < (numbers.begin() + sumHowMany); ++i) {
+			sum += *i;
+			if ((sumHowMany - 1) == (i - numbers.begin())) {
+				cout << *i << " = " << sum << endl;
 			}
-			else
-			{
-				cin.clear();
-				char c;
-				cin.get(c);
-				cin.ignore(INT8_MAX, '\n');
-				if (c == TERMINATION)
-				{
-					exit = true;
-				}
-				else
-				{
-					cout << "Invalid entry!\n";
-				}
+			else {
+				cout << *i << '+';
 			}
 		}
 	}
-	int sum = 0;	//summed numbers
-	/* check vector size to wanted number to sum */
-	if (nums_entered.size() < num_sum)
-	{	// cast to suppress warning
+	else {
 		error("not enough integers entered to sum.\n");
-	}
-	else
-	{	//sum the numbers
-		for (int i = 0; i < num_sum; i++)
-		{
-			sum += nums_entered.at(i);
-		}
-	}
-	cout << "*********************************************************************\n";
-	cout << "Selected number of integers to sum: \t" << num_sum << endl;
-	cout << "Size of the integer container: \t\t" << nums_entered.size() << '\n';
-	cout << "The sum of the selected integers: \t" << sum << '\n';
-	cout << "*********************************************************************\n";
-	/* for to print all valid entries */
-	for (auto x : nums_entered)
-	{
-		cout << x << '\n';
 	}
 	keep_window_open();
 	return 0;
@@ -115,12 +81,12 @@ try
 catch (std::exception& e)
 {
 	std::cerr << "error: " << e.what() << '\n';
-	//	keep_window_open();
+	keep_window_open();
 	return 1;
 }
 catch (...)
 {
 	std::cerr << "Oops: unknown exception!\n";
-	//	keep_window_open();
+	keep_window_open();
 	return 2;
 }

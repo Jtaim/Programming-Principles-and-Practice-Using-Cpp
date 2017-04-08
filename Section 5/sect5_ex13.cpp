@@ -1,6 +1,5 @@
 //written by Jtaim
-//date 7 Nov 2015
-//updated 21 Dec 2016
+//date 8 Apr 2017
 //Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 /*
@@ -22,10 +21,10 @@ try
 {
 	using std::cout;
 
-	const char TERM = '|';
-	const int GUESS_SIZE = 4;  // sets how many numbers to guess
+	const char termination = '|';
+	const int guessSize = 4;  // sets how many numbers to guess
 	
-	cout << "Guess " << GUESS_SIZE << " numbers in the range of 0 - 9 to guess what I have.\n";
+	cout << "Guess " << guessSize << " numbers in the range of 0 - 9 to guess what I have.\n";
 	cout << "If guess a correct number and the correct location will get a Bull.\n";
 	cout << "If guess a correct number but not the correct location then will get a Cow.\n";
 	cout << "Example: My set is 2345 and your guess was 5248, so there are 2 Cows (5 and 2)  1 Bull (4).\n\n";
@@ -33,22 +32,19 @@ try
 	std::vector<int> guesses;
 	do
 	{
-		cout << "Enter your guess.  To quit enter '|'.\n\n";
-		srand(time(0));	// set initial seed value to system clock i know conversion warning but don't care
-						// create random guess_size numbers
-		for (int i = 0; i < GUESS_SIZE; ++i)
-		{
+		cout << "Enter your guess.  To quit enter '" << termination << "'.\n\n";
+		// set initial seed value to system clock i know conversion warning but don't care
+		srand(narrow_cast<unsigned>(time(nullptr)));
+		// create random guess_size numbers
+		for (int i = 0; i < guessSize; ++i) {
 			set_numbers.push_back(rand() % 10);
 		}
-		while (get_guesses(guesses, set_numbers.size(), TERM))
-		{
-			if (guesses == set_numbers)
-			{
+		while (get_guesses(guesses, set_numbers.size(), termination)) {
+			if (guesses == set_numbers) {
 				cout << "You have " << set_numbers.size() << " Bulls, Congratulations!\n";
 				break;
 			}
-			else
-			{
+			else {
 				std::vector<int> scratch = set_numbers;
 				int bulls = get_bulls(guesses, scratch);
 				int cows = get_cows(guesses, scratch);
@@ -76,66 +72,68 @@ catch (...)
 	return 2;
 }
 /* function to get user input for integer numbers.
-INPUT: vector<int> reference to place valid guesses in.
-int for how guesses needed
-OUPUT: bool true = got valid integers placed into the vector of int size
-bool false = got early termination.
-ERROR: if given reference vector is not empty.
+INPUT:	vector<int> reference to place valid guesses in.
+		int for how guesses needed
+OUPUT:	bool true = got valid integers placed into the vector of int size
+		bool false = got early termination.
+ERROR:	find non numeric entry otherthan the termination character
+		cin failure bad()
+		entry < 0 or entry > 9
 */
 bool get_guesses(std::vector<int>&input, const size_t x, const char term)
 {
-	if (!input.empty())
-	{
+	if (!input.empty()) {
 		input.clear();
 	}
-	char guess;
+	int guess;
 	auto itr = x;
 	bool guess_qualified = true;
-	while (guess_qualified && itr > 0)
-	{
-		std::cin >> guess;
+	while (itr > 0) {
 		//check for valid number or escape entry
-		if (guess == term)
-		{
-			guess_qualified = false;
+		if (!(std::cin >> guess)) {
+			if (std::cin.bad()) {
+				error("cin.bad() flag set when getting guesses");
+			}
+			std::cin.clear();
+			//check for valid escape entry
+			if (std::cin.get() == term) {
+				guess_qualified = false;
+				break;
+			}
+			else {
+				error("guess entry is non-numeric");
+
+			}
 		}
-		else if (isdigit(guess))
-		{	//convert number char to integer and place into a vector
-			int i = guess - '0'; // so '0'(48) threw '9'(57) - '0'(48) = a number 0 to 9
-			input.push_back(i);
+		//check that number is valid 
+		else if (guess >= 0 && guess <= 9) {
+			input.push_back(guess);
 			--itr;
 		}
-		else
-		{	//bad entry clear vector and purge input buffer
-			std::cout << "bad entry try again.\n";
-			std::cin.ignore(INT16_MAX, '\n');
-			std::cin.clear();
-			input.clear();
-			itr = x;
+		else {
+			error("entry < 0 or entry > 9");
 		}
 	}
 	return guess_qualified;
 }
 
 /* function to bulls.
-INPUT: vector<int> reference to user input guesses.
-vector<int> reference to number to guess.
-OUPUT: int for number of bulls found
-ERROR: no error.
+INPUT:	vector<int> reference to user input guesses.
+		vector<int> reference to number to guess.
+OUPUT:	int for number of bulls found
+ERROR:	no error.
 modifies the vectors by deleting matching elements
 */
 int get_bulls(std::vector<int>& g, std::vector<int>& temp)
 {
 	int bulls = 0;
 	// be carefull of rollover of unsigned i
-	for (auto i = g.size(); i > 0; --i)
-	{
+	for (auto i = g.size(); i > 0; --i) {
 		//find Bulls starting from back 
 		//if find match erase elements from back to front
 		//do back to front so dont cause error from going outside vector bounds
 		//adjust i from size to element (i-1)
-		if (g[i - 1] == temp[i - 1])
-		{
+		if (g[i - 1] == temp[i - 1]) {
 			temp.erase(temp.begin() + i - 1);
 			g.erase(g.begin() + i - 1);
 			++bulls;
@@ -153,14 +151,11 @@ delete vector temp matching elements to vector g
 int get_cows(std::vector<int>& g, std::vector<int>& temp)
 {
 	int cows = 0;
-	for (auto i : g)
-	{
+	for (auto i : g) {
 		//find Cows
-		if (!temp.empty())
-		{
+		if (!temp.empty()) {
 			auto pos = find(begin(temp), end(temp), i);
-			if (pos != end(temp))
-			{
+			if (pos != end(temp)) {
 				temp.erase(pos);
 				++cows;
 			}
@@ -183,8 +178,9 @@ bool try_again(const std::string &s)
 		std::cout << "Thanks for playing, goodbye.\n\n";
 		return false;
 	}
-	else if (again == 'y')
+	else if (again == 'y') {
 		return true;
+	}
 	else {
 		error("Oops: really can't enter y or n!\n");
 		return false;

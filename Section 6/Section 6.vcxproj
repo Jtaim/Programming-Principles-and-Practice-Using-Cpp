@@ -121,9 +121,6 @@
     <ClInclude Include="section6.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="calculator00.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="sect6_ex5.txt" />
     <Text Include="sect6_ex7.txt" />
   </ItemGroup>

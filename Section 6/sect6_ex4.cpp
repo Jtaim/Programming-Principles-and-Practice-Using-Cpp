@@ -1,5 +1,5 @@
 //written by Jtaim
-//date 19 Nov 2015
+//date 9 Apr 2017
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
@@ -22,72 +22,81 @@ public:
 	std::string name;
 	int value;
 	Name_value()
-		: name{}, value{ 0 } {}
+		: name{ "NoName" }, value{ 0 } {}
 	Name_value(std::string n, int val)
-		: name{ n }, value(val) { }
+		: name{ n }, value(val) {}
 };
 
 int main()
 {
-	using std::cout;
-	using std::cin;
-
-	Name_value NS;
-	std::vector<Name_value> vNS;
-	cout << "Enter names and scores. Terminate input with NoName 0\n";
-	// collect valid data
-	bool exit = false;
-	while (!exit)
+	using namespace std;
+	try
 	{
-		std::string n;
-		int v;
-		cin >> n >> v;
-		// escape if NoName or EOF
-		if (cin.eof() || (n == "NoName" && v == 0))
+		std::vector<Name_value> vNS;
+		cout << "Enter names and scores. Terminate input with NoName 0\n";
+		// collect valid data
+		bool exit = false;
+		while (!exit)
 		{
-			cin.clear();
-			exit = true;
-		}
-		// redo if bad input non number for score
-		else if (!cin.good())
-		{
-			cout << "Entered invalid name or score.  Please reenter.\n";
-			cin.clear();
-			cin.ignore(UINT_MAX, '\n');
-		}
-		else
-		{
-			std::transform(n.begin(), n.end(), n.begin(), ::tolower);
-			auto itr = vNS.begin();
-			for (; itr < vNS.end(); ++itr)
-			{
-				if (itr->name == n)
-				{
-					break;
+			std::string name;
+			int score;
+			cin >> name >> score;
+			// escape if NoName or EOF
+			if (cin.eof() || (name == "NoName" && score == 0)) {
+				break;
+			}
+			// redo if bad input non number for score
+			else if (cin.fail()) {
+				cout << "Entered invalid name or score.  Please reenter.\n";
+				cin.clear();
+				cin.ignore(UINT8_MAX, '\n');
+			}
+			else if (cin.bad()) {
+				error("input data error\n");
+			}
+			else {
+				std::transform(name.begin(), name.end(), name.begin(),
+					[](unsigned char c) {return narrow_cast<unsigned char>(::tolower(c)); });
+				auto result = vNS.begin();
+				if (vNS.size() != 0) {
+					for (; result < vNS.end(); ++result) {
+						if (result->name == name) {
+							break;
+						}
+					}
+					if (result == vNS.end()) {
+						vNS.push_back({ name, score });
+					}
+					else {
+						error("Entered duplicate name.\n");
+					}
+				}
+				else {
+					vNS.push_back({ name, score });
 				}
 			}
-			if (itr == vNS.end())
-			{
-				NS = { n,v };
-				vNS.push_back(NS);
-			}
-			else
-			{
-				cout << "Entered duplicate name.\n";
+		}
+		// print contents to screen
+		if (vNS.size() != 0) {
+			for (auto i : vNS) {
+				cout << i.name << " " << i.value << std::endl;
 			}
 		}
-	}
-	// print contents to screen
-	if (vNS.size() != 0)
-	{
-		for (auto i : vNS)
-		{
-			cout << i.name << " " << i.value << std::endl;
+		else {
+			cout << "no names or scores entered\n";
 		}
 	}
-	else
+	catch (std::exception& e)
 	{
-		cout << "no names or scores entered\n";
+		std::cerr << "error: " << e.what() << '\n';
+		keep_window_open();
+		return 1;
+	}
+	catch (...)
+	{
+		std::cerr << "Oops: unknown exception!\n";
+		keep_window_open();
+		return 2;
 	}
 	cout << "Bye\n";
 	keep_window_open();

@@ -20,11 +20,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="calculator00.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="sect6_ex5.txt" />
     <Text Include="sect6_ex7.txt" />
   </ItemGroup>

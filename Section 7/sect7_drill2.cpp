@@ -8,6 +8,7 @@ Helpful comments removed.
 We have inserted 3 bugs that the compiler will catch and 3 that it won't.
 
 Section 7 Drill 1 Get the program to compile
+Section 7 Drill 2 Add comments
 */
 
 #include "section7.h"

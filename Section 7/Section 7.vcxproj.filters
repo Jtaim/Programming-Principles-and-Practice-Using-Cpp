@@ -18,12 +18,9 @@
     <ClInclude Include="section7.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="std_lib_facilities.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect7_drill1.cpp">
+    <ClCompile Include="sect7_drill2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

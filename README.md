@@ -24,9 +24,12 @@ because in the book's presented header file the functions have been implimented 
 If you want, you can get the header file from book's website www.stroustrup.com/Programming
 
 #### Some web sites I found helpfull
-- https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet 
-- https://isocpp.org/
-- http://en.cppreference.com/w/Main_Page
+- [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet)
+- [isocpp.org](https://isocpp.org/)
+- [C++ Core Guildlines](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
+- [GSL: Guideline Support Library](https://github.com/Microsoft/GSL)
+- [cpp reference](http://en.cppreference.com/w/Main_Page)
+- [LearnCpp.com](http://www.learncpp.com/)
 
 #### Disclaimer
 I'm new at this so any suggestions or comments are appreciated.

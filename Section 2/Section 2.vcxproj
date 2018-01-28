@@ -25,7 +25,7 @@
     <ProjectGuid>{CEC19A41-4817-423B-B9AD-47B29A6D1671}</ProjectGuid>
     <RootNamespace>HelloWorld</RootNamespace>
     <ProjectName>Section 2</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

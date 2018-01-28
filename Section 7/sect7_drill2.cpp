@@ -109,14 +109,14 @@ std::vector<Variable> names;
 
 double get_value(std::string s)
 {
-	for (int i = 0; i<names.size(); ++i)
+	for (std::string::size_type i = 0; i<names.size(); ++i)
 		if (names[i].name == s) return names[i].value;
 	error("get: undefined name ", s);
 }
 
 void set_value(std::string s, double d)
 {
-	for (int i = 0; i <= names.size(); ++i)
+	for (std::string::size_type i = 0; i <= names.size(); ++i)
 		if (names[i].name == s) {
 			names[i].value = d;
 			return;
@@ -126,7 +126,7 @@ void set_value(std::string s, double d)
 
 bool is_declared(std::string s)
 {
-	for (int i = 0; i<names.size(); ++i)
+	for (std::string::size_type i = 0; i<names.size(); ++i)
 		if (names[i].name == s) return true;
 	return false;
 }
@@ -140,9 +140,10 @@ double primary()
 	Token t = ts.get();
 	switch (t.kind) {
 	case '(':
-	{	double d = expression();
-	t = ts.get();
-	if (t.kind != ')') error("'(' expected");
+	{
+		double d = expression();
+		t = ts.get();
+		if (t.kind != ')') error("'(' expected");
 	}
 	case '-':
 		return -primary();
@@ -200,12 +201,11 @@ double declaration()
 {
 	Token t = ts.get();
 	if (t.kind != 'a') error("name expected in declaration");
-	std::string name = t.name;
-	if (is_declared(name)) error(name, " declared twice");
+	if (is_declared(t.name)) error(t.name, " declared twice");
 	Token t2 = ts.get();
-	if (t2.kind != '=') error("= missing in declaration of ", name);
+	if (t2.kind != '=') error("= missing in declaration of ", t.name);
 	double d = expression();
-	names.push_back(Variable(name, d));
+	names.push_back(Variable(t.name, d));
 	return d;
 }
 

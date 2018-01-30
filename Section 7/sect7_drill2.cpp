@@ -1,6 +1,6 @@
 /*
 written by Jtaim
-date 15 Apr 2017
+date 28 Jan 2018
 Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 clean up calculator08buggy.cpp
@@ -13,32 +13,38 @@ Section 7 Drill 2 Add comments
 
 #include "section7.h"
 
+/// class to hold object 
 struct Token {
-	char kind;
-	double value;
-	std::string name;
-	Token(char ch) :kind(ch), value(0) { }
-	Token(char ch, double val) :kind(ch), value(val) { }
-	Token(char ch, std::string n) :kind(ch), name(n) { }
+	char kind;			//what kind of token
+	double value;		//for numbers
+	std::string name;	//to hold varaible names
+	Token() : kind(' '), value(0.0) {}
+	Token(char ch) : kind(ch), value(0.0) {}
+	Token(char ch, double val) : kind(ch), value(val) {}
+	Token(char ch, std::string n) : kind(ch), name(n) {}
 };
 
 class Token_stream {
-	bool full;
-	Token buffer;
 public:
-	Token_stream() :full(0), buffer(0) { }
+	Token_stream() : full(false), buffer() {}	// make a Token_stream that reads from cin
 
 	Token get();
 	void unget(Token t) { buffer = t; full = true; }
 
 	void ignore(char);
+private:
+	bool full;
+	Token buffer;
 };
 
 const char let = 'L';
-const char quit = 'Q';
+const char quit = 'q';
 const char print = ';';
 const char number = '8';
 const char name = 'a';
+const std::string declkey = "let";
+const std::string prompt = "> ";
+const std::string result = "= ";
 
 Token Token_stream::get()
 {
@@ -53,7 +59,8 @@ Token Token_stream::get()
 	case '*':
 	case '/':
 	case '%':
-	case ';':
+	case print:
+	case quit:
 	case '=':
 		return Token(ch);
 	case '.':
@@ -67,7 +74,7 @@ Token Token_stream::get()
 	case '7':
 	case '8':
 	case '9':
-	{	std::cin.unget();
+	{	std::cin.putback(ch);
 	double val;
 	std::cin >> val;
 	return Token(number, val);
@@ -76,13 +83,14 @@ Token Token_stream::get()
 		if (isalpha(ch)) {
 			std::string s;
 			s += ch;
-			while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch))) s = ch;
-			std::cin.unget();
-			if (s == "let") return Token(let);
-			if (s == "quit") return Token(name);
-			return Token{ name, s };
+			while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
+			std::cin.putback(ch);
+			if (s == declkey) return Token(let);
+			//if (s == "quit") return Token(name);
+			return Token( name, s );
 		}
 		error("Bad token");
+		return Token();
 	}
 }
 
@@ -109,9 +117,13 @@ std::vector<Variable> names;
 
 double get_value(std::string s)
 {
-	for (std::string::size_type i = 0; i<names.size(); ++i)
-		if (names[i].name == s) return names[i].value;
+	for (std::string::size_type i = 0; i < names.size(); ++i) {
+		if (names[i].name == s) {
+			return names[i].value;
+		}
+	}
 	error("get: undefined name ", s);
+	return 0.0;
 }
 
 void set_value(std::string s, double d)
@@ -138,15 +150,18 @@ double expression();
 double primary()
 {
 	Token t = ts.get();
+	double d = 0.0;
 	switch (t.kind) {
 	case '(':
 	{
-		double d = expression();
+		d = expression();
 		t = ts.get();
 		if (t.kind != ')') error("'(' expected");
 	}
 	case '-':
 		return -primary();
+	case '+':
+		return primary();
 	case number:
 		return t.value;
 	case name:
@@ -154,6 +169,7 @@ double primary()
 	default:
 		error("primary expected");
 	}
+	return d;
 }
 
 double term()
@@ -161,16 +177,22 @@ double term()
 	double left = primary();
 	while (true) {
 		Token t = ts.get();
+		double d = 0.0;
 		switch (t.kind) {
 		case '*':
 			left *= primary();
 			break;
 		case '/':
-		{	double d = primary();
-		if (d == 0) error("divide by zero");
-		left /= d;
-		break;
-		}
+			d = primary();
+			if (d == 0) error("divide by zero");
+			left /= d;
+			break;
+		case '%':
+			d = primary();
+			if (d == 0) error("divide by zero");
+			left = fmod(left, d);
+			t = ts.get();
+			break;
 		default:
 			ts.unget(t);
 			return left;
@@ -226,9 +248,6 @@ void clean_up_mess()
 	ts.ignore(print);
 }
 
-const std::string prompt = "> ";
-const std::string result = "= ";
-
 void calculate()
 {
 	while (true) try {
@@ -246,7 +265,6 @@ void calculate()
 }
 
 int main()
-
 try {
 	calculate();
 	return 0;

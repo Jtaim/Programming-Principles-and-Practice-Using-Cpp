@@ -139,9 +139,10 @@ double primary()
 	Token t = ts.get();
 	switch (t.kind) {
 	case '(':
-	{	double d = expression();
-	t = ts.get();
-	if (t.kind != ')') error("'(' expected");
+	{	
+		double d = expression();
+		t = ts.get();
+		if (t.kind != ')') error("'(' expected");
 	}
 	case '-':
 		return -primary();

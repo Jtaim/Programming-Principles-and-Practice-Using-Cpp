@@ -2,29 +2,30 @@
 // 22 Mar 2017
 // Header file used for Programming: Principles and Practice Using C++ Second Edition
 // section 3
+// updated 18 May 2018
+// added cstdlib
 
-#ifndef SECTION3_H     // begin header guard
-#define SECTION3_H
+#pragma once
 
 #include<iostream>
 #include<string>
 #include<cmath>
 #include<vector>
+#include<cstdlib>
 
 // simple function to keep window console open
-void keep_window_open()
+inline void keep_window_open()
 {
-	std::cout << "\n\nHit Enter key to exit.\n";
+	std::cout << "\n\nHit the Enter key to exit from " << __FILE__ << std::endl;
 	std::cin.clear();
 	std::cin.ignore(256, '\n');  //clear buffer
 	std::cin.get();
 }
 
 // error function to be used (only) until error() is introduced in Chapter 5:
-void simple_error(std::string s)	// write error: s and exit program
+inline void simple_error(std::string s)	// write error: s and exit program
 {
-	std::cerr << "error: " << s << '\n';
+	std::cout << "error: " << s << std::endl;
 	keep_window_open();
-	exit(1);						// for some Windows environments
+	std::exit(1);
 }
-#endif              // close header guard

@@ -14,25 +14,25 @@ unsigned sum(unsigned, unsigned);
 int main()
 try
 {
-	std::vector<unsigned> fibonacci{ 0,1 };
-	for (unsigned i = 0; ; ++i) {
-		std::cout << fibonacci[i] << '\n';
-		fibonacci.push_back(sum(fibonacci[i], fibonacci[i + 1]));
-	}
-	keep_window_open();	// yes I know will never get to this point
-	return 0;
+    std::vector<unsigned> fibonacci{ 0,1 };
+    for (unsigned i = 0; ; ++i) {
+        std::cout << fibonacci[i] << '\n';
+        fibonacci.push_back(sum(fibonacci[i], fibonacci[i + 1]));
+    }
+    keep_window_open();	// yes I know will never get to this point
+    return 0;
 }
 catch (std::exception& e)
 {
-	std::cerr << "error: " << e.what() << '\n';
-	keep_window_open();
-	return 1;
+    std::cerr << "error: " << e.what() << '\n';
+    keep_window_open();
+    return 1;
 }
 catch (...)
 {
-	std::cerr << "Oops: unknown exception!\n";
-	keep_window_open();
-	return 2;
+    std::cerr << "Oops: unknown exception!\n";
+    keep_window_open();
+    return 2;
 }
 
 /*	Sums 2 unsigned integer values.
@@ -42,8 +42,8 @@ Errors:		if the sums overflow unsigned int type
 */
 unsigned int sum(unsigned var1, unsigned var2)
 {
-	if ((var2 > 0) && (var1 > UINT_MAX - var2)) {
-		error("unsigned int max overflow error");
-	}
-	return var1 + var2;
+    if ((var2 > 0) && (var1 > UINT_MAX - var2)) {
+        error("unsigned int max overflow error");
+    }
+    return var1 + var2;
 }

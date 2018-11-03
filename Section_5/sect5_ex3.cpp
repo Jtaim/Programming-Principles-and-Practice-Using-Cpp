@@ -11,35 +11,35 @@ throws error in main if input is below absolute 0
 
 double ctok(const double c)	// converts Celsius to Kelvin
 {
-	double celsiusToKelvin = c + 273.15;
-	return celsiusToKelvin;
+    double celsiusToKelvin = c + 273.15;
+    return celsiusToKelvin;
 }
 
 int main()
 try
 {
-	std::cout << "Enter a temperature in Celsius to covert to Kelvin:\n";
-	double celsius{ 0.0 }; //input variable
-	std::cin >> celsius;
-	if (celsius < -273.15)
-	{
-		error("Can not be below absolute zero!\n");
-	}
-	double kelvin = ctok(celsius);
-	std::cout << kelvin << '\n';
+    std::cout << "Enter a temperature in Celsius to covert to Kelvin:\n";
+    double celsius{ 0.0 }; //input variable
+    std::cin >> celsius;
+    if (celsius < -273.15)
+    {
+        error("Can not be below absolute zero!\n");
+    }
+    double kelvin = ctok(celsius);
+    std::cout << kelvin << '\n';
 
-	keep_window_open();
-	return 0;
+    keep_window_open();
+    return 0;
 }
 catch (std::exception& e)
 {
-	std::cerr << "error: " << e.what() << '\n';
-	keep_window_open();
-	return 1;
+    std::cerr << "error: " << e.what() << '\n';
+    keep_window_open();
+    return 1;
 }
 catch (...)
 {
-	std::cerr << "Oops: unknown exception!\n";
-	keep_window_open();
-	return 2;
+    std::cerr << "Oops: unknown exception!\n";
+    keep_window_open();
+    return 2;
 }

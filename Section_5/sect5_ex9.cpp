@@ -21,104 +21,104 @@ int sum_up(int s, const std::vector<int> &vn);
 int main()
 try
 {
-	using std::cout;
-	using std::cin;
-	using std::endl;
-	
-	constexpr char termination{ '|' };
+    using std::cout;
+    using std::cin;
+    using std::endl;
 
-	cout << "Enter how many integers that you would like to sum:\n";
+    constexpr char termination{ '|' };
 
-	int sumHowMany{ 0 };
-	while (!(cin >> sumHowMany)) {
-		if (cin.bad()) {
-			error("cin.bad() flag set");
-		}
-		cin.clear();
-		cin.get();
-		cout << "Invalid entry!\n";
-	}
-	std::vector<int> numbers;
-	cout << "Enter some integers (press '" << termination << "' to stop)\n";
-	//while loop to get integers to place in a vector, validate and exit on an '|' entry
-	while (true) {
-		 int number;
-		// loads entered numbers into a container vector
-		if (cin >> number) {
-			numbers.push_back(number);
-		}
-		else
-		{
-			if (cin.bad()) {
-				error("cin.bad() flag set");
-			}
-			cin.clear();
-			char c;
-			cin >> c;
-			if (c == termination) {
-				break;
-			}
-			else {
-				cout << "Invalid entry!\n";
-			}
-		}
-	}
-	if (numbers.size() >= sumHowMany) {
-		auto sum = sum_up(sumHowMany, numbers);
-		cout << "The sum of the first " << sumHowMany << " numbers ";
-		for (auto i = numbers.begin(); i < (numbers.begin() + sumHowMany); ++i) {
-			if ((sumHowMany - 1) == (i - numbers.begin())) {
-				cout << *i << " = " << sum << endl;
-			}
-			else {
-				cout << *i << '+';
-			}
-		}
-	}
-	else {
-		error("not enough integers entered to sum.\n");
-	}
-	keep_window_open();
-	return 0;
+    cout << "Enter how many integers that you would like to sum:\n";
+
+    int sumHowMany{ 0 };
+    while (!(cin >> sumHowMany)) {
+        if (cin.bad()) {
+            error("cin.bad() flag set");
+        }
+        cin.clear();
+        cin.get();
+        cout << "Invalid entry!\n";
+    }
+    std::vector<int> numbers;
+    cout << "Enter some integers (press '" << termination << "' to stop)\n";
+    //while loop to get integers to place in a vector, validate and exit on an '|' entry
+    while (true) {
+        int number;
+        // loads entered numbers into a container vector
+        if (cin >> number) {
+            numbers.push_back(number);
+        }
+        else
+        {
+            if (cin.bad()) {
+                error("cin.bad() flag set");
+            }
+            cin.clear();
+            char c;
+            cin >> c;
+            if (c == termination) {
+                break;
+            }
+            else {
+                cout << "Invalid entry!\n";
+            }
+        }
+    }
+    if (numbers.size() >= sumHowMany) {
+        auto sum = sum_up(sumHowMany, numbers);
+        cout << "The sum of the first " << sumHowMany << " numbers ";
+        for (auto i = numbers.begin(); i < (numbers.begin() + sumHowMany); ++i) {
+            if ((sumHowMany - 1) == (i - numbers.begin())) {
+                cout << *i << " = " << sum << endl;
+            }
+            else {
+                cout << *i << '+';
+            }
+        }
+    }
+    else {
+        error("not enough integers entered to sum.\n");
+    }
+    keep_window_open();
+    return 0;
 }
 catch (std::exception& e)
 {
-	std::cerr << "error: " << e.what() << '\n';
-	keep_window_open();
-	return 1;
+    std::cerr << "error: " << e.what() << '\n';
+    keep_window_open();
+    return 1;
 }
 catch (...)
 {
-	std::cerr << "Oops: unknown exception!\n";
-	keep_window_open();
-	return 2;
+    std::cerr << "Oops: unknown exception!\n";
+    keep_window_open();
+    return 2;
 }
 
 /*	Sums a vector to the user selected number to sum.
-	Inputs:		int
-				reference to vector of integers
+    Inputs:		int
+                reference to vector of integers
 
-	Outputs:	vector values summed to input int elements
+    Outputs:	vector values summed to input int elements
 
-	Errors:		number want to sum is larger than the vector size
-				if the sum of the element cause and int type overflow
+    Errors:		number want to sum is larger than the vector size
+                if the sum of the element cause and int type overflow
 */
 int sum_up(int s, const std::vector<int> &vn)
 {
-	int sum = 0;
-	if (vn.size() < s) {
-		error("not enough integers entered to sum.\n");
-	}
-	else {	//sum the numbers
-		for (int i = 0; i < s; i++) {
-			if ((vn[i] > 0) && (sum > INT_MAX - vn[i])) {
-				error("int overflow error");
-			}
-			if ((vn[i] < 0) && (sum < INT_MAX - vn[i])) {
-				error("int overflow error");
-			}
-			sum += vn[i];
-		}
-	}
-	return sum;
+    int sum = 0;
+    if (vn.size() < s) {
+        error("not enough integers entered to sum.\n");
+    }
+    else {	//sum the numbers
+        for (int i = 0; i < s; i++) {
+            if ((vn[i] > 0) && (sum > INT_MAX - vn[i])) {
+                error("int overflow error");
+            }
+            if ((vn[i] < 0) && (sum < INT_MAX - vn[i])) {
+                error("int overflow error");
+            }
+            sum += vn[i];
+        }
+    }
+    return sum;
 }

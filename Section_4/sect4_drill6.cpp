@@ -23,60 +23,60 @@ Section 4 Drill step 6.
 
 int main()
 {
-	using namespace std;
-	const char terminationChar = '|';	//termination character
-	const int howMany = 1;				//numbers to get per loop iteration
-	const double tolerance = 1.0 / 100;	//close enough for floating point comparison
+    using namespace std;
+    const char terminationChar = '|';	//termination character
+    const int howMany = 1;				//numbers to get per loop iteration
+    const double tolerance = 1.0 / 100;	//close enough for floating point comparison
 
 
-	double enteredNumber;
-	vector<decltype(enteredNumber)> enteredNumbers;
-	bool stop{ false };
-	while (!stop)
-	{
-		cout << "Enter a number. Enter " << terminationChar << " to exit.\n";
-		for (int itr = 0; itr < howMany; ++itr)
-		{
-			if (cin >> enteredNumber) {
-				enteredNumbers.push_back(enteredNumber);
-			}
-			else {	//check for valid termination
-				cin.clear();	//clear cin errors
-				char c;
-				cin >> c;
-				if (c == terminationChar) {
-					enteredNumbers.clear();
-					stop = true;
-					break;
-				}
-				else {
-					simple_error("invalid number entry");
-				}
-			}
-		}
-		// print numbers if valid
-		if (enteredNumbers.size() > 0) {
-			cout << "value entered: " << enteredNumber << endl;
-			//sort will place largest at end and smallest at begin.
-			sort(enteredNumbers.begin(), enteredNumbers.end());
-			//first entry so is smallest and largest
-			if (enteredNumbers.size() == 1) {
-				cout << enteredNumber << " is the smallest so far\n";
-				cout << enteredNumber << " is the largest so far\n\n";
-			}
-			//check for new smallest
-			else if (enteredNumbers.front() == enteredNumber) {
-				cout << enteredNumber << " is the smallest so far\n";
-			}
-			//check for new largest
-			else if (enteredNumbers.back() == enteredNumber) {
-				cout << enteredNumber << " is the largest so far\n\n";
-			}
-			//the else is optional :)
-			else { continue; }
-		}
-	}
-	cout << "Bye\n";
-	keep_window_open();
-	return 0;
+    double enteredNumber;
+    vector<decltype(enteredNumber)> enteredNumbers;
+    bool stop{ false };
+    while (!stop)
+    {
+        cout << "Enter a number. Enter " << terminationChar << " to exit.\n";
+        for (int itr = 0; itr < howMany; ++itr)
+        {
+            if (cin >> enteredNumber) {
+                enteredNumbers.push_back(enteredNumber);
+            }
+            else {	//check for valid termination
+                cin.clear();	//clear cin errors
+                char c;
+                cin >> c;
+                if (c == terminationChar) {
+                    enteredNumbers.clear();
+                    stop = true;
+                    break;
+                }
+                else {
+                    simple_error("invalid number entry");
+                }
+            }
+        }
+        // print numbers if valid
+        if (enteredNumbers.size() > 0) {
+            cout << "value entered: " << enteredNumber << endl;
+            //sort will place largest at end and smallest at begin.
+            sort(enteredNumbers.begin(), enteredNumbers.end());
+            //first entry so is smallest and largest
+            if (enteredNumbers.size() == 1) {
+                cout << enteredNumber << " is the smallest so far\n";
+                cout << enteredNumber << " is the largest so far\n\n";
+            }
+            //check for new smallest
+            else if (enteredNumbers.front() == enteredNumber) {
+                cout << enteredNumber << " is the smallest so far\n";
+            }
+            //check for new largest
+            else if (enteredNumbers.back() == enteredNumber) {
+                cout << enteredNumber << " is the largest so far\n\n";
+            }
+            //the else is optional :)
+            else { continue; }
+        }
+    }
+    cout << "Bye\n";
+    keep_window_open();
+    return 0;
 }

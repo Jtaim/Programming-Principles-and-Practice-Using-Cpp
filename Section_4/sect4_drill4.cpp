@@ -17,55 +17,55 @@ Section 4 Drill step 4.
 
 int main()
 {
-	using namespace std;
-	const char terminationChar = '|';	//termination character
-	const int howMany = 2;				//numbers to get per loop iteration
+    using namespace std;
+    const char terminationChar = '|';	//termination character
+    const int howMany = 2;				//numbers to get per loop iteration
 
-	double enteredNumber;
-	vector<decltype(enteredNumber)> enteredNumbers;
-	bool stop{ false };
-	while (!stop)
-	{
-		cout << "Enter two numbers. Enter " << terminationChar << " to exit.\n";
-		for (int itr = 0; itr < howMany; ++itr)
-		{
-			if (cin >> enteredNumber) {
-				enteredNumbers.push_back(enteredNumber);
-			}
-			else {	//check for valid termination
-				cin.clear();	//clear cin errors
-				char c;
-				cin >> c;
-				if (c == terminationChar) {
-					enteredNumbers.clear();
-					stop = true;
-					break;
-				}
-				else {
-					simple_error("invalid number entry");
-				}
-			}
-		}
-		// print numbers if valid
-		if (!stop) {
-			cout << "Entered numbers: ";
-			for (auto i : enteredNumbers) {
-				cout << i << " ";
-			}
-			cout << endl;
-			sort(enteredNumbers.begin(), enteredNumbers.end());
-			if (enteredNumbers.front() == enteredNumbers.back()) {
-				cout << "The entered numbers are equal.\n";
-			}
-			else {
-				cout << "smaller value is: " << enteredNumbers.front() << endl;
-				cout << "larger value is: " << enteredNumbers.back() << endl;
-			}
-		}
-		//clear vector for next set of numbers
-		enteredNumbers.clear();
-	}
-	cout << "Bye\n";
-	keep_window_open();
-	return 0;
+    double enteredNumber;
+    vector<decltype(enteredNumber)> enteredNumbers;
+    bool stop{ false };
+    while (!stop)
+    {
+        cout << "Enter two numbers. Enter " << terminationChar << " to exit.\n";
+        for (int itr = 0; itr < howMany; ++itr)
+        {
+            if (cin >> enteredNumber) {
+                enteredNumbers.push_back(enteredNumber);
+            }
+            else {	//check for valid termination
+                cin.clear();	//clear cin errors
+                char c;
+                cin >> c;
+                if (c == terminationChar) {
+                    enteredNumbers.clear();
+                    stop = true;
+                    break;
+                }
+                else {
+                    simple_error("invalid number entry");
+                }
+            }
+        }
+        // print numbers if valid
+        if (!stop) {
+            cout << "Entered numbers: ";
+            for (auto i : enteredNumbers) {
+                cout << i << " ";
+            }
+            cout << endl;
+            sort(enteredNumbers.begin(), enteredNumbers.end());
+            if (enteredNumbers.front() == enteredNumbers.back()) {
+                cout << "The entered numbers are equal.\n";
+            }
+            else {
+                cout << "smaller value is: " << enteredNumbers.front() << endl;
+                cout << "larger value is: " << enteredNumbers.back() << endl;
+            }
+        }
+        //clear vector for next set of numbers
+        enteredNumbers.clear();
+    }
+    cout << "Bye\n";
+    keep_window_open();
+    return 0;
 }

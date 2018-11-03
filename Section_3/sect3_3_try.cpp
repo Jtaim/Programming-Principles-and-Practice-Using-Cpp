@@ -15,24 +15,24 @@ proud of being five and a half years old rather than just five.
 
 int main()
 {
-	std::cout << "Please enter your first name: ";
-	std::string first_name = "???";
-	std::cin >> first_name;
+    std::cout << "Please enter your first name: ";
+    std::string first_name = "???";
+    std::cin >> first_name;
 
-	std::cout << "Please enter your age: ";
-	double age = 0.0;
-	while (std::cin >> age) {
-		if (age < 0.0 || age > 130.0) {
-			std::cout << "bad age entered! Try again" << std::endl;
-		}
-		else {
-			break;
-		}
-	}
-	double age_months = age * 12.0;
-	std::cout << "Hello, " << first_name
-		<< " (age " << age << ")"
-		<< "(age in months " << age_months << ")\n";
+    std::cout << "Please enter your age: ";
+    double age = 0.0;
+    while (std::cin >> age) {
+        if (age < 0.0 || age > 130.0) {
+            std::cout << "bad age entered! Try again" << std::endl;
+        }
+        else {
+            break;
+        }
+    }
+    double age_months = age * 12.0;
+    std::cout << "Hello, " << first_name
+        << " (age " << age << ")"
+        << "(age in months " << age_months << ")\n";
 
-	keep_window_open();
+    keep_window_open();
 }

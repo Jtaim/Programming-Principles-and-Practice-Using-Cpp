@@ -17,76 +17,76 @@ Handle all inputs and provide and error N is larger than input vector
 int main()
 try
 {
-	using std::cout;
-	using std::cin;
-	using std::endl;
+    using std::cout;
+    using std::cin;
+    using std::endl;
 
-	constexpr char termination{ '|' };
+    constexpr char termination{ '|' };
 
-	cout << "Enter how many integers that you would like to sum:\n";
-	
-	int sumHowMany{ 0 };
-	while (!(cin >> sumHowMany)) {
-		if (cin.bad()) {
-			error("cin.bad() flag set");
-		}
-		cin.clear();
-		cin.get();
-		cout << "Invalid entry!\n";
-	}
-	std::vector<int> numbers;
-	cout << "Enter some integers (press '" << termination << "' to stop)\n";
-	//while loop to get integers to place in a vector, validate and exit on an '|' entry
-	while (true) {
-		int number{ 0 };
-		// loads entered numbers into a container vector
-		if (cin >> number) {
-			numbers.push_back(number);
-		}
-		else
-		{
-			if (cin.bad()) {
-				error("cin.bad() flag set");
-			}
-			cin.clear();
-			char c;
-			cin.get(c);
-			if (c == termination) {
-				break;
-			}
-			else {
-				cout << "Invalid entry!\n";
-			}
-		}
-	}
-	if (numbers.size() >= sumHowMany) {
-		int sum{ 0 };
-		cout << "The sum of the first " << sumHowMany << " numbers ";
-		for (auto i = numbers.begin(); i < (numbers.begin() + sumHowMany); ++i) {
-			sum += *i;
-			if ((sumHowMany - 1) == (i - numbers.begin())) {
-				cout << *i << " = " << sum << endl;
-			}
-			else {
-				cout << *i << '+';
-			}
-		}
-	}
-	else {
-		error("not enough integers entered to sum.\n");
-	}
-	keep_window_open();
-	return 0;
+    cout << "Enter how many integers that you would like to sum:\n";
+
+    int sumHowMany{ 0 };
+    while (!(cin >> sumHowMany)) {
+        if (cin.bad()) {
+            error("cin.bad() flag set");
+        }
+        cin.clear();
+        cin.get();
+        cout << "Invalid entry!\n";
+    }
+    std::vector<int> numbers;
+    cout << "Enter some integers (press '" << termination << "' to stop)\n";
+    //while loop to get integers to place in a vector, validate and exit on an '|' entry
+    while (true) {
+        int number{ 0 };
+        // loads entered numbers into a container vector
+        if (cin >> number) {
+            numbers.push_back(number);
+        }
+        else
+        {
+            if (cin.bad()) {
+                error("cin.bad() flag set");
+            }
+            cin.clear();
+            char c;
+            cin.get(c);
+            if (c == termination) {
+                break;
+            }
+            else {
+                cout << "Invalid entry!\n";
+            }
+        }
+    }
+    if (numbers.size() >= sumHowMany) {
+        int sum{ 0 };
+        cout << "The sum of the first " << sumHowMany << " numbers ";
+        for (auto i = numbers.begin(); i < (numbers.begin() + sumHowMany); ++i) {
+            sum += *i;
+            if ((sumHowMany - 1) == (i - numbers.begin())) {
+                cout << *i << " = " << sum << endl;
+            }
+            else {
+                cout << *i << '+';
+            }
+        }
+    }
+    else {
+        error("not enough integers entered to sum.\n");
+    }
+    keep_window_open();
+    return 0;
 }
 catch (std::exception& e)
 {
-	std::cerr << "error: " << e.what() << '\n';
-	keep_window_open();
-	return 1;
+    std::cerr << "error: " << e.what() << '\n';
+    keep_window_open();
+    return 1;
 }
 catch (...)
 {
-	std::cerr << "Oops: unknown exception!\n";
-	keep_window_open();
-	return 2;
+    std::cerr << "Oops: unknown exception!\n";
+    keep_window_open();
+    return 2;
 }

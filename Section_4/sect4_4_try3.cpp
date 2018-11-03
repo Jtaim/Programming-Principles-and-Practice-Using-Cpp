@@ -15,12 +15,12 @@ z     122
 
 int main()
 {
-	using namespace std;
-	int index{ 97 };	// 97 = 'a' lower case letters 122 = 'z'
-	while (index <= 122) {
-		cout << static_cast<char>(index) << "\t" << index << endl;
-		++index;
-	}
-	keep_window_open();
-	return 0;
+    using namespace std;
+    int index{ 97 };	// 97 = 'a' lower case letters 122 = 'z'
+    while (index <= 122) {
+        cout << static_cast<char>(index) << "\t" << index << endl;
+        ++index;
+    }
+    keep_window_open();
+    return 0;
 }

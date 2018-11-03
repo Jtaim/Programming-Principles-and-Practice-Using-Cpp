@@ -23,4 +23,9 @@
     <Text Include="sect6_ex5.txt" />
     <Text Include="sect6_ex7.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sect6_ex10.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>

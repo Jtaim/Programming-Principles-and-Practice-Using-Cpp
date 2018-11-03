@@ -2,18 +2,13 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 /.vs
+*.VC.db
 *.exe
 *.ilk
 *.pdb
-/Section_2/x64/Debug
-/Section_3/x64/Debug
-/Section_4/x64/Debug
-/Section_5/x64/Debug
-/Section_6/x64/Debug
-/Section_7/x64/Debug
-/Section_2/.vs
-/Section_3/.vs
-/Section_4/.vs
-/Section_5/.vs
-/Section_6/.vs
-/Section_7/.vs
+*/x64/Debug
+*/Debug
+*.vs
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters

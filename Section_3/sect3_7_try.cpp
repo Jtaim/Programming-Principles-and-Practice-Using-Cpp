@@ -9,8 +9,8 @@ Section 3.7 try this exercise
 
 int Main()
 {
-	STRING s = "Goodbye, cruel world! ";
-	cOut << S << '\n';
-	
-	keep_wind_open();
+    STRING s = "Goodbye, cruel world! ";
+    cOut << S << '\n';
+
+    keep_wind_open();
 }

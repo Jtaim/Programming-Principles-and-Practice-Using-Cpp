@@ -7,7 +7,7 @@
 
 int main()
 {
-	std::cout << "Hello, World!\nC++ is fun :)\n";
-	std::cin.get();	//wait for a character to be entered
-	return 0;
+    std::cout << "Hello, World!\nC++ is fun :)\n";
+    std::cin.get();	//wait for a character to be entered
+    return 0;
 }

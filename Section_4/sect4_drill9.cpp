@@ -30,89 +30,71 @@ Section 4 Drill step 9.
    decide on a unit to use for that sum; use meters.
 */
 
-#include "section4.h"	//custom header
+#include "section4.h"
 
 int main()
 {
-    using namespace std;
-    const char terminationChar = '|';	//termination character
-    const string convetToUnit{ "m" };
-    const vector<pair<string, double>> convert{
-        { "m", 1.0 },			//leave as is
-        { "cm", 1.0 / 100 },		//convert to m
-        { "in", 2.54 / 100 },		//convert to m
-        { "ft", 12.0*2.54 / 100 }	//convert to m
+    constexpr char terminationChar = '|';	//termination character
+    const std::vector<std::pair<std::string, double>> convert{
+        {"m", 1.0},	        // leave as is
+        {"cm", 0.01},	    // convert to m
+        {"in", 0.0254},	    // convert to m
+        {"ft", 12.0 * 0.0254}	//convert to m
     };
 
-    double enteredNumber{ 0.0 };
-    string unit;
+    double enteredMeasurement{ 0.0 };
+    std::string unitOfMeasure;
+    std::vector<decltype(enteredMeasurement)> enteredMeasurements;
     double sum{ 0.0 };
-    vector<pair<double, string>> enteredMeasurements;
     bool stop{ false };
     while (!stop)
     {
-        cout << "Enter a number with unit of measurement. Enter " << terminationChar << " to exit.\n";
+        std::cout << "Enter a scalar distance number with the unit of measurement or enter " << terminationChar << " to exit.\n";
         while (!stop)
         {
             // get number
-            if ((cin >> enteredNumber)) {
-                // get unit of measure
-                if (enteredNumber > 0) {
-                    cin >> unit;
-                    // look for termination char
-                    if (unit.find(terminationChar) != string::npos) {
-                        cout << "termination '" << terminationChar << "' found\n";
-                        stop = true;
+            std::cin >> enteredMeasurement;
+            if (!std::cin) {
+                std::cin.clear();
+                // if no number entered then assume 1 as the measurement
+                enteredMeasurement = 1.0;
+            }
+
+            // get unit of measure
+            std::cin >> unitOfMeasure;
+            // look for termination char
+            if (unitOfMeasure.find(terminationChar) != std::string::npos) {
+                std::cout << "termination '" << terminationChar << "' found\n";
+                stop = true;
+            }
+            // check for valid unit of measure and convert
+            else {
+                auto itr = convert.begin();
+                for (; itr < convert.end(); ++itr) {
+                    if (itr->first == unitOfMeasure) {
+                        // convert measurement to m then store in vector
+                        enteredMeasurement *= itr->second;
+                        enteredMeasurements.push_back(enteredMeasurement);
+                        sum += enteredMeasurement;
+                        std::cout << "converted measurement: " << enteredMeasurement << "m" << std::endl;
                         break;
                     }
-                    // check for valid unit of measure and convert
-                    else {
-                        auto i = convert.begin();
-                        for (; i < convert.end(); ++i) {
-                            //valid unit finds correct index into the vector convert 
-                            if (i->first == unit) {
-                                cout << enteredNumber << unit << " converts to ";
-                                enteredNumber *= i->second;
-                                cout << enteredNumber << convetToUnit << endl;
-                                enteredMeasurements.push_back({ enteredNumber, convetToUnit });
-                                sum += enteredNumber;
-                                break;
-                            }
-                        }
-                        if (i == convert.end()) {
-                            cout << "illegal units. Measurement was discarded.\n";
-                        }
-                    }
                 }
-                else {
-                    cin.clear();			//clear cin error if is one
-                    cin.ignore(256, '\n');	//clear all entries until new line is found
-                    cout << "can not enter a zero or negative distance.  Please renter a number\n";
+                if (itr == convert.end()) {
+                    simple_error("invalid unit of measure");
                 }
             }
-            else {
-                cin.clear();	// clear cin errors
-                if (cin.peek() != terminationChar) {
-                    cin.clear();			//clear cin error if is one
-                    cin.ignore(256, '\n');	//clear all entries until new line is found
-                    cout << "invalid entry.  Please renter a number\n";
-                }
-                else {
-                    stop = true;
-                }
-            }
-        }
-        // print measurements
-        if (!enteredMeasurements.empty()) {
-            sort(enteredMeasurements.begin(), enteredMeasurements.end(), [](auto &left, auto &right) {
-                return left.first < right.first;
-            });
-            cout << "The smallest valid value entered is " << enteredMeasurements.front().first << convetToUnit << endl;
-            cout << "The largest valid value entered is " << enteredMeasurements.back().first << convetToUnit << endl;
-            cout << "The sum of all valid entered measurements is " << sum << convetToUnit << endl;
         }
     }
-    cout << "Bye\n";
+    // print measurements
+    if (!enteredMeasurements.empty()) {
+        std::sort(enteredMeasurements.begin(), enteredMeasurements.end());
+        std::cout << "The smallest valid value entered is " << enteredMeasurements.front() << "m" << std::endl;
+        std::cout << "The largest valid value entered is " << enteredMeasurements.back() << "m" << std::endl;
+        std::cout << "The sum of all valid entered measurements is " << sum << "m" << std::endl;
+    }
+
+    std::cout << "Bye\n";
     keep_window_open();
     return 0;
 }

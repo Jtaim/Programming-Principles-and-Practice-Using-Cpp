@@ -9,7 +9,7 @@ the values Steinbeck, Hemingway, Fitzgerald, the output should be
 Fitzgerald, Hemingway, Steinbeck.
 */
 
-#include "section3.h" //custom header
+#include "section3.h"
 
 int main()
 {
@@ -17,14 +17,14 @@ int main()
 
     cout << "Enter 3 words and output will place in alphabetic order.\n\n";
     cout << "Enter three words:\n";
-    string val1{ "???" };
-    string val2{ "???" };
-    string val3{ "???" };
+    string val1;
+    string val2;
+    string val3;
     cin >> val1 >> val2 >> val3;
 
-    string min{ "???" };
-    string mid{ "???" };
-    string max{ "???" };
+    string min;
+    string mid;
+    string max;
     if ((val1 <= val2) && (val1 <= val3))
     {
         if (val2 <= val3)
@@ -71,6 +71,7 @@ int main()
         }
     }
     cout << min << ", " << mid << ", " << max << endl;
+
     keep_window_open();
     return 0;
 }

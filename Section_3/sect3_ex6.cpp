@@ -11,7 +11,7 @@ If two values are the same, they should just be ordered together.
 So, the input 4 5 4 should give 4, 4, 5.
 */
 
-#include "section3.h" //custom header
+#include "section3.h"
 
 int main()
 {
@@ -23,7 +23,9 @@ int main()
     int val1{ 0 };
     int val2{ 0 };
     int val3{ 0 };
-    if (!(cin >> val1 >> val2 >> val3)) { simple_error("Invalid entry"); }
+    if (!(cin >> val1 >> val2 >> val3)) {
+        simple_error("Invalid entry");
+    }
 
     int min{ 0 };
     int mid{ 0 };
@@ -74,6 +76,7 @@ int main()
         }
     }
     cout << min << ", " << mid << ", " << max << endl;
+
     keep_window_open();
     return 0;
 }

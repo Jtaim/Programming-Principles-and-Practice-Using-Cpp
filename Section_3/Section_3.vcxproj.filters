@@ -20,7 +20,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect3_3_try.cpp">
+    <ClCompile Include="sect3_ex11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

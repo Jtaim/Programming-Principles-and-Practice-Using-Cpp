@@ -1,11 +1,12 @@
 //written by Jtaim
 //date 24 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
+
 /*
 Section 3.9 try this exercise
 */
 
-#include "section3.h" //custom header
+#include "section3.h"
 
 //exit EOF or ctrl-z
 int main()
@@ -13,17 +14,19 @@ int main()
     using namespace std;
 
     double d{ 0.0 };
-    cout << "show some basic of how C++ converts types. EOF to exit\n";
+    cout << "Shows how C++ implicitly converts types. EOF to exit\n";
     while (cin >> d)
     {
-        int i{ static_cast<int>(d) };	// try to squeeze a double into an int
-        //int j {d};						// the {} enforce error narrowing error
-        char c{ static_cast<char>(i) }; // try to squeeze an int into a char
-        int i2{ c };             		// get the integer value of the character
-        cout << "the entered double value " << d << "\n"
-            << "double converted to int " << i << "\n"
-            << "int converted to char (" << c << ")\n"
-            << "char converted to int " << i2 << "\n";
+        int i = d;	// conversion from 'double' to 'int', possible loss of data
+        //int j {d};  // the {} enforce error narrowing error
+        char c = i; // conversion from 'int' to 'char', possible loss of data
+        int i2 = c; // OK, get the integer value of the character
+        cout << "the entered double value: " << d << endl
+            << "double converted to int: " << i << endl
+            << "int converted to char: " << c << endl
+            << "char converted to int: " << i2 << endl;
     }
+
+    keep_window_open();
     return 0;
 }

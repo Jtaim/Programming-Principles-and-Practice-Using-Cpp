@@ -15,65 +15,65 @@ Section 4 Drill step 5.
    out which is the larger and the smaller if the two numbers differ by less than 1.0 / 100.
 */
 
-#include "section4.h"	//custom header
+#include "section4.h"
 
 int main()
 {
-    using namespace std;
-    const char terminationChar = '|';	//termination character
-    const int howMany = 2;				//numbers to get per loop iteration
-    const double tolerance = 1.0 / 100;	//close enough for floating point comparison
+    constexpr char terminationChar = '|';	//termination character
+    constexpr int howManyNumPerItr = 2;		//numbers to get per loop iteration
+    constexpr double tolerance = 1.0 / 100;	//close enough for floating point comparison
 
 
     double enteredNumber;
-    vector<decltype(enteredNumber)> enteredNumbers;
+    std::vector<decltype(enteredNumber)> enteredNumbers;
     bool stop{ false };
     while (!stop)
     {
-        cout << "Enter two numbers. Enter " << terminationChar << " to exit.\n";
-        for (int itr = 0; itr < howMany; ++itr)
+        std::cout << "Enter " << howManyNumPerItr << " numbers. Enter " << terminationChar << " to exit.\n";
+        for (int itr = 0; itr < howManyNumPerItr; ++itr)
         {
-            if (cin >> enteredNumber) {
+            if (std::cin >> enteredNumber) {
                 enteredNumbers.push_back(enteredNumber);
             }
-            else {	//check for valid termination
-                cin.clear();	//clear cin errors
+            else {
+                std::cin.clear();
                 char c;
-                cin >> c;
+                std::cin.get(c);
                 if (c == terminationChar) {
                     enteredNumbers.clear();
                     stop = true;
                     break;
                 }
                 else {
-                    simple_error("invalid number entry");
+                    simple_error("invalid entry:  was not a valid number or termination");
                 }
             }
         }
         // print numbers if valid
         if (!stop) {
-            cout << "Entered numbers: ";
+            std::cout << "Entered numbers: ";
             for (auto i : enteredNumbers) {
-                cout << i << " ";
+                std::cout << i << " ";
             }
-            cout << endl;
-            sort(enteredNumbers.begin(), enteredNumbers.end());
+            std::cout << std::endl;
+            std::sort(enteredNumbers.begin(), enteredNumbers.end());
             if (enteredNumbers.front() == enteredNumbers.back()) {
-                cout << "The entered numbers are equal.\n\n";
+                std::cout << "The entered numbers are equal.\n\n";
             }
             else if (std::fabs(enteredNumbers.front() - enteredNumbers.back()) <= tolerance)	//fabs() is absolute value of double
             {
-                cout << "numbers are close enough to be equal.\n\n";
+                std::cout << "numbers are close enough to be equal.\n\n";
             }
             else {
-                cout << "smaller value is: " << enteredNumbers.front() << endl;
-                cout << "larger value is: " << enteredNumbers.back() << "\n\n";
+                std::cout << "smaller value is: " << enteredNumbers.front() << std::endl;
+                std::cout << "larger value is: " << enteredNumbers.back() << "\n\n";
             }
         }
         //clear vector for next set of numbers
         enteredNumbers.clear();
     }
-    cout << "Bye\n";
+
+    std::cout << "Bye\n";
     keep_window_open();
     return 0;
 }

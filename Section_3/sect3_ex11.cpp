@@ -17,7 +17,16 @@ You have 3 half dollars.
 The value of all of your coins is 573 cents.
 */
 
-#include "section3.h" //custom header
+#include "section3.h"
+
+int getInput()
+{
+    int val{ 0 };
+    if (!(std::cin >> val)) {
+        simple_error("Invalid integer value\n");
+    }
+    return val;
+}
 
 int main()
 {
@@ -30,21 +39,20 @@ int main()
     int quarter{ 0 };
     int half_dollar{ 0 };
     int dollar{ 0 };
-    //feel lazy so did not do input checking
     cout << "Enter number of pennies: ";
-    cin >> penny;
+    penny = getInput();
     cout << "Enter number of nickels: ";
-    cin >> nickel;
+    nickel = getInput();
     cout << "Enter number of dimes: ";
-    cin >> dime;
+    dime = getInput();
     cout << "Enter number of quarters: ";
-    cin >> quarter;
+    quarter = getInput();
     cout << "Enter number of half dollars: ";
-    cin >> half_dollar;
+    half_dollar = getInput();
     cout << "Enter number of dollar coins: ";
-    cin >> dollar;
+    dollar = getInput();
 
-    string denomination{ "???" };
+    string denomination;
     if (penny > 0) {
         denomination = (penny == 1 ? "penny" : "pennies");
         cout << "you have " << penny << " " << denomination << endl;
@@ -77,7 +85,7 @@ int main()
 
     double total{ 0.0 };
     total = penny + nickel * 5 + dime * 10 + quarter * 25 + half_dollar * 50 + dollar * 100;
-    total /= 100;
+    total /= 100.0;
     cout << "your total is $" << total << endl;
 
     keep_window_open();

@@ -8,51 +8,51 @@ Write a program that consists of a while-loop that (each time around the loop) r
 two INTs and then prints them. Exit the program when a terminating '|' is entered.
 */
 
-#include "section4.h"	//custom header
+#include "section4.h"
 
 int main()
 {
-    using namespace std;
-    const char terminationChar = '|';	//termination character
-    const int howMany = 2;				//numbers to get per loop iteration
+    constexpr char terminationChar = '|';	//termination character
+    constexpr int howManyNumPerItr = 2;		//numbers to get per loop iteration
 
     int enteredNumber;
-    vector<decltype(enteredNumber)> enteredNumbers;
+    std::vector<decltype(enteredNumber)> enteredNumbers;
     bool stop = false;
     while (!stop)
     {
-        cout << "Enter two numbers. Enter " << terminationChar << " to exit.\n";
-        for (int itr = 0; itr < howMany; ++itr)
+        std::cout << "Enter " << howManyNumPerItr << " numbers. Enter " << terminationChar << " to exit.\n";
+        for (int itr = 0; itr < howManyNumPerItr; ++itr)
         {
-            if (cin >> enteredNumber) {
+            if (std::cin >> enteredNumber) {
                 enteredNumbers.push_back(enteredNumber);
             }
-            else {	//check for valid termination
-                cin.clear();	//clear cin errors
+            else {
+                std::cin.clear();
                 char c;
-                cin >> c;
+                std::cin >> c;
                 if (c == terminationChar) {
                     enteredNumbers.clear();
                     stop = true;
                     break;
                 }
                 else {
-                    simple_error("invalid number entry");
+                    simple_error("invalid entry:  was not a valid number or termination");
                 }
             }
         }
         // print numbers if valid
         if (!stop) {
-            cout << "Entered numbers: ";
+            std::cout << "Entered numbers: ";
             for (auto i : enteredNumbers) {
-                cout << i << " ";
+                std::cout << i << " ";
             }
-            cout << endl;
+            std::cout << std::endl;
         }
         //clear vector for next set of numbers
         enteredNumbers.clear();
     }
-    cout << "Bye\n";
+
+    std::cout << "Bye\n";
     keep_window_open();
     return 0;
 }

@@ -1,6 +1,8 @@
 //written by Jtaim
 //date 23 Mar 2017
 //Programming: Principles and Practice Using C++ Second Edition
+
+
 /*
 Section 3.5 try this exercise
 */
@@ -9,30 +11,29 @@ Section 3.5 try this exercise
 
 int main()
 {
-    using namespace std;
+    std::cout << "A program to check for repeating words. EOF or ctrl-z to exit\n";
+    std::cout << "Enter a sentence to check: ";
 
-    string previous = "";
-    string current;
-    cout << "A program to check for repeating words. EOF or ctrl-z to exit\n";
-    cout << "Enter a sentence to check: ";
-    while (cin >> current)
+    std::string previous;
+    std::string current;
+    unsigned wordCount{ 0U };
+    while (std::cin >> current)
     {
-        if (current.size() == previous.size())
-        {
-            // what if word is repeated but one is capitalized?
-            int i = 0;
-            while (i < current.size())
-            {
-                if (tolower(current[i]) != tolower(previous[i])) { break; }
-                ++i;
-            }
-            if (i == current.size())
-            {
-                cout << "repeated word: " << current << endl;
-            }
-            else { previous = current; }
+        ++wordCount;
+        // make string lower case
+        for (auto &c : current) {
+            c = static_cast<char>(tolower(c));
         }
-        else { previous = current; }
+        if (previous == current)
+        {
+            std::cout << "repeated word: " << current << std::endl;
+        }
+        else {
+            previous = current;
+        }
     }
+    std::cout << "Total words: " << wordCount << std::endl;
+
+    keep_window_open();
     return 0;
 }

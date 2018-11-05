@@ -18,11 +18,15 @@
 #include <ctime>
 
 // simple function to keep window console open
-void keep_window_open()
+inline void keep_window_open()
 {
-    std::cout << "\n\nHit Enter key to exit.\n";
     std::cin.clear();
-    std::cin.ignore(UINT8_MAX, '\n');	//clear buffer
+    // check if buffer is empty
+    auto cb = std::cin.rdbuf()->in_avail();
+    if (cb) {
+        std::cin.ignore(cb, '\n');  //clear buffer
+    }
+    std::cout << "\n\nHit the Enter key to exit" << std::endl;
     std::cin.get();
 }
 
@@ -31,6 +35,6 @@ void simple_error(std::string s)	// write error: s and exit program
 {
     std::cerr << "error: " << s << '\n';
     keep_window_open();
-    exit(1);						// for some Windows environments
+    std::exit(1);
 }
 #endif		// close header guard

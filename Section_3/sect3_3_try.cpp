@@ -15,24 +15,26 @@ proud of being five and a half years old rather than just five.
 
 int main()
 {
+    constexpr double monthsInYear{ 12.0 };
+    constexpr double minAge{ 0.0 };
+    constexpr double maxAge{ 130.0 };
+
     std::cout << "Please enter your first name: ";
-    std::string first_name = "???";
+    std::string first_name;
     std::cin >> first_name;
 
     std::cout << "Please enter your age: ";
-    double age = 0.0;
+    double age{ minAge };
     while (std::cin >> age) {
-        if (age < 0.0 || age > 130.0) {
-            std::cout << "bad age entered! Try again" << std::endl;
+        if (age < minAge || age > maxAge) {
+            std::cout << "Impracticable age entered! Try again" << std::endl;
         }
         else {
             break;
         }
     }
-    double age_months = age * 12.0;
-    std::cout << "Hello, " << first_name
-        << " (age " << age << ")"
-        << "(age in months " << age_months << ")\n";
+    std::cout << "Hello, " << first_name << " you are " << age * monthsInYear << " months old\n";
 
     keep_window_open();
+    return 0;
 }

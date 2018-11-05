@@ -28,11 +28,16 @@
 
 #include<numeric>	// for MVS 2015 not under algorithm
 
+// simple function to keep window console open
 inline void keep_window_open()
 {
-    std::cout << "\n\nhit enter key to exit.\n";
     std::cin.clear();
-    std::cin.ignore(UINT8_MAX, '\n');
+    // check if buffer is empty
+    auto cb = std::cin.rdbuf()->in_avail();
+    if (cb) {
+        std::cin.ignore(cb, '\n');  //clear buffer
+    }
+    std::cout << "\n\nHit the Enter key to exit" << std::endl;
     std::cin.get();
 }
 

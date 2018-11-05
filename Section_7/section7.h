@@ -28,39 +28,44 @@
 
 #include<numeric>	// for MVS 2015 not under algorithm
 
+// simple function to keep window console open
 inline void keep_window_open()
 {
-	std::cout << "\n\nhit enter key to exit.\n";
-	std::cin.clear();
-	std::cin.ignore(UINT8_MAX, '\n');
-	std::cin.get();
+    std::cin.clear();
+    // check if buffer is empty
+    auto cb = std::cin.rdbuf()->in_avail();
+    if (cb) {
+        std::cin.ignore(cb, '\n');  //clear buffer
+    }
+    std::cout << "\n\nHit the Enter key to exit" << std::endl;
+    std::cin.get();
 }
 
 inline void error(const std::string& s)
 {
-	throw std::runtime_error(s);
+    throw std::runtime_error(s);
 }
 
 inline void error(const std::string& s, const std::string& s2)
 {
-	error(s + s2);
+    error(s + s2);
 }
 
 inline void error(const std::string& s, int i)
 {
-	std::ostringstream os;
-	os << s << ": " << i;
-	error(os.str());
+    std::ostringstream os;
+    os << s << ": " << i;
+    error(os.str());
 }
 
 // run-time checked narrowing cast (type conversion).
 template<typename Target, typename Source>
 Target narrow_cast(const Source& a)
 {
-	auto r = static_cast<Target>(a);
-	if (static_cast<Source>(r) != a) {
-		error("narrow_cast<>() failed");
-	}
-	return r;
+    auto r = static_cast<Target>(a);
+    if (static_cast<Source>(r) != a) {
+        error("narrow_cast<>() failed");
+    }
+    return r;
 }
 #endif	// close header guard

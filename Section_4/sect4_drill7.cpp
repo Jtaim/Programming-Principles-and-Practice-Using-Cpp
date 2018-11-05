@@ -25,77 +25,62 @@ Section 4 Drill step 7.
    You may consider 12 m (with a space between the number and the unit) equivalent to 12m (without a space).
 */
 
-#include "section4.h"	//custom header
+#include "section4.h"
 
 int main()
 {
-    using namespace std;
-    const char terminationChar = '|';	//termination character
-    const vector<pair<string, double>> convert{
+    constexpr char terminationChar = '|';	//termination character
+    const std::vector<std::pair<std::string, double>> convert{
         {"m", 100.0},	//covert to cm
         {"cm", 1.00},	//leave as is
         {"in", 2.54},	//convert to cm
-        {"ft", 12.0}	//convert to in
+        {"ft", 12.0 * 2.54}	//convert to cm
     };
 
-    double enteredNumber{ 0.0 };
-    string unit;
-    vector<pair<double, string>> enteredMeasurements;
+    double enteredMeasurement{ 0.0 };
+    std::string unitOfMeasure;
+    std::vector<decltype(enteredMeasurement)> enteredMeasurements;
     bool stop{ false };
     while (!stop)
     {
-        cout << "Enter a number with unit of measurement. Enter " << terminationChar << " to exit.\n";
+        std::cout << "Enter a number with unit of measurement or enter " << terminationChar << " to exit.\n";
         while (!stop)
         {
             // get number
-            if ((cin >> enteredNumber)) {
-                // get unit of measure
-                cin >> unit;
-                // look for termination char
-                if (unit.find(terminationChar) != string::npos) {
-                    cout << "termination '" << terminationChar << "' found\n";
-                    stop = true;
-                    break;
-                }
-                // check for valid unit of measure and convert
-                else {
-                    for (auto i : convert) {
-                        //valid unit finds correct index into the vector convert 
-                        if (i.first == unit) {
-                            enteredNumber *= i.second;
-                            // m and in converts to cm
-                            if (unit == "m" || unit == "in" || unit == "cm") {
-                                unit = "cm";
-                            }
-                            // ft converts to in
-                            else if (unit == "ft") {
-                                unit = "in";
-                            }
-                            else {
-                                simple_error("should not get here\n");
-                            }
-                            enteredMeasurements.push_back({ enteredNumber, unit });
-                            break;
-                        }
+            std::cin >> enteredMeasurement;
+            if (!std::cin) {
+                std::cin.clear();
+                // if no number entered then assume 1 as the measurement
+                enteredMeasurement = 1.0;
+            }
+
+            // get unit of measure
+            std::cin >> unitOfMeasure;
+            // look for termination char
+            if (unitOfMeasure.find(terminationChar) != std::string::npos) {
+                std::cout << "termination '" << terminationChar << "' found\n";
+                stop = true;
+            }
+            // check for valid unit of measure and convert
+            else {
+                auto itr = convert.begin();
+                for (; itr < convert.end(); ++itr) {
+                    if (itr->first == unitOfMeasure) {
+                        // convert measurement to cm then store in vector
+                        enteredMeasurement *= itr->second;
+                        enteredMeasurements.push_back(enteredMeasurement);
+                        std::cout << "converted measurement: " << enteredMeasurement << "cm" << std::endl;
+                        break;
                     }
                 }
-            }
-            else {
-                cin.clear();	// clear cin errors
-                if (cin.peek() != terminationChar) {
-                    simple_error("no number entered");
+                if (itr == convert.end()) {
+                    simple_error("invalid entry:  no valid unit of measure or no termination found");
                 }
-                else { stop = true; }
             }
-        }
-        // print measurements
-        if (!enteredMeasurements.empty())
-            cout << "convert valid measurements.\n";
-        for (auto pm : enteredMeasurements) {
-            cout << pm.first << pm.second << endl;
         }
     }
-    cout << "Bye\n";
+
+    std::cout << "Bye\n";
     keep_window_open();
     return 0;
 }

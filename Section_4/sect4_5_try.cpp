@@ -9,18 +9,18 @@ that is, do the x*x by repeated addition (start a variable result at 0 and add x
 Then run some version of “the first program” using that square().
 */
 
-#include "section4.h" //custom header
+#include "section4.h"
 
-// function declaration
+// function forward declaration
 int square(int);
 
 int main()
 {
-    using namespace std;
-    cout << "Program to find the squared results as the first program did in 1949.\n";
+    std::cout << "Program to find the squared results as the first program did in 1949.\n";
     for (int num = 0; num < 100; ++num) {
-        cout << num << "\tsquared =\t" << square(num) << endl;
+        std::cout << num << "\tsquared = " << square(num) << std::endl;
     }
+
     keep_window_open();
     return 0;
 }
@@ -29,6 +29,8 @@ int main()
 int square(int i)
 {
     int result{ 0 };
-    for (int j = 0; j < i; j++) { result += i; }
+    for (int j = 0; j < i; j++) {
+        result += i;
+    }
     return result;
 }

@@ -11,71 +11,47 @@ Find and print the smallest and greatest distance between two neighboring cities
 Find and print the mean distance between two neighboring cities.
 */
 
-#include "section4.h" //custom header
+#include "section4.h"
 
 int main()
 {
-    using namespace std;
-
     constexpr auto termination{ '|' };
+    std::vector<double> distances;
 
-    std::vector<double> dist;
-    auto sum{ 0.0 };
-    auto min{ 0.0 };
-    auto max{ 0.0 };
+    std::cout << "Please enter a sequence of numbers (representing distances).\n";
+    std::cout << "Use '" << termination << "' after last distance entered:\n";
 
-    cout << "Please enter sequence of doubles (representing distances). '" << termination << "' to exit:\n";
-    auto distance{ 0.0 };
-    auto exit{ false };
-    while (!exit) {
-        if (cin >> distance) {
-            if (distance <= 0) {
-                cout << "a distance of zero or less is not allowed.\n";
-            }
-            else {
-                if (sum == 0) {
-                    min = max = distance;
-                }
-                else if (distance < min) {
-                    min = distance;
-                }
-                else if (distance > max) {
-                    max = distance;
-                }
-                else {
-                    simple_error("should not be here.\n");
-                }
-                sum += distance;
-                dist.push_back(distance);
-            }
+    while (true) {
+        for (double distance{ 0.0 }; std::cin >> distance; ) {
+            distances.push_back(distance);
         }
-        else {
-            if (cin.eof()) {
-                cin.clear();
-                exit = true;
-            }
-            else {
-                cin.clear();
-                char temp;
-                cin >> temp;
-                if (temp == termination) {
-                    exit = true;
-                }
-                else {
-                    cout << "Entered incorrect value.\n";
-                }
-            }
+        // EOF is captured when using txt file
+        if (std::cin.eof() || std::cin.bad()) {
+            std::cin.clear();
+            break;
         }
+        std::cin.clear();
+        char c;
+        std::cin.get(c);
+        if (c == termination) {
+            break;
+        }
+        // loop back to enter valid input
+        std::cout << "Unknown input: '" << c << "': Try again\n";
     }
-    if (dist.size() == 0) {
-        cout << "no distances entered\n";
+
+    if (!distances.empty()) {
+        double sum = std::accumulate(distances.begin(), distances.end(), 0.0);
+        std::cout << "The total distance: " << sum << std::endl;
+        std::sort(distances.begin(), distances.end());
+        std::cout << "The smallest distance: " << distances.front() << std::endl;
+        std::cout << "The greatest distance: " << distances.back() << std::endl;
+        std::cout << "The mean distance: " << sum / distances.size() << std::endl;
     }
     else {
-        cout << "total distance " << sum << endl;
-        cout << "smallest distance " << min << endl;
-        cout << "greatest distance " << max << endl;
-        cout << "mean distance " << sum / dist.size() << endl;
+        std::cout << "no distances entered\n";
     }
+
     keep_window_open();
     return 0;
 }

@@ -10,96 +10,76 @@ Your program should prompt the user to enter three arguments: two double values 
 If the entry arguments are 35.6, 24.1, and '+', the program output should be The sum of 35.6 and 24.1 is 59.7.
 */
 
-#include "section4.h"  // custom header
+#include "section4.h"
 
-bool get_numbers(std::pair<double, double>&);
-bool check_term(const char);
-void print_result(const double);
+bool getNumbers(double &d1, double &d2);
+bool checkTerm(const char t);
+void printResult(const double result);
 
 int main()
 {
-    using namespace std;
-
     constexpr auto termination = '|';
-    const vector<char> ops{ '+','-','*','/' };
+    const std::vector<char> ops{ '+','-','*','/' };
 
-    pair<double, double> numbers{ 0.0, 0.0 };
-    auto exit{ false };
-    while (!exit) {
-        cout << "Enter 2 numbers and an operation (+, -, *, /). Use " << termination << " to exit.\n";
-        while (!get_numbers(numbers)) {
-            exit = check_term(termination);
-            if (exit == false) {
-                cout << "a bad number was entered. please re-enter numbers or exit\n";
-            }
-            else { break; }
-        }
-        if (exit == false) {
-            char op;
-            cin >> op;
-            if (find(ops.begin(), ops.end(), op) != ops.end()) {
-                switch (op) {
-                case '+': print_result(numbers.first + numbers.second);
-                    break;
-                case '-': print_result(numbers.first - numbers.second);
-                    break;
-                case '*': print_result(numbers.first * numbers.second);
-                    break;
-                case '/':
-                    if (numbers.second != 0) {
-                        print_result(numbers.first / numbers.second);
-                    }
-                    else {
-                        simple_error("division by zero is not allowed.\n");
-                    }
-                    break;
-                default:
-                    simple_error("should not be here.\n");
-                }
+    double arg1{ 0.0 }, arg2{ 0.0 };
+
+    bool isComplete{ false };
+    std::cout << "Enter 2 numbers and an operation (+, -, *, /). Use " << termination << " to exit.\n";
+    if (!getNumbers(arg1, arg2)) {
+        isComplete = checkTerm(termination);
+    }
+    else {
+        char op;
+        std::cin >> op;
+        isComplete = true;
+        switch (op) {
+        case '+': printResult(arg1 + arg2);
+            break;
+        case '-': printResult(arg1 - arg2);
+            break;
+        case '*': printResult(arg1 * arg2);
+            break;
+        case '/':
+            if (arg2 != 0) {
+                printResult(arg1 / arg2);
             }
             else {
-                cin.putback(op);
-                exit = check_term(termination);
-                if (exit == false) {
-                    cout << "bad operation entered. please re-enter equation or exit\n";
-                }
+                simple_error("division by zero is not allowed.\n");
             }
+            break;
+        default:
+            std::cin.putback(op);
+            isComplete = checkTerm(termination);
         }
     }
-    cout << "Bye\n";
+
+    if (!isComplete) {
+        std::cout << "bad number or operation entered.\n";
+    }
+
+    std::cout << "\nBye\n";
     keep_window_open();
     return 0;
 }
 
-bool get_numbers(std::pair<double, double>& pd)
+bool getNumbers(double &d1, double &d2)
 {
-    if (!(std::cin >> pd.first)) {
-        return false;
+    if ((std::cin >> d1) && (std::cin >> d2)) {
+        return true;
     }
-    if (!(std::cin >> pd.second)) {
-        return false;
-    }
-    return true;
+    return false;
 }
 
-bool check_term(const char t)
+bool checkTerm(const char t)
 {
-    if (std::cin.eof() || std::cin.bad())
-    {
+    if (std::cin.eof() || std::cin.bad()) {
         return true;
     }
     std::cin.clear();
-    std::string str;
-    std::cin >> str;
-    if (str.find(t) != std::string::npos) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return (std::cin.get() == t);
 }
 
-void print_result(const double result)
+void printResult(const double result)
 {
-    std::cout << "Your result is " << result << std::endl;
+    std::cout << "Result: " << result << std::endl;
 }

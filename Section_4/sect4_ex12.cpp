@@ -3,7 +3,7 @@
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
-Section 4 exercise 12.
+ Section 4 exercise 12.
  Modify the program described in the previous exercise 11 to take an input value max
  and then find all prime numbers from 1 to max.
 */
@@ -12,18 +12,16 @@ Section 4 exercise 12.
 
 int main()
 {
-    using std::cout;
-    using std::cin;
-
     // set first known prime
     std::vector<int> primes{ 2 };
 
     auto max{ 0 };
-    cout << "enter number that want to find all primes up to it.\n";
-    if (!(cin >> max)) {
-        simple_error("entered invalid int\n");
+    std::cout << "enter number that want to find all primes up to it." << std::endl;
+    if (!(std::cin >> max)) {
+        simple_error("entered invalid integer value\n");
     }
-    // start with 3 know 2 is prime
+
+    // start with 3
     for (int i = 3; i <= max; i++) {
         bool is_prime = true;
         // find if prime and add to prime vector if so.
@@ -37,19 +35,21 @@ int main()
             primes.push_back(i);
         }
     }
+
     int j = 1;
     // print out the prime numbers
     for (auto x : primes) {
         //10 per row
         if (j % 10) {
-            cout << x << '\t';
+            std::cout << x << '\t';
         }
         else {
-            cout << x << '\n';
+            std::cout << x << std::endl;
         }
         j++;
     }
-    cout << '\n';
+
+    std::cout << std::endl;
     keep_window_open();
     return 0;
 }

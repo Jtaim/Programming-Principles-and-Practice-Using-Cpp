@@ -14,9 +14,7 @@ Section 4 exercise 13.
 
 int main()
 {
-    using std::cout;
-
-    auto const max{ 100U };
+    unsigned const max{ 100U };
 
     // build table
     std::vector<bool> sieve(max, true);
@@ -42,19 +40,21 @@ int main()
             break;
         }
     }
+
     // print out the prime numbers
     int j = 1;
     for (auto x : primes) {
         //10 per row
         if (j % 10) {
-            cout << x << '\t';
+            std::cout << x << '\t';
         }
         else {
-            cout << x << '\n';
+            std::cout << x << std::endl;
         }
         j++;
     }
-    cout << '\n';
+
+    std::cout << std::endl;
     keep_window_open();
     return 0;
 }

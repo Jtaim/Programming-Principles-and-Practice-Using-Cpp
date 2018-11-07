@@ -14,67 +14,53 @@ Refer to drill 3
 
 int main()
 {
-    using std::cout;
-    using std::cin;
+    std::vector<int> numbers;  // hold numbers to check mode
+    std::cout << "Enter a set of positive integers so can find the MODE. (use '|' to indicate last number)" << std::endl;
 
-    std::vector<int> pos_ints;  // hold numbers to check mode
-    cout << "Enter a set of positive integers so can find the MODE. (use any non number to exit)\n";
-    auto exit{ false };
-    while (!exit) {
-        auto number{ -1 };
-        while ((cin >> number) && number > 0) {
-            pos_ints.push_back(number);
+    while (true) {
+        int number{ -1 };
+        while ((std::cin >> number) && number > 0) {
+            numbers.push_back(number);
         }
-        if (!cin.good()) {
-            exit = true;
+        if (!std::cin.good()) {
             break;
         }
         else {
-            cout << "must enter positive numbers.\n";
+            std::cout << "must enter positive numbers." << std::endl;
         }
     }
-    if (!pos_ints.empty()) {
-        std::sort(pos_ints.begin(), pos_ints.end());
-        auto cnt{ 0U };
-        auto temp{ -1 };
-        auto mode{ 0 };
-        for (auto i : pos_ints) {
-            if (temp != i) {
-                temp = i;
-                auto t_cnt = std::count(pos_ints.begin(), pos_ints.end(), i);
+
+    if (!numbers.empty()) {
+        std::sort(numbers.begin(), numbers.end());
+        int mode{ 0 };
+        int temp{ -1 };
+        int cnt{ 0 };
+
+        for (auto i = numbers.begin(); i < numbers.end(); ++i) {
+            if (temp != *i) {
+                temp = *i;
+                auto t_cnt = std::count(i, numbers.end(), *i);
                 if (cnt <= t_cnt) {
-                    cnt = static_cast<unsigned>(t_cnt);
-                    mode = i;
+                    cnt = static_cast<int>(t_cnt);
+                    mode = *i;
                 }
             }
         }
 
         // print out the MODE
         if (cnt > 1) {
-            cout << "The MODE of entered integers is " << mode << ".\n";
-            cout << mode << " was found " << cnt << " times.\n";
+            std::cout << "The MODE of entered integers is " << mode << ".\n";
+            std::cout << mode << " was found " << cnt << " times.\n";
         }
         else {
-            cout << "There is no MODE from this set.\n";
-        }
-        cout << "The sorted entered numbers:\n";
-        int j = 1;
-        // print out the entered numbers
-        for (auto x : pos_ints) {
-            //10 per row
-            if (j % 10) {
-                cout << x << '\t';
-            }
-            else {
-                cout << x << '\n';
-            }
-            j++;
+            std::cout << "There is no MODE from this set.\n";
         }
     }
     else {
-        cout << "nothing entered\n";
+        std::cout << "nothing entered\n";
     }
-    cout << '\n';
+
+    std::cout << std::endl;
     keep_window_open();
     return 0;
 }

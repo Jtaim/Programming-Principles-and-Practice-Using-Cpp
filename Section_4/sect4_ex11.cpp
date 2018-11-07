@@ -13,19 +13,17 @@ Section 4 exercise 11.
  You might check your result by comparing your vector of prime numbers with primes. Consider 2 the first prime.
 */
 
-#include "section4.h" // custom header
+#include "section4.h"
 
 int main()
 {
-    using std::cout;
-
-    auto const max = 100;
+    int constexpr max = 100;
 
     // set first known prime
     std::vector<int> primes{ 2 };
 
-    // start with 3 know 2 is prime
-    for (int i = 3; i <= max; i++) {
+    // start with 3
+    for (int i = 3; i <= max; ++i) {
         bool is_prime = true;
         // find if prime and add to prime vector if so.
         for (auto prime : primes) {
@@ -38,19 +36,21 @@ int main()
             primes.push_back(i);
         }
     }
+
     int j = 1;
     // print out the prime numbers
     for (auto x : primes) {
         //10 per row
         if (j % 10) {
-            cout << x << '\t';
+            std::cout << x << '\t';
         }
         else {
-            cout << x << '\n';
+            std::cout << x << std::endl;
         }
         j++;
     }
-    cout << '\n';
+
+    std::cout << '\n';
     keep_window_open();
     return 0;
 }

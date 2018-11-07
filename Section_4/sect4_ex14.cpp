@@ -3,7 +3,7 @@
 //Programming: Principles and Practice Using C++ Second Edition
 
 /*
-Section 4 exercise 14.
+ Section 4 exercise 14.
  Modify exercise 13 to take an input value max and then find all prime numbers from 1 to max.
 */
 
@@ -11,14 +11,12 @@ Section 4 exercise 14.
 
 int main()
 {
-    using std::cout;
-    using std::cin;
-
-    cout << "enter number that want to find all primes up to it.\n";
-    auto max{ 0U };
-    if (!(cin >> max)) {
-        simple_error("entered invalid int\n");
+    std::cout << "enter number that want to find all primes up to it." << std::endl;
+    unsigned max{ 0U };
+    if (!(std::cin >> max)) {
+        simple_error("entered invalid integer value\n");
     }
+
     // build table
     std::vector<bool> sieve(max, true);
     using type = decltype(sieve.size());
@@ -43,19 +41,21 @@ int main()
             break;
         }
     }
+
     // print out the prime numbers
     int j = 1;
     for (auto x : primes) {
         //10 per row
         if (j % 10) {
-            cout << x << '\t';
+            std::cout << x << '\t';
         }
         else {
-            cout << x << '\n';
+            std::cout << x << std::endl;
         }
         j++;
     }
-    cout << '\n';
+
+    std::cout << std::endl;
     keep_window_open();
     return 0;
 }

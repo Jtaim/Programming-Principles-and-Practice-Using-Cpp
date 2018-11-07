@@ -15,29 +15,58 @@ Section 4 exercise 9.
 
 int main()
 {
-    using std::cout;
-    using std::endl;
+    std::cout << "The maximum number represented int on this PC is " << std::numeric_limits<int>::max() << std::endl;
+    std::cout << "The maximum number represented unsigned on this PC is " << std::numeric_limits<unsigned>::max() << std::endl;
+    std::cout << "The maximum number represented long on this PC is " << std::numeric_limits<long>::max() << std::endl;
+    std::cout << "The maximum number represented unsigned long on this PC is " << std::numeric_limits<unsigned long>::max() << std::endl;
+    std::cout << "The maximum number represented long long on this PC is " << std::numeric_limits<long long>::max() << std::endl;
+    std::cout << "The maximum number represented unsigned long long on this PC is " << std::numeric_limits<unsigned long long>::max() << std::endl;
+    std::cout << "The maximum number represented double on this PC is " << std::numeric_limits<double>::max() << std::endl;
+    std::cout << "The maximum number represented long double on this PC is " << std::numeric_limits<long double>::max() << std::endl;
 
-    auto const MAX_SQUARES{ 64 };
+    constexpr int maxSquares = 64;
 
-    auto n_grains{ 0ULL };
-    auto d_grains{ 0.0L };
+    unsigned long long current_square_grains{ 1 };
+    decltype(current_square_grains) previous_square_grains{ 0 };
+    std::cout << "\nsize of square = " << sizeof(current_square_grains) << " bytes\n";
+    std::cout << "max limit of square = " << std::numeric_limits<decltype(current_square_grains)>::max() << "\n\n";
 
-    cout << "The maximum number represented int on this PC is " << INT_MAX << endl;
-    cout << "The maximum number represented double on this PC is " << DBL_MAX << endl;
-    cout << "The maximum number represented unsigned int on this PC is " << UINT_MAX << endl;
-    cout << "The maximum number represented long int on this PC is " << LONG_MAX << endl;
-    cout << "The maximum number represented unsigned long int on this PC is " << ULONG_MAX << endl;
-    cout << "The maximum number represented long long int on this PC is " << LLONG_MAX << endl;
-    cout << "The maximum number represented unsigned long long int on this PC is " << ULLONG_MAX << endl;
-    cout << "The maximum number represented long double on this PC is " << LDBL_MAX << "\n\n";
-    for (int square = 0; square < MAX_SQUARES; square++) {
-        //powers of 2 will provide double of previous number 2^0=1, 2^1=2, 2^2=4 2^3=8 ...
-        n_grains += static_cast<decltype(n_grains)>(pow(2, square));
-        cout << "square " << square + 1 << " has " << n_grains << " grains as " << typeid(n_grains).name() << ".\n\n";
-        d_grains += pow(2, square);
-        cout << "square " << square + 1 << " has " << d_grains << " grains as " << typeid(d_grains).name() << ".\n\n";
+    decltype(current_square_grains) sum{ 0 };
+    for (int square = 1; square <= maxSquares; ++square) {
+        if (square == 1) {
+            current_square_grains = 1;
+        }
+        else {
+            current_square_grains = previous_square_grains * 2;
+        }
+        //std::cout << "square " << square << " = " << current_square_grains << " grains\n";
+        previous_square_grains = current_square_grains;
+
+
+        // add them up
+        sum += current_square_grains;
+        //std::cout << "Sum of the squares to this point is " << sum << " grains.\n\n";
+
+        if (current_square_grains <= 1000 && sum >= 1000) {
+            std::cout << square << " provides approximately 1000 grains.\n\n";
+        }
+        else if (current_square_grains <= 1000000 && sum >= 1000000) {
+            std::cout << square << " provides approximately 1,000,000 grains.\n\n";
+        }
+        else if (current_square_grains <= 1000000000 && sum >= 1000000000) {
+            std::cout << square << " provides approximately 1,000,000,000 grains.\n\n";
+        }
+        else if (current_square_grains <= 1000000000000 && sum >= 1000000000000) {
+            std::cout << square << " provides approximately 1,000,000,000,000 grains.\n\n";
+        }
+        else if (current_square_grains <= 1000000000000000 && sum >= 1000000000000000) {
+            std::cout << square << " provides approximately 1,000,000,000,000,000 grains.\n\n";
+        }
+        else if (current_square_grains <= 1000000000000000000 && sum >= 1000000000000000000) {
+            std::cout << square << " provides approximately 1,000,000,000,000,000,000 grains.\n\n";
+        }
     }
+
     keep_window_open();
     return 0;
 }

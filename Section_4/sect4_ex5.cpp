@@ -12,74 +12,44 @@ If the entry arguments are 35.6, 24.1, and '+', the program output should be The
 
 #include "section4.h"
 
-bool getNumbers(double &d1, double &d2);
-bool checkTerm(const char t);
-void printResult(const double result);
-
 int main()
 {
-    constexpr auto termination = '|';
     const std::vector<char> ops{ '+','-','*','/' };
 
+    std::cout << "Enter 2 numbers and an operation (+, -, *, /).\n";
     double arg1{ 0.0 }, arg2{ 0.0 };
-
-    bool isComplete{ false };
-    std::cout << "Enter 2 numbers and an operation (+, -, *, /). Use " << termination << " to exit.\n";
-    if (!getNumbers(arg1, arg2)) {
-        isComplete = checkTerm(termination);
+    if (!(std::cin >> arg1) || !(std::cin >> arg2)) {
+        simple_error("incorrect numbers entered.\n");
     }
-    else {
-        char op;
-        std::cin >> op;
-        isComplete = true;
-        switch (op) {
-        case '+': printResult(arg1 + arg2);
-            break;
-        case '-': printResult(arg1 - arg2);
-            break;
-        case '*': printResult(arg1 * arg2);
-            break;
-        case '/':
-            if (arg2 != 0) {
-                printResult(arg1 / arg2);
-            }
-            else {
-                simple_error("division by zero is not allowed.\n");
-            }
-            break;
-        default:
-            std::cin.putback(op);
-            isComplete = checkTerm(termination);
+
+    char op;
+    std::cin >> op;
+    double result{ 0.0 };
+    switch (op) {
+    case '+':
+        result = arg1 + arg2;
+        break;
+    case '-':
+        result = arg1 - arg2;
+        break;
+    case '*':
+        result = arg1 * arg2;
+        break;
+    case '/':
+        if (arg2 != 0) {
+            result = arg1 / arg2;
         }
+        else {
+            simple_error("division by zero is not allowed.\n");
+        }
+        break;
+    default:
+        simple_error("incorrect operator entered.\n");
     }
 
-    if (!isComplete) {
-        std::cout << "bad number or operation entered.\n";
-    }
+    std::cout << arg1 << " " << op << " " << arg2 << " = " << result << std::endl;
 
     std::cout << "\nBye\n";
     keep_window_open();
     return 0;
-}
-
-bool getNumbers(double &d1, double &d2)
-{
-    if ((std::cin >> d1) && (std::cin >> d2)) {
-        return true;
-    }
-    return false;
-}
-
-bool checkTerm(const char t)
-{
-    if (std::cin.eof() || std::cin.bad()) {
-        return true;
-    }
-    std::cin.clear();
-    return (std::cin.get() == t);
-}
-
-void printResult(const double result)
-{
-    std::cout << "Result: " << result << std::endl;
 }

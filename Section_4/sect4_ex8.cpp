@@ -18,32 +18,49 @@ Section 4 exercise 8.
 
 int main()
 {
-    using std::cout;
+    constexpr int maxSquares = 64;
 
-    constexpr auto maxSquares{ 64 };
+    unsigned long long current_square_grains{ 1 };
+    decltype(current_square_grains) previous_square_grains{ 0 };
+    std::cout << "size of square = " << sizeof(current_square_grains) << std::endl;
+    std::cout << "max limit of square = " << std::numeric_limits<decltype(current_square_grains)>::max() << "\n\n";
 
-    auto current_square_grains{ 0ULL };
-    auto previous_square_grains{ 0ULL };
-    for (auto square = 0; square < maxSquares; square++) {
-        //powers of 2 will provide double of previous number 2^0=1, 2^1=2, 2^2=4 2^3=8 ...
-        current_square_grains = static_cast<decltype(current_square_grains)>(std::pow(2, square));
-        //cout << "square " << square + 1 << " has " << current_square_grains << " grains.\n";
-        //cout << "Sum of the previous squares is " << previous_square_grains << " grains.\n\n";
-        //add them up
-        previous_square_grains += current_square_grains;
-        if (current_square_grains <= 1000 && previous_square_grains >= 1000) {
-            cout << square + 1 << " provides approximately 1000 grains.\n\n";
-        }
-        else if (current_square_grains <= 1000000 && previous_square_grains >= 1000000) {
-            cout << square + 1 << " provides approximately 1,000,000 grains.\n\n";
-        }
-        else if (current_square_grains <= 1000000000 && previous_square_grains >= 1000000000) {
-            cout << square + 1 << " provides approximately 1,000,000,000 grains.\n\n";
+    decltype(current_square_grains) sum{ 0 };
+    for (int square = 1; square <= maxSquares; ++square) {
+        if (square == 1) {
+            current_square_grains = 1;
         }
         else {
-            continue;
+            current_square_grains = previous_square_grains * 2;
+        }
+        //std::cout << "square " << square << " = " << current_square_grains << " grains\n";
+        previous_square_grains = current_square_grains;
+
+
+        // add them up
+        sum += current_square_grains;
+        //std::cout << "Sum of the squares to this point is " << sum << " grains.\n\n";
+
+        if (current_square_grains <= 1000 && sum >= 1000) {
+            std::cout << square << " provides approximately 1000 grains.\n\n";
+        }
+        else if (current_square_grains <= 1000000 && sum >= 1000000) {
+            std::cout << square << " provides approximately 1,000,000 grains.\n\n";
+        }
+        else if (current_square_grains <= 1000000000 && sum >= 1000000000) {
+            std::cout << square << " provides approximately 1,000,000,000 grains.\n\n";
+        }
+        else if (current_square_grains <= 1000000000000 && sum >= 1000000000000) {
+            std::cout << square << " provides approximately 1,000,000,000,000 grains.\n\n";
+        }
+        else if (current_square_grains <= 1000000000000000 && sum >= 1000000000000000) {
+            std::cout << square << " provides approximately 1,000,000,000,000,000 grains.\n\n";
+        }
+        else if (current_square_grains <= 1000000000000000000 && sum >= 1000000000000000000) {
+            std::cout << square << " provides approximately 1,000,000,000,000,000,000 grains.\n\n";
         }
     }
+
     keep_window_open();
     return 0;
 }

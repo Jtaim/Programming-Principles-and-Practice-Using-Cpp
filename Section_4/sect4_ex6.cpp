@@ -13,53 +13,40 @@ Have the same program, using the same input loop, convert spelled-out numbers in
 
 int main()
 {
-    using std::cout;
-    using std::cin;
-
     const std::vector<std::string> spelledNumbers{
         "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"
     };
-    constexpr auto termination{ '|' };
-
-    cout << "will loop to try more.  use '|' to exit.\n";
-    auto exit{ false };
-    while (!exit) {
-        cout << "Enter a number between 0 and 9 either spelled out or as the number.\n";
-        auto number{ -1 };
-        if (cin >> number) {
-            if (number >= 0 && number <= 9) {
-                cout << "The number entered is " << spelledNumbers[number] << "\n\n";
-            }
-            else {
-                cout << "numbered entered could not be spelled out.\n";
-            }
+    
+    std::cout << "Enter a number between 0 and 9 either spelled out or as the number.\n";
+    int number{ -1 };
+    if (std::cin >> number) {
+        if (number >= 0 && number <= 9) {
+            std::cout << "The number entered is " << spelledNumbers[number] << "\n\n";
         }
-        // check if number is spelled out
         else {
-            cin.clear();
-            std::string enteredNum;
-            cin >> enteredNum;
-            // convert to lower
-            std::transform(enteredNum.begin(), enteredNum.end(), enteredNum.begin(), [](unsigned char c) {
-                return static_cast<unsigned char>(tolower(c));
-            });
-            // check if has a spelled out number
-            auto num_index = std::find(spelledNumbers.begin(), spelledNumbers.end(), enteredNum);
-            if (num_index != spelledNumbers.end()) {
-                cout << "The number entered is " << (num_index - spelledNumbers.begin()) << "\n\n";
-            }
-            // check for termination
-            else {
-                if (std::find(enteredNum.begin(), enteredNum.end(), termination) != enteredNum.end()) {
-                    exit = true;
-                }
-                else {
-                    cout << "could not find number.\n";
-                }
-            }
+            std::cout << "numbered entered could not be spelled out.\n";
         }
     }
-    cout << "bye\n";
+    // check if number is spelled out
+    else {
+        std::cin.clear();
+        std::string spelledNumber;
+        std::cin >> spelledNumber;
+        // convert to lower
+        std::transform(spelledNumber.begin(), spelledNumber.end(), spelledNumber.begin(), [](unsigned char c) {
+            return static_cast<unsigned char>(tolower(c));
+        });
+        // check if has a spelled out number
+        auto spelledIndex = std::find(spelledNumbers.begin(), spelledNumbers.end(), spelledNumber);
+        if (spelledIndex != spelledNumbers.end()) {
+            std::cout << "The number entered is " << (spelledIndex - spelledNumbers.begin()) << "\n\n";
+        }
+        else {
+            std::cout << "could not find number.\n";
+        }
+    }
+
+    std::cout << "bye\n";
     keep_window_open();
     return 0;
 }

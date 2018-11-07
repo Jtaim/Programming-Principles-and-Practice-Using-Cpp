@@ -16,43 +16,36 @@ Section 4 exercise 10.
 
 #include "section4.h"
 
-unsigned ran_num(int);
-
 int main()
 {
-    using std::cout;
-    using std::cin;
+    //Will be used to obtain a seed for the random number engine
+    std::random_device rd;
+    //Standard mersenne_twister_engine seeded with rd()
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 2);
 
-    const std::vector<std::string> rps{ "ROCK","PAPER","SCISSORS" };
+    const std::vector<std::string> rps{ "ROCK", "PAPER", "SCISSORS" };
 
-    auto play_again{ '?' };
-    auto pselect{ 0U };
-    auto cselect{ 0U };
+    bool playAgain{ false };
     do {
-        cout << "Select (1) for Rock (2) for Paper (3) for Scissors\n";
+        std::cout << "Select (1) for Rock (2) for Paper (3) for Scissors" << std::endl;
         // check for proper input
-        if (!(cin >> pselect) || pselect > 3) {
-            simple_error("selected r/p/s poorly\n");
+        int pSelect{ 0 };
+        if (!(std::cin >> pSelect) || pSelect > 3) {
+            simple_error("selected r/p/s poorly");
         }
-        cselect = ran_num(3);  //have only 3 selections gets random selection between 1 and 3
-        cout << "Your selection was " << rps.at(pselect - 1) << " the computer selected "
-            << rps.at(cselect - 1) << '\n';
-        cout << "Would you like to play again (y or n)\n";
-        cin >> play_again;
+        auto cSelect = dis(gen);  //have only 3 selections gets random selection between 0 and 2
+        std::cout << "Computer selection = " << cSelect << std::endl;
+        std::cout << "Your selection was " << rps.at(pSelect - 1) << " the computer selected "
+            << rps.at(cSelect) << std::endl;
+
+        std::cout << "\nWould you like to play again (y or n)" << std::endl;
+        char c;
+        std::cin >> c;
         // check for proper input
-        if (play_again != 'y' && play_again != 'n') {
-            simple_error("selected y/n poorly\n");
-        }
-        cout << "\n\n";
-    } while (play_again == 'y');
+        c == 'y' ? playAgain = true : playAgain = false;
+    } while (playAgain);
+
     keep_window_open();
     return 0;
-}
-
-// function to generate random number
-unsigned ran_num(int nHigh)
-{
-    std::srand(std::time(0)); // set initial seed value to system clock
-    return (std::rand() % nHigh + 1);
-    //(rand() % (nHigh - nLow + 1)) + nLow;  //if want low number something other than 1
 }

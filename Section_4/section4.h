@@ -17,6 +17,7 @@
 #include <limits>
 #include <ctime>
 #include <numeric>
+#include <random>
 
 // simple function to keep window console open
 inline void keep_window_open()

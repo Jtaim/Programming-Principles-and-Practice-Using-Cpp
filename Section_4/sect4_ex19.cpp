@@ -16,52 +16,40 @@ Write out all the (name, score) pairs, one per line.
 
 int main()
 {
-    using std::cout;
-    using std::cin;
+    using pType = std::pair<std::string, double>;
+    pType name_score;
+    std::vector<pType> ranks;
 
-    std::string name;
-    auto score{ 0 };
-    std::vector<decltype(name)> names;
-    std::vector<decltype(score)> scores;
-    cout << "Enter names and scores:\n";
-    // collect valid data
+    std::cout << "Enter names and scores:\n";
     while (true) {
-        cin >> name >> score;
-        // escape if NoName or EOF
-        if (cin.eof() || (name == "NoName" && score == 0)) {
-            break;
-        }
-        // redo if bad input non number for score
-        else if (cin.fail()) {
-            cout << "Entered invalid name or score.  Please reenter.\n";
-            cin.clear();
-            cin.ignore(UINT8_MAX, '\n');
-        }
-        else if (cin.bad()) {
-            simple_error("input data error\n");
+        std::cin >> name_score.first >> name_score.second;
+        // break if EOF or (NoName and 0) 
+        if (std::cin.good() || (name_score.first != "NoName" && name_score.second != 0)) {
+            std::transform(name_score.first.begin(), name_score.first.end(), name_score.first.begin(),
+                [](unsigned char name) { return static_cast<unsigned char>(::tolower(name)); });
+            ranks.push_back(name_score);
         }
         else {
-            std::transform(name.begin(), name.end(), name.begin(),
-                [](unsigned char c) {return static_cast<unsigned char>(::tolower(c)); });
-            auto result = names.begin();
-            if (names.size() != 0) {
-                result = find(names.begin(), names.end(), name);
-            }
-            if (result != names.end()) {
-                simple_error("Entered duplicate name.\n");
-            }
-            else {
-                names.push_back(name);
-                scores.push_back(score);
-            }
+            break;
         }
     }
-    if (names.size() != 0) {
+
+    if (!ranks.empty()) {
+        std::sort(ranks.begin(), ranks.end(), [](auto &left, auto &right) {
+            return left.first < right.first; });
+
+        /*for (auto i = ranks.begin(); i < ranks.end(); ++i) {
+            if (std::count(i, ranks.end(), i->first) > 1) {
+                simple_error("found a duplicated name");
+            }
+        }*/
+
         // print contents to screen
-        for (auto i = names.begin(); i < names.end(); ++i) {
-            cout << *i << " " << scores.at(i - names.begin()) << std::endl;
+        for (auto i : ranks) {
+            std::cout << "name: " << i.first << "\tscore: " << i.second << std::endl;
         }
     }
+
     keep_window_open();
     return 0;
 }

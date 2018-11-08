@@ -13,20 +13,23 @@ x^2 + bx/a + (b/2a)^2 = -c/a + (b/2a)^2  complete the square
 x = -b +/- sqrt(b^2-4ac)/2a
 */
 
-#include "section4.h" // custom header
+#include "section4.h"
 
 int main()
 {
-    std::cout << "Enter the a, b and c variables to solve the quadratic equation:\n";
-    auto a{ 0.0 };
-    auto b{ 1.0 };
-    auto c{ 0.0 };
+    std::cout << "Enter the a, b and c variables to solve the quadratic equation:" << std::endl;
+    double a{ 0.0 };
+    double b{ 1.0 };
+    double c{ 0.0 };
     if (std::cin >> a >> b >> c) {
-        auto x1 = (-1 * b + sqrt(b * b - 4 * a * c)) / (2 * a);
-        auto x2 = (-1 * b - sqrt(b * b - 4 * a * c)) / (2 * a);
-        std::cout << "x = " << x1 << " and x = " << x2 << '\n';
+        double x1 = (-1.0 * b + sqrt(b * b - 4.0 * a * c)) / (2.0 * a);
+        double x2 = (-1.0 * b - sqrt(b * b - 4.0 * a * c)) / (2.0 * a);
+        std::cout << "x = " << x1 << " and x = " << x2 << std::endl;
     }
-    else { std::cout << "Entered invalid numbers\n"; }
+    else {
+        simple_error("Entered invalid numbers");
+    }
+
     keep_window_open();
     return 0;
 }

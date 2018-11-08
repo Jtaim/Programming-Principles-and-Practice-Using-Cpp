@@ -14,42 +14,43 @@ Refer to drill 3
 
 int main()
 {
-    std::vector<int> numbers;  // hold numbers to check mode
-    std::cout << "Enter a set of positive integers so can find the MODE. (use '|' to indicate last number)" << std::endl;
+    using vType = std::vector<int>;
+    std::cout << "Enter a sequence of numbers to find the MODE. (use '|' to indicate last number)" << std::endl;
 
-    while (true) {
-        int number{ -1 };
-        while ((std::cin >> number) && number > 0) {
-            numbers.push_back(number);
-        }
-        if (!std::cin.good()) {
-            break;
-        }
-        else {
-            std::cout << "must enter positive numbers." << std::endl;
-        }
+    vType sequence;  // vector to hold input sequence
+    vType::value_type enteredValue;
+    while (std::cin >> enteredValue) {
+        sequence.push_back(enteredValue);
     }
 
-    if (!numbers.empty()) {
-        std::sort(numbers.begin(), numbers.end());
-        int mode{ 0 };
-        int temp{ -1 };
-        int cnt{ 0 };
+    if (!sequence.empty()) {
+        std::sort(sequence.begin(), sequence.end());
+        vType::value_type mode{};
+        vType::difference_type cnt{};
 
-        for (auto i = numbers.begin(); i < numbers.end(); ++i) {
-            if (temp != *i) {
+        vType::value_type temp{};
+        for (auto i = sequence.begin(); i < sequence.end(); ++i) {
+            // first index is default mode and count
+            if (i == sequence.begin()) {
                 temp = *i;
-                auto t_cnt = std::count(i, numbers.end(), *i);
+                mode = temp;
+                cnt = std::count(i, sequence.end(), mode);
+            }
+            // if next not same
+            else if (temp != *i) {
+                temp = *i;
+                auto t_cnt = std::count(i, sequence.end(), temp);
+                // check if we have new higher count
                 if (cnt <= t_cnt) {
-                    cnt = static_cast<int>(t_cnt);
-                    mode = *i;
+                    cnt = t_cnt;
+                    mode = temp;
                 }
             }
         }
 
         // print out the MODE
         if (cnt > 1) {
-            std::cout << "The MODE of entered integers is " << mode << ".\n";
+            std::cout << "The MODE of entered sequence is " << mode << ".\n";
             std::cout << mode << " was found " << cnt << " times.\n";
         }
         else {

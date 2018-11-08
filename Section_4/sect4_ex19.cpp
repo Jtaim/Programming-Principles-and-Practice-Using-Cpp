@@ -23,8 +23,8 @@ int main()
     std::cout << "Enter names and scores:\n";
     while (true) {
         std::cin >> name_score.first >> name_score.second;
-        // break if EOF or (NoName and 0) 
-        if (std::cin.good() || (name_score.first != "NoName" && name_score.second != 0)) {
+        // break if EOF and !(NoName and 0))
+        if (std::cin.good() && !(name_score.first == "NoName" && name_score.second == 0)) {
             std::transform(name_score.first.begin(), name_score.first.end(), name_score.first.begin(),
                 [](unsigned char name) { return static_cast<unsigned char>(::tolower(name)); });
             ranks.push_back(name_score);
@@ -35,19 +35,26 @@ int main()
     }
 
     if (!ranks.empty()) {
-        std::sort(ranks.begin(), ranks.end(), [](auto &left, auto &right) {
-            return left.first < right.first; });
-
-        /*for (auto i = ranks.begin(); i < ranks.end(); ++i) {
-            if (std::count(i, ranks.end(), i->first) > 1) {
-                simple_error("found a duplicated name");
+        // check for duplicates
+        for (const auto p : ranks) {
+            std::vector<pType>::size_type cnt{};
+            for (const auto check : ranks) {
+                if (p.first == check.first) {
+                    if (cnt > 0) {
+                        simple_error("found a duplicated name");
+                    }
+                    ++cnt;
+                }
             }
-        }*/
+        }
 
         // print contents to screen
-        for (auto i : ranks) {
+        for (const auto i : ranks) {
             std::cout << "name: " << i.first << "\tscore: " << i.second << std::endl;
         }
+    }
+    else {
+        std::cout << "nothing entered\n";
     }
 
     keep_window_open();

@@ -12,44 +12,43 @@ corresponding score or name not found.
 
 int main()
 {
-    using std::cout;
-    using std::cin;
+    using pType = std::pair<std::string, double>;
+    pType name_score;
+    std::vector<pType> ranks{ {"Moe",1}, {"Larry",2}, {"Curly", 3},{"Shemp",4 } };
 
-    std::string name{};
-    std::vector<std::string> names{ "moe", "larry", "curly", "shemp" }; //there was 6 stooges 
-    std::vector<int> scores{ 1,2,3,4 };
-    cout << "Enter a name to find a score.\n";
-    // collect valid data
-    // just to insure 2 vectors are the same size
-    while (names.size() == scores.size())
-    {
-        cin >> name;
+    std::cout << "Enter a name to find a score.\n";
+    for (auto i : ranks) {
+        std::cout << i.first << ", ";
+    }
+    std::cout << std::endl;
+
+    while (true) {
+        std::string name;
+        std::cin >> name;
         // escape if NoName or EOF
-        if (cin.eof() || name == "NoName") {
+        if (std::cin.eof() || name == "NoName") {
             break;
         }
-        else if (cin.bad()) {
-            simple_error("input data error\n");
+
+        // set name so first letter is capitalized and rest lower case
+        name[0] = static_cast<unsigned char>(toupper(name[0]));
+        std::transform(name.begin() + 1, name.end(), name.begin() + 1,
+            [](unsigned char c) {return static_cast<unsigned char>(::tolower(c)); });
+
+        // is name in list
+        auto itr = ranks.begin();
+        for (; itr < ranks.end(); ++itr) {
+            if (itr->first == name) {
+                std::cout << name << "'s score is " << itr->second << ".\n";
+                break;
+            }
         }
-        // check for name
-        else
-        {
-            std::transform(name.begin(), name.end(), name.begin(),
-                [](unsigned char c) {return static_cast<unsigned char>(::tolower(c)); });
-            auto result = find(names.begin(), names.end(), name);
-            // found a name match
-            if (result != names.end())
-            {
-                auto score_to_match = scores.at(result - names.begin());
-                cout << name << "'s score is " << score_to_match << ".\n";
-            }
-            // no name found
-            else
-            {
-                cout << "Name not found.\n";
-            }
+        // see if no match
+        if (itr == ranks.end()) {
+            std::cout << "Name not found.\n";
         }
     }
+
     keep_window_open();
     return 0;
 }

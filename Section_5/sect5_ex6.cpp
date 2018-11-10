@@ -7,67 +7,66 @@ sect 5 exercise 6
 Celsius to Fahrenheit converter
 Fahrenheit to Celsius converter
 */
+
 #include "section5.h"
 
-// converts Celsius to Fahrenheit f=9/5*c+32
-double ctof(double cToF)
+// converts Celsius to Fahrenheit
+double ctof(double c)
 {
-    //throw error if value given in Celsius is below -273.15
-    if (cToF < -273.15) {
-        error("ctof can not convert below absolute zero!\n");
+    if (c < -273.15) {
+        //throw error if value given in Celsius is below -273.15
+        error("Can not be below absolute zero!\n");
     }
-    cToF = (9.0 / 5 * cToF + 32);
-    return cToF;
+    double celsiusToFahrenheit = 9.0 / 5.0 * c + 32.0;
+    return celsiusToFahrenheit;
 }
-// converts Kelvin to Celsius
-double ftoc(double fToC)
+
+// converts Fahrenheit to Celsius
+double ftoc(double f)
 {
-    fToC = (5.0 / 9 * (fToC - 32));
-    //throw error if value given in Celsius is below -273.15
-    if (fToC < -273.15) {
-        error("ftoc can not convert below absolute zero!\n");
+    double fahrenheitToCelsius = 5.0 / 9.0 * (f - 32.0);
+
+    if (fahrenheitToCelsius < -273.15) {
+        //throw error if value given in Celsius is below -273.15
+        error("Can not be below absolute zero!\n");
     }
-    return fToC;
+    return fahrenheitToCelsius;
 }
 
 int main()
 try
 {
-    using std::cout;
-    using std::cin;
-    bool badConverion = false;
-    do {
-        badConverion = false;
-        cout << "Enter a temperature and unit of temperature (c = Celsius, f = Fahrenheit)\n";
-        double temp_to_convert{ 0.0 }; //input temperature variable
-        while (!(cin >> temp_to_convert)) {
-            cin.clear();  //clear cin error flags
-            cin.ignore(UINT8_MAX, '\n'); //clear cin buffer
-            cout << "entered non-numeric temperature.  Re-enter\n";
-        }
-        char entered_temp_unit{ '?' };
-        cin >> entered_temp_unit;
-        entered_temp_unit = tolower(entered_temp_unit);
+    using pType = std::pair<char, double>;
+    pType inputTempearure{};
 
-        double converted_temp{ 0.0 };
-        char converted_temp_unit{ '?' };
-        switch (entered_temp_unit) {
-        case 'f':
-            converted_temp = ftoc(temp_to_convert);
-            converted_temp_unit = 'c';
-            break;
-        case 'c':
-            converted_temp = ctof(temp_to_convert);
-            converted_temp_unit = 'f';
-            break;
-        default:
-            badConverion = true;
-            cout << "entered wrong temperature unit of measure. re-enter conversions\n";
-        }
-        if (badConverion == false) {
-            cout << "Converted temperature is " << converted_temp << converted_temp_unit << '\n';
-        }
-    } while (badConverion);
+    std::cout << "Enter a temperature and unit of temperature (c = Celsius, f = Fahrenheit)\n";
+
+    // get measurement
+    if (!(std::cin >> inputTempearure.second)) {
+        error("entered non-numeric temperature.");
+    }
+
+    // get unit
+    std::cin >> inputTempearure.first;
+    inputTempearure.first = narrow_cast<char, int>(tolower(inputTempearure.first));
+
+    // convert temperatures
+    pType temperatureConverted{};
+    switch (inputTempearure.first) {
+    case 'c':
+        temperatureConverted.second = ctof(inputTempearure.second);
+        temperatureConverted.first = 'f';
+        break;
+    case 'f':
+        temperatureConverted.second = ftoc(inputTempearure.second);
+        temperatureConverted.first = 'c';
+        break;
+    default:
+        error("Unknown unit of measure for temperature.");
+    }
+
+    std::cout << "Converted temperature is " << temperatureConverted.second << temperatureConverted.first << std::endl;
+
     keep_window_open();
     return 0;
 }

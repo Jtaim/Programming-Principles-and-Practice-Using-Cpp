@@ -12,7 +12,7 @@
 int main()
 {
     std::cout << "enter number that want to find all primes up to it." << std::endl;
-    unsigned max{ 0U };
+    unsigned max{};
     if (!(std::cin >> max)) {
         simple_error("entered invalid integer value\n");
     }

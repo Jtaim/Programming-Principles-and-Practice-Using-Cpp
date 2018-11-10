@@ -13,7 +13,7 @@ int main()
 {
     // set first known prime of 2
     std::vector<int> primes{ 2 };
-    unsigned numOfPrimes{ 0U };
+    unsigned numOfPrimes{};
 
     std::cout << "enter number of primes you want to find." << std::endl;
     if (!(std::cin >> numOfPrimes)) {

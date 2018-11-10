@@ -10,51 +10,52 @@ Section 5 drills
 int main()
 try
 {
-    using namespace std;
-
     //DRILL 1
     //Cout<<"Success!\n";
     //fixed miss spelling of cout
-    cout << "Drill 1 Success!\n";
+    std::cout << "Drill 1 Success!\n";
 
     //DRILL 2
     //cout<<"Success!\n;
     //fixed missing " 
-    cout << "Drill 2 Success!\n";
+    std::cout << "Drill 2 Success!\n";
 
     //DRILL 3
     //cout<<"Success"<<!\n";
     //fixed by removing a " and second <<
-    cout << "Drill 3 Success!\n";
+    std::cout << "Drill 3 Success!\n";
 
     //DRILL 4
     //cout<<success<<'\n';
     //fixed by placing " success "
-    cout << "Drill 4 Success!" << "\n";
+    std::cout << "Drill 4 Success!\n";
 
     //DRILL 5
     //string res=7;vector<int>v(10);v[5]=res;cout<<"Success!\n";
     //fixed by changing string type to int added range checking instead of raw []
     int res = 7;
-    vector<int>v5(10);
+    std::vector<int>v5(10);
     v5.at(5) = res;
-    cout << "Drill 5 Success!\n";
+    std::cout << "Drill 5 Success!\n";
 
     //DRILL 6
     //vector<int>v2(10);v2(5) = 7;if(v2(5) != 7)cout<<"Success!\n";
     //fixed by using [] not () for indexing elements of vector
-    vector<int>v6(10);
+    std::vector<int>v6(10);
     v6.at(5) = 7;		//.at() adds range checking
     if (v6.at(5) != 7) {
-        cout << "Drill 6 Success!\n";
+        std::cout << "Drill 6 Success!\n";
     }
 
     //DRILL 7
     //if (cond)cout << "Success!\n";else cout << "Fail!\n";
     //incomplete code condition logic
     bool d7 = true;
-    if (d7 == true) {
-        cout << "Drill 7 Success!\n";
+    if (d7) {
+        std::cout << "Drill 7 Success!\n";
+    }
+    else {
+        std::cout << "Drill 7 Fail!\n";
     }
 
     //Drill 8
@@ -62,11 +63,12 @@ try
     //legal but what changes bool c?
     //hard to read and "c" not very descriptive of what is being checked.
     bool d8 = false;
-    if (d8 == false) {
-        cout << "Drill 8 Success!\n";
+    // check for state of d8
+    if (d8) {
+        std::cout << "Drill 8 Success!\n";
     }
     else {
-        cout << "Drill 8 Fail!\n";
+        std::cout << "Drill 8 Fail!\n";
     }
 
     //Drill 9
@@ -74,19 +76,22 @@ try
     //is c a bool = false or c a string = "fool"
     //assuming c is bool?
     //hard to read and variables not very descriptive.
-    string s9 = "ape";
-    bool c9 = "fool" < s9;
-    if (c9 == false) {
-        cout << "Drill 9 Success!\n";
+    std::string s9 = "ape";
+    bool d9 = "fool" < s9;
+    if (d9) {
+        std::cout << "Drill 9 Success!\n";
+    }
+    else {
+        std::cout << "Animals do not match!\n";
     }
 
     //Drill 10
     //string s = "ape";if (s == "fool") cout << "Success!\n";
     //legal but does not make sense
     //hard to read and variables not very descriptive.
-    string s10 = "ape";
+    std::string s10 = "ape";
     if (s10 != "fool") {
-        cout << "Drill 10 Success!\n";
+        std::cout << "Drill 10 Success!\n";
     }
 
     //Drill 11
@@ -94,61 +99,63 @@ try
     //missing second < after cout
     //does not make sense
     //question if condition and code hard to read
-    string s11 = "ape";
+    std::string s11 = "ape";
     if (s11 != "fool") {
-        cout << "Drill 11 Success!\n";
+        std::cout << "Drill 11 Success!\n";
     }
 
     //Drill 12
     //string s = "ape"; if (s+"fool")cout < "Success!\n";
     //bad comparison expression and missing second < after cout
     //have no idea what is wanted here for a result
-    string s12 = "Drill 12 Success!\n";
-    cout << s12;
+    std::string s12 = "Drill 12 Success!\n";
+    std::cout << s12;
 
     //Drill 13
     //vector<char>v(5);for(int i = 0;0 < v.size();++i);cout << "Success!\n";
     //compiled but condition in for loop cause loop forever 0 aways less than size()
-    vector<char>v13(5, '?');
-    for (auto c : v13) {
-        cout << c;
+    //removed ; after the for loop
+    std::vector<char>v13(5);
+    for (int i = 0; i < v13.size(); ++i) {
+        std::cout << v13[i];
     }
-    cout << " Drill 13 Success!\n";
+    std::cout << " Drill 13 Success!\n";
 
     //Drill 14
     //vector<char>v(5);for(int i = 0;i<=v.size();++i);cout << "Success!\n";
     //compiled but condition for loop will cause range error
-    //v.size() = 5 but iterations are 0 - 4
-    vector<char>v14(5);
-    for (auto c : v14) {
-        cout << int(c);
+    //removed ; after the for loop
+    //v.size() = 5 but iterations are 0 - 4 change i < v not <=
+    std::vector<char>v14(5);
+    for (int i = 0; i < v14.size(); ++i) {
+        std::cout << v14[i];
     }
-    cout << " Drill 14 Success!\n";
+    std::cout << " Drill 14 Success!\n";
 
     //Drill 15
     //string s = "Success!\n";for (int i = 0;i < 6;++i)cout << s[i];
     //legal but no check for out of range, also string is larger do you want to truncate?
-    string s15 = "Drill 15 Success!\n";
-    const string::size_type maxPrint = 6;
+    std::string s15 = "Drill 15 Success!\n";
+    constexpr std::string::size_type maxPrint{ 6 };
     auto sStr = s15.substr(0, maxPrint);
-    cout << sStr << '\n';
+    std::cout << sStr << '\n';
 
     //Drill 16
     //if(true)then cout << "Success!\n";else cout << "Fail!\n";
-    //pysdo code can not be converted to C++ by the compiler
+    //Pseudo code can not be converted to C++ by the compiler
     if (true) {  //checking something
-        cout << "Drill 16 Success!\n";
+        std::cout << "Drill 16 Success!\n";
     }
     else {
-        cout << "Drill 16 Fail!\n";
+        std::cout << "Drill 16 Fail!\n";
     }
 
     //Drill 17
     //int x = 2000;char c = x;if(c == 2000)cout << "Success!\n";
     //narrowing error going from int to a char
-    int d17 = 100;
-    char c17 = narrow_cast<char>(d17);
-    cout << "Drill 17 Success! " << d17 << " " << c17 << '\n';
+    int d17{ 100 };
+    char c17{ narrow_cast<char>(d17) };
+    std::cout << "Drill 17 Success! " << d17 << " " << c17 << '\n';
 
     //Drill 18
     //string s = "Success!\n";for (int i = 0;i < 10;++i)cout << s[i];
@@ -156,10 +163,11 @@ try
     //string s = "Success!\n";for (int i = 0;i < 10;++i)cout << s.at(i);
     //s.at() provides bound checking and will throw an exception
     //string s = "Success!\n";for (int i = 0;i < s.size();++i)cout << s.at(i);
-    //compare against vector size is safer.
-    string s18 = "Drill 18 Success!\n";
-    for (auto i : s18) {
-        cout << i;
+    //compare against actual size is safer.
+    //range for best in this case.
+    std::string s18 = "Drill 18 Success!\n";
+    for (auto const i : s18) {
+        std::cout << i;
     }
 
     //Drill 19
@@ -168,12 +176,11 @@ try
     //vector<int> v(5);for (int i = 0;i <= v.size();++i);cout << "Success!\n";
     //no compile errors now but have an out of range issue with <=
     //vector<int> v(5);for (int i = 0;i < v.size();++i);cout << "Success!\n";
-    vector<int> v19(5);
-    for (int i = 0; i < v19.size(); ++i)
-    {
-        cout << v19[i];
+    std::vector<int> v19(5);
+    for (int i = 0; i < v19.size(); ++i) {
+        std::cout << v19[i];
     }
-    cout << " Drill 19 Success!\n";
+    std::cout << " Drill 19 Success!\n";
 
     //Drill 20
     //int i = 0;int j = 9;while (i < 10)++j;if (j < i)cout << "Success!\n";
@@ -185,7 +192,7 @@ try
         ++d20a;
     }
     if (d20b < d20a) {  // dDrill20a should now be 10
-        cout << d20a << " Drill 20 Success!\n";
+        std::cout << d20a << " Drill 20 Success!\n";
     }
 
     //Drill 21
@@ -196,21 +203,20 @@ try
     double d21 = 5;
     d21 = 5.0 / (n21 - 2);
     if (d21 == (2 * n21 + 0.5)) {
-        cout << "Drill 21 Success!\n";
+        std::cout << "Drill 21 Success!\n";
     }
     else {
-        cout << "can use quadratic equation to find Drill 21 success\n";
+        std::cout << "can use quadratic equation to find Drill 21 success\n";
     }
 
     //Drill 22
     //string<char>s = "Success!\n";for (int i = 0;i <= 10;++i)cout << s[i];
     //compile error: type "std::string" may not have a template argument list
-    string s22 = "Drill 22 Success!\n";
+    std::string s22 = "Drill 22 Success!\n";
     //for (int i = 0;i <= 10;++i)cout << s22[i];
     //no there is no range checking
-    for (auto i : s22)
-    {
-        cout << i;
+    for (auto i : s22) {
+        std::cout << i;
     }
 
     //Drill 23
@@ -219,11 +225,9 @@ try
     //magic numbers :(
     int n23a = 0;
     int n23b = 8; //mark last iteration
-    while (n23a < 10)
-    {
-        if (n23b < n23a)
-        {
-            cout << "Drill 23 Success!\n";
+    while (n23a < 10) {
+        if (n23b < n23a) {
+            std::cout << "Drill 23 Success!\n";
         }
         ++n23a;
     }
@@ -235,20 +239,20 @@ try
     //divide check not made
     //if will always be true.  d == not d =
     int n24 = 4;	//why 4 and 2
-    if (n24 == 2) { //check for divide by zero error
-        error(string("divide by zero error"));
+    auto denominator = n24 - 2;
+    if (denominator == 0) { //check for divide by zero error
+        error("divide by zero error");
     }
-    double d24 = 0;
-    d24 = 5.0 / (n24 - 2);
+    double d24 = 5.0 / denominator;
     if (d24 == (2 * n24 + 0.5) / 3.4) { //adjusted and solved quadratic to get a pass
-        cout << "Drill 24 Success!\n";
+        std::cout << "Drill 24 Success!\n";
     }
 
     //Drill 25
     //cin << "Success!\n";
     //Compile error: no operator "<<" matches these operands
     //use cout
-    cout << "Drill 25 Success!\n";
+    std::cout << "Drill 25 Success!\n";
 
     keep_window_open();
     return 0;

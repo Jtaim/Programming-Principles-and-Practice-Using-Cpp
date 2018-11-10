@@ -9,16 +9,18 @@ A program that writes out the Fibonacci series up to largest to fit in an int ty
 
 #include "section5.h"
 
-unsigned sum(unsigned, unsigned);
+using vType = std::vector<unsigned>;
+vType::value_type add(vType::value_type n1, vType::value_type n2);
 
 int main()
 try
 {
-    std::vector<unsigned> fibonacci{ 0,1 };
-    for (unsigned i = 0; ; ++i) {
-        std::cout << fibonacci[i] << '\n';
-        fibonacci.push_back(sum(fibonacci[i], fibonacci[i + 1]));
+    vType fibonacci{ 1,1 };
+    for (vType::difference_type i{}; /*intentional no conditional*/ ; ++i) {
+        std::cout << fibonacci[i] << std::endl;
+        fibonacci.push_back(add(fibonacci[i], fibonacci[i + 1]));
     }
+
     keep_window_open();	// yes I know will never get to this point
     return 0;
 }
@@ -35,15 +37,16 @@ catch (...)
     return 2;
 }
 
-/*	Sums 2 unsigned integer values.
-Inputs:		unsigned int, unsigned int
-Outputs:	sum
-Errors:		if the sums overflow unsigned int type
+/*	addition function.
+    Inputs:		two numbers
+    outputs:	valid resulting number
+    Errors:		element overflow
 */
-unsigned int sum(unsigned var1, unsigned var2)
+vType::value_type add(vType::value_type n1, vType::value_type n2)
 {
-    if ((var2 > 0) && (var1 > UINT_MAX - var2)) {
-        error("unsigned int max overflow error");
+    if (((n2 > 0) && (n1 > (std::numeric_limits< vType::value_type>::max() - n2))) ||
+        ((n2 < 0) && (n1 < (std::numeric_limits< vType::value_type>::min() - n2)))) {
+        error("overflow error");
     }
-    return var1 + var2;
+    return n1 + n2;
 }

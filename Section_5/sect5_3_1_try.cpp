@@ -7,7 +7,7 @@ Section 5 Try This 5.3.1
 compile the error examples from this section and see how the compiler responds.
 */
 
-#include "section5.h" //custom header
+#include "section5.h"
 
 int area(int length, int width);
 

@@ -7,11 +7,16 @@ sect 5 exercise 3
 Celsius to Kelvin converter
 throws error in main if input is below absolute 0
 */
+
 #include "section5.h"
 
-double ctok(const double c)	// converts Celsius to Kelvin
+// converts Celsius to Kelvin
+double ctok(double c)
 {
-    double celsiusToKelvin = c + 273.15;
+    constexpr double conversion_constant = 273.15;
+
+    double celsiusToKelvin = c + conversion_constant;
+
     return celsiusToKelvin;
 }
 
@@ -19,14 +24,13 @@ int main()
 try
 {
     std::cout << "Enter a temperature in Celsius to covert to Kelvin:\n";
-    double celsius{ 0.0 }; //input variable
+    double celsius{};
     std::cin >> celsius;
-    if (celsius < -273.15)
-    {
+    if (celsius < -273.15) {
         error("Can not be below absolute zero!\n");
     }
     double kelvin = ctok(celsius);
-    std::cout << kelvin << '\n';
+    std::cout << kelvin << std::endl;
 
     keep_window_open();
     return 0;

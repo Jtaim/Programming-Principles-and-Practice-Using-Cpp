@@ -13,22 +13,23 @@ throws error in function if input is below absolute 0
 double ctok(double c)
 {
     //throw error if value given in Celsius is below -273.15
-    if (c < -273.15)
-    {
+    if (c < -273.15) {
         error("Can not be below absolute zero!\n");
     }
-    c += 273.15;
-    return c;
+    constexpr double conversion_constant = 273.15;
+    double celsiusToKelvin = c + conversion_constant;
+    return celsiusToKelvin;
 }
 
 int main()
 try
 {
     std::cout << "Enter a temperature in Celsius to covert to Kelvin:\n";
-    double celsius{ 0.0 };
+    double celsius{};
     std::cin >> celsius;
     double kelvin = ctok(celsius);
     std::cout << kelvin << std::endl;
+
     keep_window_open();
     return 0;
 }

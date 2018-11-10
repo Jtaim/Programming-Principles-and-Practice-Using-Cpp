@@ -17,64 +17,54 @@ Handle all inputs and provide and error N is larger than input vector
 int main()
 try
 {
-    using std::cout;
-    using std::cin;
-    using std::endl;
-
     constexpr char termination{ '|' };
+    using vType = std::vector<int>;
 
-    cout << "Enter how many integers that you would like to sum:\n";
+    std::cout << "Enter how many numbers that you would like to sum:\n";
 
-    int sumHowMany{ 0 };
-    while (!(cin >> sumHowMany)) {
-        if (cin.bad()) {
-            error("cin.bad() flag set");
-        }
-        cin.clear();
-        cin.get();
-        cout << "Invalid entry!\n";
+    int sumHowMany{};
+    if (!(std::cin >> sumHowMany)) {
+        error("number expected!");
     }
-    std::vector<int> numbers;
-    cout << "Enter some integers (press '" << termination << "' to stop)\n";
+
+    vType numbers;
+    std::cout << "Enter some numbers (press '" << termination << "' to stop)\n";
     //while loop to get integers to place in a vector, validate and exit on an '|' entry
     while (true) {
-        int number{ 0 };
-        // loads entered numbers into a container vector
-        if (cin >> number) {
+        vType::value_type number{};
+        // loads entered numbers into a vector container 
+        if (std::cin >> number) {
             numbers.push_back(number);
         }
-        else
-        {
-            if (cin.bad()) {
-                error("cin.bad() flag set");
-            }
-            cin.clear();
+        else {
+            std::cin.clear();
             char c;
-            cin.get(c);
+            std::cin >> c;
             if (c == termination) {
                 break;
             }
-            else {
-                cout << "Invalid entry!\n";
-            }
+            error("Invalid number or termination!");
         }
     }
+
     if (numbers.size() >= sumHowMany) {
-        int sum{ 0 };
-        cout << "The sum of the first " << sumHowMany << " numbers ";
-        for (auto i = numbers.begin(); i < (numbers.begin() + sumHowMany); ++i) {
-            sum += *i;
-            if ((sumHowMany - 1) == (i - numbers.begin())) {
-                cout << *i << " = " << sum << endl;
+        vType::iterator stop = numbers.begin() + sumHowMany;
+        // sum numbers to specified value. initialize with vector value type set to 0.
+        vType::value_type sum = std::accumulate(numbers.begin(), stop, vType::value_type{});
+        std::cout << "The sum of the first " << sumHowMany << " numbers ";
+        for (auto i = numbers.begin(); i < stop; ++i) {
+            if (i == (stop - 1)) {
+                std::cout << *i << " = " << sum << std::endl;
             }
             else {
-                cout << *i << '+';
+                std::cout << *i << " + ";
             }
         }
     }
     else {
-        error("not enough integers entered to sum.\n");
+        error("not enough numbers entered to sum!");
     }
+
     keep_window_open();
     return 0;
 }

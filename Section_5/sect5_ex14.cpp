@@ -13,70 +13,93 @@ count of and output rejected entries.
 
 #include "section5.h"
 
-struct days {
-    std::vector<std::pair<std::vector<int>, std::string>> d{
-    { {},"Sunday" },
-    { {},"Monday" },
-    { {},"Tuesday" },
-    { {},"Wednesday" },
-    { {},"Thursday" },
-    { {},"Friday" },
-    { {},"Saturday" }
-    };
-};
-int sum(std::pair<std::vector<int>, std::string> &day_values) {
-    int sum{ 0 };
-    for (auto i : day_values.first) {
-        if ((i > 0) && (sum > INT_MAX - i)) {
-            error("int max overflow error");
-        }
-        if ((i < 0) && (sum < INT_MAX - i)) {
-            error("int min overflow error");
-        }
-        sum += i;
-    }
-    return sum;
-}
+using pType = std::pair <std::vector<std::string>, std::vector<int>>;
+using vType = std::vector<pType>;
+using numType = pType::second_type::value_type;
 
-int handle_input(std::string, int, days&);
+numType add(numType n1, numType n2)
+{
+    if (((n2 > 0) && (n1 > (std::numeric_limits< numType>::max() - n2))) ||
+        ((n2 < 0) && (n1 < (std::numeric_limits< numType>::min() - n2)))) {
+        error("overflow error");
+    }
+    return n1 + n2;
+}
 
 int main()
 try
 {
-    using std::cout;
-    using std::cin;
+    const std::string termination = "q";
 
-    days weekdays;
-    std::string day;
-    int value{ 0 };
-    int rejects{ 0 };
-    cout << "Enter days of the week (ex:Mon or Monday) and a value. Enter q to exit\n";
-    bool escape{ true };
-    while (escape)
-    {
-        cin >> day;
-        if (day == "q") {
-            escape = false;
+    vType weekdays{
+    { {"sun","sunday"   }, {} },
+    { {"mon","monday"   }, {} },
+    { {"tue","tuesday"  }, {} },
+    { {"wed","wednesday"}, {} },
+    { {"thu","thursday" }, {} },
+    { {"fri","friday"   }, {} },
+    { {"sat","saturday" }, {} }
+    };
+
+    unsigned rejects{};
+    std::cout << "Enter days of the week (ex:Mon or Monday) and a value. Enter q to exit\n";
+    while (true) {
+        std::string day;
+        std::cin >> day;
+        for (auto& c : day) {
+            c = narrow_cast<char>(tolower(c));
         }
-        if (escape) {
-            if (!(cin >> value)) {
-                escape = false;
-                error("Got some bad input day values.\n");
+        // check for matching day
+        auto validDay = weekdays.begin();
+        for (; validDay < weekdays.end(); ++validDay) {
+            bool found{ false };
+            for (auto d : validDay->first) {
+                if (d == day) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                break;
+            }
+        }
+        // day not found, check if valid termination
+        if (validDay == weekdays.end()) {
+            if (day == termination) {
+                // stop while loop
+                break;
+            }
+            ++rejects;
+        }
+        // valid day now look for number value
+        else {
+            numType value{};
+            if (!(std::cin >> value)) {
+                std::cin.clear();
+                // check if input number was overflowed
+                if (value == std::numeric_limits<numType>::max() ||
+                    value == std::numeric_limits<numType>::min()) {
+                    error("Entered number overflowed number type!");
+                }
+                ++rejects;
             }
             else {
-                rejects += handle_input(day, value, weekdays);
+                validDay->second.push_back(value);
             }
-        }
-        //print the results
-        if (!escape)
-        {
-            //get vector of pairs from the struct
-            for (auto weekday : weekdays.d) {
-                cout << weekday.second << " has a sum of " << sum(weekday) << '\n';
-            }
-            cout << "The number of rejects was " << rejects << "\n\n";
         }
     }
+
+    //print the results
+    std::cout << std::endl;
+    for (auto d : weekdays) {
+        numType sum{};
+        for (auto num : d.second) {
+            sum = add(sum, num);
+        }
+        std::cout << std::left << std::setfill('.') << std::setw(20) << d.first.at(1) << " " << sum << '\n';
+    }
+    std::cout << "\n\n" << std::left << std::setfill('.') << std::setw(20) << "rejects" << " " << rejects << std::endl;
+
     keep_window_open();
     return 0;
 }
@@ -91,36 +114,4 @@ catch (...)
     std::cerr << "Oops: unknown exception!\n";
     keep_window_open();
     return 2;
-}
-
-int handle_input(std::string day, int val, days &week)
-{
-    for (auto& i : day) {
-        i = narrow_cast<char>(tolower(i));
-    }
-    if (day == "sunday" || day == "sun") {
-        week.d[0].first.push_back(val);
-    }
-    else if (day == "monday" || day == "mon") {
-        week.d[1].first.push_back(val);
-    }
-    else if (day == "tuesday" || day == "tue") {
-        week.d[2].first.push_back(val);
-    }
-    else if (day == "wednesday" || day == "wed") {
-        week.d[3].first.push_back(val);
-    }
-    else if (day == "thursday" || day == "thu") {
-        week.d[4].first.push_back(val);
-    }
-    else if (day == "friday" || day == "fri") {
-        week.d[5].first.push_back(val);
-    }
-    else if (day == "saturday" || day == "sat") {
-        week.d[6].first.push_back(val);
-    }
-    else {
-        return 1;
-    }
-    return 0;
 }

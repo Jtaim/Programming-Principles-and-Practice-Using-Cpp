@@ -6,32 +6,41 @@
 sect 5 exercise 2
 find errors and document
 */
+
 #include "section5.h"
 
-double ctok(double c)	// converts Celsius to Kelvin
+// converts Celsius to Kelvin
+double ctok(double c)
 {
-    //int k = c + 273.15;
-    //use double prevent narrow errors
-    //use descriptive variable names
-    double celsiusToKelvin = c + 273.15;
-    //return int;
-    //compile error: type name is not allowed
+    constexpr double conversion_constant = 273.15;
+
+    double celsiusToKelvin = c + conversion_constant;
+
     return celsiusToKelvin;
 }
 
 int main()
+try
 {
-    double celsius{ 0.0 }; //input variable
-    //cin >> d;
-    //compile error: identifier "d" is undefined
+    std::cout << "Enter a temperature in Celsius to covert to Kelvin:\n";
+    double celsius{};
     std::cin >> celsius;
-    //double k = ctok("c");
-    //compile error: argument error
     double kelvin = ctok(celsius);
-    //Cout << k << '\n';
-    //compile error: identifier "Cout" is undefined
     std::cout << kelvin << '\n';
 
     keep_window_open();
     return 0;
+}
+
+catch (std::exception& e)
+{
+    std::cerr << "error: " << e.what() << '\n';
+    keep_window_open();
+    return 1;
+}
+catch (...)
+{
+    std::cerr << "Oops: unknown exception!\n";
+    keep_window_open();
+    return 2;
 }

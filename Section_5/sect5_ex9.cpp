@@ -16,68 +16,76 @@ Added overflow error when summing
 
 #include "section5.h"
 
-int sum_up(int s, const std::vector<int> &vn);
+using vType = std::vector<int>;
+vType::value_type add(vType::value_type n1, vType::value_type n2);
 
 int main()
 try
 {
-    using std::cout;
-    using std::cin;
-    using std::endl;
-
     constexpr char termination{ '|' };
 
-    cout << "Enter how many integers that you would like to sum:\n";
-
-    int sumHowMany{ 0 };
-    while (!(cin >> sumHowMany)) {
-        if (cin.bad()) {
-            error("cin.bad() flag set");
-        }
-        cin.clear();
-        cin.get();
-        cout << "Invalid entry!\n";
+    std::cout << "Enter how many numbers that you would like to sum:\n";
+    int sumHowMany{};
+    if (!(std::cin >> sumHowMany)) {
+        error("number expected!");
     }
-    std::vector<int> numbers;
-    cout << "Enter some integers (press '" << termination << "' to stop)\n";
+
+    // vector to hold the entered numbers
+    vType numbers;
+
+    std::cout << "Enter some numbers (press '" << termination << "' to stop)\n";
     //while loop to get integers to place in a vector, validate and exit on an '|' entry
     while (true) {
-        int number;
-        // loads entered numbers into a container vector
-        if (cin >> number) {
+        vType::value_type number{};
+
+        // loads entered numbers into a vector container 
+        if (std::cin >> number) {
             numbers.push_back(number);
         }
-        else
-        {
-            if (cin.bad()) {
-                error("cin.bad() flag set");
+        else {
+            std::cin.clear();
+
+            // check if input number was overflowed
+            if (number == std::numeric_limits< vType::value_type>::max() ||
+                number == std::numeric_limits< vType::value_type>::min()) {
+                error("Entered number overflowed number type!");
             }
-            cin.clear();
+
+            // check for proper termination
             char c;
-            cin >> c;
+            std::cin >> c;
             if (c == termination) {
                 break;
             }
-            else {
-                cout << "Invalid entry!\n";
-            }
+            error("Invalid number or termination!");
         }
     }
+
+    // do we have some numbers ?
     if (numbers.size() >= sumHowMany) {
-        auto sum = sum_up(sumHowMany, numbers);
-        cout << "The sum of the first " << sumHowMany << " numbers ";
-        for (auto i = numbers.begin(); i < (numbers.begin() + sumHowMany); ++i) {
-            if ((sumHowMany - 1) == (i - numbers.begin())) {
-                cout << *i << " = " << sum << endl;
+        vType::iterator stop = numbers.begin() + sumHowMany;
+        vType::value_type sum{};
+
+        // sum the numbers wanted
+        for (auto i = numbers.begin(); i < stop; ++i) {
+            sum = add(sum, *i);
+        }
+
+        // print the answer
+        std::cout << "The sum of the first " << sumHowMany << " numbers.\n";
+        for (auto i = numbers.begin(); i < stop; ++i) {
+            if (i == (stop - 1)) {
+                std::cout << *i << " = " << sum << std::endl;
             }
             else {
-                cout << *i << '+';
+                std::cout << *i << " + ";
             }
         }
     }
     else {
-        error("not enough integers entered to sum.\n");
+        std::cout << "Container was empty.\n";
     }
+
     keep_window_open();
     return 0;
 }
@@ -94,31 +102,16 @@ catch (...)
     return 2;
 }
 
-/*	Sums a vector to the user selected number to sum.
-    Inputs:		int
-                reference to vector of integers
-
-    Outputs:	vector values summed to input int elements
-
-    Errors:		number want to sum is larger than the vector size
-                if the sum of the element cause and int type overflow
+/*	addition function.
+    Inputs:		two numbers
+    outputs:	valid resulting number
+    Errors:		element overflow
 */
-int sum_up(int s, const std::vector<int> &vn)
+vType::value_type add(vType::value_type n1, vType::value_type n2)
 {
-    int sum = 0;
-    if (vn.size() < s) {
-        error("not enough integers entered to sum.\n");
+    if (((n2 > 0) && (n1 > (std::numeric_limits< vType::value_type>::max() - n2))) ||
+        ((n2 < 0) && (n1 < (std::numeric_limits< vType::value_type>::min() - n2)))) {
+        error("overflow error");
     }
-    else {	//sum the numbers
-        for (int i = 0; i < s; i++) {
-            if ((vn[i] > 0) && (sum > INT_MAX - vn[i])) {
-                error("int overflow error");
-            }
-            if ((vn[i] < 0) && (sum < INT_MAX - vn[i])) {
-                error("int overflow error");
-            }
-            sum += vn[i];
-        }
-    }
-    return sum;
+    return n1 + n2;
 }

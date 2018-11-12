@@ -22,9 +22,7 @@
 #include<regex>
 #include<random>
 #include<stdexcept>
-#include <cstdlib>	// for rand() and srand()
-#include <ctime>	// for time()
-#include <utility>
+#include<utility>
 
 #include<numeric>	// for MVS 2015 not under algorithm
 
@@ -32,11 +30,11 @@
 inline void keep_window_open()
 {
     std::cin.clear();
+    // some compilers need this to show contents in rdbuf
+    std::cin.sync_with_stdio(false);
     // check if buffer is empty
     auto cb = std::cin.rdbuf()->in_avail();
-    if (cb) {
-        std::cin.ignore(cb);  //clear buffer
-    }
+    std::cin.ignore(cb);  //clear buffer
     std::cout << "\n\nHit the Enter key to exit" << std::endl;
     std::cin.get();
 }

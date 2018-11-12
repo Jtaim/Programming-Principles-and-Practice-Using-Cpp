@@ -5,7 +5,6 @@
 //
 
 #include "section6.h"
-using namespace std;
 
 //------------------------------------------------------------------------------
 
@@ -13,37 +12,13 @@ class Token {
 public:
     char kind;        // what kind of token
     double value;     // for numbers: a value 
-    Token(char ch)    // make a Token from a char
-        :kind(ch), value(0) { }
-    Token(char ch, double val)     // make a Token from a char and a double
+    Token(char ch, double val = 0.0)
         :kind(ch), value(val) { }
 };
 
 //------------------------------------------------------------------------------
 
-Token get_token()    // read a token from cin
-{
-    char ch;
-    cin >> ch;    // note that >> skips whitespace (space, newline, tab, etc.)
-
-    switch (ch) {
-        //not yet   case ';':    // for "print"
-        //not yet   case 'q':    // for "quit"
-    case '(': case ')': case '+': case '-': case '*': case '/':
-        return Token(ch);        // let each character represent itself
-    case '.':
-    case '0': case '1': case '2': case '3': case '4':
-    case '5': case '6': case '7': case '8': case '9':
-    {
-        cin.putback(ch);         // put digit back into the input stream
-        double val;
-        cin >> val;              // read a floating-point number
-        return Token('8', val);   // let '8' represent "a number"
-    }
-    default:
-        error("Bad token");
-    }
-}
+Token get_token();
 
 //------------------------------------------------------------------------------
 
@@ -55,38 +30,24 @@ double term();        // read and evaluate a Term
 
 //------------------------------------------------------------------------------
 
-double primary()     // read and evaluate a Primary
-{
-    Token t = get_token();
-    switch (t.kind) {
-    case '(':    // handle '(' expression ')'
-    {
-        double d = expression();
-        t = get_token();
-        if (t.kind != ')') error("')' expected");
-        return d;
-    }
-    case '8':            // we use '8' to represent a number
-        return t.value;  // return the number's value
-    default:
-        error("primary expected");
-    }
-}
+double primary();     // read and evaluate a Primary
+
 //------------------------------------------------------------------------------
 
 int main()
 try {
-    while (cin)
-        cout << expression() << '\n';
+    while (std::cin) {
+        std::cout << "=" << expression() << '\n';
+    }
     keep_window_open();
 }
-catch (exception& e) {
-    cerr << e.what() << endl;
+catch (std::exception& e) {
+    std::cerr << e.what() << std::endl;
     keep_window_open();
     return 1;
 }
 catch (...) {
-    cerr << "exception \n";
+    std::cerr << "exception \n";
     keep_window_open();
     return 2;
 }
@@ -138,6 +99,61 @@ double term()
             return left;
         }
     }
+}
+
+//------------------------------------------------------------------------------
+
+double primary()     // read and evaluate a Primary
+{
+    Token t = get_token();
+    double temp{};
+    switch (t.kind) {
+    case '(':    // handle '(' expression ')'
+    {
+        double d = expression();
+        t = get_token();
+        if (t.kind != ')') error("')' expected");
+        temp = d;
+        break;
+    }
+    case '8':            // we use '8' to represent a number
+        temp = t.value;  // return the number's value
+        break;
+    default:
+        error("primary expected");
+    }
+    return temp;
+}
+
+//------------------------------------------------------------------------------
+
+Token get_token()
+{
+    char ch;
+    std::cin >> ch; // note that >> skips whitespace (space, newline, tab, etc.)
+
+    Token temp{ ' ' };
+    switch (ch) {
+        //not yet   case ';':  // for "print"
+        //not yet   case 'q':  // for "quit"
+    case '(': case ')': case '+': case '-': case '*': case '/':
+        temp.kind = ch;        // let each character represent itself
+        break;
+    case '.':
+    case '0': case '1': case '2': case '3': case '4':
+    case '5': case '6': case '7': case '8': case '9':
+    {
+        std::cin.putback(ch);   // put digit back into the input stream
+        double val;
+        std::cin >> val;        // read a floating-point number
+        temp.kind = '8';        // let '8' represent "a number"
+        temp.value = val;
+        break;
+    }
+    default:
+        error("Bad token");
+    }
+    return temp;
 }
 
 //------------------------------------------------------------------------------

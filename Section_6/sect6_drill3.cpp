@@ -1,9 +1,21 @@
 
-// Section 6 Drill 3
+//
 // This is example code from Chapter 6.7 "Trying the second version" of
 // "Software - Principles and Practice using C++" by Bjarne Stroustrup
-// Change to exit from 'q' to 'x'
-// Change print command from ';' to '='
+//
+
+/*
+    This file is known as calculator02buggy.cpp but now fixed and renamed to sect6_drill1.cpp
+
+    I have inserted 5 errors that should cause this not to compile
+    I have inserted 3 logic errors that should cause the program to give wrong results
+
+    First try to find an remove the bugs without looking in the book.
+    If that gets tedious, compare the code to that in the book (or posted source code)
+
+    Happy hunting!
+
+*/
 
 #include "section6.h"
 
@@ -12,9 +24,7 @@ class Token
 public:
     char kind;			// what kind of token
     double value;		// for numbers: a value 
-                        //constructors
-    Token()
-        :kind(' '), value(0) {}
+    //constructors
     Token(char ch)
         :kind(ch), value(0) {}
     Token(char ch, double val)
@@ -28,11 +38,11 @@ class Token_stream
 public:
     // The constructor just sets full to indicate that the buffer is empty:
     Token_stream()					// make a Token_stream that reads from cin
-        :full(false), buffer(0) {}	// no Token in buffer
+        :full(false), buffer(' ') {}	// no Token in buffer
     Token get();					// get a Token (get() is defined elsewhere)
     void putback(Token t);			// put a Token back
 private:
-    bool full{ false };				// is there a Token in the buffer?
+    bool full;      				// is there a Token in the buffer?
     Token buffer;					// here is where we keep a Token put back using putback()
 };
 
@@ -52,79 +62,84 @@ void Token_stream::putback(Token t)
 
 Token Token_stream::get()
 {
+    Token temp{ ' ' };
+
     // do we already have a Token ready?
     if (full) {
         full = false;
-        return buffer;
+        temp = buffer;
     }
-    Token tempT;
-    char ch;
-    std::cin >> ch;
-    switch (ch) {
-    case '=':				// for "print"
-    case 'x':				// for "quit"
-    case '(': case ')': case '*': case '/': case '+': case '-':
-        tempT.kind = ch;
-        break;
-    case '.':
-    case '0': case '1': case '2': case '3': case '4':
-    case '5': case '6': case '7': case '8': case '9':
-    {
-        std::cin.putback(ch);	// put digit back into the input stream
-        double val;
-        std::cin >> val;		// read a floating-point number
-        tempT.kind = '8';
-        tempT.value = val;
-        break;
+    else {
+        char ch;
+        std::cin >> ch;
+        switch (ch) {
+        case '=':				// for "print"
+        case 'q':				// for "quit"
+        case '(': case ')': case '*': case '/': case '+': case '-':
+            temp.kind = ch;
+            break;
+        case '.':
+        case '0': case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9':
+        {
+            std::cin.putback(ch);	// put digit back into the input stream
+            double val;
+            std::cin >> val;		// read a floating-point number
+            temp.kind = '8';
+            temp.value = val;
+            break;
+        }
+        default:
+            error("Bad token");
+        }
     }
-    default:
-        error("Bad token");
-    }
-    return tempT;
+    return temp;
 }
 
 //------------------------------------------------------------------------------
 
 Token_stream ts;        // provides get() and putback() 
 
-                        //------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 double expression();    // declaration so that primary() can call expression()
 
-                        //------------------------------------------------------------------------------
-                        // deal with numbers and parentheses
+//------------------------------------------------------------------------------
+// deal with numbers and parentheses
 double primary()
 {
+    double temp{};  // temp storage for the returns
+
     Token t = ts.get();
-    double d{ 0.0 };
     switch (t.kind) {
     case '(':			// handle '(' expression ')'
     {
-        d = expression();
+        double d = expression();
         t = ts.get();
         if (t.kind != ')') {
             error("')' expected");
         }
+        temp = d;
         break;
     }
     case '-':			// deal with - unary operator
-        d = -1 * primary();
+        temp = -1 * primary();
         break;
     case '+':			// deal with + unary operator
-        d = primary();
+        temp = primary();
         break;
     case '8':			// we use '8' to represent a number
-        d = t.value;	// return the number's value
+        temp = t.value;	// return the number's value
         break;
     default:
         error("primary expected");
     }
-    return d;
+    return temp;
 }
 
 //------------------------------------------------------------------------------
 
-// deal with *, and /
+// deal with * and /
 // % not implemented yet
 double term()
 {
@@ -183,14 +198,14 @@ int main()
 {
     try
     {
-        double val{ 0.0 };
+        double val{};
         while (std::cin) {
             Token t = ts.get();
-            if (t.kind == 'x') {	// 'x' for quit
+            if (t.kind == 'q') {	// 'q' for quit
                 break;
             }
             if (t.kind == '=') {	// ';' for "print now"
-                std::cout << val << '\n';
+                std::cout << "= " << val << '\n';
             }
             else {
                 ts.putback(t);
@@ -198,14 +213,12 @@ int main()
             }
         }
     }
-    catch (std::exception& e)
-    {
+    catch (std::exception& e) {
         std::cerr << "error: " << e.what() << '\n';
         keep_window_open();
         return 1;
     }
-    catch (...)
-    {
+    catch (...) {
         std::cerr << "Oops: unknown exception!\n";
         keep_window_open();
         return 2;

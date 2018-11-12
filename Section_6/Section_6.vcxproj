@@ -79,7 +79,7 @@
     <Text Include="sect6_ex7.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect6_ex10.cpp" />
+    <ClCompile Include="sect6_drill5.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

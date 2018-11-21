@@ -26,8 +26,7 @@
 
 #include<numeric>	// for MVS 2015 not under algorithm
 
-// simple function to keep window console open
-inline void keep_window_open()
+inline void clear_cin_buffer()
 {
     std::cin.clear();
     // some compilers need this to show contents in rdbuf
@@ -35,6 +34,12 @@ inline void keep_window_open()
     // check if buffer is empty
     auto cb = std::cin.rdbuf()->in_avail();
     std::cin.ignore(cb);  //clear buffer
+}
+
+// simple function to keep window console open
+inline void keep_window_open()
+{
+    clear_cin_buffer();
     std::cout << "\n\nHit the Enter key to exit" << std::endl;
     std::cin.get();
 }

@@ -35,9 +35,7 @@ int main()
         std::vector<Name_value> vNS;
         cout << "Enter names and scores. Terminate input with NoName 0\n";
         // collect valid data
-        bool exit = false;
-        while (!exit)
-        {
+        while (true) {
             std::string name;
             int score;
             cin >> name >> score;
@@ -48,8 +46,7 @@ int main()
             // redo if bad input non number for score
             else if (cin.fail()) {
                 cout << "Entered invalid name or score.  Please reenter.\n";
-                cin.clear();
-                cin.ignore(UINT8_MAX, '\n');
+                clear_cin_buffer();
             }
             else if (cin.bad()) {
                 error("input data error\n");
@@ -76,6 +73,7 @@ int main()
                 }
             }
         }
+
         // print contents to screen
         if (vNS.size() != 0) {
             for (auto i : vNS) {

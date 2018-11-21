@@ -1,20 +1,10 @@
-
-//
-// This is example code from Chapter 6.7 "Trying the second version" of
-// "Software - Principles and Practice using C++" by Bjarne Stroustrup
-//
-
 /*
-    This file is known as calculator02buggy.cpp but now fixed and renamed to sect6_drill1.cpp
+  written by Jtaim
+  date 12 Nov 2018
+  Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
-    I have inserted 5 errors that should cause this not to compile
-    I have inserted 3 logic errors that should cause the program to give wrong results
-
-    First try to find an remove the bugs without looking in the book.
-    If that gets tedious, compare the code to that in the book (or posted source code)
-
-    Happy hunting!
-
+  Section 6 Drill 5
+  Add an improved greeting when program is launched
 */
 
 #include "section6.h"

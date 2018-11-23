@@ -14,38 +14,57 @@ terminate program with '|'.
 
 #include "section6.h"
 
-bool input_check(std::vector<int>& dig, const char term);
-void print_number(const std::vector<int>& dig, const std::vector<std::string> &denom);
-
 int main()
 {
-    using std::cout;
-    using std::cin;
+    constexpr char termination = '|';
+    // only have to add or subtract denominations array size and program will adjust.
+    // make_array is experimental which could just declare elements then will adjust.
+    constexpr std::array<const char*, 4> denomination{ "ones", "tens", "hundreds", "thousands" };
+    constexpr auto maxValueSize = denomination.size();
 
-    const char TERM = '|';
-    // only have to add or subtract denominations and program will adjust
-    const std::vector<std::string> DENOMINATION{ "thousands", "hundreds", "tens", "ones" };
-    const size_t MAX_DIGITS = DENOMINATION.size();
+    try {
+        bool isLoopAgain = true;
+        do {
+            std::cout << "Enter a number up to " << maxValueSize << " digits long. Enter " << termination << " to exit\n";
+            std::string number{};
+            size_t itr = 0;
+            while (true) {
+                char digit;
+                std::cin.get(digit);
+                if (digit == '\n') {
+                    break;
+                }
+                else if (!isdigit(digit)) {
+                    if (digit == termination) {
+                        isLoopAgain = false;
+                        break;
+                    }
+                    error("found a non number character");
+                }
+                else {
+                    if (itr < maxValueSize) {
+                        number.push_back(digit);
+                        ++itr;
+                        continue;
+                    }
+                    error("entered number is too large");
+                }
+            }
 
-    try
-    {
-        cout << "Enter a number up to " << MAX_DIGITS << " digits long. Enter " << TERM << " to exit\n";
-        std::vector<int> numbers{};
-        numbers.reserve(MAX_DIGITS);	// to reserve max capacity of the vector for error checking
-        while (true)
-        {
-            if (input_check(numbers, TERM))
-            {
-                print_number(numbers, DENOMINATION);
+            if (!number.empty()) {
+                std::cout << number << " is ";
+                for (size_t i{}, j{ number.size() - 1 }; i < number.size(); ++i, --j) {
+                    std::cout << number[i] << " " << denomination[j]
+                        << ((i < number.size() - 1) ? " and " : ".\n");
+                }
             }
-            else
-            {
-                break;
+            else if (isLoopAgain) {
+                std::cout << "no number was entered\n";
             }
-        }
-        cout << "Bye";
-        keep_window_open();
-        return 0;
+
+            number.clear();
+        } while (isLoopAgain);
+
     }
     catch (std::exception& e)
     {
@@ -59,86 +78,8 @@ int main()
         keep_window_open();
         return 2;
     }
-}
 
-/* function to for valid entry (is a digit).
-INPUT:	reference int vector to store valid numbers and const char for termination
-OUPUT:	bool: true = valid number sequence, false = termination found
-ERROR:	if cin.fail() is set
-loops until finds valid entry or finds termination character
-*/
-bool input_check(std::vector<int>& dig, const char term)
-{
-    dig.clear();
-    bool good_bad = false;
-    std::string str{ '?' };
-    while (!good_bad)
-    {
-        std::cin >> str;
-        if (!std::cin.good())
-        {
-            error("cin.fail() set to 1 when getting data.\n");
-        }
-        // if termination found set bool and break from loop 
-        else if (find(str.begin(), str.end(), term) != str.end())
-        {
-            good_bad = false;
-            break;
-        }
-        // check if entry is an integer
-        else if (std::all_of(str.begin(), str.end(), ::isdigit))
-        {
-            // check that string is <= integer vector capacity
-            if (str.size() > dig.capacity())
-            {
-                std::cout << "Digit entry is larger than know denomination.\n";
-                good_bad = false;
-            }
-            else
-            {
-                // convert to integer
-                for (auto i : str)
-                {
-                    dig.push_back(i - '0');
-                }
-                good_bad = true;
-            }
-        }
-        else
-        {
-            std::cout << "Digit entered is not an integer.\n";
-            std::cin.ignore(INT16_MAX, '\n');
-            good_bad = false;
-        }
-    }
-    return good_bad;
-}
-
-/* function to for valid entry (is a digit).
-INPUT:	reference const vector of int numbers and reference const vector of denominations
-OUPUT:	none
-ERROR:	if denomination vector size is < input integer vector size
-will output number and denomination
-*/
-void print_number(const std::vector<int>& dig, const std::vector<std::string> &denom)
-{
-    if (dig.size() <= denom.size())
-    {
-        size_t index_offset = denom.size() - dig.size();	// align denom to number size 
-        for (size_t i = 0; i < dig.size(); ++i)
-        {
-            if ((dig.size() - 1) == i)	// determine if last element
-            {
-                std::cout << dig[i] << " " << denom[i + index_offset] << ".\n";
-            }
-            else
-            {
-                std::cout << dig[i] << " " << denom[i + index_offset] << " and ";
-            }
-        }
-    }
-    else
-    {
-        error("denomination vector must be >= input vector.\n");
-    }
+    std::cout << "Bye";
+    keep_window_open();
+    return 0;
 }

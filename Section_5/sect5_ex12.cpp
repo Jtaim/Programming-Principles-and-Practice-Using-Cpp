@@ -11,9 +11,10 @@ Guess the 4 numbers range(0 to 9)
 #include "section5.h"
 
 using vType = std::vector<int>;
-bool get_guesses(vType&input, const char term);
-int get_bulls(const vType& guesses, vType &setSequence);
-int get_cows(const vType& guesses, vType &setSequence);
+bool get_guesses(vType &input, const char term);
+int get_bulls(const vType &guesses, vType &setSequence);
+int get_cows(const vType &guesses, vType &setSequence);
+const vType::value_type foundMark = std::numeric_limits<vType::value_type>::max();
 
 int main()
 try
@@ -69,7 +70,7 @@ OUPUT:  bool true = got valid guesses
         bool false = got valid termination.
 ERROR: invalid guess or termination.
 */
-bool get_guesses(vType&input, const char term)
+bool get_guesses(vType &input, const char term)
 {
     for (vType::size_type itr = 0; itr < input.capacity(); ++itr) {
         char guess{};
@@ -97,14 +98,14 @@ OUPUT: int for number of bulls found
 ERROR: no error.
 modifies set sequence by setting matching elements to type max number
 */
-int get_bulls(const vType& guesses, vType &setSequence)
+int get_bulls(const vType &guesses, vType &setSequence)
 {
     int bulls{};
     auto j{ setSequence.begin() };
     for (auto i{ guesses.cbegin() }; i < guesses.cend(); ++i, ++j) {
         if (*i == *j) {
             ++bulls;
-            *j = std::numeric_limits<vType::value_type>::max();
+            *j = foundMark;
         }
     }
     return bulls;
@@ -124,7 +125,7 @@ int get_cows(const vType &guesses, vType &setSequence)
         for (auto i{ guesses.cbegin() }; i < guesses.cend(); ++i) {
             if (*i == *j) {
                 ++cows;
-                *j = std::numeric_limits<vType::value_type>::max();
+                *j = foundMark;
                 break;
             }
         }

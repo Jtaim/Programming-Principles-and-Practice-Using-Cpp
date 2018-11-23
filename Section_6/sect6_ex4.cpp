@@ -21,9 +21,7 @@ class Name_value
 public:
     std::string name;
     int value;
-    Name_value()
-        : name{ "NoName" }, value{ 0 } {}
-    Name_value(std::string n, int val)
+    Name_value(std::string n = "NoName", int val = 0)
         : name{ n }, value(val) {}
 };
 
@@ -77,7 +75,7 @@ int main()
         // print contents to screen
         if (vNS.size() != 0) {
             for (auto i : vNS) {
-                cout << i.name << " " << i.value << std::endl;
+                cout << i.name << " " << i.value << '\n';
             }
         }
         else {

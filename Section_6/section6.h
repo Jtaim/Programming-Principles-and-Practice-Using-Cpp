@@ -6,6 +6,7 @@
 #ifndef SECTION6_H	// begin header guard
 #define SECTION6_H
 
+#include<array>
 #include<iostream>
 #include<iomanip>
 #include<fstream>

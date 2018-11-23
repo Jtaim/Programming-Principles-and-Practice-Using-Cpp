@@ -15,6 +15,7 @@ using vType = std::vector<int>;
 bool get_guesses(vType&input, const char term);
 int get_bulls(const vType& guesses, vType &setSequence);
 int get_cows(const vType& guesses, vType &setSequence);
+const vType::value_type foundMark = std::numeric_limits<vType::value_type>::max();
 bool try_again(const std::string&);
 
 int main()
@@ -124,7 +125,7 @@ int get_bulls(const vType& guesses, vType &setSequence)
     for (auto i{ guesses.cbegin() }; i < guesses.cend(); ++i, ++j) {
         if (*i == *j) {
             ++bulls;
-            *j = std::numeric_limits<vType::value_type>::max();
+            *j = foundMark;
         }
     }
     return bulls;
@@ -144,7 +145,7 @@ int get_cows(const vType &guesses, vType &setSequence)
         for (auto i{ guesses.cbegin() }; i < guesses.cend(); ++i) {
             if (*i == *j) {
                 ++cows;
-                *j = std::numeric_limits<vType::value_type>::max();
+                *j = foundMark;
                 break;
             }
         }

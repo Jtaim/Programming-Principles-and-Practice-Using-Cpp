@@ -83,7 +83,7 @@ str str_stream::get()	// read a string from cin
     }
     std::string new_string;
     std::cin >> new_string;	// note that >> skips whitespace (space, newline, tab, etc.)
-    std::transform(new_string.begin(), new_string.end(), new_string.begin(), ::tolower);
+    std::transform(new_string.begin(), new_string.end(), new_string.begin(), [](char c) { return narrow_cast<char, int>(tolower(c)); });
     return str(new_string);
 }
 

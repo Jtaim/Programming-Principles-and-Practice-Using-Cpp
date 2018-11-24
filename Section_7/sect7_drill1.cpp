@@ -1,24 +1,19 @@
 /*
-written by Jtaim
-date 15 Apr 2017
-Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
+    calculator08buggy.cpp
 
-clean up calculator08buggy.cpp
-Helpful comments removed.
-We have inserted 3 bugs that the compiler will catch and 3 that it won't.
+    Helpful comments removed.
 
-Section 7 Drill 1 Get the program to compile
+    We have inserted 3 bugs that the compiler will catch and 3 that it won't.
 */
 
-#include "section7.h"
+#include "../includes/ppp.hpp"
 
 struct Token {
     char kind;
     double value;
     std::string name;
-    Token(char ch) :kind(ch), value(0) { }
-    Token(char ch, double val) :kind(ch), value(val) { }
-    Token(char ch, std::string n) :kind(ch), name(n) { }
+    Token(char ch, double val = 0) :kind(ch), value(val) { }
+    Token(char ch, std::string n) : kind(ch), name(n) {}
 };
 
 class Token_stream {
@@ -79,9 +74,9 @@ Token Token_stream::get()
             std::cin.unget();
             if (s == "let") return Token(let);
             if (s == "quit") return Token(name);
-            return Token{ name, s };
+            return Token(name, s);
         }
-        error("Bad token");
+        ppp::error("Bad token");
     }
 }
 
@@ -110,7 +105,7 @@ double get_value(std::string s)
 {
     for (int i = 0; i < names.size(); ++i)
         if (names[i].name == s) return names[i].value;
-    error("get: undefined name ", s);
+    ppp::error("get: undefined name ", s);
 }
 
 void set_value(std::string s, double d)
@@ -120,7 +115,7 @@ void set_value(std::string s, double d)
             names[i].value = d;
             return;
         }
-    error("set: undefined name ", s);
+    ppp::error("set: undefined name ", s);
 }
 
 bool is_declared(std::string s)
@@ -137,12 +132,14 @@ double expression();
 double primary()
 {
     Token t = ts.get();
+    double d{};
     switch (t.kind) {
-    case '(':
-    {
-        double d = expression();
+    case '(': {
+        d = expression();
         t = ts.get();
-        if (t.kind != ')') error("'(' expected");
+        if (t.kind != ')') {
+            ppp::error("'(' expected");
+        }
     }
     case '-':
         return -primary();
@@ -151,7 +148,7 @@ double primary()
     case name:
         return get_value(t.name);
     default:
-        error("primary expected");
+        ppp::error("primary expected");
     }
 }
 
@@ -166,7 +163,7 @@ double term()
             break;
         case '/':
         {	double d = primary();
-        if (d == 0) error("divide by zero");
+        if (d == 0) ppp::error("divide by zero");
         left /= d;
         break;
         }
@@ -199,13 +196,18 @@ double expression()
 double declaration()
 {
     Token t = ts.get();
-    if (t.kind != 'a') error("name expected in declaration");
-    std::string name = t.name;
-    if (is_declared(name)) error(name, " declared twice");
+    if (t.kind != 'a') {
+        ppp::error("name expected in declaration");
+    }
+    if (is_declared(t.name)) {
+        ppp::error(t.name, " declared twice");
+    }
     Token t2 = ts.get();
-    if (t2.kind != '=') error("= missing in declaration of ", name);
+    if (t2.kind != '=') {
+        ppp::error("= missing in declaration of ", t.name);
+    }
     double d = expression();
-    names.push_back(Variable(name, d));
+    names.push_back(Variable(t.name, d));
     return d;
 }
 
@@ -246,7 +248,6 @@ void calculate()
 }
 
 int main()
-
 try {
     calculate();
     return 0;

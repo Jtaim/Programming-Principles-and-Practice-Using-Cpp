@@ -6,26 +6,24 @@
 #ifndef SECTION6_H	// begin header guard
 #define SECTION6_H
 
-#include<array>
-#include<iostream>
-#include<iomanip>
-#include<fstream>
-#include<sstream>
-#include<cmath>
-#include<cstdlib>
-#include<string>
-#include<list>
-#include<forward_list>
-#include<vector>
-#include<unordered_map>
-#include<algorithm>
-#include<array>
-#include<regex>
-#include<random>
-#include<stdexcept>
-#include<utility>
-
-#include<numeric>	// for MVS 2015 not under algorithm
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <cstdlib>
+#include <forward_list>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <numeric>
+#include <random>
+#include <regex>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 inline void clear_cin_buffer()
 {

@@ -12,7 +12,7 @@ c(a,b) = p(a,b)/b!
 https://www.mathsisfun.com/combinatorics/combinations-permutations.html
 */
 
-#include "section6.h"
+#include "../includes/ppp.hpp"
 
 // do factorial to a selected stop
 int factoral(int start, int end)
@@ -21,7 +21,7 @@ int factoral(int start, int end)
     for (auto i = start; i > (start - end); --i) {
         fact *= i;
         if ((i > 0) && (fact > INT_MAX - i) || (i < 0) && (fact < INT_MAX - i)) {
-            error("int overflow error");
+            ppp::error("int overflow error");
         }
     }
     return fact;
@@ -30,7 +30,7 @@ int factoral(int start, int end)
 int permutation(int a, int b)
 {
     if (a <= 0 || (a - b) < 0) {
-        error("Negative term in the permutation.\n");
+        ppp::error("Negative term in the permutation.\n");
     }
     return factoral(a, b);
 }
@@ -50,13 +50,13 @@ int main()
         int b{};
         while (!(std::cin >> a && std::cin >> b && (a > b))) {
             std::cout << "invalid entry or first number is not greater than second number, reenter\n";
-            clear_cin_buffer();
+            ppp::clear_cin_buffer();
         }
 
         std::cout << "Do you want to do a permutation (p) or combination (c)?\n";
         char p_c{};
         while (std::cin >> p_c) {
-            p_c = narrow_cast<char, int>(tolower(p_c));
+            p_c = ppp::narrow_cast<char, int>(tolower(p_c));
             if (p_c != 'p' && p_c != 'c') {
                 std::cout << "Invalid permutation or combination entry, reenter\n";
             }
@@ -71,23 +71,23 @@ int main()
             answer = combination(a, b);
         }
         else {
-            error("invalid evaluation choice.\n");
+            ppp::error("invalid evaluation choice.\n");
         }
         std::cout << "The " << (p_c == 'p' ? "permutation" : "combination") << " is " << answer << ".\n";
     }
     catch (std::exception& e)
     {
         std::cerr << "error: " << e.what() << '\n';
-        keep_window_open();
+        ppp::keep_window_open();
         return 1;
     }
     catch (...)
     {
         std::cerr << "Oops: unknown exception!\n";
-        keep_window_open();
+        ppp::keep_window_open();
         return 2;
     }
 
-    keep_window_open();
+    ppp::keep_window_open();
     return 0;
 }

@@ -23,7 +23,7 @@ If you're reading along you will notice I intentionally left out the header file
 because in the book's presented header file the functions have been implemented into most modern compilers, plus I wanted some experience dealing with custom header files.
 If you want, you can get the header file from book's website www.stroustrup.com/Programming
 
-Starting with section 7, I started using and placed header file in an include file for all sections to use from this section and remaing sections.
+Starting with section 7, I started using and placed a header file in an include file for all sections to use from this section and remaining sections.
 Also set up namespace (ppp) for functions unique to this books exercises.
 
 #### Some web sites I found helpful

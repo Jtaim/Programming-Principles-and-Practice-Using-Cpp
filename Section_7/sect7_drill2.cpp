@@ -11,7 +11,7 @@ Section 7 Drill 1 Get the program to compile
 Section 7 Drill 2 Add comments
 */
 
-#include "section7.h"
+#include "../includes/ppp.hpp"
 
 /// class to hold object 
 struct Token {
@@ -90,7 +90,7 @@ Token Token_stream::Get()
             //if (s == "quit") return Token(name);
             return Token(name, s);
         }
-        error("Bad token");
+        ppp::error("Bad token");
         return Token();
     }
 }
@@ -128,7 +128,7 @@ double get_value(std::string s)
             return names[i].value;
         }
     }
-    error("get: undefined name ", s);
+    ppp::error("get: undefined name ", s);
     return 0.0;
 }
 
@@ -140,7 +140,7 @@ void set_value(std::string s, double d)
             names[i].value = d;
             return;
         }
-    error("set: undefined name ", s);
+    ppp::error("set: undefined name ", s);
 }
 
 /// check if variable is already declared
@@ -167,7 +167,7 @@ double primary()
     {
         d = expression();
         t = ts.Get();
-        if (t.kind != ')') error("'(' expected");
+        if (t.kind != ')') ppp::error("'(' expected");
     }
     case '-':
         return -primary();
@@ -178,7 +178,7 @@ double primary()
     case name:
         return get_value(t.name);
     default:
-        error("primary expected");
+        ppp::error("primary expected");
     }
     return d;
 }
@@ -195,12 +195,12 @@ double term()
             break;
         case '/':
             d = primary();
-            if (d == 0) error("divide by zero");
+            if (d == 0) ppp::error("divide by zero");
             left /= d;
             break;
         case '%':
             d = primary();
-            if (d == 0) error("divide by zero");
+            if (d == 0) ppp::error("divide by zero");
             left = fmod(left, d);
             break;
         default:
@@ -232,10 +232,10 @@ double expression()
 double declaration()
 {
     Token t = ts.Get();
-    if (t.kind != 'a') error("name expected in declaration");
-    if (is_declared(t.name)) error(t.name, " declared twice");
+    if (t.kind != 'a') ppp::error("name expected in declaration");
+    if (is_declared(t.name)) ppp::error(t.name, " declared twice");
     Token t2 = ts.Get();
-    if (t2.kind != '=') error("= missing in declaration of ", t.name);
+    if (t2.kind != '=') ppp::error("= missing in declaration of ", t.name);
     double d = expression();
     names.push_back(Variable(t.name, d));
     return d;

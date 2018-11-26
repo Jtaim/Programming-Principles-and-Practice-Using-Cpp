@@ -37,6 +37,16 @@ namespace ppp
         std::cin.ignore(cb);  //clear buffer
     }
 
+    inline void clear_cin_buffer(char c)
+    {
+        std::cin.clear();
+        // some compilers need this to show contents in rdbuf
+        std::cin.sync_with_stdio(false);
+        // check if buffer is empty
+        auto cb = std::cin.rdbuf()->in_avail();
+        std::cin.ignore(cb, c);  //clear buffer
+    }
+
     // simple function to keep window console open
     inline void keep_window_open()
     {

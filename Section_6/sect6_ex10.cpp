@@ -44,6 +44,7 @@ int combination(int a, int b)
 
 int main()
 {
+    SET_IOSYNC;
     try {
         std::cout << "Enter two numbers and first number is greater than second number.\n";
         int a{};

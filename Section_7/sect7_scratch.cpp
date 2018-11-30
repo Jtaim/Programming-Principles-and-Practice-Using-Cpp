@@ -46,7 +46,6 @@
  */
 
 #include "../includes/ppp.hpp"
-
  //------------------------------------------------------------------------------
 
 constexpr char number = '8';    // t.kind == number means that t is a number Token.
@@ -394,6 +393,7 @@ void calculate()        // expression evaluation loop
 int main()
 try
 {
+    SET_IOSYNC;
     std::cout << "\nWelcome to our simple calculator.\n"
         << "Please enter expressions using floating-point numbers.\n"
         << "Operations available are +, -, *, /, % and n!.\n"

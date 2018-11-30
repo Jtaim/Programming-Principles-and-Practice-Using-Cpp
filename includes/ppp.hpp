@@ -25,26 +25,26 @@
 #include <utility>
 #include <vector>
 
+/*  Some compilers need this set to false to show characters left in cin.rdbuf().
+*   problem with doing this will lose synchronization between printf and cout if working with mixed functions.
+*   Also need to declare start of program or before use of cin or risk reseting rdbuf() losing ptential wanted data.
+*   See https://en.cppreference.com/w/cpp/io/ios_base/sync_with_stdio
+*   Normally all C++ streams have this set to true. if is true then in_avail() is 0.*/
+#define SET_IOSYNC std::cin.sync_with_stdio(false) 
+
 namespace ppp
 {
-    inline void clear_cin_buffer()
+    inline void clear_cin_buffer(const char term = '\0')
     {
         std::cin.clear();
-        // some compilers need this to show contents in rdbuf
-        std::cin.sync_with_stdio(false);
         // check if buffer is empty
         auto cb = std::cin.rdbuf()->in_avail();
-        std::cin.ignore(cb);  //clear buffer
-    }
-
-    inline void clear_cin_buffer(char c)
-    {
-        std::cin.clear();
-        // some compilers need this to show contents in rdbuf
-        std::cin.sync_with_stdio(false);
-        // check if buffer is empty
-        auto cb = std::cin.rdbuf()->in_avail();
-        std::cin.ignore(cb, c);  //clear buffer
+        while(cb) {
+            char c{};
+            std::cin.get(c);    //clear buffer
+            if (term == c) break;
+            --cb;
+        }
     }
 
     // simple function to keep window console open

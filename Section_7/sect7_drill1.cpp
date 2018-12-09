@@ -8,46 +8,93 @@
 
 #include "../includes/ppp.hpp"
 
+constexpr char number = '8';
+constexpr char quit = 'q';
+constexpr char print = ';';
+constexpr char* prompt = "> ";
+constexpr char* result = "= ";
+
+constexpr char name = 'a';
+constexpr char let = 'L';
+constexpr char* declkey = "let";
+
 struct Token {
     char kind;
     double value;
     std::string name;
-    Token(char ch, double val = 0) :kind(ch), value(val) { }
-    Token(char ch, std::string n) : kind(ch), name(n) {}
+    Token(char ch, double val = 0.0) :kind(ch), value(val) {}
+    Token(char ch, std::string s) :kind(ch), name(s) {}
 };
+
+struct Variable {
+    std::string name;
+    double value{};
+};
+
+std::vector<Variable> names;
+
+double get_value(const std::string s)
+{
+    for (int i = 0; i < names.size(); ++i)
+        if (names[i].name == s) return names[i].value;
+    ppp::error("get: undefined name ", s);
+}
+
+void set_value(const std::string s, const double d)
+{
+    for (int i = 0; i < names.size(); ++i)
+        if (names[i].name == s) {
+            names[i].value = d;
+            return;
+        }
+    ppp::error("set: undefined name ", s);
+}
+
+bool is_declared(const std::string s)
+{
+    for (int i = 0; i < names.size(); ++i)
+        if (names[i].name == s) return true;
+    return false;
+}
+
+double define_name(const std::string s, const double d)
+{
+    if (is_declared(s)) ppp::error(s, " declared twice");
+    names.push_back(Variable{ s, d });
+    return d;
+}
 
 class Token_stream {
-    bool full;
-    Token buffer;
 public:
-    Token_stream() :full(0), buffer(0) { }
+    Token_stream() :full(false), buffer('\0') { }
 
     Token get();
-    void unget(Token t) { buffer = t; full = true; }
+    void putback(const Token t);
+    void ignore(const char c);
 
-    void ignore(char);
+private:
+    bool full;
+    Token buffer;
 };
-
-const char let = 'L';
-const char quit = 'Q';
-const char print = ';';
-const char number = '8';
-const char name = 'a';
 
 Token Token_stream::get()
 {
-    if (full) { full = false; return buffer; }
+    if (full) {
+        full = false;
+        return buffer;
+    }
     char ch;
     std::cin >> ch;
     switch (ch) {
+    case print:
+    case quit:
     case '(':
     case ')':
     case '+':
     case '-':
     case '*':
     case '/':
-    case '%':
-    case ';':
+        //case '%':
     case '=':
         return Token(ch);
     case '.':
@@ -61,68 +108,43 @@ Token Token_stream::get()
     case '7':
     case '8':
     case '9':
-    {	std::cin.unget();
-    double val;
-    std::cin >> val;
-    return Token(number, val);
+    {
+        std::cin.putback(ch);
+        double val;
+        std::cin >> val;
+        return Token(number, val);
     }
     default:
         if (isalpha(ch)) {
             std::string s;
             s += ch;
-            while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch))) s = ch;
-            std::cin.unget();
-            if (s == "let") return Token(let);
-            if (s == "quit") return Token(name);
+            while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
+            std::cin.putback(ch);
+            if (s == declkey) return Token(let);
+            //if (s == "quit") return Token(name);
             return Token(name, s);
         }
         ppp::error("Bad token");
     }
 }
 
-void Token_stream::ignore(char c)
+void Token_stream::putback(const Token t)
+{
+    if (full) {
+        ppp::error("putback() into a full buffer");
+    }
+    buffer = t;
+    full = true;
+}
+
+void Token_stream::ignore(const char c)
 {
     if (full && c == buffer.kind) {
         full = false;
         return;
     }
     full = false;
-
-    char ch;
-    while (std::cin >> ch)
-        if (ch == c) return;
-}
-
-struct Variable {
-    std::string name;
-    double value;
-    Variable(std::string n, double v) :name(n), value(v) { }
-};
-
-std::vector<Variable> names;
-
-double get_value(std::string s)
-{
-    for (int i = 0; i < names.size(); ++i)
-        if (names[i].name == s) return names[i].value;
-    ppp::error("get: undefined name ", s);
-}
-
-void set_value(std::string s, double d)
-{
-    for (int i = 0; i <= names.size(); ++i)
-        if (names[i].name == s) {
-            names[i].value = d;
-            return;
-        }
-    ppp::error("set: undefined name ", s);
-}
-
-bool is_declared(std::string s)
-{
-    for (int i = 0; i < names.size(); ++i)
-        if (names[i].name == s) return true;
-    return false;
+    ppp::clear_cin_buffer(c);
 }
 
 Token_stream ts;
@@ -138,11 +160,14 @@ double primary()
         d = expression();
         t = ts.get();
         if (t.kind != ')') {
-            ppp::error("'(' expected");
+            ppp::error("')' expected");
         }
+        return d;
     }
     case '-':
-        return -primary();
+        return -1 * primary();
+    case '+':
+        return primary();
     case number:
         return t.value;
     case name:
@@ -168,7 +193,7 @@ double term()
         break;
         }
         default:
-            ts.unget(t);
+            ts.putback(t);
             return left;
         }
     }
@@ -187,7 +212,7 @@ double expression()
             left -= term();
             break;
         default:
-            ts.unget(t);
+            ts.putback(t);
             return left;
         }
     }
@@ -196,7 +221,7 @@ double expression()
 double declaration()
 {
     Token t = ts.get();
-    if (t.kind != 'a') {
+    if (t.kind != name) {
         ppp::error("name expected in declaration");
     }
     if (is_declared(t.name)) {
@@ -207,7 +232,7 @@ double declaration()
         ppp::error("= missing in declaration of ", t.name);
     }
     double d = expression();
-    names.push_back(Variable(t.name, d));
+    define_name(t.name, d);
     return d;
 }
 
@@ -218,7 +243,7 @@ double statement()
     case let:
         return declaration();
     default:
-        ts.unget(t);
+        ts.putback(t);
         return expression();
     }
 }
@@ -228,17 +253,15 @@ void clean_up_mess()
     ts.ignore(print);
 }
 
-const std::string prompt = "> ";
-const std::string result = "= ";
-
 void calculate()
 {
+    // while (std::cin)
     while (true) try {
         std::cout << prompt;
         Token t = ts.get();
         while (t.kind == print) t = ts.get();
         if (t.kind == quit) return;
-        ts.unget(t);
+        ts.putback(t);
         std::cout << result << statement() << std::endl;
     }
     catch (std::runtime_error& e) {
@@ -249,18 +272,17 @@ void calculate()
 
 int main()
 try {
+    SET_IOSYNC;
     calculate();
     return 0;
 }
 catch (std::exception& e) {
     std::cerr << "exception: " << e.what() << std::endl;
-    char c;
-    while (std::cin >> c && c != ';');
+    ppp::keep_window_open();
     return 1;
 }
 catch (...) {
     std::cerr << "exception\n";
-    char c;
-    while (std::cin >> c && c != ';');
+    ppp::keep_window_open();
     return 2;
 }

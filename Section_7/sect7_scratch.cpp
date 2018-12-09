@@ -51,8 +51,8 @@
 constexpr char number = '8';    // t.kind == number means that t is a number Token.
 constexpr char quit = 'q';      // t.kind == quit means that t is a quit Token.
 constexpr char print = ';';     // t.kind == print means that t is a print Token.
-constexpr char prompt = '>';
-constexpr char result = '=';    // used to indicate that what follows is a result
+constexpr char* prompt = "> ";
+constexpr char* result = "= ";  // used to indicate that what follows is a result
 
 constexpr char name = 'a';      // name token
 constexpr char let = 'L';       // declaration token
@@ -64,12 +64,12 @@ class Token
 {
 public:
     char kind;			// what kind of token
-    double value;		// for numbers: a value
-    std::string name;
+    double value{};		// for numbers: a value
+    std::string name;   // to hold variable name
     Token(char ch, double val = 0.0)
         :kind(ch), value(val) {}
     Token(char ch, std::string s)
-        :kind(ch), value(0.0), name(s) {}
+        :kind(ch), name(s) {}
 };
 
 //------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ std::vector<Variable> var_table;
 double get_value(const std::string s)
 {
     auto vt = std::find(var_table.begin(), var_table.end(), s);
-    if (vt == var_table.end()) ppp::error("get: undefined variable", s);
+    if (vt == var_table.end()) ppp::error("get: undefined variable ", s);
     return vt->value;
 }
 
@@ -98,7 +98,7 @@ double get_value(const std::string s)
 void set_value(const std::string s, const double d)
 {
     auto vt = std::find(var_table.begin(), var_table.end(), s);
-    if (vt == var_table.end()) ppp::error("set: undefined variable", s);
+    if (vt == var_table.end()) ppp::error("set: undefined variable ", s);
     vt->value = d;
 }
 
@@ -125,15 +125,15 @@ public:
     // The constructor just sets full to indicate that the buffer is empty:
     Token_stream()					// make a Token_stream that reads from cin
         :full(false), buffer('\0') {}	// no Token in buffer
-    Token get();					// get a Token (get() is defined elsewhere)
-    void putback(Token t);			// put a Token back
-    void ignore(char c);            // discard characters up to and including the given input kind token
+    Token get();					// get a Token to place in the stream
+    void putback(const Token t);    // put a Token back
+    void ignore(const char c);      // discard characters up to and including the given input kind token
 private:
     bool full;      				// is there a Token in the buffer?
     Token buffer;					// here is where we keep a Token put back using putback()
 };
 
-void Token_stream::ignore(char c)
+void Token_stream::ignore(const char c)
 {
     // first look in buffer.
     if (full && c == buffer.kind) {
@@ -197,9 +197,8 @@ Token Token_stream::get()
                 while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
 
                 std::cin.putback(ch);   // put rejected ch back from while loop 
-                if (s == declkey) temp = Token(let);                            // declaration keyword
-                else if (buffer.kind == let) temp = Token(name, s);             // new variable
-                else if (is_declared(s)) temp = Token(number, get_value(s));    // check and get variable value
+                if (s == declkey) temp = Token(let);    // declaration keyword
+                else temp = Token(name, s);
             }
             else ppp::error("Bad token");
         }
@@ -218,8 +217,8 @@ long long fact(long long val);  // forward declaration
 // deal with numbers and parentheses
 double primary()
 {
-    double temp{};  // temp storage for the returns
     Token t = ts.get();
+    double temp{};  // temp storage for the returns
     switch (t.kind) {
     case '(':			// handle '(' expression ')'
     {
@@ -249,6 +248,9 @@ double primary()
         }
         else ts.putback(t);
         break;
+    case name:
+        temp = get_value(t.name);
+        break;
     case '!':   // deal with ! without preceding number assume is 1
         temp = 1;
         break;
@@ -266,12 +268,11 @@ double primary()
 double term()
 {
     double left = primary();
-    Token t = ts.get();			// get the next token from token stream
     while (true) {
+        Token t = ts.get();
         switch (t.kind) {
         case '*':
             left *= primary();
-            t = ts.get();
             break;
         case '/':
         {
@@ -280,7 +281,6 @@ double term()
                 ppp::error("divide by zero");
             }
             left /= d;
-            t = ts.get();
             break;
         }
         case '%':
@@ -290,7 +290,6 @@ double term()
                 ppp::error("divide by zero");
             }
             left = fmod(left, d);
-            t = ts.get();
             break;
         }
         default:
@@ -306,16 +305,14 @@ double term()
 double expression()
 {
     double left = term();		// read and evaluate a Term
-    Token t = ts.get();			// get the next token from token stream
     while (true) {
+        Token t = ts.get();
         switch (t.kind) {
         case '+':
             left += term();		// evaluate Term and add
-            t = ts.get();
             break;
         case '-':
             left -= term();		// evaluate Term and subtract
-            t = ts.get();
             break;
         default:
             ts.putback(t);		// put t back into the token stream
@@ -333,13 +330,16 @@ double declaration()
 {
     Token t = ts.get();
     if (t.kind != name) ppp::error("name expected in declaration");
-    std::string var_name = t.name;
+
+    if (is_declared(t.name)) {
+        ppp::error(t.name, " declared twice");
+    }
 
     Token t2 = ts.get();
-    if (t2.kind != '=') ppp::error("= missing in declaration", var_name);
+    if (t2.kind != '=') ppp::error("= missing in declaration", t.name);
 
     double d = expression();
-    define_name(var_name, d);
+    define_name(t.name, d);
     return d;
 }
 
@@ -368,7 +368,7 @@ void clean_up_mess()
 
 void calculate()        // expression evaluation loop
 {
-    while (std::cin)
+    while (true)
         try {
         std::cout << prompt;
         Token t = ts.get();

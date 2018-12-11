@@ -109,7 +109,7 @@ double declaration(calculator::Token_Stream &ts, calculator::Symbol_Table &vt)
         throw std::runtime_error("= missing in declaration of " + t.name);
     }
     double d = expression(ts, vt);
-    vt.define_name(t.name, d);
+    vt.declare(t.name, d);
     return d;
 }
 
@@ -136,15 +136,14 @@ void clean_up_mess(calculator::Token_Stream &ts)
 
 //------------------------------------------------------------------------------
 
-constexpr char* prompt = "> ";
-constexpr char* result = "= ";  // used to indicate that what follows is a result
-
-//------------------------------------------------------------------------------
-
 void calculate()
 {
     calculator::Token_Stream ts;
     calculator::Symbol_Table vt;
+
+    constexpr char* prompt = "> ";
+    constexpr char* result = "= ";  // used to indicate that what follows is a result
+
     while (true) try {
         std::cout << prompt;
         calculator::Token t = ts.get();

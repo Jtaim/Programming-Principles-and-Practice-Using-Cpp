@@ -6,30 +6,38 @@
 
 namespace calculator
 {
-    /// place to hold variable name value
-    struct Variable {
-        std::string name;
-        double value{};
-    };
-
     class Symbol_Table
     {
     public:
         Symbol_Table();
         ~Symbol_Table();
 
-        double get_value(const std::string s);
-        void set_value(const std::string s, const double d);
-        bool is_declared(const std::string s);
-        double define_name(const std::string s, const double d);
+        double get_value(const std::string &s);
+        void set_value(const std::string &s, const double d);
+        bool is_declared(const std::string &s);
+        double declare(const std::string &s, const double d);
 
     private:
+        // place to hold variable name value
+        struct Variable {
+            std::string name;
+            double value{};
+        };
+
         // container for all the variables
         std::vector<Variable> var_table;
 
-        // overloaded equality operator to find name
-        friend bool operator==(const calculator::Variable &v, const std::string &s);
-        friend bool operator==(const std::string &s, const calculator::Variable &v);
+        // helper template function to find name in var_table
+        template<typename InputIt, typename T>
+        constexpr InputIt find_value(InputIt first, InputIt last, const T &value)
+        {
+            for (; first != last; ++first) {
+                if (first->name == value) {
+                    return first;
+                }
+            }
+            return last;
+        }
     };
 }
 

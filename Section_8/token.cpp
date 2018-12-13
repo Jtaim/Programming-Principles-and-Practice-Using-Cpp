@@ -30,6 +30,7 @@ calculator::Token_Stream::Token_Stream()
 }
 
 calculator::Token_Stream::Token_Stream(std::istream& /*tsin*/)
+    : full(false), buffer('\0')
 {
 }
 

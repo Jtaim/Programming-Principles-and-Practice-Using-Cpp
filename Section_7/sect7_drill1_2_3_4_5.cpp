@@ -7,8 +7,7 @@
 
     Drill 1, 2, 3, 4 and 5
 
-    hmm if do let x = 45; x = 99; get weird result
-*/
+ */
 
 #include "../includes/ppp.hpp"
 
@@ -124,6 +123,7 @@ Token Token_stream::get()
             t.kind = ch;
             break;
         case '=':
+            if (this->buffer.kind != let) throw std::runtime_error("Assignment Denied");
             t.kind = ch;
             break;
         case '.':

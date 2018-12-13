@@ -177,7 +177,10 @@ Token Token_stream::get()
         case '+':
         case '-':
         case '!':
+            temp.kind = ch;
+            break;
         case '=':
+            if (this->buffer.kind != let) throw std::runtime_error("Assignment Denied");
             temp.kind = ch;
             break;
         case '.':

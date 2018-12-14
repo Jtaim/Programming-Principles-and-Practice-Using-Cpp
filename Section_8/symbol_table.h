@@ -27,9 +27,9 @@ namespace calculator
         // container for all the variables
         std::vector<Variable> var_table;
 
-        // helper template function to find name in var_table
+        // private template function to find name in var_table
         template<typename InputIt, typename T>
-        constexpr InputIt find_value(InputIt first, InputIt last, const T &value)
+        constexpr InputIt find_name(InputIt first, InputIt last, const T &value)
         {
             for (; first != last; ++first) {
                 if (first->name == value) {

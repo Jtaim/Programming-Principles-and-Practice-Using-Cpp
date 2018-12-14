@@ -123,7 +123,7 @@ Token Token_stream::get()
             t.kind = ch;
             break;
         case '=':
-            if (this->buffer.kind != let) throw std::runtime_error("Assignment Denied");
+            if (this->buffer.kind != let) throw std::runtime_error((buffer.kind == name ? buffer.name : std::to_string(buffer.value)) + " can not be re-assigned");
             t.kind = ch;
             break;
         case '.':
@@ -239,6 +239,8 @@ double term()
         left /= d;
         break;
         }
+        //case '%':
+            // not implemented yet
         default:
             ts.putback(t);
             return left;

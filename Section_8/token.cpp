@@ -61,7 +61,10 @@ calculator::Token calculator::Token_Stream::get()
         case '*':
         case '/':
             //case '%':
+            token.kind = ch;
+            break;
         case '=':
+            if (this->buffer.kind != let) throw std::runtime_error("Assignment Denied");
             token.kind = ch;
             break;
         case '.':

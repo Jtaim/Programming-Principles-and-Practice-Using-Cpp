@@ -1,15 +1,30 @@
+//Written by Jtaim
+//Date 15 Dec 2018
+//Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 /*
-    calculator08buggy.cpp
+    Section 7 Drill 7
+    give the calculator a square root function
+    Section 7 Drill 8
+    check for negative numbers before using square root function and give an error
+    Section 7 Drill 9
+    give the calculator a power function pow(val, pow)
 
-    Helpful comments removed.
-
-    We have inserted 3 bugs that the compiler will catch and 3 that it won't.
-
-    Drill 1, 2, 3, 4 and 5
-
- */
+    Section 7 Drill 10
+    change declaration keyword from let to #
+*/
 
 #include "../includes/ppp.h"
+
+//------------------------------------------------------------------------------
+
+constexpr char number = '8';    // t.kind == number means that t is a number Token.
+constexpr char quit = 'q';      // t.kind == quit means that t is a quit Token.
+constexpr char print = ';';     // t.kind == print means that t is a print Token.
+
+constexpr char name = 'a';      // name token
+constexpr char let = 'L';       // declaration token
+constexpr char *declkey = "#"; // declaration keyword
+constexpr char func = 'F';  // function Token
 
 struct Token {
     char kind;
@@ -90,16 +105,6 @@ private:
 
 //------------------------------------------------------------------------------
 
-constexpr char number = '8';    // t.kind == number means that t is a number Token.
-constexpr char quit = 'q';      // t.kind == quit means that t is a quit Token.
-constexpr char print = ';';     // t.kind == print means that t is a print Token.
-
-constexpr char name = 'a';      // name token
-constexpr char let = 'L';       // declaration token
-constexpr char* declkey = "let"; // declaration keyword
-
-//------------------------------------------------------------------------------
-
 Token Token_stream::get()
 {
     Token t{ '\0' };
@@ -119,6 +124,7 @@ Token Token_stream::get()
         case '-':
         case '*':
         case '/':
+        case ',':
             //case '%':
             t.kind = ch;
             break;
@@ -149,13 +155,19 @@ Token Token_stream::get()
             break;
         }
         default:
-            if (isalpha(ch)) {
+            if (isalpha(ch)||(strlen(declkey)==1)) {
                 std::string s;
                 s += ch;
-                while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
-                std::cin.putback(ch);
+                if (ch != declkey[0]) {
+                    while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
+                    std::cin.putback(ch);
+                }
                 if (s == declkey) {
                     t.kind = let;
+                }
+                else if (ch == '(') {
+                    t.kind = func;
+                    t.name = s;
                 }
                 //if (s == "quit") return Token(name);
                 else {
@@ -294,12 +306,69 @@ double declaration()
 
 //------------------------------------------------------------------------------
 
+double function(const std::string &s)
+{
+    Token t = ts.get();
+    double d{};
+    std::vector<double> func_args;
+    if (t.kind != '(') {
+        throw std::runtime_error("expected '(', malformed function call");
+    }
+    else {
+        do {
+            t = ts.get();
+            // see if any argument is a function call
+            if (t.kind == func) {
+                t.kind = number;
+                // recursive call
+                t.value = function(t.name);
+                ts.putback(t);
+            }
+            // check if empty arguments
+            if(t.kind == ')'){
+                break;
+            }
+            else {
+                ts.putback(t);
+            }
+            // push valid function argument
+            func_args.push_back(expression());
+            t = ts.get();
+            if (t.kind == ')') break;
+            if (t.kind != ',') throw std::runtime_error("expected ')', malformed function call");
+        } while (t.kind == ',');
+    }
+
+    if (s == "sqrt") {
+        if (func_args.size() != 1) throw std::runtime_error("sqrt() expects 1 argument");
+        if (func_args[0] < 0) throw std::runtime_error("sqrt() expects argument value >= 0");
+        d = sqrt(func_args[0]);
+    }
+    else if (s == "pow") {
+        if (func_args.size() != 2) throw std::runtime_error("pow() expects 2 arguments");
+        d = func_args[0];
+        auto multiplier = func_args[0];
+        int p = ppp::narrow_cast<int>(func_args[1]);
+        for (; p > 1; --p) {
+            d *= multiplier;
+        }
+    }
+    else {
+        throw std::runtime_error("unknown function");
+    }
+    return d;
+}
+
+//------------------------------------------------------------------------------
+
 double statement()
 {
     Token t = ts.get();
     switch (t.kind) {
     case let:
         return declaration();
+    case func:
+        return function(t.name);
     default:
         ts.putback(t);
         return expression();
@@ -319,6 +388,7 @@ void calculate()
 {
     constexpr char* prompt = "> ";  // indicate a prompt
     constexpr char* result = "= ";  // indicate a result
+
     while (true) try {
         std::cout << prompt;
         Token t = ts.get();

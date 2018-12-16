@@ -24,7 +24,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Section_8", "Section_8\Sect
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "includes", "includes", "{C1503D09-FF17-4A5F-B468-66EEF5477CD1}"
 	ProjectSection(SolutionItems) = preProject
-		includes\ppp.hpp = includes\ppp.hpp
+		includes\ppp.h = includes\ppp.h
 	EndProjectSection
 EndProject
 Global

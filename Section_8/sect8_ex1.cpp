@@ -5,7 +5,7 @@
     Section 8 Exercise 1
 */
 
-#include "../includes/ppp.hpp"
+#include "../includes/ppp.h"
 #include "token.h"
 #include "symbol_table.h"
 

@@ -45,7 +45,7 @@
     Input comes from cin through the Token_stream called ts.
  */
 
-#include "../includes/ppp.hpp"
+#include "../includes/ppp.h"
  //------------------------------------------------------------------------------
 
 constexpr char number = '8';    // t.kind == number means that t is a number Token.

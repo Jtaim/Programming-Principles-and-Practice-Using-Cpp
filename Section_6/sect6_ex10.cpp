@@ -12,7 +12,7 @@ c(a,b) = p(a,b)/b!
 https://www.mathsisfun.com/combinatorics/combinations-permutations.html
 */
 
-#include "../includes/ppp.hpp"
+#include "../includes/ppp.h"
 
 // do factorial to a selected stop
 int factoral(int start, int end)
@@ -21,7 +21,7 @@ int factoral(int start, int end)
     for (auto i = start; i > (start - end); --i) {
         fact *= i;
         if ((i > 0) && (fact > INT_MAX - i) || (i < 0) && (fact < INT_MAX - i)) {
-            ppp::error("int overflow error");
+            throw std::runtime_error("int overflow error");
         }
     }
     return fact;
@@ -30,7 +30,7 @@ int factoral(int start, int end)
 int permutation(int a, int b)
 {
     if (a <= 0 || (a - b) < 0) {
-        ppp::error("Negative term in the permutation.\n");
+        throw std::runtime_error("Negative term in the permutation.\n");
     }
     return factoral(a, b);
 }
@@ -72,7 +72,7 @@ int main()
             answer = combination(a, b);
         }
         else {
-            ppp::error("invalid evaluation choice.\n");
+            throw std::runtime_error("invalid evaluation choice.\n");
         }
         std::cout << "The " << (p_c == 'p' ? "permutation" : "combination") << " is " << answer << ".\n";
     }

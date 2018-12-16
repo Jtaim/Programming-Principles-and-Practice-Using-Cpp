@@ -1,13 +1,10 @@
+//Written by Jtaim
+//Date 14 Dec 2018
+//Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 /*
-    calculator08buggy.cpp
-
-    Helpful comments removed.
-
-    We have inserted 3 bugs that the compiler will catch and 3 that it won't.
-
-    Drill 1, 2, 3, 4 and 5
-
- */
+    Section 7 Drill 6
+    Add a predefined name k meaning 1000
+*/
 
 #include "../includes/ppp.h"
 
@@ -319,6 +316,9 @@ void calculate()
 {
     constexpr char* prompt = "> ";  // indicate a prompt
     constexpr char* result = "= ";  // indicate a result
+
+    define_name("k", 1000.0);
+
     while (true) try {
         std::cout << prompt;
         Token t = ts.get();

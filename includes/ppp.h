@@ -55,30 +55,13 @@ namespace ppp
         std::cin.get();
     }
 
-    inline void error(const std::string& s)
-    {
-        throw std::runtime_error(s);
-    }
-
-    inline void error(const std::string& s, const std::string& s2)
-    {
-        error(s + s2);
-    }
-
-    inline void error(const std::string& s, int i)
-    {
-        std::ostringstream os;
-        os << s << ": " << i;
-        error(os.str());
-    }
-
     // run-time checked narrowing cast (type conversion).
     template<typename Target, typename Source>
     Target narrow_cast(const Source& a)
     {
         auto r = static_cast<Target>(a);
         if (static_cast<Source>(r) != a) {
-            error("narrow_cast<>() failed");
+            throw std::runtime_error("narrow_cast<>() failed");
         }
         return r;
     }

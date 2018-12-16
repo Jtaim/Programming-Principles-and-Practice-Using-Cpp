@@ -1,13 +1,12 @@
+//Written by Jtaim
+//Date 14 Dec 2018
+//Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 /*
-    calculator08buggy.cpp
-
-    Helpful comments removed.
-
-    We have inserted 3 bugs that the compiler will catch and 3 that it won't.
-
-    Drill 1, 2, 3, 4 and 5
-
- */
+    Section 7 Drill 7
+    give the calculator a square root function
+    Section 7 Drill 8
+    check for negative numbers before using square root function and give an error
+*/
 
 #include "../includes/ppp.h"
 
@@ -97,6 +96,7 @@ constexpr char print = ';';     // t.kind == print means that t is a print Token
 constexpr char name = 'a';      // name token
 constexpr char let = 'L';       // declaration token
 constexpr char* declkey = "let"; // declaration keyword
+constexpr char func = 'F';  // function Token
 
 //------------------------------------------------------------------------------
 
@@ -156,6 +156,10 @@ Token Token_stream::get()
                 std::cin.putback(ch);
                 if (s == declkey) {
                     t.kind = let;
+                }
+                else if (ch == '(') {
+                    t.kind = func;
+                    t.name = s;
                 }
                 //if (s == "quit") return Token(name);
                 else {
@@ -264,7 +268,7 @@ double expression()
             break;
         case '-':
             left -= term();
-            break;
+            break;        
         default:
             ts.putback(t);
             return left;
@@ -294,12 +298,26 @@ double declaration()
 
 //------------------------------------------------------------------------------
 
+double function(const std::string &t)
+{
+    if (t != "sqrt") {
+        throw std::runtime_error("unknown function call");
+    }
+    auto d = expression();
+    if(d < 0) throw std::runtime_error("can not take a square root of a negative number");
+    return sqrt(d);
+}
+
+//------------------------------------------------------------------------------
+
 double statement()
 {
     Token t = ts.get();
     switch (t.kind) {
     case let:
         return declaration();
+    case func:
+        return function(t.name);
     default:
         ts.putback(t);
         return expression();
@@ -319,6 +337,7 @@ void calculate()
 {
     constexpr char* prompt = "> ";  // indicate a prompt
     constexpr char* result = "= ";  // indicate a result
+
     while (true) try {
         std::cout << prompt;
         Token t = ts.get();

@@ -15,11 +15,13 @@
             ;
         Quit:
             q
+            "exit"
         Calculation Statement
 
     Statement:
         Declaration
         Expression
+        , 
 
     Declaration:
         "let" Name "=" Expression
@@ -36,6 +38,7 @@
     Primary:
         Number
         ( Expression )
+        function( Expression, ... )
         – Primary
         + Primary
         ! Primary
@@ -46,42 +49,37 @@
  */
 
 #include "../includes/ppp.h"
+
  //------------------------------------------------------------------------------
 
 constexpr char number = '8';    // t.kind == number means that t is a number Token.
 constexpr char quit = 'q';      // t.kind == quit means that t is a quit Token.
+constexpr char *declexit = "exit";
 constexpr char print = ';';     // t.kind == print means that t is a print Token.
-constexpr char* prompt = "> ";
-constexpr char* result = "= ";  // used to indicate that what follows is a result
 
 constexpr char name = 'a';      // name token
 constexpr char let = 'L';       // declaration token
-constexpr char* declkey = "let"; // declaration keyword
+constexpr char *declkey = "let"; // declaration keyword
+constexpr char func = 'F';      // function Token
 
-//------------------------------------------------------------------------------
-
-class Token
-{
-public:
-    char kind;			// what kind of token
-    double value{};		// for numbers: a value
-    std::string name;   // to hold variable name
-    Token(char ch, double val = 0.0)
-        :kind(ch), value(val) {}
-    Token(char ch, std::string s)
-        :kind(ch), name(s) {}
+struct Token {
+    char kind;
+    double value;
+    std::string name;
+    Token(char ch, double val = 0.0) :kind(ch), value(val) {}
+    Token(char ch, std::string s) :kind(ch), value(0.0), name(s) {}
 };
 
 //------------------------------------------------------------------------------
 
-class Variable
-{
-public:
+// place to hold variable name value
+struct Variable {
     std::string name;
     double value{};
-    // overloaded equality operator to find name
-    bool operator==(const std::string s) { return name == s; }
 };
+
+// overload equality operator to simplify get, set and is_declared functions 
+bool operator==(const Variable &v, const std::string s) { return v.name == s; }
 
 // TODO working with name value pair can be simplified by using a std::map container
 std::vector<Variable> var_table;
@@ -90,7 +88,7 @@ std::vector<Variable> var_table;
 double get_value(const std::string s)
 {
     auto vt = std::find(var_table.begin(), var_table.end(), s);
-    if (vt == var_table.end()) ppp::error("get: undefined variable ", s);
+    if (vt == var_table.end()) throw std::runtime_error("get: undefined variable " + s);
     return vt->value;
 }
 
@@ -98,7 +96,7 @@ double get_value(const std::string s)
 void set_value(const std::string s, const double d)
 {
     auto vt = std::find(var_table.begin(), var_table.end(), s);
-    if (vt == var_table.end()) ppp::error("set: undefined variable ", s);
+    if (vt == var_table.end()) throw std::runtime_error("set: undefined variable " + s);
     vt->value = d;
 }
 
@@ -112,7 +110,7 @@ bool is_declared(const std::string s)
 // add name value to a vector of Variables
 double define_name(const std::string s, const double d)
 {
-    if (is_declared(s)) ppp::error(s, " declared twice");
+    if (is_declared(s)) throw std::runtime_error(s + " declared twice");
     var_table.push_back(Variable{ s, d });
     return d;
 }
@@ -149,7 +147,7 @@ void Token_stream::ignore(const char c)
 void Token_stream::putback(Token t)
 {
     if (full) {
-        ppp::error("putback() into a full buffer");
+        throw std::runtime_error("putback() into a full buffer");
     }
     buffer = t;       // copy t to buffer
     full = true;      // buffer is now full
@@ -177,10 +175,14 @@ Token Token_stream::get()
         case '+':
         case '-':
         case '!':
+        case ',':
             temp.kind = ch;
             break;
         case '=':
-            if (this->buffer.kind != let) throw std::runtime_error("Assignment Denied");
+            if (this->buffer.kind != let) {
+                const std::string s = (this->buffer.kind == name ? this->buffer.name : std::to_string(this->buffer.value));
+                throw std::runtime_error(s + " can not be re-assigned");
+            }
             temp.kind = ch;
             break;
         case '.':
@@ -194,29 +196,43 @@ Token Token_stream::get()
             break;
         }
         default:
-            if (isalpha(ch)) {
+            if (isalpha(ch) || ch == '_') {
                 std::string s;
                 s += ch;
-                while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
-
-                std::cin.putback(ch);   // put rejected ch back from while loop 
-                if (s == declkey) temp = Token(let);    // declaration keyword
-                else temp = Token(name, s);
+                while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_')) s += ch;
+                std::cin.putback(ch);
+                if (s == declkey) {
+                    temp.kind = let;
+                }
+                else if (ch == '(') {
+                    temp.kind = func;
+                    temp.name = s;
+                }
+                else if (s == declexit) {
+                    temp.kind = quit;
+                }
+                else {
+                    temp.kind = name;
+                    temp.name = s;
+                }
             }
-            else ppp::error("Bad token");
+            else {
+                throw std::runtime_error("Bad token");
+            }
         }
     }
     return temp;
 }
-
-Token_stream ts;        // provides get() and putback() 
+Token_stream ts;    // provides get() and putback() 
 
 //------------------------------------------------------------------------------
 
 double expression();            // declaration so that primary() can call expression()
 long long fact(long long val);  // forward declaration
+double function(const std::string &s);
 
 //------------------------------------------------------------------------------
+
 // deal with numbers and parentheses
 double primary()
 {
@@ -227,7 +243,7 @@ double primary()
     {
         double d = expression();
         t = ts.get();
-        if (t.kind != ')') ppp::error("')' expected");
+        if (t.kind != ')') throw std::runtime_error("')' expected");
         temp = d;
         break;
     }
@@ -239,7 +255,7 @@ double primary()
             unary == '-' ? t.value *= -1 : t.value;
         }
         else if (t.kind == '!') t.value = 1;
-        else ppp::error("primary expected");
+        else throw std::runtime_error("primary expected");
     }
     [[fallthrough]];
     case number:
@@ -251,15 +267,18 @@ double primary()
         }
         else ts.putback(t);
         break;
-    case name:
-        temp = get_value(t.name);
-        break;
     case '!':   // deal with ! without preceding number assume is 1
         temp = 1;
         break;
+    case name:
+        temp = get_value(t.name);
+        break;
+    case func:
+        temp = function(t.name);
+        break;
     default:
         std::cin.putback(t.kind);
-        ppp::error("primary expected");
+        throw std::runtime_error("primary expected");
     }
     return temp;
 }
@@ -281,7 +300,7 @@ double term()
         {
             double d = primary();
             if (d == 0) {
-                ppp::error("divide by zero");
+                throw std::runtime_error("divide by zero");
             }
             left /= d;
             break;
@@ -290,7 +309,7 @@ double term()
         {
             double d = primary();
             if (d == 0) {
-                ppp::error("divide by zero");
+                throw std::runtime_error("divide by zero");
             }
             left = fmod(left, d);
             break;
@@ -332,18 +351,67 @@ double expression()
 double declaration()
 {
     Token t = ts.get();
-    if (t.kind != name) ppp::error("name expected in declaration");
+    if (t.kind != name) throw std::runtime_error("name expected in declaration");
 
     if (is_declared(t.name)) {
-        ppp::error(t.name, " declared twice");
+        throw std::runtime_error(t.name + " declared twice");
     }
 
     Token t2 = ts.get();
-    if (t2.kind != '=') ppp::error("= missing in declaration", t.name);
+    if (t2.kind != '=') throw std::runtime_error("= missing in declaration" + t.name);
 
     double d = expression();
     define_name(t.name, d);
     return d;
+}
+
+//------------------------------------------------------------------------------
+
+double func_availible(const std::string &s, const std::vector<double> &args)
+{
+    double d{};
+    if (s == "sqrt") {
+        if (args.size() != 1) throw std::runtime_error("sqrt() expects 1 argument");
+        if (args[0] < 0) throw std::runtime_error("sqrt() expects argument value >= 0");
+        d = sqrt(args[0]);
+    }
+    else if (s == "pow") {
+        if (args.size() != 2) throw std::runtime_error("pow() expects 2 arguments");
+        d = args[0];
+        auto multiplier = args[0];
+        auto p = ppp::narrow_cast<int>(args[1]);
+        for (; p > 1; --p) {
+            d *= multiplier;
+        }
+    }
+    else {
+        throw std::runtime_error("unknown function");
+    }
+    return d;
+}
+
+//------------------------------------------------------------------------------
+
+double function(const std::string &s)
+{
+    Token t = ts.get();
+    std::vector<double> func_args;
+    if (t.kind != '(') {
+        throw std::runtime_error("expected '(', malformed function call");
+    }
+    else {
+        do {
+            t = ts.get();
+            // check for arguments
+            if (t.kind != ')') {
+                ts.putback(t);
+                func_args.push_back(expression());
+                t = ts.get();
+                if (t.kind != ',' && t.kind != ')') throw std::runtime_error("expected ')', malformed function call");
+            }
+        } while (t.kind != ')');
+    }
+    return func_availible(s, func_args);
 }
 
 //------------------------------------------------------------------------------
@@ -356,7 +424,15 @@ double statement()
         return declaration();
     default:
         ts.putback(t);
-        return expression();
+        auto d = expression();
+        // guess could check here if have following comma before returning?
+        t = ts.get();
+        if (t.kind == ',') {
+            std::cout << "not sure why this runtime_error did not output?\n";
+            throw std::runtime_error("unexpected Token " + t.kind);
+        }
+        ts.putback(t);
+        return d;
     }
 }
 
@@ -371,6 +447,9 @@ void clean_up_mess()
 
 void calculate()        // expression evaluation loop
 {
+    constexpr char* prompt = "> ";  // indicate a prompt
+    constexpr char* result = "= ";  // indicate a result
+
     while (true)
         try {
         std::cout << prompt;
@@ -402,7 +481,7 @@ try
         << "Operations available are +, -, *, /, % and n!.\n"
         << "Can change order of operations using ( ).\n"
         << "Can use type name variables."
-        << "Use the '" << print << "' to show results and '" << quit << "' to exit.\n\n";
+        << "Use the '" << print << "' to show results and '" << quit << "' to quit.\n\n";
 
     // predefined names:
     define_name("pi", 3.1415926535);

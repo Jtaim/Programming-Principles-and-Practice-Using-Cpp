@@ -21,7 +21,8 @@
     Statement:
         Declaration
         Expression
-        , 
+        Name "=" Expression
+        ,
 
     Declaration:
         "let" Name "=" Expression
@@ -52,21 +53,21 @@
 
  //------------------------------------------------------------------------------
 
-constexpr char number = '8';    // t.kind == number means that t is a number Token.
-constexpr char quit = 'q';      // t.kind == quit means that t is a quit Token.
-constexpr char *declexit = "exit";
-constexpr char print = ';';     // t.kind == print means that t is a print Token.
+const char number = '8';    // t.kind == number means that t is a number Token.
+const char quit = 'q';      // t.kind == quit means that t is a quit Token.
+const std::string declexit = "exit";
+const char print = ';';     // t.kind == print means that t is a print Token.
 
-constexpr char name = 'a';      // name token
-constexpr char let = 'L';       // declaration token
-constexpr char *declkey = "let"; // declaration keyword
-constexpr char func = 'F';      // function Token
+const char name = 'a';      // name token
+const char let = 'L';       // declaration token
+const std::string declkey = "let"; // declaration keyword
+const char func = 'F';      // function Token
 
 struct Token {
     char kind;
     double value;
     std::string name;
-    Token(char ch, double val = 0.0) :kind(ch), value(val) {}
+    Token(char ch, double val = 0.0) :kind(ch), value(val), name("") {}
     Token(char ch, std::string s) :kind(ch), value(0.0), name(s) {}
 };
 
@@ -88,7 +89,7 @@ std::vector<Variable> var_table;
 double get_value(const std::string s)
 {
     auto vt = std::find(var_table.begin(), var_table.end(), s);
-    if (vt == var_table.end()) throw std::runtime_error("get: undefined variable " + s);
+    if (vt == var_table.end()) ppp::error("get: undefined variable " + s);
     return vt->value;
 }
 
@@ -96,7 +97,7 @@ double get_value(const std::string s)
 void set_value(const std::string s, const double d)
 {
     auto vt = std::find(var_table.begin(), var_table.end(), s);
-    if (vt == var_table.end()) throw std::runtime_error("set: undefined variable " + s);
+    if (vt == var_table.end()) ppp::error("set: undefined variable " + s);
     vt->value = d;
 }
 
@@ -110,7 +111,7 @@ bool is_declared(const std::string s)
 // add name value to a vector of Variables
 double define_name(const std::string s, const double d)
 {
-    if (is_declared(s)) throw std::runtime_error(s + " declared twice");
+    if (is_declared(s)) ppp::error(s + " declared twice");
     var_table.push_back(Variable{ s, d });
     return d;
 }
@@ -147,7 +148,7 @@ void Token_stream::ignore(const char c)
 void Token_stream::putback(Token t)
 {
     if (full) {
-        throw std::runtime_error("putback() into a full buffer");
+        ppp::error("putback() into a full buffer");
     }
     buffer = t;       // copy t to buffer
     full = true;      // buffer is now full
@@ -180,8 +181,7 @@ Token Token_stream::get()
             break;
         case '=':
             if (this->buffer.kind != let) {
-                const std::string s = (this->buffer.kind == name ? this->buffer.name : std::to_string(this->buffer.value));
-                throw std::runtime_error(s + " can not be re-assigned");
+                ppp::error("Illegal re-assignment");
             }
             temp.kind = ch;
             break;
@@ -217,7 +217,7 @@ Token Token_stream::get()
                 }
             }
             else {
-                throw std::runtime_error("Bad token");
+                ppp::error("Bad token");
             }
         }
     }
@@ -243,7 +243,7 @@ double primary()
     {
         double d = expression();
         t = ts.get();
-        if (t.kind != ')') throw std::runtime_error("')' expected");
+        if (t.kind != ')') ppp::error("')' expected");
         temp = d;
         break;
     }
@@ -255,7 +255,7 @@ double primary()
             unary == '-' ? t.value *= -1 : t.value;
         }
         else if (t.kind == '!') t.value = 1;
-        else throw std::runtime_error("primary expected");
+        else ppp::error("primary expected");
     }
     [[fallthrough]];
     case number:
@@ -278,15 +278,14 @@ double primary()
         break;
     default:
         std::cin.putback(t.kind);
-        throw std::runtime_error("primary expected");
+        ppp::error("primary expected");
     }
     return temp;
 }
 
 //------------------------------------------------------------------------------
 
-// deal with * and /
-// % not implemented yet
+// deal with * / and %
 double term()
 {
     double left = primary();
@@ -300,7 +299,7 @@ double term()
         {
             double d = primary();
             if (d == 0) {
-                throw std::runtime_error("divide by zero");
+                ppp::error("divide by zero");
             }
             left /= d;
             break;
@@ -309,7 +308,7 @@ double term()
         {
             double d = primary();
             if (d == 0) {
-                throw std::runtime_error("divide by zero");
+                ppp::error("divide by zero");
             }
             left = fmod(left, d);
             break;
@@ -351,14 +350,14 @@ double expression()
 double declaration()
 {
     Token t = ts.get();
-    if (t.kind != name) throw std::runtime_error("name expected in declaration");
+    if (t.kind != name) ppp::error("name expected in declaration");
 
     if (is_declared(t.name)) {
-        throw std::runtime_error(t.name + " declared twice");
+        ppp::error(t.name + " declared twice");
     }
 
     Token t2 = ts.get();
-    if (t2.kind != '=') throw std::runtime_error("= missing in declaration" + t.name);
+    if (t2.kind != '=') ppp::error("= missing in declaration of " + t.name);
 
     double d = expression();
     define_name(t.name, d);
@@ -371,12 +370,12 @@ double func_availible(const std::string &s, const std::vector<double> &args)
 {
     double d{};
     if (s == "sqrt") {
-        if (args.size() != 1) throw std::runtime_error("sqrt() expects 1 argument");
-        if (args[0] < 0) throw std::runtime_error("sqrt() expects argument value >= 0");
+        if (args.size() != 1) ppp::error("sqrt() expects 1 argument");
+        if (args[0] < 0) ppp::error("sqrt() expects argument value >= 0");
         d = sqrt(args[0]);
     }
     else if (s == "pow") {
-        if (args.size() != 2) throw std::runtime_error("pow() expects 2 arguments");
+        if (args.size() != 2) ppp::error("pow() expects 2 arguments");
         d = args[0];
         auto multiplier = args[0];
         auto p = ppp::narrow_cast<int>(args[1]);
@@ -385,7 +384,7 @@ double func_availible(const std::string &s, const std::vector<double> &args)
         }
     }
     else {
-        throw std::runtime_error("unknown function");
+        ppp::error("unknown function");
     }
     return d;
 }
@@ -397,7 +396,7 @@ double function(const std::string &s)
     Token t = ts.get();
     std::vector<double> func_args;
     if (t.kind != '(') {
-        throw std::runtime_error("expected '(', malformed function call");
+        ppp::error("expected '(', malformed function call");
     }
     else {
         do {
@@ -407,7 +406,7 @@ double function(const std::string &s)
                 ts.putback(t);
                 func_args.push_back(expression());
                 t = ts.get();
-                if (t.kind != ',' && t.kind != ')') throw std::runtime_error("expected ')', malformed function call");
+                if (t.kind != ',' && t.kind != ')') ppp::error("expected ')', malformed function call");
             }
         } while (t.kind != ')');
     }
@@ -422,15 +421,27 @@ double statement()
     switch (t.kind) {
     case let:
         return declaration();
+    case name: {
+        char ch{};
+        while (std::cin.get(ch) && ch == 32); // eat spaces
+        if (ch != '=') {
+            std::cin.putback(ch);
+        }
+        else {
+            auto d = expression();
+            Token t2 = ts.get();
+            if (t2.kind != print) ppp::error("expected print Token ", print);
+            set_value(t.name, d);
+            std::cin.putback(print);
+        }
+    }
+    [[fallthrough]];
     default:
         ts.putback(t);
         auto d = expression();
         // guess could check here if have following comma before returning?
         t = ts.get();
-        if (t.kind == ',') {
-            std::cout << "not sure why this runtime_error did not output?\n";
-            throw std::runtime_error("unexpected Token " + t.kind);
-        }
+        if (t.kind == ',') ppp::error("unexpected Token", t.kind);
         ts.putback(t);
         return d;
     }
@@ -447,8 +458,8 @@ void clean_up_mess()
 
 void calculate()        // expression evaluation loop
 {
-    constexpr char* prompt = "> ";  // indicate a prompt
-    constexpr char* result = "= ";  // indicate a result
+    const std::string prompt = "> ";  // indicate a prompt
+    const std::string result = "= ";  // indicate a result
 
     while (true)
         try {

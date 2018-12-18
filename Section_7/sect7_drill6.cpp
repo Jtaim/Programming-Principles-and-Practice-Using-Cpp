@@ -35,7 +35,7 @@ double get_value(const std::string s)
 {
     auto vt_itr = std::find(names.cbegin(), names.cend(), s);
     if (vt_itr == names.cend()) {
-        throw std::runtime_error("get: undefined name " + s);
+        ppp::error("get: undefined name ", s);
     }
     return vt_itr->value;
 }
@@ -45,7 +45,7 @@ void set_value(const std::string s, const double d)
 {
     auto vt_itr = std::find(names.begin(), names.end(), s);
     if (vt_itr == names.cend()) {
-        throw std::runtime_error("set: undefined name " + s);
+        ppp::error("set: undefined name ", s);
     }
     vt_itr->value = d;
 }
@@ -59,7 +59,7 @@ bool is_declared(const std::string s)
 // add name value to a vector of Variables
 double define_name(const std::string s, const double d)
 {
-    if (is_declared(s)) throw std::runtime_error(s + " declared twice");
+    if (is_declared(s)) ppp::error(s, " declared twice");
     names.push_back(Variable{ s, d });
     return d;
 }
@@ -122,7 +122,7 @@ Token Token_stream::get()
         case '=':
             if (this->buffer.kind != let) {
                 const std::string s = (this->buffer.kind == name ? this->buffer.name : std::to_string(this->buffer.value));
-                throw std::runtime_error(s + " can not be re-assigned");
+                ppp::error(s, " can not be re-assigned");
             }
             t.kind = ch;
             break;
@@ -154,14 +154,13 @@ Token Token_stream::get()
                 if (s == declkey) {
                     t.kind = let;
                 }
-                //if (s == "quit") return Token(name);
                 else {
                     t.kind = name;
                     t.name = s;
                 }
             }
             else {
-                throw std::runtime_error("Bad token");
+                ppp::error("Bad token");
             }
         }
     }
@@ -171,7 +170,7 @@ Token Token_stream::get()
 void Token_stream::putback(const Token t)
 {
     if (full) {
-        throw std::runtime_error("putback() into a full buffer");
+        ppp::error("putback() into a full buffer");
     }
     buffer = t;
     full = true;
@@ -205,7 +204,7 @@ double primary()
         d = expression();
         t = ts.get();
         if (t.kind != ')') {
-            throw std::runtime_error("')' expected");
+            ppp::error("')' expected");
         }
         return d;
     }
@@ -218,7 +217,7 @@ double primary()
     case name:
         return get_value(t.name);
     default:
-        throw std::runtime_error("primary expected");
+        ppp::error("primary expected");
     }
 }
 
@@ -235,7 +234,7 @@ double term()
             break;
         case '/':
         {	double d = primary();
-        if (d == 0) throw std::runtime_error("divide by zero");
+        if (d == 0) ppp::error("divide by zero");
         left /= d;
         break;
         }
@@ -275,14 +274,14 @@ double declaration()
 {
     Token t = ts.get();
     if (t.kind != name) {
-        throw std::runtime_error("name expected in declaration");
+        ppp::error("name expected in declaration");
     }
     if (is_declared(t.name)) {
-        throw std::runtime_error(t.name + " declared twice");
+        ppp::error(t.name, " declared twice");
     }
     Token t2 = ts.get();
     if (t2.kind != '=') {
-        throw std::runtime_error("= missing in declaration of " + t.name);
+        ppp::error("= missing in declaration of " + t.name);
     }
     double d = expression();
     define_name(t.name, d);

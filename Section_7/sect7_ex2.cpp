@@ -1,21 +1,43 @@
+//Written by Jtaim
+//Date 15 Dec 2018
+//Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
+
 /*
-    calculator08buggy.cpp
+    copied from drill 11 removed drill 10 stuff
+    also added modulo
+    section 7 exercise 1
+    allow underscores in the calculator's variable names
 
-    Helpful comments removed.
-
-    We have inserted 3 bugs that the compiler will catch and 3 that it won't.
-
-    Drill 1, 2, 3, 4 and 5
-
- */
+    section 7 exercise 2
+    modified how function is handled.  place call in primary and removed recursive call from function handler
+    provide assignment operator = so can reassign already declared variables with let.
+    The issue with this is to make sure there is no proceeding expression.
+    example:
+    let x = 2; x + 3; x = 4; //is ok
+    x = 5 + x; //is ok were existing value of x added to 5 then new value into x
+    x + 4 - x = 5; is not ok
+    let y = 3; x = y = 5; is not ok ?
+*/
 
 #include "../includes/ppp.h"
+
+//------------------------------------------------------------------------------
+
+const char number = '8';    // t.kind == number means that t is a number Token.
+const char quit = 'q';      // t.kind == quit means that t is a quit Token.
+const std::string declexit = "exit";
+const char print = ';';     // t.kind == print means that t is a print Token.
+
+const char name = 'a';      // name token
+const char let = 'L';       // declaration token
+const std::string declkey = "let"; // declaration keyword
+const char func = 'F';      // function Token
 
 struct Token {
     char kind;
     double value;
     std::string name;
-    Token(char ch, double val = 0.0) :kind(ch), value(val) {}
+    Token(char ch, double val = 0.0) :kind(ch), value(val), name("") {}
     Token(char ch, std::string s) :kind(ch), value(0.0), name(s) {}
 };
 
@@ -90,16 +112,6 @@ private:
 
 //------------------------------------------------------------------------------
 
-constexpr char number = '8';    // t.kind == number means that t is a number Token.
-constexpr char quit = 'q';      // t.kind == quit means that t is a quit Token.
-constexpr char print = ';';     // t.kind == print means that t is a print Token.
-
-constexpr char name = 'a';      // name token
-constexpr char let = 'L';       // declaration token
-constexpr char* declkey = "let"; // declaration keyword
-
-//------------------------------------------------------------------------------
-
 Token Token_stream::get()
 {
     Token t{ '\0' };
@@ -119,14 +131,12 @@ Token Token_stream::get()
         case '-':
         case '*':
         case '/':
-            //case '%':
+        case '%':
+        case ',':
             t.kind = ch;
             break;
         case '=':
-            if (this->buffer.kind != let) {
-                const std::string s = (this->buffer.kind == name ? this->buffer.name : std::to_string(this->buffer.value));
-                ppp::error(s, " can not be re-assigned");
-            }
+            if (this->buffer.kind != let) ppp::error("illegal re-assignment");
             t.kind = ch;
             break;
         case '.':
@@ -149,13 +159,20 @@ Token Token_stream::get()
             break;
         }
         default:
-            if (isalpha(ch)) {
+            if (isalpha(ch) || ch == '_') {
                 std::string s;
                 s += ch;
-                while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
+                while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_')) s += ch;
                 std::cin.putback(ch);
                 if (s == declkey) {
                     t.kind = let;
+                }
+                else if (ch == '(') {
+                    t.kind = func;
+                    t.name = s;
+                }
+                else if (s == declexit) {
+                    t.kind = quit;
                 }
                 else {
                     t.kind = name;
@@ -195,6 +212,7 @@ Token_stream ts;
 //------------------------------------------------------------------------------
 
 double expression();
+double function(const std::string &s);
 
 //------------------------------------------------------------------------------
 
@@ -209,19 +227,27 @@ double primary()
         if (t.kind != ')') {
             ppp::error("')' expected");
         }
-        return d;
+        break;
     }
     case '-':
-        return -1 * primary();
+        d = -1 * primary();
+        break;
     case '+':
-        return primary();
+        d = primary();
+        break;
     case number:
-        return t.value;
+        d = t.value;
+        break;
     case name:
-        return get_value(t.name);
+        d = get_value(t.name);
+        break;
+    case func:
+        d = function(t.name);
+        break;
     default:
         ppp::error("primary expected");
     }
+    return d;
 }
 
 //------------------------------------------------------------------------------
@@ -241,8 +267,15 @@ double term()
         left /= d;
         break;
         }
-        //case '%':
-            // not implemented yet
+        case '%':
+        {
+            double d = primary();
+            if (d == 0) {
+                ppp::error("divide by zero");
+            }
+            left = fmod(left, d);
+            break;
+        }
         default:
             ts.putback(t);
             return left;
@@ -293,15 +326,86 @@ double declaration()
 
 //------------------------------------------------------------------------------
 
+double func_availible(const std::string &s, const std::vector<double> &args)
+{
+    double d{};
+    if (s == "sqrt") {
+        if (args.size() != 1) ppp::error("sqrt() expects 1 argument");
+        if (args[0] < 0) ppp::error("sqrt() expects argument value >= 0");
+        d = sqrt(args[0]);
+    }
+    else if (s == "pow") {
+        if (args.size() != 2) ppp::error("pow() expects 2 arguments");
+        d = args[0];
+        auto multiplier = args[0];
+        auto p = ppp::narrow_cast<int>(args[1]);
+        for (; p > 1; --p) {
+            d *= multiplier;
+        }
+    }
+    else {
+        ppp::error("unknown function");
+    }
+    return d;
+}
+
+//------------------------------------------------------------------------------
+
+double function(const std::string &s)
+{
+    Token t = ts.get();
+    std::vector<double> func_args;
+    if (t.kind != '(') {
+        ppp::error("expected '(', malformed function call");
+    }
+    else {
+        do {
+            t = ts.get();
+            // check for arguments
+            if (t.kind != ')') {
+                ts.putback(t);
+                func_args.push_back(expression());
+                t = ts.get();
+                if (t.kind != ',' && t.kind != ')') ppp::error("expected ')', malformed function call");
+            }
+        } while (t.kind != ')');
+    }
+    return func_availible(s, func_args);
+}
+
+//------------------------------------------------------------------------------
+
 double statement()
 {
     Token t = ts.get();
     switch (t.kind) {
     case let:
         return declaration();
+    case name: {
+        char ch{};
+        while (std::cin.get(ch) && ch == 32); // eat spaces
+        if (ch != '=') {
+            std::cin.putback(ch);
+        }
+        else {
+            auto d = expression();
+            Token t2 = ts.get();
+            if (t2.kind != print) ppp::error("expected print Token ", print);
+            set_value(t.name, d);
+            std::cin.putback(print);
+        }
+    }
+    [[fallthrough]];
     default:
         ts.putback(t);
-        return expression();
+        auto d = expression();
+        // guess could check here if have following comma before returning?
+        t = ts.get();
+        if (t.kind == ',') {
+            ppp::error("unexpected Token ", t.kind);
+        }
+        ts.putback(t);
+        return d;
     }
 }
 
@@ -316,8 +420,9 @@ void clean_up_mess()
 
 void calculate()
 {
-    constexpr char* prompt = "> ";  // indicate a prompt
-    constexpr char* result = "= ";  // indicate a result
+    const std::string prompt = "> ";  // indicate a prompt
+    const std::string result = "= ";  // indicate a result
+
     while (true) try {
         std::cout << prompt;
         Token t = ts.get();

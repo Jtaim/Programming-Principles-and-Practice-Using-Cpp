@@ -21,7 +21,7 @@ int factoral(int start, int end)
     for (auto i = start; i > (start - end); --i) {
         fact *= i;
         if ((i > 0) && (fact > INT_MAX - i) || (i < 0) && (fact < INT_MAX - i)) {
-            throw std::runtime_error("int overflow error");
+            ppp::error("int overflow error");
         }
     }
     return fact;
@@ -30,7 +30,7 @@ int factoral(int start, int end)
 int permutation(int a, int b)
 {
     if (a <= 0 || (a - b) < 0) {
-        throw std::runtime_error("Negative term in the permutation.\n");
+        ppp::error("Negative term in the permutation.\n");
     }
     return factoral(a, b);
 }
@@ -72,7 +72,7 @@ int main()
             answer = combination(a, b);
         }
         else {
-            throw std::runtime_error("invalid evaluation choice.\n");
+            ppp::error("invalid evaluation choice.\n");
         }
         std::cout << "The " << (p_c == 'p' ? "permutation" : "combination") << " is " << answer << ".\n";
     }

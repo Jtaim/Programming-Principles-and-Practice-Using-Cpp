@@ -24,8 +24,7 @@ because in the book's presented header file the functions have been implemented 
 If you want, you can get the header file from book's website www.stroustrup.com/Programming
 
 Starting with section 7, I started using and placed a header file in an include folder for all sections to use from this section and remaining sections.
-Removed the error functions and replaced with throw runtime_error("appropriate error") directly in the code.cpp files.
-Also, right or wrong I don't know but unsynced the cpp streams from the c streams by providing a #define SET_IOSYNC cin.sync_with_stdio(false) in the ppp.h
+Right or wrong I don't know but unsynced the cpp streams from the c streams by providing a #define SET_IOSYNC cin.sync_with_stdio(false) in the ppp.h
 Normally all C++ streams have this set to true. if is true then in_avail() is 0 in some compilers.
 Again right or wrong I don't know but did if needed to see if anything is in the cin.rdbuf,  see ppp.h for additional details.
 Also set up namespace (ppp) for functions unique to this books exercises.

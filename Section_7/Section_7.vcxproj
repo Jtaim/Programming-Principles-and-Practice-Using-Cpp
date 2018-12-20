@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect7_ex2.cpp" />
+    <ClCompile Include="sect7_ex4.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F2561277-B5E5-441D-B5E7-4409AB199839}</ProjectGuid>

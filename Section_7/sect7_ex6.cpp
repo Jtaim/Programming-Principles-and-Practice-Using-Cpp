@@ -23,6 +23,12 @@
 
     section 7 exercise 4
     Define a symbol table class
+
+    section 7 exercise 5
+    Modify Token_stream::get() to return Token(print) when it sees a newline.
+
+    section 7 exercise 6
+    Add print help instruction when see Token h or H only if it is first entry
 */
 
 #include "../includes/ppp.h"
@@ -105,6 +111,8 @@ const char number = '8';    // t.kind == number means that t is a number Token.
 const char quit = 'q';      // t.kind == quit means that t is a quit Token.
 const std::string declexit = "exit";
 const char print = ';';     // t.kind == print means that t is a print Token.
+const char help = 'h';      // t.kind == help means instructions on use
+const char Help = 'H';      // t.kind == help means instructions on use
 
 const char name = 'a';      // name token
 const char let = 'L';       // declaration token
@@ -118,6 +126,7 @@ struct Token {
     char kind;
     double value;
     std::string name;
+    Token() :kind('\0'), value(0.0), name("") {}
     Token(char ch, double val = 0.0) :kind(ch), value(val), name("") {}
     Token(char ch, std::string s) :kind(ch), value(0.0), name(s) {}
 };
@@ -127,7 +136,7 @@ struct Token {
 // place to hold valid Tokens from cin
 class Token_stream {
 public:
-    Token_stream() :full(false), buffer('\0') { }
+    Token_stream() :full(false), buffer() { }
 
     // get a Token to place in the stream
     Token get();
@@ -147,17 +156,23 @@ private:
 
 Token Token_stream::get()
 {
-    Token t{ '\0' };
+    Token t{};
     if (full) {
         full = false;
         t = buffer;
     }
     else {
-        char ch;
-        std::cin >> ch;
+        char ch{};
+        // get next character, eat spaces except new line is print
+        do {
+            std::cin.get(ch);
+            if (ch == '\n') ch = print;
+        } while (std::isspace(ch));
         switch (ch) {
         case print:
         case quit:
+        case help:
+        case Help:
         case '(':
         case ')':
         case '+':
@@ -182,7 +197,7 @@ Token Token_stream::get()
         case '9':
         {
             std::cin.putback(ch);
-            double val;
+            double val{};
             std::cin >> val;
             t.kind = number;
             t.value = val;
@@ -192,7 +207,7 @@ Token Token_stream::get()
             if (isalpha(ch) || ch == '_') {
                 std::string s;
                 s += ch;
-                while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_')) s += ch;
+                while (std::cin.get(ch) && (std::isalpha(ch) || std::isdigit(ch) || ch == '_')) s += ch;
                 std::cin.putback(ch);
                 if (s == declkey) {
                     t.kind = let;
@@ -401,6 +416,10 @@ void clean_up_mess()
 
 //------------------------------------------------------------------------------
 
+void print_help();
+
+//------------------------------------------------------------------------------
+
 void calculate()
 {
     const std::string prompt = "> ";  // indicate a prompt
@@ -411,6 +430,11 @@ void calculate()
         Token t = ts.get();
         while (t.kind == print) t = ts.get();
         if (t.kind == quit) return;
+        if (t.kind == help || t.kind == Help) {
+            print_help();
+            ppp::clear_cin_buffer();
+            continue;
+        }
         ts.putback(t);
         std::cout << result << statement() << std::endl;
     }
@@ -464,8 +488,6 @@ double func_availible(const std::string &s, const std::vector<double> &args)
     return d;
 }
 
-//------------------------------------------------------------------------------
-
 double function(const std::string &s)
 {
     Token t = ts.get();
@@ -487,4 +509,20 @@ double function(const std::string &s)
         } while (t.kind != ')');
     }
     return func_availible(s, func_args);
+}
+
+//------------------------------------------------------------------------------
+
+void print_help()
+{
+    std::ostringstream os;
+    os << "Welcome to our simple calculator.\n"
+        << "Please enter expressions using floating-point numbers.\n"
+        << "Operations available are +, -, *, /, %.\n"
+        << "Can change order of operations using ( ).\n"
+        << "Can use type name variables.\n"
+        << "functions available are pow(arg, p) and sqrt(arg).\n"
+        << "Use the '" << print << "' to show results and '" << quit << "' to quit.\n\n";
+
+    std::cout << os.str() << std::endl;
 }

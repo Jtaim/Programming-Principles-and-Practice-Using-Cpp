@@ -23,6 +23,16 @@
 
     section 7 exercise 4
     Define a symbol table class
+
+    section 7 exercise 5
+    Modify Token_stream::get() to return Token(print) when it sees a newline.
+
+    section 7 exercise 6
+    Add print help instruction when see Token h or H only if it is first entry
+
+    section 7 exercise 7
+    removed exercise 6 functionality
+    change the q and h commands to be "quit" and "help", respectively.
 */
 
 #include "../includes/ppp.h"
@@ -101,23 +111,27 @@ Symbol_Table symbol_table;
 
 //------------------------------------------------------------------------------
 
-const char number = '8';    // t.kind == number means that t is a number Token.
-const char quit = 'q';      // t.kind == quit means that t is a quit Token.
-const std::string declexit = "exit";
-const char print = ';';     // t.kind == print means that t is a print Token.
+const char number = '8';                // t.kind == number Token.
+const char print = ';';                 // t.kind == print Token.
 
-const char name = 'a';      // name token
-const char let = 'L';       // declaration token
-const std::string declkey = "let"; // declaration keyword
-const char constant = 'C';       // const declaration token
-const std::string declkey_const = "const";
+const char quit = 'q';                  // t.kind == quit Token.                                     
+const std::string key_quit = "quit";    // quit keyword
+const char help = 'h';                  // t.kind == help Token.
+const std::string key_help = "help";    // help keyword
 
-const char func = 'F';      // function Token
+const char name = 'a';                  // t.kind = name of variable Token
+const char let = 'L';                   // t.kind = declaration token
+const std::string declkey = "let";      // declaration keyword
+const char constant = 'C';              // t.kind = constant declaration Token
+const std::string declkey_const = "const";// constant declaration keyword
+
+const char func = 'F';      // t.kind = function Token
 
 struct Token {
     char kind;
     double value;
     std::string name;
+    Token() :kind('\0'), value(0.0), name("") {}
     Token(char ch, double val = 0.0) :kind(ch), value(val), name("") {}
     Token(char ch, std::string s) :kind(ch), value(0.0), name(s) {}
 };
@@ -127,12 +141,12 @@ struct Token {
 // place to hold valid Tokens from cin
 class Token_stream {
 public:
-    Token_stream() :full(false), buffer('\0') { }
+    Token_stream() :full(false), buffer() { }
 
     // get a Token to place in the stream
     Token get();
 
-    // put a Token back
+    // put a Token back into the stream
     void putback(const Token t);
 
     // discard characters up to and including the given input kind token
@@ -147,17 +161,20 @@ private:
 
 Token Token_stream::get()
 {
-    Token t{ '\0' };
+    Token t{};
     if (full) {
         full = false;
         t = buffer;
     }
     else {
-        char ch;
-        std::cin >> ch;
+        char ch{};
+        // get next character, eat spaces except new line is print
+        do {
+            std::cin.get(ch);
+            if (ch == '\n') ch = print;
+        } while (std::isspace(ch));
         switch (ch) {
         case print:
-        case quit:
         case '(':
         case ')':
         case '+':
@@ -182,7 +199,7 @@ Token Token_stream::get()
         case '9':
         {
             std::cin.putback(ch);
-            double val;
+            double val{};
             std::cin >> val;
             t.kind = number;
             t.value = val;
@@ -192,7 +209,7 @@ Token Token_stream::get()
             if (isalpha(ch) || ch == '_') {
                 std::string s;
                 s += ch;
-                while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_')) s += ch;
+                while (std::cin.get(ch) && (std::isalpha(ch) || std::isdigit(ch) || ch == '_')) s += ch;
                 std::cin.putback(ch);
                 if (s == declkey) {
                     t.kind = let;
@@ -204,8 +221,11 @@ Token Token_stream::get()
                     t.kind = func;
                     t.name = s;
                 }
-                else if (s == declexit) {
+                else if (s == key_quit) {
                     t.kind = quit;
+                }
+                else if (s == key_help) {
+                    t.kind = help;
                 }
                 else {
                     t.kind = name;
@@ -401,6 +421,10 @@ void clean_up_mess()
 
 //------------------------------------------------------------------------------
 
+void print_help();
+
+//------------------------------------------------------------------------------
+
 void calculate()
 {
     const std::string prompt = "> ";  // indicate a prompt
@@ -410,9 +434,20 @@ void calculate()
         std::cout << prompt;
         Token t = ts.get();
         while (t.kind == print) t = ts.get();
-        if (t.kind == quit) return;
-        ts.putback(t);
-        std::cout << result << statement() << std::endl;
+        if (t.kind == quit) {
+            return;
+        }
+        else if (t.kind == help) {
+            print_help();
+            ppp::clear_cin_buffer();
+        }
+        else if (t.kind == ',') {
+            std::cout << result << statement() << std::endl;
+        }
+        else {
+            ts.putback(t);
+            std::cout << result << statement() << std::endl;
+        }
     }
     catch (std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -464,8 +499,6 @@ double func_availible(const std::string &s, const std::vector<double> &args)
     return d;
 }
 
-//------------------------------------------------------------------------------
-
 double function(const std::string &s)
 {
     Token t = ts.get();
@@ -487,4 +520,23 @@ double function(const std::string &s)
         } while (t.kind != ')');
     }
     return func_availible(s, func_args);
+}
+
+//------------------------------------------------------------------------------
+
+void print_help()
+{
+    std::ostringstream os;
+    os << "Welcome to our simple calculator.\n"
+        << "- Please enter expressions using floating-point numbers.\n"
+        << "- Operations available are +, -, *, /, %.\n"
+        << "- Can change order of operations using ( ).\n"
+        << "- Declare named variables with the let keyword. (let x = 10.5)\n"
+        << "- Declare named constant variables with the constant keyword. (const PI = 3.14)\n"
+        << "- Can reassign non constant named variables. (x = PI/2)\n"
+        << "- Functions available are pow(arg, p) and sqrt(arg).\n"
+        << "- Use the '" << print << "' or new line to show results.\n"
+        << "- type " << quit << " to quit.\n\n";
+
+    std::cout << os.str() << std::endl;
 }

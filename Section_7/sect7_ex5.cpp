@@ -23,6 +23,9 @@
 
     section 7 exercise 4
     Define a symbol table class
+
+    section 7 exercise 5
+    Modify Token_stream::get() to return Token(print) when it sees a newline.
 */
 
 #include "../includes/ppp.h"
@@ -118,6 +121,7 @@ struct Token {
     char kind;
     double value;
     std::string name;
+    Token() :kind('\0'), value(0.0), name("") {}
     Token(char ch, double val = 0.0) :kind(ch), value(val), name("") {}
     Token(char ch, std::string s) :kind(ch), value(0.0), name(s) {}
 };
@@ -127,7 +131,7 @@ struct Token {
 // place to hold valid Tokens from cin
 class Token_stream {
 public:
-    Token_stream() :full(false), buffer('\0') { }
+    Token_stream() :full(false), buffer() { }
 
     // get a Token to place in the stream
     Token get();
@@ -147,14 +151,18 @@ private:
 
 Token Token_stream::get()
 {
-    Token t{ '\0' };
+    Token t{};
     if (full) {
         full = false;
         t = buffer;
     }
     else {
-        char ch;
-        std::cin >> ch;
+        char ch{};
+        // get next character, eat spaces except new line is print
+        do {
+            std::cin.get(ch);
+            if (ch == '\n') ch = print;
+        } while (std::isspace(ch));
         switch (ch) {
         case print:
         case quit:
@@ -182,7 +190,7 @@ Token Token_stream::get()
         case '9':
         {
             std::cin.putback(ch);
-            double val;
+            double val{};
             std::cin >> val;
             t.kind = number;
             t.value = val;
@@ -192,7 +200,7 @@ Token Token_stream::get()
             if (isalpha(ch) || ch == '_') {
                 std::string s;
                 s += ch;
-                while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_')) s += ch;
+                while (std::cin.get(ch) && (std::isalpha(ch) || std::isdigit(ch) || ch == '_')) s += ch;
                 std::cin.putback(ch);
                 if (s == declkey) {
                     t.kind = let;
@@ -463,8 +471,6 @@ double func_availible(const std::string &s, const std::vector<double> &args)
     }
     return d;
 }
-
-//------------------------------------------------------------------------------
 
 double function(const std::string &s)
 {

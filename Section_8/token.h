@@ -6,13 +6,21 @@
 namespace calculator
 {
 
-    constexpr char number = '8';    // t.kind == number means that t is a number Token.
-    constexpr char quit = 'q';      // t.kind == quit means that t is a quit Token.
-    constexpr char print = ';';     // t.kind == print means that t is a print Token.
+    const char number = '8';                // t.kind == number Token.
+    const char print = ';';                 // t.kind == print Token.
 
-    constexpr char name = 'a';      // name token
-    constexpr char let = 'L';       // declaration token
-    constexpr char* declkey = "let"; // declaration keyword
+    const char quit = 'q';                  // t.kind == quit Token.                                     
+    const std::string key_quit = "quit";    // quit keyword
+    const char help = 'h';                  // t.kind == help Token.
+    const std::string key_help = "help";    // help keyword
+
+    const char name = 'a';                  // t.kind = name of variable Token
+    const char let = 'L';                   // t.kind = declaration token
+    const std::string declkey = "let";      // declaration keyword
+    const char constant = 'C';              // t.kind = constant declaration Token
+    const std::string declkey_const = "const";// constant declaration keyword
+
+    const char func = 'F';      // t.kind = function Token
 
     //------------------------------------------------------------------------------
 

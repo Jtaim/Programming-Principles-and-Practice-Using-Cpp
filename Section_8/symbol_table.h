@@ -15,13 +15,14 @@ namespace calculator
         double get_value(const std::string &s);
         void set_value(const std::string &s, const double d);
         bool is_declared(const std::string &s);
-        double declare(const std::string &s, const double d);
+        double declare(const std::string &s, const double d, const bool set_const = false);
 
     private:
         // place to hold variable name value
         struct Variable {
             std::string name;
             double value{};
+            bool is_const{ false };
         };
 
         // container for all the variables

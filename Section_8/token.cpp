@@ -1,4 +1,5 @@
 #include "token.h"
+#include "../includes/ppp.h"
 #include <iostream>
 
 calculator::Token::Token()
@@ -23,15 +24,17 @@ calculator::Token::~Token()
 //------------------------------------------------------------------------------
 
 calculator::Token_Stream::Token_Stream()
-    : full(false), buffer('\0')
+    : full(false), buffer()
 {
     // un-sync C++ stream from c streams
     std::cin.sync_with_stdio(false);
 }
 
 calculator::Token_Stream::Token_Stream(std::istream& /*tsin*/)
-    : full(false), buffer('\0')
+    : full(false), buffer()
 {
+    // un-sync C++ stream from c streams
+    std::cin.sync_with_stdio(false);
 }
 
 calculator::Token_Stream::~Token_Stream()
@@ -50,34 +53,26 @@ calculator::Token calculator::Token_Stream::get()
     }
     else {
         char ch;
-        std::cin >> ch;
+        // get next character, eat spaces except new line is print
+        do {
+            std::cin.get(ch);
+            if (ch == '\n') ch = print;
+        } while (std::isspace(ch));
         switch (ch) {
         case print:
-        case quit:
-        case '(':
-        case ')':
+        case '(': case ')':
         case '+':
         case '-':
         case '*':
         case '/':
-            //case '%':
-            token.kind = ch;
-            break;
+        case '%':
+        case ',':
         case '=':
-            if (this->buffer.kind != let) throw std::runtime_error("Assignment Denied");
             token.kind = ch;
             break;
         case '.':
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
+        case '0': case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9':
         {
             std::cin.putback(ch);
             double val;
@@ -87,25 +82,36 @@ calculator::Token calculator::Token_Stream::get()
         }
         break;
         default:
-            if (isalpha(ch)) {
+            if (isalpha(ch) || ch == '_') {
                 std::string s;
                 s += ch;
-                while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch))) {
+                while (std::cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_')) {
                     s += ch;
                 }
                 std::cin.putback(ch);
                 if (s == declkey) {
                     token.kind = let;
-                    break;
                 }
-                if (s == "quit") {
-                    // TODO handle if found string "quit" 
+                else if (s == declkey_const) {
+                    token.kind = constant;
                 }
-                token.kind = name;
-                token.name = s;
+                else if (ch == '(') {
+                    token.kind = func;
+                    token.name = s;
+                }
+                else if (s == key_quit) {
+                    token.kind = quit;
+                }
+                else if (s == key_help) {
+                    token.kind = help;
+                }
+                else {
+                    token.kind = name;
+                    token.name = s;
+                }
             }
             else {
-                throw std::runtime_error("Bad token");
+                ppp::error("Bad token");
             }
         }
     }
@@ -116,7 +122,7 @@ calculator::Token calculator::Token_Stream::get()
 void calculator::Token_Stream::putback(const Token t)
 {
     if (full) {
-        throw std::runtime_error("putback() into a full buffer");
+        ppp::error("putback() into a full buffer");
     }
     buffer = t;
     full = true;

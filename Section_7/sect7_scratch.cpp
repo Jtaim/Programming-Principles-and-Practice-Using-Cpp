@@ -22,7 +22,6 @@
         Declaration
         Expression
         Name "=" Expression
-        ,
 
     Declaration:
         "let" Name "=" Expression
@@ -31,6 +30,7 @@
         Term
         Expression + Term
         Expression – Term
+        Expression ,
     Term:
         Primary
         Term * Primary
@@ -39,7 +39,7 @@
     Primary:
         Number
         ( Expression )
-        function( Expression, ... )
+        function( Expression , ... )
         – Primary
         + Primary
         ! Primary
@@ -177,12 +177,7 @@ Token Token_stream::get()
         case '-':
         case '!':
         case ',':
-            temp.kind = ch;
-            break;
         case '=':
-            if (this->buffer.kind != let) {
-                ppp::error("Illegal re-assignment");
-            }
             temp.kind = ch;
             break;
         case '.':
@@ -335,6 +330,7 @@ double expression()
         case '-':
             left -= term();		// evaluate Term and subtract
             break;
+        case ',':   // let fall through
         default:
             ts.putback(t);		// put t back into the token stream
             return left;		// finally: no more + or -: return the answer
@@ -401,7 +397,8 @@ double function(const std::string &s)
     else {
         do {
             t = ts.get();
-            // check for arguments
+            // true check for arguments
+            // false if no arguments
             if (t.kind != ')') {
                 ts.putback(t);
                 func_args.push_back(expression());
@@ -418,33 +415,30 @@ double function(const std::string &s)
 double statement()
 {
     Token t = ts.get();
+    double d{};
     switch (t.kind) {
     case let:
-        return declaration();
-    case name: {
-        char ch{};
-        while (std::cin.get(ch) && ch == 32); // eat spaces
-        if (ch != '=') {
-            std::cin.putback(ch);
+        d = declaration();
+        break;
+    case name:
+    {
+        Token t2 = ts.get();
+        if (t2.kind != '=') {
+            std::cin.putback(t2.kind);
+            ts.putback(t);
+            d = expression();
         }
         else {
-            auto d = expression();
-            Token t2 = ts.get();
-            if (t2.kind != print) ppp::error("expected print Token ", print);
+            d = expression();
             set_value(t.name, d);
-            std::cin.putback(print);
         }
+        break;
     }
-    [[fallthrough]];
     default:
         ts.putback(t);
-        auto d = expression();
-        // guess could check here if have following comma before returning?
-        t = ts.get();
-        if (t.kind == ',') ppp::error("unexpected Token", t.kind);
-        ts.putback(t);
-        return d;
+        d = expression();
     }
+    return d;
 }
 
 //------------------------------------------------------------------------------

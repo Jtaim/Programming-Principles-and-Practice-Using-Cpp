@@ -33,6 +33,52 @@
     section 7 exercise 7
     removed exercise 6 functionality
     change the q and h commands to be "quit" and "help", respectively.
+
+    section 7 exercise 8
+    complete the grammar for the calculator and add as a comment below
+*/
+
+/*
+This program implements a basic expression calculator.
+Input from cin; output to cout.
+The grammar for input is :
+
+Calculation:
+    Statement
+    Print :
+        ;
+        /n
+    Quit:
+        "quit"
+    Help
+        "help"
+Statement :
+    Declaration
+    Expression
+    Variable "=" Expression
+Declaration :
+    "let" Variable "=" Expression
+    "const" Variable "=" Expression
+Expression :
+    Term
+    Expression + Term
+    Expression – Term
+    Expression ,
+Term :
+    Primary
+    Term * Primary
+    Term / Primary
+    Term % Primary
+Primary :
+    Number
+    ( Expression )
+    Function(Expression ...)
+    – Primary
+    + Primary
+Number :
+floating - point - literal
+
+Input comes from cin through the Token_stream called ts.
 */
 
 #include "../includes/ppp.h"

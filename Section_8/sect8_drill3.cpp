@@ -1,11 +1,10 @@
 #include "../includes/ppp.h"
 
-namespace X 
+namespace X
 {
     int var{};
 
-    void print()
-    {
+    void print(){
         std::cout << "Printing from namespace X the value " << var << "\n";
     }
 }
@@ -14,8 +13,7 @@ namespace Y
 {
     int var{};
 
-    void print()
-    {
+    void print(){
         std::cout << "Printing from namespace Y the value " << var << "\n";
     }
 }
@@ -24,14 +22,12 @@ namespace Z
 {
     int var{};
 
-    void print()
-    {
+    void print(){
         std::cout << "Printing from namespace Z the value " << var << "\n";
     }
 }
 
-int main()
-{
+int main(){
     X::var = 7;
     X::print();
     using namespace Y;

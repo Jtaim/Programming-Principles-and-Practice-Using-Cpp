@@ -1,7 +1,6 @@
 #include "../includes/ppp.h"
 
-void swap_v(int a, int b)
-{
+void swap_v(int a, int b){
     int temp{};
     temp = a;
     a = b;
@@ -9,8 +8,7 @@ void swap_v(int a, int b)
     std::cout << "*** In function swap_v() a: " << a << " b: " << b << "\n";
 }
 
-void swap_r(int &a, int &b)
-{
+void swap_r(int &a, int &b){
     int temp{};
     temp = a;
     a = b;
@@ -27,10 +25,9 @@ void swap_r(int &a, int &b)
 //    b = temp;
 //}
 
-int main()
-{
-    int x{ 7 };
-    int y{ 9 };
+int main(){
+    int x{7};
+    int y{9};
     std::cout << "x: " << x << " y: " << y << "\n";
     swap_v(x, y);
     std::cout << "after swap_v() x: " << x << " y: " << y << "\n";
@@ -44,8 +41,8 @@ int main()
     //swap_cr(7, 9);    // cannot swap constants
     std::cout << "-------------------------------------------------\n";
 
-    const int cx{ 7 };
-    const int cy{ 9 };
+    const int cx{7};
+    const int cy{9};
     std::cout << "cx: " << cx << " cy: " << cy << "\n";
     swap_v(cx, cy);
     std::cout << "after swap_v() cx: " << cx << " cy: " << cy << "\n";
@@ -53,8 +50,8 @@ int main()
     //swap_cr(cx, cy);  // cannot swap constants
     std::cout << "-------------------------------------------------\n";
 
-    double dx{ 7.7 };
-    double dy{ 9.9 };
+    double dx{7.7};
+    double dy{9.9};
     std::cout << "dx: " << dx << " dy: " << dy << "\n";
     swap_v(dx, dy);     // truncates double to covert to int
     std::cout << "after swap_v() dx: " << dx << " dy: " << dy << "\n";

@@ -13,6 +13,10 @@
     Feel free to ignore leap years.
     However, don't accept a month that is not in the [1,12] range or day of the month that is not in the [1,31] range.
     Test each version with at least one invalid date (e.g., 2004,13,-5).
+
+    side note for excellent date library which is being implemented into C++20
+    https://github.com/HowardHinnant/date
+    https://www.youtube.com/watch?v=tzyGjOm8AKo
 */
 
 #include"../includes/ppp.h"

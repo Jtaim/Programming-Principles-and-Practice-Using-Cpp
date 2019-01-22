@@ -11,7 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect9_ex5.cpp" />
+    <ClCompile Include="Book.cpp" />
+    <ClCompile Include="Chrono.cpp" />
+    <ClCompile Include="Library.cpp" />
+    <ClCompile Include="Patron.cpp" />
+    <ClCompile Include="sect9_ex9.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Book.h" />
+    <ClInclude Include="Chrono.h" />
+    <ClInclude Include="Library.h" />
+    <ClInclude Include="Patron.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

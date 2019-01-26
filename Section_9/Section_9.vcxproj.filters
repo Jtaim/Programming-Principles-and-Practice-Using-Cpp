@@ -27,7 +27,7 @@
     <ClCompile Include="Library.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sect9_ex9.cpp">
+    <ClCompile Include="sect9_ex11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

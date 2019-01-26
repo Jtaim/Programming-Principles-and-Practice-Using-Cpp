@@ -99,6 +99,7 @@ void Date::add_day(const int n)
 
 void Date::add_month(const int n)
 {
+    // bug here
     for(int i{}; i < n; ++i) ++m_month;
 }
 

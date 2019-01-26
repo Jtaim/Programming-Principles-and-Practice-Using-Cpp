@@ -3,6 +3,7 @@
 #pragma once
 
 #include <iostream>
+#include <array>
 
 namespace Chrono
 {
@@ -15,10 +16,10 @@ namespace Chrono
         sun, mon, tue, wed, thu, fri, sat
     };
 
+    const std::array<int, 12> month_day{31,28,31,30,31,30,31,31,30,31,30,31};
+
     class Date{
     public:
-        class Invalid{};    // to throw exceptions
-
         Date();     // default constructor
         Date(int y, Month m, int d);    // check for valid date and initialize
 
@@ -33,6 +34,7 @@ namespace Chrono
         void add_day(int n);
         void add_month(int n);
         void add_year(int n);
+        
     private:
         int m_year;
         Month m_month;
@@ -45,12 +47,18 @@ namespace Chrono
 
     bool operator==(const Date& a, const Date& b);
     bool operator!=(const Date& a, const Date& b);
+    bool operator>(const Date& a, const Date& b);
+    bool operator<(const Date& a, const Date& b);
+    bool operator>=(const Date& a, const Date& b);
+    bool operator<=(const Date& a, const Date& b);
 
     std::ostream& operator<<(std::ostream& os, const Date& d);
     std::istream& operator>>(std::istream& is, Date& dd);
 
     Day day_of_week(const Date& d);     // day of week of d
-    Date next_Sunday(const Date& d);    // next Sunday after d
+    Date next_sunday(const Date& d);    // next Sunday after d
     Date next_weekday(const Date& d);   // next weekday after d
+    Date next_workday(const Date& d);   // return next work day (mon - fri)
+    int week_of_year(const Date& d);    // return week number
 
 }   // Chrono

@@ -17,9 +17,9 @@ namespace Chrono
     }
 
     Date::Date()
-        : m_year{default_date().year()},
-        m_month{default_date().month()},
-        m_day{default_date().day()}
+        : m_year{default_date().get_year()},
+        m_month{default_date().get_month()},
+        m_day{default_date().get_day()}
     {
     }
 
@@ -70,7 +70,7 @@ namespace Chrono
         int day = m_day;
         int months = n;
         if(n >= 12 && n != 0){
-            add_year(static_cast<int>(n % 12));
+            add_year(n % 12);
             months -= (n % 12) * 12;
         }
         if((int)m_month + months > 12){
@@ -80,11 +80,11 @@ namespace Chrono
         else{
             m_month = Month((int)m_month + months);
         }
-        if(day > month_day.at((int)m_month + 1)){
+        if(day > month_day.at((int)m_month - 1)){
             if(m_month == Month::feb && !leap_year(m_year)){
                 m_day = 29;
             }
-            m_day = month_day.at((int)m_month + 1);
+            m_day = month_day.at((int)m_month - 1);
         }
         else{
             m_day = day;
@@ -149,9 +149,9 @@ namespace Chrono
     bool operator==(const Date& a, const Date& b)
     {
         return
-            a.year() == b.year() &&
-            a.month() == b.month() &&
-            a.day() == b.day();
+            a.get_year() == b.get_year() &&
+            a.get_month() == b.get_month() &&
+            a.get_day() == b.get_day();
     }
 
     bool operator!=(const Date& a, const Date& b)
@@ -161,17 +161,17 @@ namespace Chrono
 
     bool operator>(const Date& a, const Date& b)
     {
-        if(a.year() > b.year()) return true;
-        if(a.year() == b.year() && a.month() > b.month()) return true;
-        if(a.year() == b.year() && a.month() == b.month() && a.day() > b.day()) return true;
+        if(a.get_year() > b.get_year()) return true;
+        if(a.get_year() == b.get_year() && a.get_month() > b.get_month()) return true;
+        if(a.get_year() == b.get_year() && a.get_month() == b.get_month() && a.get_day() > b.get_day()) return true;
         return false;
     }
 
     bool operator<(const Date& a, const Date & b)
     {
-        if(a.year() < b.year()) return true;
-        if(a.year() == b.year() && a.month() < b.month()) return true;
-        if(a.year() == b.year() && a.month() == b.month() && a.day() < b.day()) return true;
+        if(a.get_year() < b.get_year()) return true;
+        if(a.get_year() == b.get_year() && a.get_month() < b.get_month()) return true;
+        if(a.get_year() == b.get_year() && a.get_month() == b.get_month() && a.get_day() < b.get_day()) return true;
         return false;
     }
 
@@ -188,9 +188,9 @@ namespace Chrono
     std::ostream& operator<<(std::ostream& os, const Date& d)
     {
         return
-            os << '(' << d.year()
-            << ',' << (int)d.month()
-            << ',' << d.day() << ')';
+            os << '(' << d.get_year()
+            << ',' << (int)d.get_month()
+            << ',' << d.get_day() << ')';
     }
 
     std::istream& operator>>(std::istream& is, Date& dd)
@@ -212,14 +212,14 @@ namespace Chrono
     Day day_of_week(const Date& d)
     {
         // good for any Gregorian date
-        int y{d.year()};
-        int m{static_cast<int>(d.month())};
+        int y{d.get_year()};
+        int m{static_cast<int>(d.get_month())};
         static const std::array<int, 12> t{0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
 
-        if(d.month() < Month::mar){
+        if(d.get_month() < Month::mar){
             --y;
         }
-        return Day((y + y / 4 - y / 100 + y / 400 + t.at(m - 1) + d.day()) % 7);
+        return Day((y + y / 4 - y / 100 + y / 400 + t.at(m - 1) + d.get_day()) % 7);
     }
 
     Date next_sunday(const Date& d)
@@ -258,11 +258,16 @@ namespace Chrono
 
     int week_of_year(const Date& d)
     {
-        Date date{d.year(), Month::jan, 1};
+        Date date{d.get_year(), Month::jan, 1};
         int week_number{};
         while(d >= date){
-            ++week_number;
             date = next_sunday(date);
+            if(date.get_year() == d.get_year()){
+                ++week_number;
+            }
+            else if(date.get_day() != 1){
+                week_number = 1;
+            }
         }
         return week_number;
     }

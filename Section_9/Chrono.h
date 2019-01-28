@@ -20,25 +20,39 @@ namespace Chrono
 
     class Date{
     public:
-        Date();     // default constructor
-        Date(int y, Month m, int d);    // check for valid date and initialize
+        class Invalid{};    // to throw exceptions
+        Date();             // default constructor
+        Date(int y, Month m, int d);
+        //Date(long int d);
 
         // the default copy operation is fine
 
         // non-modifying operations:
-        int day() const { return m_day; }
-        Month month() const { return m_month; }
-        int year() const { return m_year; }
+        int get_day() const { return m_day; }
+        Month get_month() const { return m_month; }
+        int get_year() const { return m_year; }
+        long int get_date() const { return m_date; }
 
         // modifying operations
         void add_day(int n);
         void add_month(int n);
         void add_year(int n);
-        
+
+        static constexpr int zero_year{1970};
+        static constexpr Month zero_month{Month::jan};
+        static constexpr int zero_day{1};
+        static constexpr long zero_date{0L};
+
+        static constexpr int year_size{365};
+        static constexpr int leap_year_size{366};
+
     private:
+        long int m_date; // zero = Jan 1, 1970
         int m_year;
         Month m_month;
         int m_day;
+
+        //void days_from_zero();
     };
 
     // helper functions

@@ -42,6 +42,11 @@ try{
 
     std::cout << n_wday << " Week#: " << week_of_year(n_wday) << '\n';
 
+    n_wday.add_month(11);
+    n_wday.add_day(30);
+
+    std::cout << n_wday << " Week#: " << week_of_year(n_wday) << '\n';
+
     ppp::keep_window_open();
     return 0;
 }

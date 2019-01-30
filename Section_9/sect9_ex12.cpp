@@ -36,7 +36,7 @@ try{
 
     std::cout << n_day << " Week#: " << week_of_year(n_day) << '\n';
 
-    n_day.add_month(11);  // hmm issue if add 11 months
+    n_day.add_month(11);
 
     std::cout << n_day << " Week#: " << week_of_year(n_day) << '\n';
 

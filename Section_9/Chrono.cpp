@@ -72,14 +72,15 @@ namespace Chrono
         if(n < 0) throw std::runtime_error("can't add negative months!");
         if(n > 0){
             int months = n;
+            int years{}; // keeps track of overlapped years and add in after adding all the months
             if(n >= 12 && n != 0){
                 int add_months{n % 12};
-                add_year(add_months);
+                years = add_months;
                 months -= add_months * 12;
             }
             if((int)m_month + months > 12){
-                add_year(1);
                 m_month = Month((int)m_month + months - 12);
+                years += 1;                
             }
             else{
                 m_month = Month((int)m_month + months);
@@ -92,19 +93,23 @@ namespace Chrono
                 m_day = month_day.at((int)m_month - 1);
             }
             days_from_zero();
+            add_year(years);
         }
     }
 
     void Date::add_year(const int n)
     {
+        if(n < 0) throw std::runtime_error("can't add negative years!");
+        if(n > 0){
         // beware of leap years
-        if(m_month == Month::feb && m_day == 29 && !leap_year(m_year + n)){
-            // use March 1 instead of February 29
-            m_month = Month::mar;
-            m_day = 1;
+            if(m_month == Month::feb && m_day == 29 && !leap_year(m_year + n)){
+                // use March 1 instead of February 29
+                m_month = Month::mar;
+                m_day = 1;
+            }
+            m_year += n;
+            days_from_zero();
         }
-        m_year += n;
-        days_from_zero();
     }
 
     void Date::days_from_zero()

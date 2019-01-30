@@ -84,7 +84,6 @@ namespace Chrono
             else{
                 m_month = Month((int)m_month + months);
             }
-            //clip to last day of month if previous was more days
             if(m_day > month_day.at((int)m_month - 1)){
                 if(m_month == Month::feb && !leap_year(m_year)){
                     m_day = 29;

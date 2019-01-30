@@ -15,7 +15,7 @@
     <ClCompile Include="Chrono.cpp" />
     <ClCompile Include="Library.cpp" />
     <ClCompile Include="Patron.cpp" />
-    <ClCompile Include="sect9_ex11.cpp" />
+    <ClCompile Include="sect9_ex12.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Book.h" />

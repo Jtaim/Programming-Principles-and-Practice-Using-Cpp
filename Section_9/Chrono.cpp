@@ -80,7 +80,7 @@ namespace Chrono
             }
             if((int)m_month + months > 12){
                 m_month = Month((int)m_month + months - 12);
-                years += 1;                
+                years += 1;
             }
             else{
                 m_month = Month((int)m_month + months);
@@ -191,12 +191,12 @@ namespace Chrono
 
     bool operator>=(const Date& a, const Date & b)
     {
-        return a.m_days >= b.m_days;
+        return a > b || a == b;
     }
 
     bool operator<=(const Date& a, const Date & b)
     {
-        return a.m_days <= b.m_days;
+        return a < b || a == b;
     }
 
     std::ostream& operator<<(std::ostream& os, const Date& d)

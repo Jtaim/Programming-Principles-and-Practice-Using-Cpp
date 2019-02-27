@@ -14,14 +14,16 @@
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="Chrono.cpp" />
     <ClCompile Include="Library.cpp" />
+    <ClCompile Include="Money.cpp" />
     <ClCompile Include="Patron.cpp" />
     <ClCompile Include="Rational.cpp" />
-    <ClCompile Include="sect9_ex13.cpp" />
+    <ClCompile Include="sect9_ex15.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Book.h" />
     <ClInclude Include="Chrono.h" />
     <ClInclude Include="Library.h" />
+    <ClInclude Include="Money.h" />
     <ClInclude Include="Patron.h" />
     <ClInclude Include="Rational.h" />
   </ItemGroup>

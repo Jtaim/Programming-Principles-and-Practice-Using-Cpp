@@ -11,12 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect8_ex11.cpp" />
+    <ClCompile Include="Point.cpp" />
+    <ClCompile Include="sect10_drill1.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Point.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{FA5624D0-A295-4512-BAA0-CCC534D98037}</ProjectGuid>
-    <RootNamespace>Section8</RootNamespace>
+    <ProjectGuid>{9ee3d6ec-b272-4b85-befb-d69af7806768}</ProjectGuid>
+    <RootNamespace>Section_10</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

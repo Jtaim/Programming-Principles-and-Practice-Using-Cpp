@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "includes", "includes", "{C1
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Section_9", "Section_9\Section_9.vcxproj", "{C9F85D23-3C43-40ED-9486-56DD991037FA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Section_10", "Section_10\Section_10.vcxproj", "{9EE3D6EC-B272-4B85-BEFB-D69AF7806768}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -85,6 +87,12 @@ Global
 		{C9F85D23-3C43-40ED-9486-56DD991037FA}.Release|x64.ActiveCfg = Release|x64
 		{C9F85D23-3C43-40ED-9486-56DD991037FA}.Release|x64.Build.0 = Release|x64
 		{C9F85D23-3C43-40ED-9486-56DD991037FA}.Release|x86.ActiveCfg = Release|x64
+		{9EE3D6EC-B272-4B85-BEFB-D69AF7806768}.Debug|x64.ActiveCfg = Debug|x64
+		{9EE3D6EC-B272-4B85-BEFB-D69AF7806768}.Debug|x64.Build.0 = Debug|x64
+		{9EE3D6EC-B272-4B85-BEFB-D69AF7806768}.Debug|x86.ActiveCfg = Debug|x64
+		{9EE3D6EC-B272-4B85-BEFB-D69AF7806768}.Release|x64.ActiveCfg = Release|x64
+		{9EE3D6EC-B272-4B85-BEFB-D69AF7806768}.Release|x64.Build.0 = Release|x64
+		{9EE3D6EC-B272-4B85-BEFB-D69AF7806768}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

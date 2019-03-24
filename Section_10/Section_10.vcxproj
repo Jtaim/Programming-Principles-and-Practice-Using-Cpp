@@ -11,8 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Point.cpp" />
-    <ClCompile Include="sect10_drill1.cpp" />
+    <ClCompile Include="sect10_drill7.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h" />

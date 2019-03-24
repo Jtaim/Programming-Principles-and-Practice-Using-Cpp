@@ -15,10 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect10_drill1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Point.cpp">
+    <ClCompile Include="sect10_drill7.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

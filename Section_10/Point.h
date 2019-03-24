@@ -40,10 +40,9 @@ private:
 template<typename T, typename point>
 T& operator>>(T& in, Point<point>& p)
 {
-    if(!(typeid(T) == typeid(std::istream) ||
-         typeid(T) == typeid(std::ifstream))){
-        ppp::error(R"(input stream type not supported)");
-    }
+    static_assert(std::is_same<T, std::istream>::value ||
+                  std::is_same<T, std::ifstream>::value,
+                  "unrecognized or unsupported input stream type in Point class");
     in.exceptions(in.exceptions() | std::ios::badbit);
     point x{}, y{};
     in >> x >> y;
@@ -56,6 +55,9 @@ T& operator>>(T& in, Point<point>& p)
 template<typename T, typename point>
 T& operator<<(T& out, const Point<point>& p)
 {
+    static_assert(std::is_same<T, std::ostream>::value ||
+                  std::is_same<T, std::ofstream>::value,
+                  "unrecognized or unsupported output stream type in Point class");
     if(typeid(T) == typeid(std::ostream)){
         out << "(" << p.GetPointX() << "," << p.GetPointY() << ")";
     }

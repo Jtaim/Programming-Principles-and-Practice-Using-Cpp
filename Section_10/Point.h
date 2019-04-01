@@ -6,10 +6,10 @@
 template<typename point_type>
 class Point{
     static_assert(std::is_floating_point<point_type>::value ||
-                  std::is_same<short, point_type>::value ||
-                  std::is_same<int, point_type>::value ||
-                  std::is_same<long, point_type>::value,
-                  R"(only numeric numbers supported)");
+                  std::is_same<point_type, short>::value ||
+                  std::is_same<point_type, int>::value ||
+                  std::is_same<point_type, long>::value,
+                  "unrecognized or unsupported type in the Point class");
 public:
     Point() : m_x{}, m_y{} {}
     Point(point_type x, point_type y) : m_x{x}, m_y{y} {}
@@ -63,9 +63,6 @@ T& operator<<(T& out, const Point<point>& p)
     }
     else if(typeid(T) == typeid(std::ofstream)){
         out << p.GetPointX() << " " << p.GetPointY() << "\n";
-    }
-    else{
-        ppp::error(R"(output stream type not supported)");
     }
     return out;
 }

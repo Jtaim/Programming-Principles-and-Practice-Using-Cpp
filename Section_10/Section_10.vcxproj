@@ -14,7 +14,11 @@
     <ClInclude Include="Point.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect10_ex1.cpp" />
+    <Text Include="sect10_ex2.txt" />
+    <Text Include="sect10_ex4.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sect10_ex4_stats.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

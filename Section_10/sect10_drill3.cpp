@@ -1,6 +1,6 @@
 /*
 	Written by Jtaim
-	Mar 24 Jan 2019
+	Mar 24 2019
 	Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 	Section 10 Drill 3
@@ -11,37 +11,37 @@
 #include "Point.h"
 
 int main()
-try {
-	constexpr std::vector<Point<int>>::size_type HOW_MANY{ 7 };
+try{
+	constexpr std::vector<Point<int>>::size_type HOW_MANY{7};
 
 	std::cout << "Enter seven (x,y) pairs:\n";
 	std::vector<Point<int>> original_points;
 
-	while (original_points.size() < HOW_MANY) {
+	while(original_points.size() < HOW_MANY){
 		Point<int> point;
-		if (!(std::cin >> point)) {
-			if (std::cin.eof()) ppp::error("EOF found before filling required data");
+		if(!(std::cin >> point)){
+			if(std::cin.eof()) ppp::error("EOF found before filling required data");
 			std::cout << "bad input try again\n";
 			ppp::clear_cin_buffer();
 		}
-		else {
+		else{
 			original_points.push_back(point);
 		}
 	}
 
-	for (auto point : original_points) {
+	for(auto point : original_points){
 		std::cout << point << "\n";
 	}
 
 	ppp::keep_window_open();
 	return 0;
 }
-catch (std::exception& e) {
+catch(std::exception& e){
 	std::cerr << "exception: " << e.what() << std::endl;
 	ppp::keep_window_open();
 	return 1;
 }
-catch (...) {
+catch(...){
 	std::cerr << "exception\n";
 	ppp::keep_window_open();
 	return 2;

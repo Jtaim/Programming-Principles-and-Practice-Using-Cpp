@@ -1,6 +1,6 @@
 /*
 	Written by Jtaim
-	Feb 26 Jan 2019
+	Feb 26 2019
 	Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
 
 	Section 10 Drill 1
@@ -11,29 +11,30 @@
 #include "Point.h"
 
 int main()
-try {
+try{
 	Point<int> a;
-	Point b{ 2,3 };
+	Point b{2,3};
 
+	if(a != b){}
 	std::cout << a << "\n";
 	std::cout << b << "\n";
 
-	if (!(std::cin >> a) && !std::cin.eof()) {
+	if(!(std::cin >> a) && !std::cin.eof()){
 		std::cout << "bad input\n";
 	}
-	else {
+	else{
 		std::cout << a << "\n";
 	}
 
 	ppp::keep_window_open();
 	return 0;
 }
-catch (std::exception& e) {
+catch(std::exception& e){
 	std::cerr << "exception: " << e.what() << std::endl;
 	ppp::keep_window_open();
 	return 1;
 }
-catch (...) {
+catch(...){
 	std::cerr << "exception\n";
 	ppp::keep_window_open();
 	return 2;

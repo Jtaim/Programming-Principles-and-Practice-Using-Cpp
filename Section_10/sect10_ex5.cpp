@@ -171,26 +171,32 @@ std::istream& operator>>(std::istream& is, Year& y)
 }
 
 std::ofstream& operator<<(std::ofstream& out, const Year& y){
-	out << y.year << "\n";
+	out << std::setw(6) << std::left << "year:"
+		<< y.year << "\n";
 	for(auto m{y.month.cbegin()}; m < y.month.cend(); ++m){
 		if(not_a_month != m->month){
-			out << "  "
-				<< std::setw(10) << std::left << month_print_tbl.at(m - y.month.cbegin()) << "\n";
+			out << std::setw(4) << " "
+				<< std::setw(7) << "month:"
+				<< month_print_tbl.at(m - y.month.cbegin()) << "\n";
 			for(auto d{m->day.begin()}; d < m->day.end(); ++d){
+				// oss is a temporary stream to deal with not printing days of no data
 				std::ostringstream oss;
-				oss << std::setw(12) << std::right << "day "
-					<< std::setw(5) << std::left << d - m->day.begin();
+				oss << std::setw(8) << std::left << " " 
+					<< std::setw(5) << "day:"
+					<< d - m->day.begin() << "\n";
 				bool hr_data{false};
 				for(auto h{d->hour.begin()}; h < d->hour.end(); ++h){
 					if(not_a_reading != *h){
-						hr_data = true;
-						oss << std::setw(5) << std::right << "hour:"
-							<< std::setw(3) << std::right << h - d->hour.begin()
-							<< std::setw(7) << std::right << "temp: "
-							<< std::setw(8) << std::left << std::setprecision(2) << *h;
+						hr_data = true;	// found hour data
+						oss << std::setw(12) << " "
+							<< std::setw(6) << "hour:"
+							<< h - d->hour.begin() << "\n"
+							<< std::setw(16) << " "
+							<< std::setw(6) << "temp:"
+							<< std::setprecision(2) << *h << "\n";
 					}
 				}
-				if(hr_data) out << oss.str() << "\n";
+				if(hr_data) out << oss.str();	// print hours and days with data
 			}
 		}
 	}

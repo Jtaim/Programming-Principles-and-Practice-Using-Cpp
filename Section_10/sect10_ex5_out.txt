@@ -1,20 +1,38 @@
-1990
+year: 1990
 
-1991
-  June      
+year: 1991
+    month: June
 
-1992
-  January   
-        day 1    hour:  0 temp: 62      
-  February  
-        day 1    hour:  1 temp: 64      
-        day 2    hour:  2 temp: 65      
+year: 1992
+    month: January
+        day: 1
+            hour: 0
+                temp: 62
+    month: February
+        day: 1
+            hour: 1
+                temp: 64
+        day: 2
+            hour: 2
+                temp: 65
 
-2000
-  February  
-        day 1    hour:  0 temp: 67      hour:  1 temp: 68      
-        day 2    hour:  3 temp: 67      
-  December  
-        day 14   hour:  0 temp: -2      
-        day 15   hour: 14 temp: -8.8    hour: 15 temp: -9.2    
+year: 2000
+    month: February
+        day: 1
+            hour: 0
+                temp: 67
+            hour: 1
+                temp: 68
+        day: 2
+            hour: 3
+                temp: 67
+    month: December
+        day: 14
+            hour: 0
+                temp: -2
+        day: 15
+            hour: 14
+                temp: -8.8
+            hour: 15
+                temp: -9.2
 

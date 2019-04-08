@@ -12,7 +12,7 @@
 
 int main()
 try{
-	const std::string FILE{"ex1_data.txt"};
+	const std::string FILE{"sect10_ex1.txt"};
 
 	std::ifstream fin{FILE};
 	int sum{}, data{};

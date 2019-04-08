@@ -1,10 +1,11 @@
-## Programming: Principles and Practices Using C++ (PPP)
-[ppp.jtaim.github.io](http://jtaim.github.io/Programming-Principles-and-Practice-Using-Cpp/)
+## Stroustrup, Bjarne. Programming: Principles and Practice Using C++.
+[ppp.github.io](http://jtaim.github.io/Programming-Principles-and-Practice-Using-Cpp/)
 #### Where to buy this book
 [Link to PPP on Amazon.](https://www.amazon.com/Programming-Principles-Practice-Using-2nd/dp/0321992784/ref=sr_1_1?s=books&ie=UTF8&qid=1444058171&sr=1-1&keywords=Programming%3A+Principles+and+Practice+Using+C%2B%2B)
 
 #### Why
-I thought GitHub would be a good place to share my solutions for the try its, review questions, drills, and exercises for the afore mentioned book.
+A place to share my solutions for the try its, review questions, drills, and exercises while fumbling my way through
+Stroustrup, Bjarne. Programming: Principles and Practice Using C++ . Pearson Education. Kindle Edition.
 
 #### Useful tools
 - [Microsoft Visual Studio Community](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx)

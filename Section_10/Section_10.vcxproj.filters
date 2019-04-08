@@ -22,9 +22,11 @@
   <ItemGroup>
     <Text Include="sect10_ex2.txt" />
     <Text Include="sect10_ex4.txt" />
+    <Text Include="sect10_ex5_in.txt" />
+    <Text Include="sect10_ex5_out.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect10_ex4_stats.cpp">
+    <ClCompile Include="sect10_ex5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

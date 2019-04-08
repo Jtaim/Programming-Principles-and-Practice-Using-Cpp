@@ -16,7 +16,7 @@ using point_type = std::vector<Point<int>>;
 int main()
 try{
 	constexpr point_type::size_type HOW_MANY{7};
-	const std::string FILE{"my_data.txt"};
+	const std::string FILE{"sect10_drill_data.txt"};
 
 	std::cout << "Enter seven (x,y) pairs:\n";
 	point_type original_points;

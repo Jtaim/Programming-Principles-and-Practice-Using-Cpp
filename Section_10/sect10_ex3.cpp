@@ -8,7 +8,7 @@
 	into a vector and then calculates the mean and median temperatures in your data set.
 	Call this program temp_stats.cpp.
 
-	For the sake of standardization I will hold my naming schema, do the
+	For the sake of standardization I will hold my naming schema, the
 	program will be sect10_ex3.cpp and the file it created in exercise 2 was
 	sect10_ex2.txt.
 

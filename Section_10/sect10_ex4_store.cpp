@@ -12,14 +12,13 @@
 	"temperature readings". Call this program store_temps.cpp and the file it
 	creates raw_temps.txt.
 
-	For the sake of standardization I will hold my naming schema, do the
+	For the sake of standardization I will hold my naming schema, the
 	program will be sect10_ex4_store.cpp and the file it creates will be
 	sect10_ex4.txt.
 
 	I used the ftoc() function from sect5_ex6.cpp. There are "magic" numbers
 	on it, but since they're fixed values on the formula for conversion I don't
 	feel the need to make them symbolic constants.
-
 */
 
 #include "../includes/ppp.h"

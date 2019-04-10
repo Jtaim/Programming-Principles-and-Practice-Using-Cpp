@@ -18,6 +18,9 @@
     <ClInclude Include="Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Roman_int.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="sect10_ex2.txt" />
@@ -26,7 +29,10 @@
     <Text Include="sect10_ex5_out.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect10_ex5.cpp">
+    <ClCompile Include="sect10_ex6.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Roman_int.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

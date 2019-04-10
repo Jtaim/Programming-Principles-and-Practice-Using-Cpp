@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Roman_int.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="sect10_ex2.txt" />
@@ -20,7 +21,8 @@
     <Text Include="sect10_ex5_out.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect10_ex5.cpp" />
+    <ClCompile Include="Roman_int.cpp" />
+    <ClCompile Include="sect10_ex6.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

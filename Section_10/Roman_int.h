@@ -1,11 +1,20 @@
 #pragma once
 
-#include <string>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <map>
 #include <sstream>
+#include <string>
 
-constexpr int not_roman = -1;	//not a roman number
+const std::map<char, int> look_up{
+	{'I',1},
+	{'V',5},
+	{'X',10},
+	{'L',50},
+	{'C',100},
+	{'D',500},
+	{'M',1000}
+};
 
 class Roman_int
 {
@@ -19,7 +28,7 @@ private:
 	std::string roman_str;
 	int roman_int;
 
-	int romanToDecimal(const std::string& str);
+	int romanToDecimal(const std::string& str) const;
 };
 
 // relational operator overloads
@@ -93,7 +102,7 @@ T& operator>>(T& in, Roman_int& r)
 		return in;
 	}
 	Roman_int rn{str_rn};
-	if(-1 == rn.as_int()){
+	if(0 == rn.as_int()){
 		in.clear(std::ios_base::failbit);
 		return in;
 	}

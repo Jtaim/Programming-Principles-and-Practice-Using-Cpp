@@ -1,9 +1,10 @@
 #include "Roman_int.h"
 
 Roman_int::Roman_int(std::string rn)
-	: roman_str(rn), roman_int(not_roman)
+	: roman_str(rn), roman_int(0)
 {
 	roman_int = romanToDecimal(roman_str);
+	if(0 == roman_int) roman_str = "";
 }
 
 int Roman_int::as_int() const
@@ -16,60 +17,47 @@ std::string Roman_int::getRomanNumerial() const
 	return roman_str;
 }
 
-int value(const char r)
-{
-	switch(r){
-		case 'I':
-			return 1;
-		case 'V':
-			return 5;
-		case 'X':
-			return 10;
-		case 'L':
-			return 50;
-		case 'C':
-			return 100;
-		case 'D':
-			return 500;
-		case 'M':
-			return 1000;
-		default:
-			return not_roman;
-	}
-}
-
 // Returns decimal value of roman numeral
-int Roman_int::romanToDecimal(const std::string& str)
+// Return 0 indicates malformed roman numeral
+int Roman_int::romanToDecimal(const std::string& str) const
 {
-	if(str.empty()) return not_roman;
-	// Initialize result 
 	int res{};
-	// Traverse given input 
-	for(std::string::size_type i{}; i < str.size(); ++i){
-		// Getting value of symbol s[i] 
-		int s1{value(str.at(i))};
-		if(not_roman == s1) return not_roman;
-
-		if(i + 1 < str.size()){
-			// Getting value of symbol s[i+1] 
-			int s2{value(str.at(i + 1))};
-			if(not_roman == s2) return not_roman;
-
-			// Comparing both values 
-			if(s1 >= s2){
-				// Value of current symbol is greater 
-				// or equal to the next symbol 
-				res = res + s1;
+	// Traverse given input
+	for(auto i{str.cbegin()}; i != str.cend(); ++i){
+		// Getting value of symbol 
+		auto s1 = look_up.find(*i);
+		if(s1 != look_up.cend()){
+			const auto next{i + 1};
+			if((next) != str.cend()){
+				// Getting next value of symbol 
+				auto s2 = look_up.find(*next);
+				if(s2 != look_up.cend()){
+				// Comparing both values 
+					if(s1->second >= s2->second){
+						// Value of current symbol is greater 
+						// or equal to the next symbol 
+						res += s1->second;
+					}
+					else{
+						// Value of current symbol is 
+						// less than the next symbol 
+						res += (s2->second - s1->second);
+						++i; // used current and next symbol
+					}
+				}
+				else{
+					// unrecognized symbol found
+					return 0;
+				}
 			}
 			else{
-				res = res + s2 - s1;
-				++i; // Value of current symbol is 
-					 // less than the next symbol 
+				// just used current symbol
+				res += s1->second;
 			}
 		}
 		else{
-			res = res + s1;
-			++i;
+			// unrecognized symbol found
+			return 0;
 		}
 	}
 	return res;

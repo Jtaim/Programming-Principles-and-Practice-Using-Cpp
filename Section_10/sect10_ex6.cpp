@@ -29,7 +29,6 @@ try{
 	r1 = r3;
 	Roman_int r4{r2};
 	std::cout << "Roman " << r1 << " equals " << r1.as_int() << '\n';
-	std::cout << "Roman " << r3 << " equals " << r3.as_int() << '\n';
 	std::cout << "Roman " << r4 << " equals " << r4.as_int() << '\n';
 
 	std::cout << "Enter a roman number: ";
@@ -37,6 +36,17 @@ try{
 	std::cin >> r5;
 	std::cout << "Roman " << r5 << " equals " << r5.as_int() << '\n';
 
+	Roman_int r6{3984};
+	std::cout << "Roman " << r6 << " equals " << r6.as_int() << '\n';
+
+	r5 = 55;
+	std::cout << "Roman " << r5 << " equals " << r5.as_int() << '\n';
+	r6 = "LV";
+	std::cout << "Roman " << r6 << " equals " << r6.as_int() << '\n';
+
+	if(r5 >= r6){
+		std::cout << "Cool that worked\n";
+	}
 
 	ppp::keep_window_open();
 	return 0;

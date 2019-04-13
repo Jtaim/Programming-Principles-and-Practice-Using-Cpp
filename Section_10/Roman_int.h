@@ -2,11 +2,13 @@
 
 #include <fstream>
 #include <iostream>
-#include <map>
 #include <sstream>
 #include <string>
+#include <typeinfo>
+#include <vector>
 
-const std::map<char, int> look_up{
+
+const std::vector<std::pair<char, int>> look_up{
 	{'I',1},
 	{'V',5},
 	{'X',10},
@@ -19,102 +21,95 @@ const std::map<char, int> look_up{
 class Roman_int
 {
 public:
-	Roman_int(std::string rn = " ");
+	Roman_int() : roman_str{}, roman_int{} {}
+	Roman_int(const std::string rn);
+	Roman_int(const char* rn);
+	Roman_int(const char rn);
+	Roman_int(int rn);
 
 	int as_int() const;
-	std::string getRomanNumerial() const;
+	std::string as_str() const;
+
+	// Overloaded cast operators
+	operator int() const { return roman_int; }
+	operator std::string() const { return roman_str; }
 
 private:
 	std::string roman_str;
 	int roman_int;
 
-	int romanToDecimal(const std::string& str) const;
+	bool romanToDecimal(const std::string& symbols);
+	bool decimalToRoman(int rn_int);
+
+	template<typename T>
+	auto find(const std::vector<std::pair<char, int>>& v, T x);
 };
-
-// relational operator overloads
-inline bool operator==(const Roman_int& lhs, const Roman_int& rhs)
-{
-	return (lhs.as_int() == rhs.as_int());
-}
-inline bool operator==(const Roman_int& lhs, const int rhs)
-{
-	return (lhs.as_int() == rhs);
-}
-inline bool operator==(const int lhs, const Roman_int& rhs)
-{
-	return (lhs == rhs.as_int());
-}
-
-
-inline bool operator>(const Roman_int& lhs, const Roman_int& rhs)
-{
-	return (lhs.as_int() > rhs.as_int());
-}
-inline bool operator>(const Roman_int& lhs, const int rhs)
-{
-	return (lhs.as_int() > rhs);
-}
-inline bool operator>(const int lhs, const Roman_int& rhs)
-{
-	return (lhs > rhs.as_int());
-}
-
-inline bool operator<(const Roman_int& lhs, const Roman_int& rhs)
-{
-	return (lhs.as_int() < rhs.as_int());
-}
-inline bool operator<(const Roman_int& lhs, const int rhs)
-{
-	return (lhs.as_int() < rhs);
-}
-inline bool operator<(const int lhs, const Roman_int& rhs)
-{
-	return (lhs < rhs.as_int());
-}
-
-template<typename T, typename U>
-bool operator!=(const T& lhs, const U& rhs)
-{
-	return !(lhs == rhs);
-}
-
-template<typename T, typename U>
-bool operator>=(const T& lhs, const U& rhs)
-{
-	return !(lhs == rhs || lhs > rhs);
-}
-
-template<typename T, typename U>
-bool operator<=(const T& lhs, const U& rhs)
-{
-	return !(lhs == rhs || lhs > rhs);
-}
 
 // template for some input stream overloads
 // -----------------------------------------------------------------------------------
 template<typename T>
-T& operator>>(T& in, Roman_int& r)
+inline T& operator>>(T& in, Roman_int& r)
 {
 	in.exceptions(in.exceptions() | std::ios::badbit);
-	std::string str_rn;
-	in >> str_rn;
-	if(!in.good()){
-		return in;
+	char c{};
+	c = static_cast<char>(in.peek());
+	if(std::isdigit(c)){
+		int int_str{};
+		in >> int_str;
+		if(!in.good()){
+			return in;
+		}
+		Roman_int rn{int_str};
+		if(rn.as_str().empty()){
+			in.clear(std::ios_base::failbit);
+			return in;
+		}
+		r = rn;
 	}
-	Roman_int rn{str_rn};
-	if(0 == rn.as_int()){
-		in.clear(std::ios_base::failbit);
-		return in;
+	else{
+		std::string str_rn;
+		in >> str_rn;
+		if(!in.good()){
+			return in;
+		}
+		Roman_int rn{str_rn};
+		if(0 == rn.as_int()){
+			in.clear(std::ios_base::failbit);
+			return in;
+		}
+		r = rn;
 	}
-	r = rn;
 	return in;
 }
 
 // template for output stream overloads
 // -----------------------------------------------------------------------------------
 template<typename T>
-T& operator<<(T& out, const Roman_int& r)
+inline T& operator<<(T& out, const Roman_int& r)
 {
-	out << r.getRomanNumerial();
+	out << r.as_str();
 	return out;
+}
+
+ // template for find
+ // used to help covert Roman_int from integer to string and string to integer
+ // -----------------------------------------------------------------------------------
+template<typename T>
+inline auto Roman_int::find(const std::vector<std::pair<char, int>>& v, T x)
+{
+	static_assert(std::is_same<T, char>::value ||
+		std::is_same<T, int>::value,
+		"unrecognized compare type in Roman_int class");
+	auto i{v.begin()};
+	if(typeid(char) == typeid(x)){
+		for(; i < v.end(); ++i){
+			if(i->first == x)return i;
+		}
+	}
+	if(typeid(int) == typeid(x)){
+		for(; i < v.end(); ++i){
+			if(i->second == x)return i;
+		}
+	}
+	return i;
 }

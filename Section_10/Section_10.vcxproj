@@ -19,10 +19,11 @@
     <Text Include="sect10_ex4.txt" />
     <Text Include="sect10_ex5_in.txt" />
     <Text Include="sect10_ex5_out.txt" />
+    <Text Include="sect10_ex8.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Roman_int.cpp" />
-    <ClCompile Include="sect10_ex6.cpp" />
+    <ClCompile Include="sect10_ex8.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

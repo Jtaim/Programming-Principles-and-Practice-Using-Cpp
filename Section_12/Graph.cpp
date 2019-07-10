@@ -7,19 +7,19 @@ namespace Graph_lib
 
 	void Shape::draw_lines() const
 	{
-		if(color().visibility() && 1 < points.size())	// draw sole pixel?
-			for(unsigned int i = 1; i < points.size(); ++i)
+		if(color().visibility() == Color::Transparency::visible && 1 < points.size())	// draw sole pixel?
+			for(size_t i{1}; i < points.size(); ++i)
 				fl_line(points[i - 1].x, points[i - 1].y, points[i].x, points[i].y);
 	}
 
 	void Shape::draw() const
 	{
-		Fl_Color oldc = fl_color();
+		Fl_Color old_color{fl_color()};
 		// there is no good portable way of retrieving the current style
 		fl_color(lcolor.as_int());
-		fl_line_style(ls.style(), ls.width());
+		fl_line_style(static_cast<int>(ls.style()), ls.width());
 		draw_lines();
-		fl_color(oldc);	// reset color (to previous) and style (to default)
+		fl_color(old_color);	// reset color (to previous) and style (to default)
 		fl_line_style(0);
 	}
 
@@ -28,23 +28,24 @@ namespace Graph_lib
 	// if false return the distance of the intersect point as distances from p1
 	inline std::pair<double, double> line_intersect(Point p1, Point p2, Point p3, Point p4, bool& parallel)
 	{
-		double x1 = p1.x;
-		double x2 = p2.x;
-		double x3 = p3.x;
-		double x4 = p4.x;
-		double y1 = p1.y;
-		double y2 = p2.y;
-		double y3 = p3.y;
-		double y4 = p4.y;
+		auto x1{narrow_cast<double, decltype(Point::x)>(p1.x)};
+		auto x2{narrow_cast<double, decltype(Point::x)>(p2.x)};
+		auto x3{narrow_cast<double, decltype(Point::x)>(p3.x)};
+		auto x4{narrow_cast<double, decltype(Point::x)>(p4.x)};
+		auto y1{narrow_cast<double, decltype(Point::y)>(p1.y)};
+		auto y2{narrow_cast<double, decltype(Point::y)>(p2.y)};
+		auto y3{narrow_cast<double, decltype(Point::y)>(p3.y)};
+		auto y4{narrow_cast<double, decltype(Point::y)>(p4.y)};
 
-		double denom = ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+		auto denom{(y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1)};
 		if(denom == 0){
 			parallel = true;
-			return std::pair<double, double>(0, 0);
+			return std::pair<double, double>(0.0, 0.0);
 		}
 		parallel = false;
-		return std::pair<double, double>(((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom,
-			((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom);
+		return std::pair<double, double>
+			{((x4 - x3)* (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom,
+			((x2 - x1)* (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom};
 	}
 
 
@@ -54,69 +55,67 @@ namespace Graph_lib
 	bool line_segment_intersect(Point p1, Point p2, Point p3, Point p4, Point& intersection)
 	{
 		bool parallel;
-		std::pair<double, double> u = line_intersect(p1, p2, p3, p4, parallel);
-		if(parallel || u.first < 0 || u.first > 1 || u.second < 0 || u.second > 1) return false;
-		intersection.x = p1.x + u.first * (p2.x - p1.x);
-		intersection.y = p1.y + u.first * (p2.y - p1.y);
+		std::pair<double, double> u{line_intersect(p1, p2, p3, p4, parallel)};
+		if(parallel || u.first < 0 || u.first > 1 || u.second < 0 || u.second > 1){ return false; }
+		intersection.x = p1.x + u.first * narrow_cast<double, decltype(Point::x)>(p2.x - p1.x);
+		intersection.y = p1.y + u.first * narrow_cast<double, decltype(Point::y)>(p2.y - p1.y);
 		return true;
 	}
 
 	void Polygon::add(Point p)
 	{
-		int np = number_of_points();
+		int np{number_of_points()};
 
 		if(1 < np){	// check that the new line isn't parallel to the previous one
-			if(p == point(np - 1)) throw std::runtime_error("polygon point equal to previous point");
-			bool parallel;
+			if(p == point(np - 1)){ throw std::runtime_error("polygon point equal to previous point"); }
+			bool parallel{};
 			line_intersect(point(np - 1), p, point(np - 2), point(np - 1), parallel);
-			if(parallel)
-				throw std::runtime_error("two polygon points lie in a straight line");
+			if(parallel){ throw std::runtime_error("two polygon points lie in a straight line"); }
 		}
 
-		for(int i = 1; i < np - 1; ++i){	// check that new segment doesn't intersect and old point
+		for(int i{1}; i < np - 1; ++i){	// check that new segment doesn't intersect and old point
 			Point ignore(0, 0);
-			if(line_segment_intersect(point(np - 1), p, point(i - 1), point(i), ignore))
+			if(line_segment_intersect(point(np - 1), p, point(i - 1), point(i), ignore)){
 				throw std::runtime_error("intersect in polygon");
+			}
 		}
-
 
 		Closed_polyline::add(p);
 	}
 
-
 	void Polygon::draw_lines() const
 	{
-		if(number_of_points() < 3) throw std::runtime_error("less than 3 points in a Polygon");
+		if(number_of_points() < 3){ throw std::runtime_error("less than 3 points in a Polygon"); }
 		Closed_polyline::draw_lines();
 	}
 
 	void Open_polyline::draw_lines() const
 	{
-		if(fill_color().visibility()){
+		if(fill_color().visibility() == Color::Transparency::visible){
 			fl_color(fill_color().as_int());
 			fl_begin_complex_polygon();
-			for(int i = 0; i < number_of_points(); ++i){
+			for(int i{}; i < number_of_points(); ++i){
 				fl_vertex(point(i).x, point(i).y);
 			}
 			fl_end_complex_polygon();
 			fl_color(color().as_int());	// reset color
 		}
 
-		if(color().visibility())
+		if(color().visibility() == Color::Transparency::visible)
 			Shape::draw_lines();
 	}
-
 
 	void Closed_polyline::draw_lines() const
 	{
 		Open_polyline::draw_lines();
 
-		if(color().visibility())	// draw closing line:
+		if(color().visibility() == Color::Transparency::visible)	// draw closing line:
 			fl_line(point(number_of_points() - 1).x, point(number_of_points() - 1).y, point(0).x, point(0).y);
 	}
+
 	void Shape::move(int dx, int dy)
 	{
-		for(unsigned int i = 0; i < points.size(); ++i){
+		for(size_t i{}; i < points.size(); ++i){
 			points[i].x += dx;
 			points[i].y += dy;
 		}
@@ -125,55 +124,54 @@ namespace Graph_lib
 	void Lines::draw_lines() const
 	{
 	//	if (number_of_points()%2==1) error("odd number of points in set of lines");
-		if(color().visibility())
-			for(int i = 1; i < number_of_points(); i += 2)
+		if(color().visibility() == Color::Transparency::visible)
+			for(int i{1}; i < number_of_points(); i += 2)
 				fl_line(point(i - 1).x, point(i - 1).y, point(i).x, point(i).y);
 	}
 
 	void Text::draw_lines() const
 	{
-		int ofnt = fl_font();
-		int osz = fl_size();
+		auto ofnt{fl_font()};
+		auto osz{fl_size()};
 		fl_font(fnt.as_int(), fnt_sz);
 		fl_draw(lab.c_str(), point(0).x, point(0).y);
 		fl_font(ofnt, osz);
 	}
 
-	Function::Function(Fct f, double r1, double r2, Point xy, int count, double xscale, double yscale)
+	Function::Function(Fct funct, double r1, double r2, Point xy, int count, double xscale, double yscale)
 	// graph f(x) for x in [r1:r2) using count line segments with (0,0) displayed at xy
 	// x coordinates are scaled by xscale and y coordinates scaled by yscale
 	{
-		if(r2 - r1 <= 0) throw std::runtime_error("bad graphing range");
-		if(count <= 0) throw std::runtime_error("non-positive graphing count");
-		double dist = (r2 - r1) / count;
-		double r = r1;
-		for(int i = 0; i < count; ++i){
-			add(Point(xy.x + int(r * xscale), xy.y - int(f(r) * yscale)));
+		if(r2 - r1 <= 0){ throw std::runtime_error("bad graphing range"); }
+		if(count <= 0){ throw std::runtime_error("non-positive graphing count"); }
+		auto dist{(r2 - r1) / count};
+		auto r{r1};
+		for(int i{}; i < count; ++i){
+			add(Point(xy.x + static_cast<int>(r * xscale), xy.y - static_cast<int>(funct(r) * yscale)));
 			r += dist;
 		}
 	}
 
 	void Rectangle::draw_lines() const
 	{
-		if(fill_color().visibility()){	// fill
+		if(fill_color().visibility() == Color::Transparency::visible){	// fill
 			fl_color(fill_color().as_int());
 			fl_rectf(point(0).x, point(0).y, w, h);
 			fl_color(color().as_int());	// reset color
 		}
 
-		if(color().visibility()){	// edge on top of fill
+		if(color().visibility() == Color::Transparency::visible){	// edge on top of fill
 			fl_color(color().as_int());
 			fl_rect(point(0).x, point(0).y, w, h);
 		}
 	}
 
-
 	Axis::Axis(Orientation d, Point xy, int length, int n, std::string lab)
-		:label(Point(0, 0), lab)
+		:label{Point(0, 0), lab}
 	{
 		if(length < 0) throw std::runtime_error("bad axis length");
 		switch(d){
-			case Axis::x:
+			case Axis::Orientation::x:
 				{
 					Shape::add(xy);	// axis line
 					Shape::add(Point(xy.x + length, xy.y));	// axis line
@@ -189,7 +187,7 @@ namespace Graph_lib
 					label.move(length / 3, xy.y + 20);
 					break;
 				}
-			case Axis::y:
+			case Axis::Orientation::y:
 				{
 					Shape::add(xy);	// a y-axis goes up
 					Shape::add(Point(xy.x, xy.y - length));
@@ -205,7 +203,7 @@ namespace Graph_lib
 					label.move(xy.x - 10, xy.y - length - 10);
 					break;
 				}
-			case Axis::z:
+			case Axis::Orientation::z:
 				throw std::runtime_error("z axis not implemented");
 		}
 	}
@@ -234,13 +232,13 @@ namespace Graph_lib
 
 	void Circle::draw_lines() const
 	{
-		if(fill_color().visibility()){	// fill
+		if(fill_color().visibility() == Color::Transparency::visible){	// fill
 			fl_color(fill_color().as_int());
 			fl_pie(point(0).x, point(0).y, r + r - 1, r + r - 1, 0, 360);
 			fl_color(color().as_int());	// reset color
 		}
 
-		if(color().visibility()){
+		if(color().visibility() == Color::Transparency::visible){
 			fl_color(color().as_int());
 			fl_arc(point(0).x, point(0).y, r + r, r + r, 0, 360);
 		}
@@ -249,13 +247,13 @@ namespace Graph_lib
 
 	void Ellipse::draw_lines() const
 	{
-		if(fill_color().visibility()){	// fill
+		if(fill_color().visibility() == Color::Transparency::visible){	// fill
 			fl_color(fill_color().as_int());
 			fl_pie(point(0).x, point(0).y, w + w - 1, h + h - 1, 0, 360);
 			fl_color(color().as_int());	// reset color
 		}
 
-		if(color().visibility()){
+		if(color().visibility() == Color::Transparency::visible){
 			fl_color(color().as_int());
 			fl_arc(point(0).x, point(0).y, w + w, h + h, 0, 360);
 		}
@@ -322,7 +320,7 @@ namespace Graph_lib
 	// somewhat over elaborate constructor
 	// because errors related to image files can be such a pain to debug
 	Image::Image(Point xy, std::string s, Suffix::Encoding e)
-		:w(0), h(0), fn(xy, "")
+		:w{}, h{}, cx{}, cy{}, fn(xy, "")
 	{
 		add(xy);
 

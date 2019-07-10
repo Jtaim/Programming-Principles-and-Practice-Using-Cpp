@@ -4,6 +4,7 @@
 
 #include "fltk.h"
 #include "Point.h"
+#include "utility.h"
 #include <functional>
 #include <stdexcept>
 #include <string>
@@ -18,54 +19,55 @@ namespace Graph_lib
 
 	struct Color
 	{
-		enum Color_type
+		static enum class Color_type
 		{
 			red = FL_RED, blue = FL_BLUE, green = FL_GREEN,
 			yellow = FL_YELLOW, white = FL_WHITE, black = FL_BLACK,
 			magenta = FL_MAGENTA, cyan = FL_CYAN, dark_red = FL_DARK_RED,
 			dark_green = FL_DARK_GREEN, dark_yellow = FL_DARK_YELLOW, dark_blue = FL_DARK_BLUE,
 			dark_magenta = FL_DARK_MAGENTA, dark_cyan = FL_DARK_CYAN
-		};
-		enum Transparency { invisible = 0, visible = 255 };
+		} color_type;
+		static enum class Transparency { invisible = 0, visible = 255 } transparency;
 
-		Color(Color_type cc) :c(Fl_Color(cc)), v(visible) {}
-		Color(Color_type cc, Transparency vv) :c(Fl_Color(cc)), v(vv) {}
-		Color(int cc) :c(Fl_Color(cc)), v(visible) {}
-		Color(Transparency vv) :c(Fl_Color()), v(vv) {}
+		Color(Color_type color) : c{color}, v{Transparency::visible} {}
+		Color(Color_type color, Transparency vv) : c{color}, v{vv} {}
+		Color(int color) : c{static_cast<Color::Color_type>(color)}, v(Transparency::visible) {}
+		Color(Transparency vv) : c{}, v{vv} {}
+		Color() : c{Color::Color_type::red}, v(Transparency::visible) {}
 
-		int as_int() const { return c; }
-		char visibility() const { return v; }
+		int as_int() const { return static_cast<int>(c); }
+		Transparency visibility() const { return v; }
 		void set_visibility(Transparency vv) { v = vv; }
 	private:
-		unsigned char v;	// 0 or 1 for now
-		Fl_Color c;
+		Transparency v;	// 0 or 255 for now
+		Color_type c;
 	};
 
 	struct Line_style
 	{
-		enum Line_style_type
+		static enum class Line_style_type
 		{
-			solid = FL_SOLID,				// -------
+			solid = FL_SOLID,			// -------
 			dash = FL_DASH,				// - - - -
-			dot = FL_DOT,					// ....... 
-			dashdot = FL_DASHDOT,			// - . - . 
+			dot = FL_DOT,				// ....... 
+			dashdot = FL_DASHDOT,		// - . - . 
 			dashdotdot = FL_DASHDOTDOT,	// -..-..
-		};
-		Line_style(Line_style_type ss) :s(ss), w(0) {}
-		Line_style(Line_style_type lst, int ww) :s(lst), w(ww) {}
-		Line_style(int ss) :s(ss), w(0) {}
+		} line_style;
+		Line_style(Line_style_type style) :s{style}, w{} {}
+		Line_style(Line_style_type style, int width) :s{style}, w{width} {}
+		Line_style(int style) :s{static_cast<Line_style::Line_style_type>(style)}, w{} {}
 
 		int width() const { return w; }
-		int style() const { return s; }
+		Line_style_type style() const { return s; }
 	private:
-		int s;
+		Line_style_type s;
 		int w;
 	};
 
 	class Font
 	{
 	public:
-		enum Font_type
+		static enum class Font_type
 		{
 			helvetica = FL_HELVETICA,
 			helvetica_bold = FL_HELVETICA_BOLD,
@@ -83,14 +85,14 @@ namespace Graph_lib
 			screen = FL_SCREEN,
 			screen_bold = FL_SCREEN_BOLD,
 			zapf_dingbats = FL_ZAPF_DINGBATS
-		};
+		} font_type;
 
-		Font(Font_type ff) :f(ff) {}
-		Font(int ff) :f(ff) {}
+		Font(Font_type ff) :f{ff} {}
+		Font(int ff) :f{static_cast<Font_type>(ff)} {}
 
-		int as_int() const { return f; }
+		int as_int() const { return static_cast<int>(f); }
 	private:
-		int f;
+		Font_type f;
 	};
 
 	template<class T> class Vector_ref
@@ -102,13 +104,17 @@ namespace Graph_lib
 
 		Vector_ref(T* a, T* b = 0, T * c = 0, T * d = 0)
 		{
-			if(a) push_back(a);
-			if(b) push_back(b);
-			if(c) push_back(c);
-			if(d) push_back(d);
+			if(a != 0) push_back(a);
+			if(b != 0) push_back(b);
+			if(c != 0) push_back(c);
+			if(d != 0) push_back(d);
 		}
 
-		~Vector_ref() { for(int i = 0; i < owned.size(); ++i) delete owned[i]; }
+		~Vector_ref()
+		{
+			for(T* i : owned){ delete i; }
+			//for(int i = 0; i < owned.size(); ++i) { delete owned[i]; }
+		}
 
 		void push_back(T& s) { v.push_back(&s); }
 		void push_back(T* p) { v.push_back(p); owned.push_back(p); }
@@ -117,7 +123,7 @@ namespace Graph_lib
 
 		T& operator[](int i) { return *v[i]; }
 		const T& operator[](int i) const { return *v[i]; }
-		int size() const { return v.size(); }
+		decltype(v.size()) size() const { return v.size(); }
 	};
 
 	typedef double Fct(double);
@@ -133,23 +139,16 @@ namespace Graph_lib
 	//		fcolor(Color::invisible) { }
 
 		void add(Point p) { points.push_back(p); }
-		void set_point(int i, Point p) { points[i] = p; }
+		void set_point(int i, Point p) { points.at(i) = p; }
 	public:
 		void draw() const;					// deal with color and draw_lines
-	protected:
-		virtual void draw_lines() const;	// simply draw the appropriate lines
-	public:
 		virtual void move(int dx, int dy);	// move the shape +=dx and +=dy
-
 		void set_color(Color col) { lcolor = col; }
 		Color color() const { return lcolor; }
-
 		void set_style(Line_style sty) { ls = sty; }
 		Line_style style() const { return ls; }
-
 		void set_fill_color(Color col) { fcolor = col; }
 		Color fill_color() const { return fcolor; }
-
 		Point point(int i) const { return points[i]; }
 		int number_of_points() const { return int(points.size()); }
 
@@ -164,11 +163,15 @@ namespace Graph_lib
 		*/
 		Shape(const Shape&) = delete;
 		Shape& operator=(const Shape&) = delete;
+
+	protected:
+		virtual void draw_lines() const;	// simply draw the appropriate lines
+
 	private:
 		std::vector<Point> points;	// not used by all shapes
-		Color lcolor{fl_color()};
-		Line_style ls{0};
-		Color fcolor{Color::invisible};
+		Color lcolor{static_cast<Color::Color_type>(fl_color())};
+		Line_style ls{Line_style::Line_style_type::solid};
+		Color fcolor{Color::Transparency::invisible};
 
 	//	Shape(const Shape&);
 	//	Shape& operator=(const Shape&);
@@ -183,8 +186,8 @@ namespace Graph_lib
 
 	struct Fill
 	{
-		Fill() :no_fill(true), fcolor(0) {}
-		Fill(Color c) :no_fill(false), fcolor(c) {}
+		Fill() : no_fill{true}, fcolor{} {}
+		Fill(Color c) :no_fill{false}, fcolor{c} {}
 
 		void set_fill_color(Color col) { fcolor = col; }
 		Color fill_color() { return fcolor; }
@@ -283,7 +286,7 @@ namespace Graph_lib
 	struct Axis: Shape
 	{
 // representation left public
-		enum Orientation { x, y, z };
+		enum class Orientation { x, y, z };
 		Axis(Orientation d, Point xy, int length, int nummber_of_notches = 0, std::string label = "");
 
 		void draw_lines() const;
@@ -326,8 +329,8 @@ namespace Graph_lib
 		void draw_lines() const;
 
 		Point center() const { return{point(0).x + w, point(0).y + h}; }
-		Point focus1() const { return{center().x + int(sqrt(double(w * w - h * h))), center().y}; }
-		Point focus2() const { return{center().x - int(sqrt(double(w * w - h * h))), center().y}; }
+		Point focus1() const { return{center().x + int(sqrt(narrow_cast<double, int>(w * w - h * h))), center().y}; }
+		Point focus2() const { return{center().x - int(sqrt(narrow_cast<double, int>(w * w - h * h))), center().y}; }
 
 		void set_major(int ww) { w = ww; }
 		int major() const { return w; }
@@ -357,7 +360,7 @@ namespace Graph_lib
 	{
 		Marks(const std::string& m) :Marked_polyline(m)
 		{
-			set_color(Color(Color::invisible));
+			set_color(Color(Color::Transparency::invisible));
 		}
 	};
 

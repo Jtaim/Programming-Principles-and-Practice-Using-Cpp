@@ -50,7 +50,7 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sect12_drill1.cpp">
+    <ClCompile Include="sect12_drill3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

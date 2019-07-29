@@ -18,5 +18,5 @@ namespace Graph_lib
 	inline bool operator==(Point a, Point b) { return a.x == b.x && a.y == b.y; }
 
 	inline bool operator!=(Point a, Point b) { return !(a == b); }
-}
-#endif
+} //Graph_lib
+#endif // POINT_GUARD

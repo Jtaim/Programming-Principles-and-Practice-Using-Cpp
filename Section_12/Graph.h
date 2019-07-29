@@ -1,6 +1,6 @@
 
 #ifndef GRAPH_GUARD
-#define GRAPH_GUARD 1
+#define GRAPH_GUARD
 
 #include "fltk.h"
 #include "Point.h"
@@ -406,6 +406,6 @@ namespace Graph_lib
 		Text fn;
 	};
 
-}
-#endif
+} // Graph_lib
+#endif //GRAPH_GUARD
 

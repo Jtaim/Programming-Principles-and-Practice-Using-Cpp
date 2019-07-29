@@ -25,4 +25,4 @@ private:
 
 	void next();
 };
-#endif
+#endif // SIMPLE_WINDOW_GUARD

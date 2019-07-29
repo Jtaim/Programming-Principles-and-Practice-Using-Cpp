@@ -1,5 +1,5 @@
 #ifndef WINDOW_GUARD
-#define WINDOW_GUARD 1
+#define WINDOW_GUARD
 
 #include "fltk.h"
 #include "Point.h"
@@ -26,7 +26,7 @@ namespace Graph_lib
 
 		void resize(int new_width, int new_height);
 
-		void set_label(const std::string& title) { label(title.c_str()); }
+		void set_label(const std::string& title);
 		std::string get_label() const { return std::string{label()}; }
 
 		void attach(Shape& shape);
@@ -41,6 +41,7 @@ namespace Graph_lib
 		void draw();
 
 	private:
+		std::string win_title;		// added this statement because FL_window class does not deep copy the title
 		int width, height;			// window size
 		std::vector<Shape*> shapes;	// shapes attached to window
 
@@ -52,5 +53,5 @@ namespace Graph_lib
 	inline int x_max() { return Fl::w(); }	// width of screen in pixels
 	inline int y_max() { return Fl::h(); }	// height of screen in pixels
 
-}
-#endif
+} // Graph_lib
+#endif // WINDOW_GUARD

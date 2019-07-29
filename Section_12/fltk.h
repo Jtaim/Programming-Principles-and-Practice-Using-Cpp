@@ -1,5 +1,5 @@
 #ifndef FLTK_GUARD
-#define FLTK_GUARD 1
+#define FLTK_GUARD
 
 #define WIN32 // not sure why but need for windows
 
@@ -15,4 +15,4 @@
 #include "Fl/Fl_JPEG_Image.H"
 #include "Fl/Fl_GIF_Image.H"
 
-#endif
+#endif // FLTK_GUARD

@@ -1,10 +1,9 @@
 ## Stroustrup, Bjarne. Programming: Principles and Practice Using C++.
-[ppp.github.io](http://jtaim.github.io/Programming-Principles-and-Practice-Using-Cpp/)
 #### Where to buy this book
 [Link to PPP on Amazon.](https://www.amazon.com/Programming-Principles-Practice-Using-2nd/dp/0321992784/ref=sr_1_1?s=books&ie=UTF8&qid=1444058171&sr=1-1&keywords=Programming%3A+Principles+and+Practice+Using+C%2B%2B)
 
 #### Why
-A place to share my solutions for the try its, review questions, drills, and exercises while fumbling my way through
+I created this repository to share my solutions for the try its, review questions, drills, and exercises while fumbling my way through
 Stroustrup, Bjarne. Programming: Principles and Practice Using C++ . Pearson Education. Kindle Edition.
 
 #### Useful tools
@@ -15,7 +14,7 @@ Stroustrup, Bjarne. Programming: Principles and Practice Using C++ . Pearson Edu
 #### Notes
 I will be using Microsoft Visual Studio Community to go through this book. 
 I created a solution folder named PPP and added projects under the PPP solution for each section.
-In the solution Configuration Properties I selected build for the section I'm working on and deselected the others.
+In the solution Configuration Properties I selected build for the section I'm working on and deselected the others or select current selection radial button.
 If the sections contain multiple files with a main function I just select Exclude from Project for the files I'm not working on 
 in the solution explorer tab.  Can always go back and add files back by selecting Include in Project. In the Solution Explorer tab you
 can select view all files to see all the included and excluded files.
@@ -39,7 +38,7 @@ Exercises 9, 10 and 11 are incomplete.</br>
 Skipping this section.  I might come back to finish.</br>
 <b>section 12</b></br>
 For help using the FLTK library I'm using [vcpkg](https://github.com/microsoft/vcpkg) C/C++ library manager.</br>
-I'll leave it up to you to setup the project for links to find FLTK includes and libs files.</br>
+See section_12.vcxproj to see how I set FLTK includes and libs files.</br>
 I have mine one folder up from my project root folder ($(SolutionDir)..\vcpkg\installed\x64-windows-static\include) this may vary depending on OS and other options, refer to [vcpkg documentation](https://vcpkg.readthedocs.io/en/latest/)  
 Before including classes needed for this section you can compile and run the fltk_test_window.cpp file to check that you linked the libraries correctly.</br>
 
@@ -53,6 +52,7 @@ I'm currently debugging these files to get them to work, stay tuned.
 - [GSL: Guideline Support Library](https://github.com/Microsoft/GSL)
 - [CPP reference](http://en.cppreference.com/w/Main_Page)
 - [LearnCpp.com](http://www.learncpp.com/)
+- [fltk documentation](https://www.fltk.org/documentation.php)
 
 #### Disclaimer
 I'm new at this so any suggestions or comments are appreciated.

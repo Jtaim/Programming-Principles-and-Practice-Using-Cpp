@@ -5,14 +5,16 @@ namespace Graph_lib
 {
 
 	Window::Window(int w, int h, const std::string& title)
-		: Fl_Window{w, h, title.c_str()}, width{w}, height{h}
+		: Fl_Window{w, h}, win_title{title}, width{w}, height{h}
 	{
+		set_label(win_title); // added this statement because FL_window class does not deep copy the title
 		init();
 	}
 
 	Window::Window(Point top_left, int w, int h, const std::string& title)
-		: Fl_Window{top_left.x, top_left.y, w, h, title.c_str()}, width{w}, height{h}
+		: Fl_Window{top_left.x, top_left.y, w, h}, win_title{title}, width{w}, height{h}
 	{
+		set_label(win_title); // added this statement because FL_window class does not deep copy the title
 		init();
 	}
 
@@ -52,6 +54,12 @@ namespace Graph_lib
 		width = new_width;
 		height = new_height;
 		size(new_width, new_height);
+	}
+
+	void Window::set_label(const std::string& title)
+	{
+		win_title = title;	// added this statement because FL_window class does not deep copy the title
+		label(win_title.c_str()); 
 	}
 
 	void Window::attach(Shape& shape)

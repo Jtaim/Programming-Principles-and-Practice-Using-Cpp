@@ -11,15 +11,16 @@ converts from miles to kilometers (1.609 kilometers to the mile)
 
 int main()
 {
-    using namespace std;
+	using namespace std;
 
-    cout << "Enter the number of miles you want to convert to kilometers: ";
-    double miles{ 0.0 };
-    if (!(cin >> miles)) {
-        simple_error("Invalid entry");
-    }
-    cout << miles << " miles converted to kilometers is " << miles * 1.609 << endl;
+	cout << "Enter the number of miles you want to convert to kilometers: ";
+	double miles{};
+	if(cin >> miles){
+		cout << miles << " miles converted to kilometers is " << miles * 1.609 << endl;
+	} else{
+		simple_error("Invalid entry");
+	}
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

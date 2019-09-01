@@ -16,12 +16,11 @@ z     122
 
 int main()
 {
-    for (int index = 97; index <= 122; ++index)	//do to narrowing conversion  to char limit index < 256
-    {
-        std::cout << static_cast<char>(index) << '\t' << index << '\t';					//lower case letters
-        std::cout << static_cast<char>(index - 32) << '\t' << index - 32 << std::endl;	//upper case letters
-    }
+	for(int index{97}; index <= 122; ++index){	//do to narrowing conversion to char limit index < 256
+		std::cout << static_cast<char>(index) << '\t' << index << '\t';					//lower case letters
+		std::cout << static_cast<char>(index - 32) << '\t' << index - 32 << std::endl;	//upper case letters
+	}
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

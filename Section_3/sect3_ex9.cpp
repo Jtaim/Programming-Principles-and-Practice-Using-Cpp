@@ -15,26 +15,33 @@ something that doesn't correspond, such as stupid computer!.
 
 int main()
 {
-    using namespace std;
+	using namespace std;
 
-    cout << "Enter a spelled out number (example \"two\" for 2) type \"quit\" to exit:\n";
-    string spell_num;
-    while (cin >> spell_num)
-    {
-        int val{ -1 };
-        if (spell_num == "zero") { val = 0; }
-        else if (spell_num == "one") { val = 1; }
-        else if (spell_num == "two") { val = 2; }
-        else if (spell_num == "three") { val = 3; }
-        else if (spell_num == "four") { val = 4; }
-        else if (spell_num == "quit") { break; }
-        else { cout << "Spelled out number does not compute try again!\n"; }
+	cout << "Enter a spelled out number (example \"two\" for 2) type \"quit\" to exit:\n";
+	string spell_num;
+	while(cin >> spell_num){
+		int val{INT_MIN};
+		if(spell_num == "zero"){
+			val = 0;
+		} else if(spell_num == "one"){
+			val = 1;
+		} else if(spell_num == "two"){
+			val = 2;
+		} else if(spell_num == "three"){
+			val = 3;
+		} else if(spell_num == "four"){
+			val = 4;
+		} else if(spell_num == "quit"){
+			break;
+		} else{
+			cout << "Spelled out number does not compute try again!\n";
+		}
 
-        if (val >= 0) {
-            cout << "The entered number " << spell_num << " is the number " << val << ".\n";
-        }
-    }
+		if(val >= 0){
+			cout << "The entered number " << spell_num << " is the number " << val << ".\n";
+		}
+	}
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

@@ -7,19 +7,18 @@ namespace Graph_lib
 	Window::Window(int w, int h, const std::string& title)
 		: Fl_Window{w, h}, win_title{title}, width{w}, height{h}
 	{
-		set_label(win_title); // added this statement because FL_window class does not deep copy the title
 		init();
 	}
 
 	Window::Window(Point top_left, int w, int h, const std::string& title)
 		: Fl_Window{top_left.x, top_left.y, w, h}, win_title{title}, width{w}, height{h}
 	{
-		set_label(win_title); // added this statement because FL_window class does not deep copy the title
 		init();
 	}
 
 	void Window::init()
 	{
+		set_label(win_title); // added this statement because FL_window class does not deep copy the title
 		resizable(this);
 		show();
 	}

@@ -10,8 +10,8 @@ Section 3.7 try this exercise
 
 int Main()
 {
-    STRING s = "Goodbye, cruel world! ";
-    cOut << S << '\n';
+	STRING s = "Goodbye, cruel world! ";
+	cOut << S << '\n';
 
-    keep_wind_open();
+	keep_wind_open();
 }

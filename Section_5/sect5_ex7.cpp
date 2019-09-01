@@ -16,51 +16,45 @@ If no real roots print out a message.
 
 void quadratic(const double a, const double b, const double c)
 {
-    if (a == 0.0) {
-        error("a = 0; so can not derive any roots\n");
-    }
-    else if (c == 0.0) {
-        std::cout << "x = 0\n";
-        std::cout << "x = " << -1.0 * b / a << std::endl;
-    }
-    else {
-        auto sq = b * b - 4.0 * a*c;
-        if (sq >= 0.0) {
-            std::cout << "x = " << (-1.0 * b + sqrt(sq)) / (2.0 * a) << std::endl;
-            std::cout << "x = " << (-1.0 * b - sqrt(sq)) / (2.0 * a) << std::endl;
-        }
-        else {
-            std::cout << "x = (" << -1.0 * b << " +i" << sqrt(fabs(sq)) << ")/" << (2.0 * a) << std::endl;
-            std::cout << "x = (" << -1.0 * b << " -i" << sqrt(fabs(sq)) << ")/" << (2.0 * a) << std::endl;
-        }
-    }
+	if(a == 0.0){
+		error("a = 0; so can not derive any roots\n");
+	} else if(c == 0.0){
+		std::cout << "x = 0\n";
+		std::cout << "x = " << -1.0 * b / a << std::endl;
+	} else{
+		auto sq{b * b - 4.0 * a * c};
+		if(sq >= 0.0){
+			std::cout << "x = " << (-1.0 * b + sqrt(sq)) / (2.0 * a) << std::endl;
+			std::cout << "x = " << (-1.0 * b - sqrt(sq)) / (2.0 * a) << std::endl;
+		} else{
+			std::cout << "x = (" << -1.0 * b << " +i" << sqrt(fabs(sq)) << ")/" << (2.0 * a) << std::endl;
+			std::cout << "x = (" << -1.0 * b << " -i" << sqrt(fabs(sq)) << ")/" << (2.0 * a) << std::endl;
+		}
+	}
 }
 
 int main()
-try
-{
-    std::cout << "Enter the a, b and c variables to solve the quadratic equation:\n";
-    double a{};
-    double b{ 1.0 };
-    double c{};
-    if (!(std::cin >> a >> b >> c)) {
-        error("a non-numeric number entered.");
-    }
+try{
+	std::cout << "Enter the a, b and c variables to solve the quadratic equation:\n";
+	double a{};
+	double b{1.0};
+	double c{};
+	if(!(std::cin >> a >> b >> c)){
+		error("a non-numeric number entered.");
+	}
 
-    quadratic(a, b, c);
+	quadratic(a, b, c);
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }
-catch (std::exception& e)
-{
-    std::cerr << "error: " << e.what() << '\n';
-    keep_window_open();
-    return 1;
+catch(std::exception& e){
+	std::cerr << "error: " << e.what() << '\n';
+	keep_window_open();
+	return 1;
 }
-catch (...)
-{
-    std::cerr << "Oops: unknown exception!\n";
-    keep_window_open();
-    return 2;
+catch(...){
+	std::cerr << "Oops: unknown exception!\n";
+	keep_window_open();
+	return 2;
 }

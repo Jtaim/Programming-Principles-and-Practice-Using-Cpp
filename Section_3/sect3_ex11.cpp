@@ -21,73 +21,72 @@ The value of all of your coins is 573 cents.
 
 int getInput()
 {
-    int val{ 0 };
-    if (!(std::cin >> val)) {
-        simple_error("Invalid integer value\n");
-    }
-    return val;
+	int val{};
+	if(!(std::cin >> val)){
+		simple_error("Invalid integer value\n");
+	}
+	return val;
 }
 
 int main()
 {
-    using namespace std;
+	using namespace std;
 
-    cout << "Lets count some change $$$$!\n";
-    int penny{ 0 };
-    int nickel{ 0 };
-    int dime{ 0 };
-    int quarter{ 0 };
-    int half_dollar{ 0 };
-    int dollar{ 0 };
-    cout << "Enter number of pennies: ";
-    penny = getInput();
-    cout << "Enter number of nickels: ";
-    nickel = getInput();
-    cout << "Enter number of dimes: ";
-    dime = getInput();
-    cout << "Enter number of quarters: ";
-    quarter = getInput();
-    cout << "Enter number of half dollars: ";
-    half_dollar = getInput();
-    cout << "Enter number of dollar coins: ";
-    dollar = getInput();
+	cout << "Lets count some change $$$$!\n";
+	int penny{};
+	int nickel{};
+	int dime{};
+	int quarter{};
+	int half_dollar{};
+	int dollar{};
+	cout << "Enter number of pennies: ";
+	penny = getInput();
+	cout << "Enter number of nickels: ";
+	nickel = getInput();
+	cout << "Enter number of dimes: ";
+	dime = getInput();
+	cout << "Enter number of quarters: ";
+	quarter = getInput();
+	cout << "Enter number of half dollars: ";
+	half_dollar = getInput();
+	cout << "Enter number of dollar coins: ";
+	dollar = getInput();
 
-    string denomination;
-    if (penny > 0) {
-        denomination = (penny == 1 ? "penny" : "pennies");
-        cout << "you have " << penny << " " << denomination << endl;
-    }
+	string denomination;
+	if(penny > 0){
+		denomination = (penny == 1 ? "penny" : "pennies");
+		cout << "you have " << penny << " " << denomination << endl;
+	}
 
-    if (nickel > 0) {
-        denomination = (nickel == 1 ? "nickel" : "nickels");
-        cout << "you have " << nickel << " " << denomination << endl;
-    }
+	if(nickel > 0){
+		denomination = (nickel == 1 ? "nickel" : "nickels");
+		cout << "you have " << nickel << " " << denomination << endl;
+	}
 
-    if (dime > 0) {
-        denomination = (dime == 1 ? "dime" : "dimes");
-        cout << "you have " << dime << " " << denomination << endl;
-    }
+	if(dime > 0){
+		denomination = (dime == 1 ? "dime" : "dimes");
+		cout << "you have " << dime << " " << denomination << endl;
+	}
 
-    if (quarter > 0) {
-        denomination = (quarter == 1 ? "quarter" : "quarters");
-        cout << "you have " << quarter << " " << denomination << endl;
-    }
+	if(quarter > 0){
+		denomination = (quarter == 1 ? "quarter" : "quarters");
+		cout << "you have " << quarter << " " << denomination << endl;
+	}
 
-    if (half_dollar > 0) {
-        denomination = (half_dollar == 1 ? "half dollar" : "half dollars");
-        cout << "you have " << half_dollar << " " << denomination << endl;
-    }
+	if(half_dollar > 0){
+		denomination = (half_dollar == 1 ? "half dollar" : "half dollars");
+		cout << "you have " << half_dollar << " " << denomination << endl;
+	}
 
-    if (dollar > 0) {
-        denomination = (dollar == 1 ? "dollar" : "dollars");
-        cout << "you have " << dollar << " " << denomination << endl;
-    }
+	if(dollar > 0){
+		denomination = (dollar == 1 ? "dollar" : "dollars");
+		cout << "you have " << dollar << " " << denomination << endl;
+	}
 
-    double total{ 0.0 };
-    total = penny + nickel * 5 + dime * 10 + quarter * 25 + half_dollar * 50 + dollar * 100;
-    total /= 100.0;
-    cout << "your total is $" << total << endl;
+	long long total{};
+	total = penny + nickel * 5LL + dime * 10LL + quarter * 25LL + half_dollar * 50LL + dollar * 100LL;
+	cout << "your total is $" << fixed << total / 100.0L << endl;
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

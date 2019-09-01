@@ -16,20 +16,17 @@
 // simple function to keep window console open
 inline void keep_window_open()
 {
-    std::cin.clear();
-    // some compilers need this to show contents in rdbuf
-    std::cin.sync_with_stdio(false);
-    // check if buffer is empty
-    auto cb = std::cin.rdbuf()->in_avail();
-    std::cin.ignore(cb);  //clear buffer
-    std::cout << "\n\nHit the Enter key to exit" << std::endl;
-    std::cin.get();
+	std::cin.clear();
+	std::cin.sync_with_stdio(false);
+	std::cin.ignore(std::cin.rdbuf()->in_avail());  //clear buffer
+	std::cout << "\nPress the Enter key to continue";
+	std::cin.get();
 }
 
 // error function to be used (only) until error() is introduced in Chapter 5:
 inline void simple_error(std::string s)	// write error: s and exit program
 {
-    std::cout << "error: " << s << std::endl;
-    keep_window_open();
-    std::exit(1);
+	std::cout << "error: " << s << std::endl;
+	keep_window_open();
+	std::exit(1);
 }

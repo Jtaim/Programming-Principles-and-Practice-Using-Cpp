@@ -14,50 +14,32 @@ numbers and the larger value is: followed by the larger value.
 
 int main()
 {
-    constexpr char terminationChar = '|';	//termination character
-    constexpr int howManyNumPerItr = 2;		//numbers to get per loop iteration
+	constexpr char terminationChar = '|';	//termination character
+	const std::string instructions{"Enter two numbers or enter " + std::string{terminationChar} +" to exit."};
 
-    int enteredNumber;
-    std::vector<decltype(enteredNumber)> enteredNumbers;
-    bool stop = false;
-    while (!stop)
-    {
-        std::cout << "Enter " << howManyNumPerItr << " numbers. Enter " << terminationChar << " to exit.\n";
-        for (int itr = 0; itr < howManyNumPerItr; ++itr)
-        {
-            if (std::cin >> enteredNumber) {
-                enteredNumbers.push_back(enteredNumber);
-            }
-            else {
-                std::cin.clear();
-                char c;
-                std::cin >> c;
-                if (c == terminationChar) {
-                    enteredNumbers.clear();
-                    stop = true;
-                    break;
-                }
-                else {
-                    simple_error("invalid entry:  was not a valid number or termination");
-                }
-            }
-        }
-        // print numbers if valid
-        if (!stop) {
-            std::cout << "Entered numbers: ";
-            for (auto i : enteredNumbers) {
-                std::cout << i << " ";
-            }
-            std::cout << std::endl;
-            std::sort(enteredNumbers.begin(), enteredNumbers.end());
-            std::cout << "smaller value is: " << enteredNumbers.front() << std::endl;
-            std::cout << "larger value is: " << enteredNumbers.back() << std::endl;
-        }
-        //clear vector for next set of numbers
-        enteredNumbers.clear();
-    }
+	std::cout << instructions << '\n';
+	char c{};
+	while(std::cin.get(c) && c != terminationChar){
+		std::cin.putback(c);
+		static int val1{};
+		static int val2{};
+		if(std::cin >> val1 >> val2){
+			if(val1 > val2){
+				std::swap(val1, val2);
+			}
+			std::cout << "smaller value is: " << val1 << std::endl;
+			std::cout << "larger value is: " << val2 << std::endl;
+		} else{
+			std::cin.clear();
+			std::cin.get(c);
+			if(c == terminationChar){
+				break;
+			}
+			std::cout << "Entry was an invalid number or termination, please try again.\n";
+		}
+		std::cout << instructions << '\n';
+	}
 
-    std::cout << "Bye\n";
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

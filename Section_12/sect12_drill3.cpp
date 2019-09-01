@@ -26,29 +26,33 @@ try{
 
 	Point top_left{100,100};
 	Simple_window win{top_left,600,400,"Canvas #1"};
+	win.fullscreen();
 	win.wait_for_button();
+	win.fullscreen_off();
+	win.resize(win.x_max(), win.y_max());
+	win.position(top_left.x, top_left.y);
 
-	auto lbl{win.get_label()};  // why is this empty
-	if(!lbl.empty()){
-		std::cout << lbl << "\n";
-	} else{
-		std::cout << "get_label() returned empty string\n";
+	int max_x{win.x_max() - 40};
+	if(win.fullscreen_active()){
+		max_x = Graph_lib::x_max() - 40;
 	}
-
-	Axis xa{Axis::Orientation::x, Point{20, 300}, 280, 10, "x axis"};
+	Axis xa{Axis::Orientation::x, Point{20, 300}, max_x, 10, "x axis"};
 	xa.set_color(Color::Color_type::black);
 	win.attach(xa);
 	win.set_label("Canvas #2");
 	win.wait_for_button();
 
 	Axis ya{Axis::Orientation::y, Point{20,300}, 280, 10, "y axis"};
-	ya.set_color(Color::Color_type::cyan);
+	ya.set_color(Color::Color_type::black);
 	ya.label.set_color(Color::Color_type::dark_red);
 	win.attach(ya);
 	win.set_label("Canvas #3");
 	win.wait_for_button();
 
-	Function sine{sin,0,100,Point{20,150},1000,50,50};	// sine curve
+	constexpr auto x_scale{15};
+	constexpr auto y_scale{50};
+	auto duration = static_cast<double>(max_x) / x_scale;
+	Function sine{sin,0,duration,Point{20,150},1000,x_scale,y_scale};	// sine curve
 	// plot sin() in the range [0:100) with (0,0) at (20,150)
 	// using 1000 points; scale x values *50, scale y values *50
 	win.attach(sine);
@@ -58,24 +62,25 @@ try{
 	sine.set_color(Color::Color_type::blue); // change sine’s color
 
 	Graph_lib::Polygon poly;	// define with namespace or ambiguous with Polygon in wingdi.h
-	poly.add(Point{300,200});	// three points make a triangle
-	poly.add(Point{350,100});
-	poly.add(Point{400,200});
+	poly.add(Point{300,300});	// three points make a triangle
+	poly.add(Point{400,100});
+	poly.add(Point{500,300});
 	poly.set_color(Color::Color_type::red);
 	poly.set_style(Line_style::Line_style_type::dash);
 	win.attach(poly);
 	win.set_label("Canvas #5");
 	win.wait_for_button();
 
-	Graph_lib::Rectangle r{Point{200,200}, 100, 50};	// top left corner, width, height
+	Graph_lib::Rectangle r{Point{200,100}, 100, 100};	// top left corner, width, height
 	win.attach(r);
 	win.set_label("Canvas #6");
 	win.wait_for_button();
 
 	Closed_polyline poly_rect;
 	poly_rect.add(Point{100,50});
-	poly_rect.add(Point{200,50});
-	poly_rect.add(Point{200,100});
+	poly_rect.add(Point{150,50});
+	poly_rect.add(Point{200,75});
+	poly_rect.add(Point{150,100});
 	poly_rect.add(Point{100,100});
 	poly_rect.add(Point{50,75});
 	win.attach(poly_rect);

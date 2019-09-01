@@ -16,21 +16,21 @@ int square(int);
 
 int main()
 {
-    std::cout << "Program to find the squared results as the first program did in 1949.\n";
-    for (int num = 0; num < 100; ++num) {
-        std::cout << num << "\tsquared = " << square(num) << std::endl;
-    }
+	std::cout << "Program to find the squared results as the first program did in 1949.\n";
+	for(int num{}; num < 100; ++num){
+		std::cout << num << "\tsquared = " << square(num) << std::endl;
+	}
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }
 
 // do repeat addition not multiplication function
 int square(int i)
 {
-    int result{ 0 };
-    for (int j = 0; j < i; j++) {
-        result += i;
-    }
-    return result;
+	int result{};
+	for(int j{}; j < i; j++){
+		result += i;
+	}
+	return result;
 }

@@ -15,16 +15,15 @@ like The value 4 is an even number. Hint: See the remainder (modulo) operator in
 
 int main()
 {
-    using namespace std;
+	using namespace std;
 
-    cout << "Enter an integer: ";
-    int val{ 0 };
-    if (!(cin >> val)) {
-        simple_error("Invalid integer value\n");
-    }
-    string oddOrEven = (val % 2) ? "odd" : "even";
-    cout << "The value " << val << " is an " << oddOrEven << " number.\n";
+	cout << "Enter an integer: ";
+	int val{};
+	if(!(cin >> val)){
+		simple_error("Invalid integer value\n");
+	}
+	cout << "The value " << val << " is an " << ((val % 2) ? "odd" : "even") << " number.\n";
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

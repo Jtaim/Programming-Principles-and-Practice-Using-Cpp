@@ -16,47 +16,39 @@ Write out all the (name, score) pairs, one per line.
 
 int main()
 {
-    using pType = std::pair<std::string, double>;
-    pType name_score;
-    std::vector<pType> ranks;
+	using pType = std::pair<std::string, double>;
+	pType name_score;
+	std::vector<pType> ranks;
 
-    std::cout << "Enter names and scores:\n";
-    while (true) {
-        std::cin >> name_score.first >> name_score.second;
-        // break if EOF and !(NoName and 0))
-        if (std::cin.good() && !(name_score.first == "NoName" && name_score.second == 0)) {
-            std::transform(name_score.first.begin(), name_score.first.end(), name_score.first.begin(),
-                [](unsigned char name) { return static_cast<unsigned char>(::tolower(name)); });
-            ranks.push_back(name_score);
-        }
-        else {
-            break;
-        }
-    }
+	std::cout << "Enter names and scores:\n";
+	while(true){
+		std::cin >> name_score.first >> name_score.second;
+		// break if EOF and !(NoName and 0))
+		if(std::cin.good() && !(name_score.first == "NoName" && name_score.second == 0)){
+			std::transform(name_score.first.begin(), name_score.first.end(), name_score.first.begin(),
+				[](char name){ return static_cast<char>(::tolower(name)); });
 
-    if (!ranks.empty()) {
-        // check for duplicates
-        for (const auto p : ranks) {
-            std::vector<pType>::size_type cnt{};
-            for (const auto check : ranks) {
-                if (p.first == check.first) {
-                    if (cnt > 0) {
-                        simple_error("found a duplicated name");
-                    }
-                    ++cnt;
-                }
-            }
-        }
+			// check if duplicated
+			if(ranks.cend() != std::find_if(ranks.cbegin(), ranks.cend(),
+				[&name_score](pType ns){return ns.first == name_score.first; })){
+				simple_error("found a duplicated name");
+			}
 
-        // print contents to screen
-        for (const auto i : ranks) {
-            std::cout << "name: " << i.first << "\tscore: " << i.second << std::endl;
-        }
-    }
-    else {
-        std::cout << "nothing entered\n";
-    }
+			ranks.push_back(name_score);
+		} else{
+			break;
+		}
+	}
 
-    keep_window_open();
-    return 0;
+	if(!ranks.empty()){
+		// print contents to screen
+		for(const auto i : ranks){
+			std::cout << "name: " << i.first << "\tscore: " << i.second << std::endl;
+		}
+	} else{
+		std::cout << "nothing entered\n";
+	}
+
+	keep_window_open();
+	return 0;
 }

@@ -31,58 +31,46 @@
 *   Also need to declare start of program or before use of cin or risk reseting rdbuf() losing ptential wanted data.
 *   See https://en.cppreference.com/w/cpp/io/ios_base/sync_with_stdio
 *   Normally all C++ streams have this set to true. if is true then in_avail() is 0.*/
-#define SET_IOSYNC std::cin.sync_with_stdio(false) 
 
 namespace ppp
 {
-    inline void clear_cin_buffer(const char term = '\0')
-    {
-        std::cin.clear();
-        // check if buffer is empty
-        auto cb = std::cin.rdbuf()->in_avail();
-        while(cb) {
-            char c{};
-            std::cin.get(c);    //clear buffer
-            if (term == c) break;
-            --cb;
-        }
-    }
+	// simple function to keep window console open
+	inline void keep_window_open()
+	{
+		std::cin.clear();
+		std::cin.sync_with_stdio(false);
+		std::cin.ignore(std::cin.rdbuf()->in_avail());	//clear cin buffer
+		std::cout << "\nPress Enter key to continue";
+		std::cin.get();
+	}
 
-    // simple function to keep window console open
-    inline void keep_window_open()
-    {
-        clear_cin_buffer();
-        std::cout << "\n\nHit the Enter key to exit" << std::endl;
-        std::cin.get();
-    }
+	inline void error(const std::string& s)
+	{
+		throw std::runtime_error(s);
+	}
 
-    inline void error(const std::string& s)
-    {
-        throw std::runtime_error(s);
-    }
+	inline void error(const std::string& s, const std::string& s2)
+	{
+		error(s + s2);
+	}
 
-    inline void error(const std::string& s, const std::string& s2)
-    {
-        error(s + s2);
-    }
+	inline void error(const std::string& s, int i)
+	{
+		std::ostringstream os;
+		os << s << ": " << i;
+		error(os.str());
+	}
 
-    inline void error(const std::string& s, int i)
-    {
-        std::ostringstream os;
-        os << s << ": " << i;
-        error(os.str());
-    }
-
-    // run-time checked narrowing cast (type conversion).
-    template<typename Target, typename Source>
-    Target narrow_cast(const Source& a)
-    {
-        auto r = static_cast<Target>(a);
-        if (static_cast<Source>(r) != a) {
-            throw std::runtime_error("narrow_cast<>() failed");
-        }
-        return r;
-    }
+	// run-time checked narrowing cast (type conversion).
+	template<typename Target, typename Source>
+	Target narrow_cast(const Source& a)
+	{
+		auto r = static_cast<Target>(a);
+		if(static_cast<Source>(r) != a){
+			throw std::runtime_error("narrow_cast<>() failed");
+		}
+		return r;
+	}
 }
 
 #endif	// close header guard

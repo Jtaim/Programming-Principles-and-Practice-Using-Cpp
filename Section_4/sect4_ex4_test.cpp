@@ -10,54 +10,59 @@ Your program should be able to identify the number after asking no more than sev
 Hint: Use the < and <= operators and the if-else construct.
 */
 
+// test to show correlation of range to max guess attempts = round to highest whole number(ln(range)/ln(2).
+// so ln(100)/ln(2) = 6.6438561898 or 7 needed for guess all numbers in that range
+
 #include "section4.h"
 
 int main()
 {
-    int constexpr maxRange = 100;       // maximum number can select
-    int constexpr minRange = 1;         // minimum number can guess
-    int constexpr maxGuessAttempts = 7; // maximum number of times to ask before identifying the number
+	int constexpr maxRange{100};       // maximum number can select
+	int constexpr minRange{1};         // minimum number can guess
+	//int constexpr maxGuessAttempts{7}; // maximum number of times to ask before identifying the number
 
-    // for loop to debug all combinations
-    for (auto iteration = minRange; iteration <= maxRange; iteration++) {
+	int const maxGuessAttempts{static_cast<int>(std::ceill((std::logl(maxRange) / std::logl(2.0L))))};
+	std::cout << maxGuessAttempts << '\n';
 
-        int high = maxRange; 					// keeps track of a new high
-        int low = minRange;						// keeps track of a new low
-        int guess = (high - low) / 2 + low;     // keeps track of the next guess
-        int guessAttempts = 0;					// keeps count of guess count
+	// for loop to debug all combinations
+	for(auto iteration = minRange; iteration <= maxRange; iteration++){
 
-        //std::cout << "Pick a number between " << low << " and " << high << " and let me try to guess it by asking some questions.\n";
+		int high{maxRange}; 					// keeps track of a new high
+		int low{minRange};						// keeps track of a new low
+		int guess{(high - low) / 2 + low};     // keeps track of the next guess
+		int guessAttempts{};					// keeps count of guess count
 
-        bool isFound = false;
-        while (!isFound && guessAttempts < maxGuessAttempts) {
-            //std::cout << "Is your number <= " << guess << " (y or n)? ";
-            char yesOrNo = ' ';
+		//std::cout << "Pick a number between " << low << " and " << high << " and let me try to guess it by asking some questions.\n";
 
-            //********************************************************************************************
-            iteration <= guess ? yesOrNo = 'y' : yesOrNo = 'n';
-            std::cin.putback(yesOrNo);
-            //std::cout << "Is " << iteration << " <= " << guess << " " << choice << '\n';
-            //********************************************************************************************
+		bool isFound{false};
+		while(!isFound && guessAttempts < maxGuessAttempts){
+			//std::cout << "Is your number <= " << guess << " (y or n)? ";
+			char yesOrNo{};
 
-            std::cin >> yesOrNo;
-            if (yesOrNo == 'y' || yesOrNo == 'n') {
-                guessAttempts++;
-                yesOrNo == 'y' ? high = guess : low = guess + 1;
-                high == low ? isFound = true : guess = (high - low) / 2 + low;
-            }
-            else {
-                std::cout << "You did not pick a valid (y or n) answer.  Select again.\n";
-            }
-        }
+			//********************************************************************************************
+			iteration <= guess ? yesOrNo = 'y' : yesOrNo = 'n';
+			std::cin.putback(yesOrNo);
+			//std::cout << "Is " << iteration << " <= " << guess << " " << choice << '\n';
+			//********************************************************************************************
 
-        if (isFound) {
-            std::cout << "Found the answer " << high << " in " << guessAttempts << " guesses.\n";
-        }
-        else {
-            simple_error("Exceeded max number of guesses\n");
-        }
-    } // need extra bracket to close for loop
+			std::cin >> yesOrNo;
+			//yesOrNo = static_cast<char>(std::tolower(yesOrNo));
+			if(yesOrNo == 'y' || yesOrNo == 'n'){
+				guessAttempts++;
+				yesOrNo == 'y' ? high = guess : low = guess + 1;
+				high == low ? isFound = true : guess = (high - low) / 2 + low;
+			} else{
+				std::cout << "You did not pick a valid (y or n) answer.  Select again.\n";
+			}
+		}
 
-    keep_window_open();
-    return 0;
+		if(isFound){
+			std::cout << "Found the answer " << high << " in " << guessAttempts << " guesses.\n";
+		} else{
+			simple_error("Exceeded max number of guesses\n");
+		}
+	} // need extra bracket to close for loop
+
+	keep_window_open();
+	return 0;
 }

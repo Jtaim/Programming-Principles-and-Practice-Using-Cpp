@@ -12,35 +12,32 @@ find errors and document
 // converts Celsius to Kelvin
 double ctok(double c)
 {
-    constexpr double conversion_constant = 273.15;
+	constexpr double conversion_constant{73.15};
 
-    double celsiusToKelvin = c + conversion_constant;
+	double celsiusToKelvin{c + conversion_constant};
 
-    return celsiusToKelvin;
+	return celsiusToKelvin;
 }
 
 int main()
-try
-{
-    std::cout << "Enter a temperature in Celsius to covert to Kelvin:\n";
-    double celsius{};
-    std::cin >> celsius;
-    double kelvin = ctok(celsius);
-    std::cout << kelvin << '\n';
+try{
+	std::cout << "Enter a temperature in Celsius to covert to Kelvin:\n";
+	double celsius{};
+	std::cin >> celsius;
+	double kelvin{ctok(celsius)};
+	std::cout << kelvin << '\n';
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }
 
-catch (std::exception& e)
-{
-    std::cerr << "error: " << e.what() << '\n';
-    keep_window_open();
-    return 1;
+catch(std::exception& e){
+	std::cerr << "error: " << e.what() << '\n';
+	keep_window_open();
+	return 1;
 }
-catch (...)
-{
-    std::cerr << "Oops: unknown exception!\n";
-    keep_window_open();
-    return 2;
+catch(...){
+	std::cerr << "Oops: unknown exception!\n";
+	keep_window_open();
+	return 2;
 }

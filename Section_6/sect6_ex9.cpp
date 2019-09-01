@@ -14,72 +14,67 @@ terminate program with '|'.
 
 #include "section6.h"
 
+void print_number(const std::string& num, const std::vector<std::string>& den);
+
 int main()
 {
-    constexpr char termination = '|';
-    // only have to add or subtract denominations array size and program will adjust.
-    // make_array is experimental which could just declare elements then will adjust.
-    constexpr std::array<const char*, 4> denomination{ "ones", "tens", "hundreds", "thousands" };
-    constexpr auto maxValueSize = denomination.size();
+	constexpr char termination = '|';
+	// only have to add or subtract denominations array size and program will adjust.
+	const std::vector<std::string> denomination{"ones", "tens", "hundreds", "thousands"};
 
-    try {
-        bool isLoopAgain = true;
-        do {
-            std::cout << "Enter a number up to " << maxValueSize << " digits long. Enter " << termination << " to exit\n";
-            std::string number{};
-            size_t itr = 0;
-            while (true) {
-                char digit;
-                std::cin.get(digit);
-                if (digit == '\n') {
-                    break;
-                }
-                else if (!isdigit(digit)) {
-                    if (digit == termination) {
-                        isLoopAgain = false;
-                        break;
-                    }
-                    error("found a non number character");
-                }
-                else {
-                    if (itr < maxValueSize) {
-                        number.push_back(digit);
-                        ++itr;
-                        continue;
-                    }
-                    error("entered number is too large");
-                }
-            }
+	try{
+		bool LoopAgain{true};
+		do{
+			std::cout << "Enter a number up to " << denomination.size() << " digits long. Enter " << termination << " to exit\n";
+			std::string number;
+			size_t itr{};
 
-            if (!number.empty()) {
-                std::cout << number << " is ";
-                for (size_t i{}, j{ number.size() - 1 }; i < number.size(); ++i, --j) {
-                    std::cout << number[i] << " " << denomination[j]
-                        << ((i < number.size() - 1) ? " and " : ".\n");
-                }
-            }
-            else if (isLoopAgain) {
-                std::cout << "no number was entered\n";
-            }
+			char digit{};
+			while(std::cin.get(digit)){
+				if(digit == '\n'){
+					print_number(number, denomination);
+					break;
+				} else if(!isdigit(digit)){
+					if(digit == termination){
+						LoopAgain = false;
+						break;
+					}
+					error("found a non number character");
+				} else{
+					if(itr > denomination.size()){
+						error("entered number is too large");
+					}
+					number.push_back(digit);
+					++itr;
+				}
+			}
+		} while(LoopAgain && std::cin);
 
-            number.clear();
-        } while (isLoopAgain);
+	}
+	catch(std::exception& e){
+		std::cerr << "error: " << e.what() << '\n';
+		keep_window_open();
+		return 1;
+	}
+	catch(...){
+		std::cerr << "Oops: unknown exception!\n";
+		keep_window_open();
+		return 2;
+	}
 
-    }
-    catch (std::exception& e)
-    {
-        std::cerr << "error: " << e.what() << '\n';
-        keep_window_open();
-        return 1;
-    }
-    catch (...)
-    {
-        std::cerr << "Oops: unknown exception!\n";
-        keep_window_open();
-        return 2;
-    }
+	keep_window_open();
+	return 0;
+}
 
-    std::cout << "Bye";
-    keep_window_open();
-    return 0;
+void print_number(const std::string& num, const std::vector<std::string>& den)
+{
+	if(num.empty()){
+		std::cout << "no number was entered\n";
+	} else{
+		std::cout << num << " is ";
+		for(size_t i{}, j{num.size() - 1}; i < num.size(); ++i, --j){
+			std::cout << num.at(i) << " " << den.at(j)
+				<< ((i < num.size() - 1) ? " and " : ".\n");
+		}
+	}
 }

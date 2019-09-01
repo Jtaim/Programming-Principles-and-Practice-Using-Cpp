@@ -17,40 +17,39 @@ Section 4 exercise 11.
 
 int main()
 {
-    int constexpr max = 100;
+	int constexpr max{100};
 
-    // set first known prime
-    std::vector<int> primes{ 2 };
+	// set first known prime
+	std::vector<int> primes{2};
 
-    // start with 3
-    for (int i = 3; i <= max; ++i) {
-        bool is_prime = true;
-        // find if prime and add to prime vector if so.
-        for (auto prime : primes) {
-            if (i % prime == 0) {
-                is_prime = false;  // not a prime
-                break;
-            }
-        }
-        if (is_prime) {
-            primes.push_back(i);
-        }
-    }
+	// start with 3
+	for(int i{3}; i <= max; ++i){
+		bool is_prime = true;
+		// find if prime and add to prime vector if so.
+		for(auto prime : primes){
+			if(i % prime == 0){
+				is_prime = false;  // not a prime
+				break;
+			}
+		}
+		if(is_prime){
+			primes.push_back(i);
+		}
+	}
 
-    int j = 1;
-    // print out the prime numbers
-    for (auto x : primes) {
-        //10 per row
-        if (j % 10) {
-            std::cout << x << '\t';
-        }
-        else {
-            std::cout << x << std::endl;
-        }
-        j++;
-    }
+	int j{1};
+	// print out the prime numbers
+	for(auto x : primes){
+		//10 per row
+		if(j % 10){
+			std::cout << x << '\t';
+		} else{
+			std::cout << x << std::endl;
+		}
+		j++;
+	}
 
-    std::cout << '\n';
-    keep_window_open();
-    return 0;
+	std::cout << '\n';
+	keep_window_open();
+	return 0;
 }

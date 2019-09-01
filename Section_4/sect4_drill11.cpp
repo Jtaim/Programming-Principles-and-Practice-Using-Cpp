@@ -35,74 +35,70 @@ Section 4 Drill step 11.
 */
 
 #include "section4.h"
+#include <unordered_map>
 
 int main()
 {
-    constexpr char terminationChar = '|';	//termination character
-    const std::vector<std::pair<std::string, double>> convert{
-        {"m", 1.0},	        // leave as is
-        {"cm", 0.01},	    // convert to m
-        {"in", 0.0254},	    // convert to m
-        {"ft", 12.0 * 0.0254}	//convert to m
-    };
+	constexpr char terminationChar = '|';	//termination character
+	const std::string instructions{"Enter a number with unit of measurement or enter " + std::string{terminationChar} +" to exit."};
+	constexpr double tolerance = 1.0 / 100;	//close enough for floating point comparison
 
-    double enteredMeasurement{ 0.0 };
-    std::string unitOfMeasure;
-    std::vector<decltype(enteredMeasurement)> enteredMeasurements;
-    double sum{ 0.0 };
-    bool stop{ false };
-    while (!stop)
-    {
-        std::cout << "Enter a scalar distance number with the unit of measurement or enter " << terminationChar << " to exit.\n";
-        while (!stop)
-        {
-            // get number
-            std::cin >> enteredMeasurement;
-            if (!std::cin) {
-                std::cin.clear();
-                // if no number entered then assume 1 as the measurement
-                enteredMeasurement = 1.0;
-            }
+	const std::unordered_map<std::string, double> convert{
+		{"m", 1.0},	        // leave as is
+		{"cm", 0.01},	    // convert to m
+		{"in", 0.0254},	    // convert to m
+		{"ft", 12.0 * 0.0254}	//convert to m
+	};
 
-            // get unit of measure
-            std::cin >> unitOfMeasure;
-            // look for termination char
-            if (unitOfMeasure.find(terminationChar) != std::string::npos) {
-                std::cout << "termination '" << terminationChar << "' found\n";
-                stop = true;
-            }
-            // check for valid unit of measure and convert
-            else {
-                auto itr = convert.begin();
-                for (; itr < convert.end(); ++itr) {
-                    if (itr->first == unitOfMeasure) {
-                        // convert measurement to m then store in vector
-                        enteredMeasurement *= itr->second;
-                        enteredMeasurements.push_back(enteredMeasurement);
-                        sum += enteredMeasurement;
-                        std::cout << "converted measurement: " << enteredMeasurement << "m" << std::endl;
-                        break;
-                    }
-                }
-                if (itr == convert.end()) {
-                    simple_error("invalid unit of measure");
-                }
-            }
-        }
-    }
-    // print measurements
-    if (!enteredMeasurements.empty()) {
-        std::cout << "Values collected:\n";
-        std::sort(enteredMeasurements.begin(), enteredMeasurements.end());
-        for (const auto i : enteredMeasurements) {
-            std::cout << i << "m" << std::endl;
-        }
-        std::cout << "The smallest valid value entered is " << enteredMeasurements.front() << "m" << std::endl;
-        std::cout << "The largest valid value entered is " << enteredMeasurements.back() << "m" << std::endl;
-        std::cout << "The sum of all valid entered measurements is " << sum << "m" << std::endl;
-    }
+	std::vector<double> enteredMeasurements;
+	std::cout << instructions << '\n';
+	char c{};
+	while(std::cin.get(c) && c != terminationChar){
+		std::cin.putback(c);
 
-    std::cout << "Bye\n";
+		// get number
+		static double enteredMeasurement{};
+		std::cin >> enteredMeasurement;
+		if(!std::cin){
+			std::cin.clear();
+			// if no number entered then assume 1 as the measurement
+			enteredMeasurement = 1.0;
+		}
+
+		// get unit of measure
+		static std::string unitOfMeasure;
+		std::cin >> unitOfMeasure;
+		// check for valid unit of measure and convert
+		auto itr{convert.find(unitOfMeasure)};
+		// convert measurement to cm then store in vector
+		if(itr != convert.end()){
+			static double convertedMeasurement{};
+			convertedMeasurement = enteredMeasurement * itr->second;
+			enteredMeasurements.push_back(convertedMeasurement);
+			std::cout << enteredMeasurement << unitOfMeasure << " converted to " << convertedMeasurement << "m\n";
+		} else if(unitOfMeasure.find(terminationChar) != std::string::npos){
+			break;
+		} else{
+			std::cout << "Entry was an invalid unit of measure or termination, please try again.\n";
+		}
+		std::cout << instructions << '\n';
+	}
+	std::cout << "termination '" << terminationChar << "' found\n";
+
+	// print measurements
+	if(!enteredMeasurements.empty()){
+		std::sort(enteredMeasurements.begin(), enteredMeasurements.end());
+		std::cout << "Values collected:\n";
+		for(const auto i : enteredMeasurements){
+			std::cout << i << "m" << std::endl;
+		}
+		std::cout << "Number of values entered: " << enteredMeasurements.size() << '\n';
+		std::cout << "The smallest valid value entered is " << enteredMeasurements.front() << "m\n";
+		std::cout << "The largest valid value entered is " << enteredMeasurements.back() << "m\n";
+		std::cout << "The sum of all valid entered measurements is "
+			<< std::accumulate(enteredMeasurements.cbegin(), enteredMeasurements.cend(), 0.0) << "m\n";
+	}
+
     keep_window_open();
     return 0;
 }

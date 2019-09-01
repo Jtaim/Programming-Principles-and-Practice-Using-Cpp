@@ -19,82 +19,86 @@ Write out all the (name, score) pairs, one per line.
 class Name_value
 {
 public:
-    std::string name;
-    int value;
-    Name_value(std::string n = "NoName", int val = 0)
-        : name{ n }, value(val) {}
+	std::string name;
+	double score{};
+	Name_value(std::string n = "", double val = 0)
+		: name{n}, score(val) {}
 };
+
+bool operator==(const Name_value& nv1, const Name_value& nv2)
+{
+	return (nv1.name == nv2.name && nv1.score == nv2.score);
+}
+
+bool operator!=(const Name_value& nv1, const Name_value& nv2)
+{
+	return !(nv1 == nv2);
+}
+
+const Name_value termination{"noname", 0};
 
 int main()
 {
-    using namespace std;
-    try
-    {
-        std::vector<Name_value> vNS;
-        cout << "Enter names and scores. Terminate input with NoName 0\n";
-        // collect valid data
-        while (true) {
-            std::string name;
-            int score;
-            cin >> name >> score;
-            // escape if NoName or EOF
-            if (cin.eof() || (name == "NoName" && score == 0)) {
-                break;
-            }
-            // redo if bad input non number for score
-            else if (cin.fail()) {
-                cout << "Entered invalid name or score.  Please reenter.\n";
-                clear_cin_buffer();
-            }
-            else if (cin.bad()) {
-                error("input data error\n");
-            }
-            else {
-                std::transform(name.begin(), name.end(), name.begin(),
-                    [](unsigned char c) {return narrow_cast<unsigned char>(::tolower(c)); });
-                auto result = vNS.begin();
-                if (vNS.size() != 0) {
-                    for (; result < vNS.end(); ++result) {
-                        if (result->name == name) {
-                            break;
-                        }
-                    }
-                    if (result == vNS.end()) {
-                        vNS.push_back({ name, score });
-                    }
-                    else {
-                        error("Entered duplicate name.\n");
-                    }
-                }
-                else {
-                    vNS.push_back({ name, score });
-                }
-            }
-        }
+	using namespace std;
 
-        // print contents to screen
-        if (vNS.size() != 0) {
-            for (auto i : vNS) {
-                cout << i.name << " " << i.value << '\n';
-            }
-        }
-        else {
-            cout << "no names or scores entered\n";
-        }
-    }
-    catch (std::exception& e)
-    {
-        std::cerr << "error: " << e.what() << '\n';
-        keep_window_open();
-        return 1;
-    }
-    catch (...)
-    {
-        std::cerr << "Oops: unknown exception!\n";
-        keep_window_open();
-        return 2;
-    }
-    cout << "Bye\n";
-    keep_window_open();
-    return 0;
+	try{
+		vector<Name_value> ranks;
+		cout << "Enter names and scores. Terminate input with NoName 0\n";
+		// collect valid data
+		while(true){
+			Name_value nv;
+			cin >> nv.name >> nv.score;
+			// escape if NoName or EOF
+			if(cin.eof()){
+				break;
+			}
+			// redo if bad input non number for score
+			else if(cin.fail()){
+				cout << "Entered invalid name or score.  Please reenter.\n";
+				cin.clear();
+				cin.sync_with_stdio(false);
+				cin.ignore(cin.rdbuf()->in_avail());
+				continue;
+			} else if(cin.bad()){
+				error("input data error\n");
+			}
+
+			std::transform(nv.name.begin(), nv.name.end(), nv.name.begin(),
+				[](unsigned char c){return narrow_cast<unsigned char>(::tolower(c)); });
+
+			// check if duplicated
+			if(ranks.cend() != std::find_if(ranks.cbegin(), ranks.cend(),
+				[&nv](Name_value ns){return ns.name == nv.name; })){
+				error("found a duplicated name");
+			}
+
+			if(nv == termination){
+				break;
+			}
+
+				ranks.push_back({nv.name, nv.score});
+		}
+
+		// print contents to screen
+		if(!ranks.empty()){
+			for(const auto i : ranks){
+				std::cout << "name: " << i.name << "\tscore: " << i.score << "\n";
+			}
+		} else{
+			cout << "no names or scores entered\n";
+		}
+	}
+	catch(std::exception& e){
+		std::cerr << "error: " << e.what() << '\n';
+		keep_window_open();
+		return 1;
+	}
+	catch(...){
+		std::cerr << "Oops: unknown exception!\n";
+		keep_window_open();
+		return 2;
+	}
+
+	keep_window_open();
+	return 0;
 }

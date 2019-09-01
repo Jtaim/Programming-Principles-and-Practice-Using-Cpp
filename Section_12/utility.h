@@ -1,6 +1,8 @@
 #ifndef UTILITY_GUARD_H
 #define UTILITY_GUARD_H
 
+#include <iostream>
+#include <stdexcept>
 #include <string>
 
 // run-time checked narrowing cast (type conversion).

@@ -11,21 +11,21 @@ Section 3.4 try this exercise
 //C++ programs start by executing the function main
 int main()
 {
-    using std::cout;
-    using std::endl;
+	using std::cout;
+	using std::endl;
 
-    cout << "Please enter a value: ";
-    int n{ 0 };
-    std::cin >> n;
+	cout << "Please enter a value: ";
+	int n{};
+	std::cin >> n;
 
-    cout << "n == " << n << endl
-        << "n + 1 == " << n + 1 << endl
-        << "n * 3 == " << 3 * n << endl
-        << "n + n == " << n + n << endl
-        << "n squared == " << n * n << endl
-        << "n / 2 == " << static_cast<double>(n) / 2.0 << endl
-        << "square root of n == " << static_cast<double>(std::sqrt(n)) << endl;
+	cout << "n == " << n << endl
+		<< "n + 1 == " << n + 1 << endl
+		<< "n * 3 == " << 3 * n << endl
+		<< "n + n == " << n + n << endl
+		<< "n squared == " << n * n << endl
+		<< "n / 2 == " << n / 2.0 << endl
+		<< "square root of n == " << std::sqrt(n) << endl;
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

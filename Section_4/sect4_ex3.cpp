@@ -15,43 +15,42 @@ Find and print the mean distance between two neighboring cities.
 
 int main()
 {
-    constexpr auto termination{ '|' };
-    std::vector<double> distances;
+	constexpr auto termination{'|'};
+	std::vector<double> distances;
 
-    std::cout << "Please enter a sequence of numbers (representing distances).\n";
-    std::cout << "Use '" << termination << "' after last distance entered:\n";
+	std::cout << "Please enter a sequence of numbers (representing distances).\n";
+	std::cout << "Use '" << termination << "' after last distance entered:\n";
 
-    while (true) {
-        for (double distance{ 0.0 }; std::cin >> distance; ) {
-            distances.push_back(distance);
-        }
-        // EOF is captured when using txt file
-        if (std::cin.eof() || std::cin.bad()) {
-            std::cin.clear();
-            break;
-        }
-        std::cin.clear();
-        char c;
-        std::cin.get(c);
-        if (c == termination) {
-            break;
-        }
-        // loop back to enter valid input
-        std::cout << "Unknown input: '" << c << "': Try again\n";
-    }
+	for(char c{}; std::cin.get(c) && c != termination; c = '\0'){
+		std::cin.putback(c);
+		for(double distance{}; std::cin >> distance; ){
+			distances.push_back(distance);
+		}
+		// EOF is captured when using txt file
+		if(std::cin.eof() || std::cin.bad()){
+			break;
+		}
+		std::cin.clear();
+		static std::string str;
+		std::cin >> str;
+		if(str.find(termination) != std::string::npos){
+			break;
+		}
+		// loop back to enter valid input
+		std::cout << "Unknown input: '" << c << "': Try again\n";
+	}
 
-    if (!distances.empty()) {
-        double sum = std::accumulate(distances.begin(), distances.end(), 0.0);
-        std::cout << "The total distance: " << sum << std::endl;
-        std::sort(distances.begin(), distances.end());
-        std::cout << "The smallest distance: " << distances.front() << std::endl;
-        std::cout << "The greatest distance: " << distances.back() << std::endl;
-        std::cout << "The mean distance: " << sum / distances.size() << std::endl;
-    }
-    else {
-        std::cout << "no distances entered\n";
-    }
+	if(!distances.empty()){
+		double sum{std::accumulate(distances.begin(), distances.end(), 0.0)};
+		std::cout << "The total distance: " << sum << std::endl;
+		std::sort(distances.begin(), distances.end());
+		std::cout << "The smallest distance: " << distances.front() << std::endl;
+		std::cout << "The greatest distance: " << distances.back() << std::endl;
+		std::cout << "The mean distance: " << sum / distances.size() << std::endl;
+	} else{
+		std::cout << "no distances entered\n";
+	}
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

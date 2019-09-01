@@ -23,48 +23,40 @@ Section 4 Drill step 6.
 
 int main()
 {
-    constexpr char terminationChar = '|';	//termination character
+	constexpr char terminationChar = '|';	//termination character
+	const std::string instructions{"Enter two numbers or enter " + std::string{terminationChar} +" to exit."};
+	constexpr double tolerance = 1.0 / 100;	//close enough for floating point comparison
 
-    double enteredNumber;
-    std::vector<decltype(enteredNumber)> enteredNumbers;
-    bool stop{ false };
-    while (!stop)
-    {
-        std::cout << "Enter number or enter " << terminationChar << " to exit.\n";
-        if (std::cin >> enteredNumber) {
-            // print numbers if valid
-            std::cout << "value entered: " << enteredNumber << std::endl;
-            if (enteredNumbers.empty()) {
-                std::cout << enteredNumber << " is the smallest so far\n";
-                std::cout << enteredNumber << " is the largest so far\n\n";
-            }
-            else {
-                if (enteredNumbers.front() > enteredNumber) {
-                    std::cout << enteredNumber << " is the smallest so far\n\n";
-                }
-                if (enteredNumbers.back() < enteredNumber) {
-                    std::cout << enteredNumber << " is the largest so far\n\n";
-                }
-            }
-            enteredNumbers.push_back(enteredNumber);
-            std::sort(enteredNumbers.begin(), enteredNumbers.end());
-        }
-        else {
-            std::cin.clear();
-            char c;
-            std::cin.get(c);
-            if (c == terminationChar) {
-                enteredNumbers.clear();
-                stop = true;
-                break;
-            }
-            else {
-                simple_error("invalid entry:  was not a valid number or termination");
-            }
-        }
-    }
+	double enteredNumber{};
+	std::cout << instructions << '\n';
+	char c{};
+	while(std::cin.get(c) && c != terminationChar){
+		std::cin.putback(c);
+		static double min{DBL_MAX};
+		static double max{DBL_MIN};
+		if(std::cin >> enteredNumber){
+			std::cout << "value entered: " << enteredNumber << std::endl;
+			if(min > enteredNumber){
+				min = enteredNumber;
+				std::cout << enteredNumber << " is the smallest so far\n\n";
+			}
+			if(max < enteredNumber){
+				max = enteredNumber;
+				std::cout << enteredNumber << " is the largest so far\n\n";
+			}
+		} else{
+			std::cin.clear();
+			static std::string getnext;
+			std::cin >> getnext;	// get whatever is in cin buffer
+			if(getnext.find(terminationChar) != std::string::npos){
+				break;
+			} else{
+				std::cout << "Entry was an invalid number or termination, please try again.\n";
+			}
+		}
+		std::cout << instructions << '\n';
+	}
 
-    std::cout << "Bye\n";
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

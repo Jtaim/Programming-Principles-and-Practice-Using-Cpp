@@ -95,7 +95,7 @@
   <ItemGroup>
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GUI.cpp" />
-    <ClCompile Include="sect12_drill3.cpp" />
+    <ClCompile Include="sect12_ex3.cpp" />
     <ClCompile Include="Simple_window.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>

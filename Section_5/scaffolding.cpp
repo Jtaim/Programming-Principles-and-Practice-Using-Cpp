@@ -9,21 +9,18 @@ Add comments here
 #include "section5.h"
 
 int main()
-try
-{
-    /*<<your code here>>*/
-    keep_window_open();
-    return 0;
+try{
+	/*<<your code here>>*/
+	keep_window_open();
+	return 0;
 }
-catch (std::exception& e)
-{
-    std::cerr << "error: " << e.what() << '\n';
-    keep_window_open();
-    return 1;
+catch(std::exception& e){
+	std::cerr << "error: " << e.what() << '\n';
+	keep_window_open();
+	return 1;
 }
-catch (...)
-{
-    std::cerr << "Oops: unknown exception!\n";
-    keep_window_open();
-    return 2;
+catch(...){
+	std::cerr << "Oops: unknown exception!\n";
+	keep_window_open();
+	return 2;
 }

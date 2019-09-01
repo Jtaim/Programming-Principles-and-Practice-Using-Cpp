@@ -18,34 +18,35 @@ Section 4 exercise 10.
 
 int main()
 {
-    //Will be used to obtain a seed for the random number engine
-    std::random_device rd;
-    //Standard mersenne_twister_engine seeded with rd()
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 2);
+	//Will be used to obtain a seed for the random number engine
+	std::random_device rd;
+	//Standard mersenne_twister_engine seeded with rd()
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dis(0, 2);
 
-    const std::vector<std::string> rps{ "ROCK", "PAPER", "SCISSORS" };
+	const std::vector<std::string> rps{"ROCK", "PAPER", "SCISSORS"};
 
-    bool playAgain{ false };
-    do {
-        std::cout << "Select (1) for Rock (2) for Paper (3) for Scissors" << std::endl;
-        // check for proper input
-        int pSelect{ 0 };
-        if (!(std::cin >> pSelect) || pSelect > 3) {
-            simple_error("selected r/p/s poorly");
-        }
-        auto cSelect = dis(gen);  //have only 3 selections gets random selection between 0 and 2
-        std::cout << "Computer selection = " << cSelect << std::endl;
-        std::cout << "Your selection was " << rps.at(pSelect - 1) << " the computer selected "
-            << rps.at(cSelect) << std::endl;
+	bool playAgain{false};
+	do{
+		std::cout << "Select (0) for Rock (1) for Paper (2) for Scissors\n";
+		// check for proper input
+		int pSelect{};
+		if(!(std::cin >> pSelect) || pSelect > 2){
+			simple_error("selected r/p/s poorly");
 
-        std::cout << "\nWould you like to play again (y or n)" << std::endl;
-        char c;
-        std::cin >> c;
-        // check for proper input
-        c == 'y' ? playAgain = true : playAgain = false;
-    } while (playAgain);
+		}
+		auto cSelect{dis(gen)};  //have only 3 selections gets random selection between 0 and 2
+		//std::cout << "Computer selection = " << cSelect << std::endl;
+		std::cout << "Your selection was " << rps.at(pSelect) << " the computer selected "
+			<< rps.at(cSelect) << std::endl;
 
-    keep_window_open();
-    return 0;
+		std::cout << "\nWould you like to play again (y or n)" << std::endl;
+		char c;
+		std::cin >> c;
+		// check for proper input
+		c == 'y' ? playAgain = true : playAgain = false;
+	} while(playAgain);
+
+	keep_window_open();
+	return 0;
 }

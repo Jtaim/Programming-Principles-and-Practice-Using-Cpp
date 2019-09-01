@@ -26,61 +26,64 @@ Section 4 Drill step 7.
 */
 
 #include "section4.h"
+#include <unordered_map>
 
 int main()
 {
-    constexpr char terminationChar = '|';	//termination character
-    const std::vector<std::pair<std::string, double>> convert{
-        {"m", 100.0},	//covert to cm
-        {"cm", 1.00},	//leave as is
-        {"in", 2.54},	//convert to cm
-        {"ft", 12.0 * 2.54}	//convert to cm
-    };
+	constexpr char terminationChar = '|';	//termination character
+	const std::string instructions{"Enter a number with unit of measurement or enter " + std::string{terminationChar} +" to exit."};
+	constexpr double tolerance = 1.0 / 100;	//close enough for floating point comparison
 
-    double enteredMeasurement{ 0.0 };
-    std::string unitOfMeasure;
-    std::vector<decltype(enteredMeasurement)> enteredMeasurements;
-    bool stop{ false };
-    while (!stop)
-    {
-        std::cout << "Enter a number with unit of measurement or enter " << terminationChar << " to exit.\n";
-        while (!stop)
-        {
-            // get number
-            std::cin >> enteredMeasurement;
-            if (!std::cin) {
-                std::cin.clear();
-                // if no number entered then assume 1 as the measurement
-                enteredMeasurement = 1.0;
-            }
+	const std::unordered_map<std::string, double> convert{
+		{"m", 100.0},	//covert to cm
+		{"cm", 1.00},	//leave as is
+		{"in", 2.54},	//convert to cm
+		{"ft", 12.0 * 2.54}	//convert to cm
+	};
 
-            // get unit of measure
-            std::cin >> unitOfMeasure;
-            // look for termination char
-            if (unitOfMeasure.find(terminationChar) != std::string::npos) {
-                std::cout << "termination '" << terminationChar << "' found\n";
-                stop = true;
-            }
-            // check for valid unit of measure and convert
-            else {
-                auto itr = convert.begin();
-                for (; itr < convert.end(); ++itr) {
-                    if (itr->first == unitOfMeasure) {
-                        // convert measurement to cm then store in vector
-                        enteredMeasurement *= itr->second;
-                        enteredMeasurements.push_back(enteredMeasurement);
-                        std::cout << "converted measurement: " << enteredMeasurement << "cm" << std::endl;
-                        break;
-                    }
-                }
-                if (itr == convert.end()) {
-                    simple_error("invalid entry:  no valid unit of measure or no termination found");
-                }
-            }
-        }
-    }
+	std::cout << instructions << '\n';
+	char c{};
+	while(std::cin.get(c) && c != terminationChar){
+		std::cin.putback(c);
+		static double min{DBL_MAX};
+		static double max{DBL_MIN};
 
-    std::cout << "Bye\n";
-    keep_window_open();
-    return 0;
+		// get number
+		static double enteredMeasurement{};
+		std::cin >> enteredMeasurement;
+		if(!std::cin){
+			std::cin.clear();
+			// if no number entered then assume 1 as the measurement
+			enteredMeasurement = 1.0;
+		}
+
+		// get unit of measure
+		static std::string unitOfMeasure;
+		std::cin >> unitOfMeasure;
+		// check for valid unit of measure and convert
+		auto itr{convert.find(unitOfMeasure)};
+			// convert measurement to cm then store in vector
+		if(itr != convert.end()){
+			static double convertedMeasurement{};
+			convertedMeasurement = enteredMeasurement * itr->second;
+			std::cout << enteredMeasurement << unitOfMeasure << " converted to " << convertedMeasurement << "cm\n";
+			if(min > convertedMeasurement){
+				min = convertedMeasurement;
+				std::cout << convertedMeasurement << "cm is the smallest so far\n\n";
+			}
+			if(max < convertedMeasurement){
+				max = convertedMeasurement;
+				std::cout << convertedMeasurement << "cm is the largest so far\n\n";
+			}
+		} else if(unitOfMeasure.find(terminationChar) != std::string::npos){
+			break;
+		} else{
+			std::cout << "Entry was an invalid number or termination, please try again.\n";
+		}
+		std::cout << instructions << '\n';
+	}
+	std::cout << "termination '" << terminationChar << "' found\n";
+
+	keep_window_open();
+	return 0;
 }

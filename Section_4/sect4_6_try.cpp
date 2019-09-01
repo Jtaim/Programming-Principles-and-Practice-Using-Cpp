@@ -16,29 +16,29 @@ When that works, add a few more.
 
 int main()
 {
-    //list of disliked words
-    const std::vector<std::string> dislikedWords{ "broccoli", "peas", "spinach" };
+	//list of disliked words
+	const std::vector<std::string> dislikedWords{"broccoli", "peas", "spinach"};
 
-    std::vector<std::string> words;
-    // read whitespace-separated words
-    for (std::string word; std::cin >> word; ) {
-        for (auto& c : word) {
-            c = static_cast<char>(tolower(c));
-        }
-        for (const auto str : dislikedWords) {
-            if (str == word) {
-                word = "BLEEP";
-            }
-        }
-        words.push_back(word);	// put into vector
-    }
+	std::vector<std::string> words;
+	// read whitespace-separated words
+	for(std::string word; std::cin >> word; ){
+		for(auto& c : word){
+			c = static_cast<char>(tolower(c));
+		}
+		for(const auto str : dislikedWords){
+			if(str == word){
+				word = "BLEEP";
+			}
+		}
+		words.push_back(word);	// put into vector
+	}
 
-    std::cout << "Number of words: " << words.size() << std::endl;
-    for (auto str : words) {
-        std::cout << str << " ";
-    }
-    std::cout << std::endl;
+	std::cout << "Number of words: " << words.size() << std::endl;
+	for(auto str : words){
+		std::cout << str << " ";
+	}
+	std::cout << std::endl;
 
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

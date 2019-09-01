@@ -19,61 +19,40 @@ Section 4 Drill step 5.
 
 int main()
 {
-    constexpr char terminationChar = '|';	//termination character
-    constexpr int howManyNumPerItr = 2;		//numbers to get per loop iteration
-    constexpr double tolerance = 1.0 / 100;	//close enough for floating point comparison
+	constexpr char terminationChar = '|';	//termination character
+	const std::string instructions{"Enter two numbers or enter " + std::string{terminationChar} +" to exit."};
+	constexpr double tolerance = 1.0 / 100;	//close enough for floating point comparison
 
 
-    double enteredNumber;
-    std::vector<decltype(enteredNumber)> enteredNumbers;
-    bool stop{ false };
-    while (!stop)
-    {
-        std::cout << "Enter " << howManyNumPerItr << " numbers. Enter " << terminationChar << " to exit.\n";
-        for (int itr = 0; itr < howManyNumPerItr; ++itr)
-        {
-            if (std::cin >> enteredNumber) {
-                enteredNumbers.push_back(enteredNumber);
-            }
-            else {
-                std::cin.clear();
-                char c;
-                std::cin.get(c);
-                if (c == terminationChar) {
-                    enteredNumbers.clear();
-                    stop = true;
-                    break;
-                }
-                else {
-                    simple_error("invalid entry:  was not a valid number or termination");
-                }
-            }
-        }
-        // print numbers if valid
-        if (!stop) {
-            std::cout << "Entered numbers: ";
-            for (auto i : enteredNumbers) {
-                std::cout << i << " ";
-            }
-            std::cout << std::endl;
-            std::sort(enteredNumbers.begin(), enteredNumbers.end());
-            if (enteredNumbers.front() == enteredNumbers.back()) {
-                std::cout << "The entered numbers are equal.\n\n";
-            }
-            else if (std::fabs(enteredNumbers.front() - enteredNumbers.back()) <= tolerance)	//fabs() is absolute value of double
-            {
-                std::cout << "numbers are close enough to be equal.\n\n";
-            }
-            else {
-                std::cout << "smaller value is: " << enteredNumbers.front() << std::endl;
-                std::cout << "larger value is: " << enteredNumbers.back() << "\n\n";
-            }
-        }
-        //clear vector for next set of numbers
-        enteredNumbers.clear();
-    }
+	std::cout << instructions << '\n';
+	char c{};
+	while(std::cin.get(c) && c != terminationChar){
+		std::cin.putback(c);
+		static double val1{};
+		static double val2{};
+		if(std::cin >> val1 >> val2){
+			if(val1 == val2){
+				std::cout << "The entered numbers are equal.\n\n";
+			} else if(std::fabs(val1 - val2) <= tolerance){
+				std::cout << "numbers are close enough to be equal.\n\n";
+			} else{
+				if(val1 > val2){
+					std::swap(val1, val2);
+				}
+				std::cout << "smaller value is: " << val1 << std::endl;
+				std::cout << "larger value is: " << val2 << std::endl;
+			}
+		} else{
+			std::cin.clear();
+			std::cin.get(c);
+			if(c == terminationChar){
+				break;
+			}
+			std::cout << "Entry was an invalid number or termination, please try again.\n";
+		}
+		std::cout << instructions << '\n';
+	}
 
-    std::cout << "Bye\n";
-    keep_window_open();
-    return 0;
+	keep_window_open();
+	return 0;
 }

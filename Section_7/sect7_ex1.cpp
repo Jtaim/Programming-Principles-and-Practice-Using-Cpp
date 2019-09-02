@@ -336,8 +336,12 @@ double function(const std::string& s)
 			// push valid function argument
 			func_args.push_back(expression());
 			t = ts.get();
-			if(t.kind == ')') break;
-			if(t.kind != ',') ppp::error("expected ')', malformed function call");
+			if(t.kind == ')'){
+				break;
+			}
+			if(t.kind != ','){
+				ppp::error("expected ')', malformed function call");
+			}
 		} while(t.kind == ',');
 	}
 

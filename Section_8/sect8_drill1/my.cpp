@@ -5,10 +5,10 @@ int foo{};
 
 void print_foo()
 {
-    std::cout << foo << "\n";
+	std::cout << foo << "\n";
 }
 
 void print(int i)
 {
-    std::cout << i << "\n";
+	std::cout << i << "\n";
 }

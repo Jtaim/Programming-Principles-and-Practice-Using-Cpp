@@ -7,7 +7,7 @@ I created this repository to share my solutions for the try its, review question
 Stroustrup, Bjarne. Programming: Principles and Practice Using C++ . Pearson Education. Kindle Edition.
 
 #### Useful tools
-- [Microsoft Visual Studio Community](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx)
+- [Microsoft Visual Studio Community](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx) is what I will be using for the exercises from this book.
 - [MinGW variant distribution](https://nuwen.net/mingw.html) that supports the latest GNU GCC compiler also is packaged with Boost and other neat libraries.
 	Also, the distribution comes with the latest GNU Make program so you can create custom command line compiles from C++ files created via your favorite editor.
 
@@ -24,10 +24,10 @@ If you're reading along you will notice I intentionally left out the header file
 because in the book's presented header file the functions have been implemented into most modern compilers, plus I wanted some experience dealing with custom header files.
 If you want, you can get the header file from book's website [www.stroustrup.com/Programming](http://www.stroustrup.com/Programming/).</br>
 <b>section 7</b></br>
-Starting in this I placed a header file in an include folder for all sections to use from this section and remaining sections.
-Right or wrong I don't know but unsynced the cpp streams from the c streams by providing a #define SET_IOSYNC cin.sync_with_stdio(false) in the ppp.h
-Normally all C++ streams have this set to true. if is true then in_avail() is 0 in some compilers.
-Again right or wrong I don't know but did if needed to see if anything is in the cin.rdbuf,  see ppp.h for additional details.
+Starting in this section, I will be using a general a header file in the project include folder for this section and the remaining sections.</br>
+Right or wrong, I removed the syncing of the cpp streams to the c streams by defining [std::cin.sync_with_stdio(false)](https://en.cppreference.com/w/cpp/io/ios_base/sync_with_stdio).
+Normally all C++ streams have this set to true. This will provide better visibility into the cin.rdbuf() then in_avail() elements.
+Some compilers sets this to unless sync is false. Again right or wrong I don't know but I needed to see if anything is in the cin.rdbuf,  see ppp.h for additional details.
 Also set up namespace (ppp) for functions unique to this books exercises.</br>
 Exercises 9, 10 and 11 are incomplete.</br>
 <b>section 9</b></br>

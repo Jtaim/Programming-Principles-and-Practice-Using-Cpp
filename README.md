@@ -26,8 +26,8 @@ If you want, you can get the header file from book's website [www.stroustrup.com
 <b>section 7</b></br>
 Starting in this section, I will be using a general a header file in the project include folder for this section and the remaining sections.</br>
 Right or wrong, I removed the syncing of the cpp streams to the c streams by defining [std::cin.sync_with_stdio(false)](https://en.cppreference.com/w/cpp/io/ios_base/sync_with_stdio).
-Normally all C++ streams have this set to true. This will provide better visibility into the cin.rdbuf() then in_avail() elements.
-Some compilers sets this to unless sync is false. Again right or wrong I don't know but I needed to see if anything is in the cin.rdbuf,  see ppp.h for additional details.
+Normally all C++ streams have this set to true. This will provide better reliability into the cin.rdbuf()->in_avail() function.
+Seems to be compiler dependent on how count is reported if set to true. Again right or wrong I don't know but I needed to see if anything is in the cin.rdbuf,  see ppp.h for additional details.
 Also set up namespace (ppp) for functions unique to this books exercises.</br>
 Exercises 9, 10 and 11 are incomplete.</br>
 <b>section 9</b></br>

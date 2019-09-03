@@ -11,13 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect8_ex12.cpp" />
-    <ClCompile Include="symbol_table.cpp" />
-    <ClCompile Include="token.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="symbol_table.h" />
-    <ClInclude Include="token.h" />
+    <ClCompile Include="sect8_ex14.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -9,45 +9,44 @@
 
 #include"../includes/ppp.h"
 
-void print_until_s(const std::vector<std::string>& v, const std::string& quit)
+void print_until_s(const std::vector<std::string>& v, const std::string& quit, int dupsAllowed = 0)
 {
 	if(!v.empty()){
-		for(const std::string& s : v){
-			if(s == quit){
-				return;
-			}
-			std::cout << s << '\n';
-		}
-		std::cout << "No " << quit << " found.\n";
-	}
-}
-
-void print_until_ss(const std::vector<std::string>& v, const std::string& quit)
-{
-	if(!v.empty()){
-		int count{};
-		for(const std::string& s : v){
-			if(s == quit){
-				if(count >= 1){
-					return;
+		auto i{v.cbegin()};
+		for(; i != v.end(); ++i){
+			if(*i == quit){
+				if(dupsAllowed != 0){
+					--dupsAllowed;
+				} else{
+					break;
 				}
-				++count;
 			}
-			std::cout << s << '\n';
+			std::cout << *i << ", ";
 		}
-		if(count == 0){
-			std::cout << "No " << quit << " found.\n";
+		if(i == v.cend()){
+			std::cout << "No " << quit << " found.";
 		}
+	} else{
+		std::cout << "no strings found";
 	}
+	std::cout << "\n";
 }
 
 int main()
 {
-	std::string quit{"zero"};
-	std::vector<std::string> vs{"numbers:", "zero","one", "two", "zero", "three", "four"};
-	print_until_s(vs, quit);
+	std::vector<std::string> v1{"zero","one", "two", "zero", "two", "three", "four"};
+	std::vector<std::string> v2{};
 
-	print_until_ss(vs, quit);
+	const std::string quit{"two"};
+
+	std::cout << "numbers: ";
+	print_until_s(v1, quit);
+
+	std::cout << "numbers: ";
+	print_until_s(v1, quit, 1);
+	
+	std::cout << "numbers: ";
+	print_until_s(v2, quit, 1);
 
 	ppp::keep_window_open();
 	return 0;

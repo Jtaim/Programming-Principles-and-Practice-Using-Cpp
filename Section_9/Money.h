@@ -5,18 +5,26 @@
 #include <string>
 #include <vector>
 
-class Money{
+using currencyInfoTuple = std::tuple<std::string, std::string, double>;
+static const std::vector<currencyInfoTuple> currencyInfo
+{
+	{"USD", "$", 1},
+	{"DKK", "Kr", 6.8}
+};
+
+class Money
+{
 public:
-    Money(std::string m = "");
+	Money(std::string m = "");
 
-    std::string get_cents();
+	std::string get_cents();
 
-    static std::vector<std::pair<std::string, int>> conversion;
+	static std::vector<std::pair<std::string, int>> conversion;
 
 private:
-    // amount in cents.  lowest denomination
-    long m_cents;
-    std::string m_currency;
+	std::string m_currencyCode;
+	std::string m_currencySign;
+	long m_cents{};	// amount in cents.  lowest denomination
 };
 
 #endif

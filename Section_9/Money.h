@@ -5,13 +5,6 @@
 #include <string>
 #include <vector>
 
-using currencyInfoTuple = std::tuple<std::string, std::string, double>;
-static const std::vector<currencyInfoTuple> currencyInfo
-{
-	{"USD", "$", 1},
-	{"DKK", "Kr", 6.8}
-};
-
 class Money
 {
 public:
@@ -19,12 +12,24 @@ public:
 
 	std::string get_cents();
 
-	static std::vector<std::pair<std::string, int>> conversion;
+	Money operator+(const Money& m) const;
+	friend std::ostream& operator<<(std::ostream& os, const Money& m);
+	friend std::istream& operator>>(std::istream& is, Money& m);
 
 private:
-	std::string m_currencyCode;
-	std::string m_currencySign;
-	long m_cents{};	// amount in cents.  lowest denomination
+	std::string m_currencyCode{"USD"};
+	std::string m_currencySign{"$"};
+	long m_cents{};	// amount in cents.  lowest denomination stored in USD
+	double m_conversion{};
+
+	std::string validate_currency(const std::string& m);
+
+	using currencyInfoTuple = std::tuple<std::string, std::string, double>;
+	const std::vector<currencyInfoTuple> currencyInfo
+	{
+		{"USD", "$", 1}, // keep USD first because used as the standard stored currency
+		{"DKK", "Kr", 6.8}
+	};
 };
 
 #endif

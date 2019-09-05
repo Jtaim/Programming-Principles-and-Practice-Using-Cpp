@@ -31,7 +31,7 @@ Seems to be compiler dependent on how count is reported if set to true. Again ri
 Also set up namespace (ppp) for functions unique to this books exercises.</br>
 Exercises 9, 10 and 11 are incomplete.</br>
 <b>section 9</b></br>
-Exercises 16, 17 and 18 are incomplete.</br>
+Exercises 17 and 18 are incomplete.</br>
 <b>section 10</b></br>
 Exercises 9, 10 and 11 are incomplete.</br>
 <b>section 11</b></br>

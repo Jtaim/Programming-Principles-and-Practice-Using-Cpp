@@ -45,6 +45,12 @@ try{
 	Money m11{"Kr129.995"};
 	std::cout << m11.get_cents() << '\n';
 
+	Money m12 = m5 + Money{"DKK6.8"};
+	std::cout << m12.get_cents() << '\n';
+
+	Money m13 = Money{"DKK8.5"} + m5;
+	std::cout << m13.get_cents() << '\n';
+
 	ppp::keep_window_open();
 	return 0;
 }

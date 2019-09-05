@@ -33,7 +33,7 @@
     <ClCompile Include="Money.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sect9_ex15.cpp">
+    <ClCompile Include="sect9_ex16.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

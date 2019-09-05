@@ -17,7 +17,7 @@
     <ClCompile Include="Money.cpp" />
     <ClCompile Include="Patron.cpp" />
     <ClCompile Include="Rational.cpp" />
-    <ClCompile Include="sect9_ex15.cpp" />
+    <ClCompile Include="sect9_ex16.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Book.h" />

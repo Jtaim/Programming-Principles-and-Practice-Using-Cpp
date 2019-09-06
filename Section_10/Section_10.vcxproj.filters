@@ -28,12 +28,13 @@
     <Text Include="sect10_ex5_in.txt" />
     <Text Include="sect10_ex5_out.txt" />
     <Text Include="sect10_ex8.txt" />
+    <Text Include="mydata.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Roman_int.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sect10_ex8.cpp">
+    <ClCompile Include="sect10_drill7.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

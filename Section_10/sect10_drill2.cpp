@@ -1,10 +1,11 @@
 /*
 	Written by Jtaim
 	Mar 24 2019
-	Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
+	Stroustrup, Bjarne. Programming: Principles and Practice Using C++ . Pearson Education. Kindle Edition. 
 
 	Section 10 Drill 2
-	Test program Point class. Using istream operation for Point class.
+	Using the code and discussion in Section 10.4, prompt the user to input seven (x,y) pairs.
+	As the data is entered, store it in a vector of Points called original_points.
 */
 
 #include "../includes/ppp.h"
@@ -12,20 +13,19 @@
 
 int main()
 try{
-	constexpr std::vector<Point<int>>::size_type HOW_MANY{7};
+	constexpr size_t how_many{7};
 
 	std::cout << "Enter seven (x,y) pairs:\n";
-	std::vector<Point<int>> original_points;
+	std::array<Point<int>, how_many> points;
 
-	while(original_points.size() < HOW_MANY){
-		Point<int> point;
-		if(!(std::cin >> point)){
-			if(std::cin.eof()) ppp::error("EOF found before filling required data");
+	for(auto& p : points){
+		while(!(std::cin >> p)){
+			if(std::cin.eof()){
+				ppp::error("EOF found before filling required data");
+			}
 			std::cout << "bad input try again\n";
-			ppp::clear_cin_buffer();
-		}
-		else{
-			original_points.push_back(point);
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max());
 		}
 	}
 

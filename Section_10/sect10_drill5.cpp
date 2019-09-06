@@ -1,63 +1,54 @@
 /*
 	Written by Jtaim
 	Mar 24 2019
-	Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
+	Stroustrup, Bjarne. Programming: Principles and Practice Using C++ . Pearson Education. Kindle Edition.
 
-	Section 10 Drill 4
-	Test program Point class. Using iostream operation for Point class.
-	Save Point data to a file.
-	Read data back from file and tore in a vector
+	Section 10 Drill 5
+	Close the ofstream and then open an ifstream for mydata.txt.
+	Read the data from mydata.txt and store it in a new vector called processed_points.
 */
 
 #include "../includes/ppp.h"
 #include "Point.h"
 
-using point_type = std::vector<Point<int>>;
-
 int main()
 try{
-	constexpr point_type::size_type HOW_MANY{7};
-	const std::string FILE{"sect10_drill_data.txt"};
+	constexpr size_t how_many{7};
+	const std::string point_file{"mydata.txt"};
 
 	std::cout << "Enter seven (x,y) pairs:\n";
-	point_type original_points;
-	std::ofstream fout{FILE};
+	std::array<Point<int>, how_many> points;
+	std::ofstream fout{point_file};
 
-	if(!fout) ppp::error("Can't open output file ", FILE);
-	while(original_points.size() < HOW_MANY){
-		point_type::value_type point;
-		if(!(std::cin >> point)){
+	if(!fout){
+		ppp::error("Can't open output file ", point_file);
+	}
+	for(auto& p : points){
+		while(!(std::cin >> p)){
 			if(std::cin.eof()){
-				std::cout << "EOF found before getting required data amount\n";
-				break;
+				ppp::error("EOF found before filling required data");
 			}
 			std::cout << "bad input try again\n";
-			ppp::clear_cin_buffer();
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max());
 		}
-		else{
-			original_points.push_back(point);
-			fout << point;
-		}
+		fout << p;
 	}
-
 	fout.close();
 
-	point_type processed_points;
-	std::ifstream fin{FILE};
+	//processed_points;
+	std::ifstream fin{point_file};
+	if(!fin){
+		ppp::error("Can't open input file ", point_file);
+	}
+	std::vector<decltype(points.begin())::value_type> from_file_points;
+	decltype(points.begin())::value_type pf{};
+	while(fin >> pf){
+		from_file_points.push_back(pf);
+	}
 
-	if(!fin) ppp::error("Can't open input file ", FILE);
-	while(processed_points.size() < HOW_MANY){
-		point_type::value_type point;
-		if(!(fin >> point)){
-			if(fin.eof()){
-				std::cout << "EOF found before reading required data amount";
-				break;
-			}
-			if(fin.fail()) ppp::error("bad input data");
-		}
-		else{
-			processed_points.push_back(point);
-		}
+	for(const auto& pv : from_file_points){
+		std::cout << pv << "\n";
 	}
 
 	ppp::keep_window_open();

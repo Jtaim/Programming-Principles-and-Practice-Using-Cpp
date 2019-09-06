@@ -65,8 +65,7 @@ inline T& operator>>(T& in, Roman_int& r)
 			return in;
 		}
 		r = rn;
-	}
-	else{
+	} else{
 		std::string str_rn;
 		in >> str_rn;
 		if(!in.good()){

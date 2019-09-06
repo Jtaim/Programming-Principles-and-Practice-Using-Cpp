@@ -15,6 +15,7 @@
     <ClInclude Include="Roman_int.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="mydata.txt" />
     <Text Include="sect10_ex2.txt" />
     <Text Include="sect10_ex4.txt" />
     <Text Include="sect10_ex5_in.txt" />
@@ -23,7 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Roman_int.cpp" />
-    <ClCompile Include="sect10_ex8.cpp" />
+    <ClCompile Include="sect10_drill7.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

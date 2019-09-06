@@ -64,13 +64,11 @@ bool Roman_int::romanToDecimal(const std::string& symbols)
 			}
 			if(symbol_value->second >= next_symbol_value->second){
 				roman_int += symbol_value->second;
-			}
-			else{
+			} else{
 				roman_int += (next_symbol_value->second - symbol_value->second);
 				++symbol_itr; // used current and next symbol value
 			}
-		}
-		else{
+		} else{
 			// just used current symbol
 			roman_int += symbol_value->second;
 		}

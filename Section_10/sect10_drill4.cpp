@@ -1,42 +1,44 @@
 /*
 	Written by Jtaim
 	Mar 24 2019
-	Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
+	Stroustrup, Bjarne. Programming: Principles and Practice Using C++ . Pearson Education. Kindle Edition.
 
 	Section 10 Drill 4
-	Test program Point class. Using iostream operation for Point class.
-	Save Point data to a file.
+	Open an ofstream and output each point to a file named mydata.txt.
+	On Windows, we suggest the .txt suffix to make it easier to look at the data with an ordinary text editor.
 */
 
 #include "../includes/ppp.h"
 #include "Point.h"
 
-using point_type = std::vector<Point<int>>;
-
 int main()
 try{
-	constexpr point_type::size_type HOW_MANY{7};
-	const std::string FILE{"sect10_drill_data.txt"};
+	constexpr size_t how_many{7};
+	const std::string point_file{"mydata.txt"};
 
 	std::cout << "Enter seven (x,y) pairs:\n";
-	point_type original_points;
-	std::ofstream fout{FILE};
+	std::array<Point<int>, how_many> points;
+	std::ofstream fout{point_file};
 
-	if(!fout) ppp::error("Can't open output file ", FILE);
-	while(original_points.size() < HOW_MANY){
-		point_type::value_type point;
-		if(!(std::cin >> point)){
-			if(std::cin.eof()) ppp::error("EOF found before filling required data");
-			std::cout << "bad input try again\n";
-			ppp::clear_cin_buffer();
-		}
-		else{
-			original_points.push_back(point);
-			fout << point;
-		}
+	if(!fout){
+		ppp::error("Can't open output file ", point_file);
 	}
-
+	for(auto& p : points){
+		while(!(std::cin >> p)){
+			if(std::cin.eof()){
+				ppp::error("EOF found before filling required data");
+			}
+			std::cout << "bad input try again\n";
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max());
+		}
+		fout << p;
+	}
 	fout.close();
+
+	for(const auto& p : points){
+		std::cout << p << "\n";
+	}
 
 	ppp::keep_window_open();
 	return 0;

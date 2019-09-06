@@ -1,10 +1,11 @@
 /*
 	Written by Jtaim
 	Feb 26 2019
-	Programming Principles and Practice Using C++ Second Edition, Bjarne Stroustrup
+	Stroustrup, Bjarne. Programming: Principles and Practice Using C++ . Pearson Education. Kindle Edition.
 
 	Section 10 Drill 1
-	Test program Point class.
+	Start a program to work with points, discussed in section 10.4.
+	Begin by defining the data type Point that has two coordinate members x and y.
 */
 
 #include "../includes/ppp.h"
@@ -21,8 +22,7 @@ try{
 
 	if(!(std::cin >> a) && !std::cin.eof()){
 		std::cout << "bad input\n";
-	}
-	else{
+	} else{
 		std::cout << a << "\n";
 	}
 

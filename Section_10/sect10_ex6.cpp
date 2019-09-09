@@ -4,9 +4,10 @@
 	Stroustrup, Bjarne. Programming: Principles and Practice Using C++ . Pearson Education. Kindle Edition.
 
 	Section 10 Exercise 6
-	Define a Roman_int class for holding Roman numerals (as ints) with a << and >>.
-	Provide Roman_int with an as_int() member that returns the int value, so that if r is a Roman_int,
-	we can write cout << "Roman" << r << " equals " << r.as_int() << '\n';.
+	Define a Roman_int class for holding Roman numerals (as ints).
+	Provide operator overloads for the << and >> operator.
+	Provide Roman_int with an as_int() member that returns the int value, so that if r is a Roman_int.
+	Example we can write cout << "Roman" << r << " equals " << r.as_int() << '\n';.
 
 	This program is to test the Roman_int class
 	Roman numerals have no concept of 0 or negative numbers.

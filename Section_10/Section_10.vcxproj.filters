@@ -29,12 +29,16 @@
     <Text Include="sect10_ex5_out.txt" />
     <Text Include="sect10_ex8.txt" />
     <Text Include="mydata.txt" />
+    <Text Include="sect10_ex9a.txt" />
+    <Text Include="sect10_ex9b.txt" />
+    <Text Include="sect10_ex9.txt" />
+    <Text Include="sect10_ex11.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Roman_int.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sect10_drill7.cpp">
+    <ClCompile Include="sect10_ex11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

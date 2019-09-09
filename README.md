@@ -33,7 +33,7 @@ Exercises 9, 10 and 11 are incomplete.</br>
 <b>section 9</b></br>
 Exercises 17 and 18 are incomplete.</br>
 <b>section 10</b></br>
-Exercises 9, 10 and 11 are incomplete.</br>
+Exercises 7 and 10 are incomplete.</br>
 <b>section 11</b></br>
 Skipping this section.  I might come back to finish.</br>
 <b>section 12</b></br>

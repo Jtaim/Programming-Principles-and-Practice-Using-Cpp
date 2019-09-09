@@ -52,13 +52,13 @@ bool Roman_int::romanToDecimal(const std::string& symbols)
 	// Traverse given input
 	for(auto symbol_itr{symbols.cbegin()}; symbol_itr != symbols.cend(); ++symbol_itr){
 		// Getting value of symbol 
-		auto symbol_value = find(look_up, *symbol_itr);
+		auto symbol_value{find(look_up, *symbol_itr)};
 		if(symbol_value == look_up.cend()){
 			return false; // unrecognized symbol found
 		}
 		auto next_symbol_itr{symbol_itr + 1};
 		if((next_symbol_itr) != symbols.cend()){
-			auto next_symbol_value = find(look_up, *next_symbol_itr);
+			auto next_symbol_value{find(look_up, *next_symbol_itr)};
 			if(next_symbol_value == look_up.cend()){
 				return false; // unrecognized symbol found
 			}

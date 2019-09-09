@@ -44,7 +44,8 @@ T& operator>>(T& in, Point<point>& p)
 		in.clear();
 		char c{};
 		if(!(in >> c) || c != ','){
-			in.setstate(std::ios::failbit);
+			in.unget();
+			in.clear(std::ios::failbit);
 			return in;
 		}
 	}

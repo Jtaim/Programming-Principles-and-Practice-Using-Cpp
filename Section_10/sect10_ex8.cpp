@@ -10,39 +10,37 @@
 	the files I used are the input and output text files from exercise 5
 */
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-
 #include "../includes/ppp.h"
 
-const std::vector<std::string> read_files{
+constexpr std::array<std::string_view,2> read_files{
 	"sect10_ex5_in.txt",
 	"sect10_ex5_out.txt"
 };
 
-const std::string combined_files{"sect10_ex8.txt"};
+constexpr std::string_view combined_files{"sect10_ex8.txt"};
 
 int main()
 try{
 	// setup the file to capture read files
-	std::ofstream out_file{combined_files};
-	if(!out_file) ppp::error("could not open ", combined_files);
-
-	for(auto fn : read_files){
-		out_file << "Contents of file " << fn << "\n";
-		std::ifstream in_file{fn};
-		if(!in_file) ppp::error("could not open ", fn);
-		for(std::string data; std::getline(in_file, data);){
-			out_file << data << "\n";
-		}
-		if(!in_file.eof()) ppp::error("Data corrupted");
-		in_file.close();
-
-		out_file << "\n\n\n";
+	std::ofstream fout{combined_files.data()};
+	if(!fout){
+		ppp::error("could not open ", combined_files.data());
 	}
 
+	for(auto fn : read_files){
+		fout << "Contents of file " << fn << "\n";
+		std::ifstream fin{fn.data()};
+		if(!fin){
+			ppp::error("could not open ", fn.data());
+		}
+		for(std::string data; std::getline(fin, data);){
+			fout << data << "\n";
+		}
+		if(!fin.eof()){
+			ppp::error("file not completely copied");
+		}
+		fout << "\n\n\n";
+	}
 	return 0;
 }
 catch(std::exception& e){

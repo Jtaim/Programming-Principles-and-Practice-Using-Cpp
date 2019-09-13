@@ -16,6 +16,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="mydata.txt" />
+    <Text Include="sect10_ex10_input.txt" />
+    <Text Include="sect10_ex10_output.txt" />
     <Text Include="sect10_ex11.txt" />
     <Text Include="sect10_ex2.txt" />
     <Text Include="sect10_ex4.txt" />
@@ -28,7 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Roman_int.cpp" />
-    <ClCompile Include="sect10_ex11.cpp" />
+    <ClCompile Include="sect10_ex10.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

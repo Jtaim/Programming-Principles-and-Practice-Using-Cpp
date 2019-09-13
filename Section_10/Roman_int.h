@@ -34,12 +34,12 @@ public:
 	operator int() const { return roman_int; }
 	operator std::string() const { return roman_str; }
 
+	bool romanToDecimal(const std::string& symbols);
+	bool decimalToRoman(int rn_int);
+
 private:
 	std::string roman_str;
 	int roman_int;
-
-	bool romanToDecimal(const std::string& symbols);
-	bool decimalToRoman(int rn_int);
 
 	template<typename T>
 	auto find(const std::vector<std::pair<char, int>>& v, T x);

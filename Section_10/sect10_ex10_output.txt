@@ -1,0 +1,122 @@
+> get() char: f
+get() string: from
+> get() char: !
+get() char: ;
+= 1
+> get() char: 1
+get() number: 1
+get() char: +
+get() char: 4
+get() number: 4
+get() char: !
+get() char: ;
+= 25
+> get() char: !
+get() char: +
+get() char: !
+get() char: ;
+= 2
+> get() char: 1
+get() number: 1
+get() char: +
+get() char: 2
+get() number: 2
+get() char: +
+get() char: 3
+get() number: 3
+get() char: +
+get() char: 4
+get() number: 4
+get() char: +
+get() char: 5
+get() number: 5
+get() char: +
+get() char: 6
+get() number: 6
+get() char: +
+get() char: 7
+get() number: 7
+get() char: +
+get() char: 8
+get() number: 8
+get() char: 1
+get() number: 1
+= 36
+> get() char: –
+ERROR: Bad token
+ignoring: 2–3–4!+2;
+> get() char: ;
+get() char: ;
+get() char: (
+get() char: 1
+get() number: 1
+get() char: +
+get() char: 3
+get() number: 3
+get() char: ;
+ERROR: ')' expected
+ignoring: (1+);
+> get() char: 1
+get() number: 1
+get() char: *
+get() char: 2
+get() number: 2
+get() char: /
+get() char: 3
+get() number: 3
+get() char: %
+get() char: 4
+get() number: 4
+get() char: +
+get() char: 5
+get() number: 5
+get() char: –
+ERROR: Bad token
+ignoring: 6;
+> get() char: 8
+get() number: 8
+get() char: *
+get() char: 7
+get() number: 7
+get() char: ;
+= 56
+> get() char: (
+get() char: )
+ERROR: primary expected
+ignoring: );
+> get() char: 1
+get() number: 1
+get() char: +
+get() char: ;
+ERROR: primary expected
+ignoring: ;
+> get() char: +
+get() char: 1
+get() number: 1
+get() char: 1
+get() number: 1
+= 1
+> get() char: +
+get() char: +
+get() char: ;
+ERROR: primary expected
+ignoring: 1/01/0;
+> get() char: S
+get() string: Stroustrup
+get() char: ,
+ERROR: get: undefined variable Stroustrup
+ignoring: ,Bjarne.Programming:PrinciplesandPracticeUsingC++.PearsonEducation.KindleEdition.Maryhadalittlelambsrtvrqtiewcbet7rewaewre–wqcntrretewru754389652743nvcqnwq;
+> get() char: !
+get() char: @
+ERROR: Bad token
+ignoring: #$%^&*()~:;
+> get() char: +
+get() char: 1
+get() number: 1
+get() char: ;
+= 1
+> get() char: (
+get() char: )
+ERROR: primary expected
+ignoring: )!+21++2;
+> get() char: q

@@ -33,7 +33,7 @@ Exercises 9, 10 and 11 are incomplete.</br>
 <b>section 9</b></br>
 Exercises 17 and 18 are incomplete.</br>
 <b>section 11</b></br>
-Skipping this section.  I might come back to finish.</br>
+Exercises are not completed.</br>
 <b>section 12</b></br>
 For help using the FLTK library I'm using [vcpkg](https://github.com/microsoft/vcpkg) C/C++ library manager.</br>
 See section_12.vcxproj to see how I set FLTK includes and libs files.</br>

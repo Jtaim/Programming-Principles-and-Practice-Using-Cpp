@@ -11,7 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect11_drill10.cpp" />
+    <Text Include="sect11_ex1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Punct_stream.cpp" />
+    <ClCompile Include="sect11_ex8.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Punct_stream.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -59,6 +66,7 @@
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>%(SolutionDir)../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

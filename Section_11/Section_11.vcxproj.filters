@@ -18,10 +18,10 @@
     <Text Include="sect11_ex1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect11_ex8.cpp">
+    <ClCompile Include="Punct_stream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Punct_stream.cpp">
+    <ClCompile Include="sect11_ex11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,5 +29,8 @@
     <ClInclude Include="Punct_stream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sect11_ex9_bin" />
   </ItemGroup>
 </Project>

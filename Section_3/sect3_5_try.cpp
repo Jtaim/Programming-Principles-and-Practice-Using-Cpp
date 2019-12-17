@@ -21,7 +21,7 @@ int main()
 		++wordCount;
 		// make string lower case
 		for(auto& c : current){
-			c = static_cast<char>(tolower(c));
+			c = static_cast<unsigned char>(tolower(c));
 		}
 		if(previous == current){
 			std::cout << "repeated word: " << current << std::endl;

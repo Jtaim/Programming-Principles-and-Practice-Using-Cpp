@@ -1,0 +1,29 @@
+// Written by Jtaim
+// Date 30 Nov 2015
+// Programming: Principles and Practice Using C++ Second Edition
+// Grammar for bitwise logical expressions
+
+/*
+Expression
+
+OR :
+XOR
+OR "|" XOR			// OR
+
+XOR :
+AND
+XOR "^" AND			// exclusive or
+
+AND :
+Primary
+And "&" Primary		// And
+
+Primary :
+Number
+"(" Expression ")"	// grouping
+Number "!" Primary	// NOT
+Number "~" Primary	// Complement
+
+Number :
+	number
+*/

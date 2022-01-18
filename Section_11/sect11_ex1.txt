@@ -1,0 +1,32 @@
+/*
+    written by jtaim
+    date 19 sept 2019
+    stroustrup, bjarne. programming: principles and practice using c++. pearson education. kindle edition.
+
+    section 11 exercise 1
+    write a program that reads a text file and converts its input to all lower case, producing a new file.
+*/
+
+#include"../includes/ppp.h"
+
+int main()
+try {
+    std::ofstream ofs{"sect11_ex1.txt"};
+    char c{};
+    for(std::ifstream ifs{"sect11_ex1.cpp"}; ifs.get(c); ) {
+        ofs << static_cast<unsigned char>(std::tolower(static_cast<unsigned char>(c)));
+    }
+
+    ppp::keep_window_open();
+    return 0;
+}
+catch(std::exception& e) {
+    std::cerr << "exception: " << e.what() << std::endl;
+    ppp::keep_window_open();
+    return 1;
+}
+catch(...) {
+    std::cerr << "exception\n";
+    ppp::keep_window_open();
+    return 2;
+}

@@ -1,0 +1,22 @@
+// Written by Jtaim
+// Date 21 Nov 2015
+// Programming: Principles and Practice Using C++ Second Edition
+/*
+Sentence:
+	Noun Verb						// e.g., C++ rules
+	Sentence Conjunction Sentence	// e.g., Birds fly but fish swim
+Conjunction:
+	"and"
+	"or"
+	"but"
+Verb:
+	"rules"
+	"fly"
+	"swim"
+Noun:
+	"birds"
+	"fish"
+	"C++"
+Article:
+	"the"
+*/

@@ -7,12 +7,15 @@ Section 3.7 try this exercise
 find and fix the errors
 */
 
-#include "setion3.h" //custom header
+#include "section3.h" //custom header
 
-int Main()
+//int Main()
+int main()
 {
-  std::STRING s = "Goodbye, cruel world! ";
-  cOut << S << '\n';
+    //std::STRING s = "Goodbye, cruel world! ";
+    std::string s = "Goodbye, cruel world! ";
+    //cOut << S << '\n';
+    std::cout << s << '\n';
 
-  keep_wind_open();
+    keep_window_open();
 }

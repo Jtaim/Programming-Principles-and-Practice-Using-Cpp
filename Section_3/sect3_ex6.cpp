@@ -15,47 +15,47 @@ So, the input 4 5 4 should give 4, 4, 5.
 
 int main()
 {
-  using namespace std;
+    using namespace std;
 
-  cout << "A program that prompts the user to enter three integer values,\n"
-    << "and then outputs the values in numerical sequence separated by commas.\n\n"
-    << "Enter three integer values:\n";
+    cout << "A program that prompts the user to enter three integer values,\n"
+        << "and then outputs the values in numerical sequence separated by commas.\n\n"
+        << "Enter three integer values:\n";
 
-  int min{std::numeric_limits<int>::max()};
-  int mid{std::numeric_limits<int>::max()};
-  int max{std::numeric_limits<int>::max()};
+    int min{ std::numeric_limits<int>::max() };
+    int mid{ std::numeric_limits<int>::max() };
+    int max{ std::numeric_limits<int>::max() };
 
-  decltype(min) val{};
-  for (std::size_t i{}; i < 3 && cin >> val; ++i)
-  {
-    decltype(min) temp{};
-    if (val < min)
+    decltype( min ) val{};
+    for( std::size_t i{}; i < 3 && cin >> val; ++i )
     {
-      temp = min;
-      min = val;
-      val = mid;
-      mid = temp;
-      max = val;
+        decltype( min ) temp{};
+        if( val < min )
+        {
+            temp = min;
+            min = val;
+            val = mid;
+            mid = temp;
+            max = val;
+        }
+        else if( val < mid )
+        {
+            temp = mid;
+            mid = val;
+            max = temp;
+        }
+        else
+        {
+            max = val;
+        }
     }
-    else if (val < mid)
+
+    if( !( cin ) )
     {
-      temp = mid;
-      mid = val;
-      max = temp;
+        simple_error( "Invalid entry" );
     }
-    else
-    {
-      max = val;
-    }
-  }
 
-  if (!(cin))
-  {
-    simple_error("Invalid entry");
-  }
+    cout << std::format( "{}, {}, {}", min, mid, max );
 
-  cout << std::format("{} , {}, {}", min, mid, max);
-
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

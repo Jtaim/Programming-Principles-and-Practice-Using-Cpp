@@ -15,36 +15,37 @@ When that works, add a few more.
 #include "section4.h"
 
 //list of disliked words
-constexpr auto dislikedWords = std::to_array<std::string_view>({"broccoli", "peas", "spinach"});
+constexpr auto dislikedWords = std::to_array<std::string_view>( { "broccoli", "peas", "spinach" } );
 
-std::string bleep_disliked_word(const std::string& s)
+std::string bleep_disliked_word( const std::string& s )
 {
-  std::string temp = s;
-  std::for_each(temp.begin(), temp.end(), [](char& c) {c = std::tolower(static_cast<unsigned char>(c)); });
-  if (std::find(dislikedWords.cbegin(), dislikedWords.cend(), temp) != dislikedWords.cend())
-  {
-    return "\aBLEEP";
-  }
-  return s;
+    std::string temp = s;
+    std::for_each( temp.begin(), temp.end(),
+                   []( char& c ) { c = static_cast<char>( std::tolower( static_cast<unsigned char>( c ) ) ); } );
+    if( std::find( dislikedWords.cbegin(), dislikedWords.cend(), temp ) != dislikedWords.cend() )
+    {
+        return "\aBLEEP";
+    }
+    return s;
 }
 
 int main()
 {
-  std::vector<std::string> words;
-  // read whitespace-separated words
-  for (std::string word; std::cin >> word && word != "quit"; )
-  {
+    std::vector<std::string> words;
+    // read whitespace-separated words
+    for( std::string word; std::cin >> word && word != "quit"; )
+    {
 
-    words.push_back(word);	// put into vector
-  }
+        words.push_back( word );	// put into vector
+    }
 
-  std::cout << "Number of words: " << words.size() << std::endl;
-  for (const auto& str : words)
-  {
-    std::cout << bleep_disliked_word(str) << " ";
-  }
-  std::cout << std::endl;
+    std::cout << "Number of words: " << words.size() << std::endl;
+    for( const auto& str : words )
+    {
+        std::cout << bleep_disliked_word( str ) << " ";
+    }
+    std::cout << std::endl;
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

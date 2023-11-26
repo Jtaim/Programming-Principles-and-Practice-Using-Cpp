@@ -1,19 +1,19 @@
 ## Stroustrup, Bjarne. Programming: Principles and Practice Using C++.
-#### Where to buy this book
+### Where to buy this book
 [Link to PPP on Amazon.](https://www.amazon.com/Programming-Principles-Practice-Using-2nd/dp/0321992784/ref=sr_1_1?s=books&ie=UTF8&qid=1444058171&sr=1-1&keywords=Programming%3A+Principles+and+Practice+Using+C%2B%2B)
 
-#### Why
+### Why
 I created this repository to share my solutions for the try its, review questions, drills, and exercises while working my way through
 Stroustrup, Bjarne. Programming: Principles and Practice Using C++ . Pearson Education. Kindle Edition.
 
-#### Useful tools
+### Useful tools
 - [Microsoft Visual Studio Community](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx) is what I will be using for the exercises from this book.
 - [vcpkg](https://vcpkg.io/en/index.html) is a free C/C++ package manager for acquiring and managing libraries.
 - [MinGW variant distribution](https://nuwen.net/mingw.html) that supports the latest GNU GCC compiler also is packaged with Boost and other neat libraries.
 	Also, the distribution comes with the latest GNU Make program so you can create custom command line compiles from C++ files created via your favorite editor.
 
-#### Notes
-I will be using Microsoft Visual Studio Community to go through this book with compiler set to C++20. 
+### Notes
+I will be using Microsoft Visual Studio Community to go through this book with compiler set to C++ latest. 
 I created a solution folder named PPP and added each section as projects.
 In the solution properties I selected Current selection under Common Properties/Startup Project. Play with the selections and pick what you prefer.<br>
 ![Project Selection](Readme_captions/project_selection.png)<br>
@@ -27,7 +27,7 @@ I will be using added statements to pause the program to see the program output 
 or can use another method backed into visual studio by checking if not already enabled can select Tools/Options/Debugging/General<br>
 ![Pause Option](./Readme_captions/pause_option.png)<br>
 
-#### Deviations / Status
+### Deviations / Status
 If you're reading along you will notice I intentionally left out the header file mentioned in the book.  Instead I created a section header file for each of the sections 
 because in the book's presented header file the functions have been implemented into most modern compilers, plus I wanted some experience dealing with custom header files.
 If you want, you can get the header file from book's website [www.stroustrup.com/Programming](https://www.stroustrup.com/programming_support.html).<br>
@@ -74,12 +74,12 @@ I'm currently debugging these files to get them to work, stay tuned.
 <b>section 26</b><br>
 <b>section 27</b><br>
 
-#### Some web sites I found helpful
+### Some web sites I found helpful
 - [Markdown Cheat sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet)
 - [CPP reference](http://en.cppreference.com/w/Main_Page) is a good C and C++ reference
 - [LearnCpp.com](http://www.learncpp.com/) is a good C++ reference with good examples
 - [Microsoft CPP](https://docs.microsoft.com/en-us/cpp/cpp/?view=msvc-170)
 - [fltk documentation](https://www.fltk.org/documentation.php) is good reference but when have to use this library use vcpkg
 
-#### Disclaimer
+### Disclaimer
 I'm new at this so any suggestions or comments are appreciated.

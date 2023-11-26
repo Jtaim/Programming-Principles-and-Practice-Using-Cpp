@@ -23,57 +23,57 @@ Section 4 Drill step 6.
 
 int main()
 {
-  using inputType = double;
-  constexpr char terminationChar = '|';	//termination character
-  constexpr double tolerance = 1.0 / 100;	//close enough for floating point comparison
+    using inputType = double;
+    constexpr char terminationChar = '|';	//termination character
+    constexpr double tolerance = 1.0 / 100;	//close enough for floating point comparison
 
-  bool first_loop{true};
-  inputType smallest{};
-  inputType largest{};
+    bool first_loop{ true };
+    inputType smallest{};
+    inputType largest{};
 
-  char c{};
-  while (c != terminationChar)
-  {
-    std::cout << "Enter a number or enter " << terminationChar << " to exit.\n";
-
-    inputType enteredNumber;
-    std::cin >> enteredNumber;
-
-    //check for valid input
-    if (!std::cin.good())
+    char c{};
+    while( c != terminationChar )
     {
-      std::cin.clear();
-      std::cin.get(c);
-      if (c != terminationChar)
-      {
-        std::cout << "Invalid number or termination, please try again.\n";
-      }
-      continue; //goto next loop cycle
+        std::cout << std::format( "Enter a number or enter {} to exit.\n", terminationChar );
+
+        inputType enteredNumber;
+        std::cin >> enteredNumber;
+
+        //check for valid input
+        if( !std::cin.good() )
+        {
+            std::cin.clear();
+            std::cin.get( c );
+            if( c != terminationChar )
+            {
+                std::cout << "Invalid number or termination, please try again.\n";
+            }
+            continue; //goto next loop cycle
+        }
+
+        //print out valid number
+        std::cout << std::format( "Entered number: {}", enteredNumber );
+
+        if( first_loop )
+        {
+            first_loop = false;
+            smallest = largest = enteredNumber;
+            std::cout << " is the smallest and largest so far.";
+        }
+        //determine if have new smallest or largest number
+        if( smallest > enteredNumber && std::fabs( smallest - enteredNumber ) > tolerance )
+        {
+            smallest = enteredNumber;
+            std::cout << " is the smallest so far.";
+        }
+        else if( largest < enteredNumber && std::fabs( largest - enteredNumber ) > tolerance )
+        {
+            largest = enteredNumber;
+            std::cout << " is the largest so far.";
+        }
+        std::cout << std::endl;
     }
 
-    //print out valid number
-    std::cout << "Entered number: " << enteredNumber;
-
-    if (first_loop)
-    {
-      first_loop = false;
-      smallest = largest = enteredNumber;
-      std::cout << " is the smallest and largest so far.";
-    }
-    //determine if have new smallest or largest number
-    if (smallest > enteredNumber && std::fabs(smallest - enteredNumber) > tolerance)
-    {
-      smallest = enteredNumber;
-      std::cout << " is the smallest so far.";
-    }
-    else if (largest < enteredNumber && std::fabs(largest - enteredNumber) > tolerance)
-    {
-      largest = enteredNumber;
-      std::cout << " is the largest so far.";
-    }
-    std::cout << std::endl;
-  }
-
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

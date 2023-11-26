@@ -12,27 +12,27 @@ Then run some version of “the first program” using that square().
 #include "section4.h"
 
 // function forward declaration
-int square(int);
+int square( int );
 
 int main()
 {
-  std::cout << "Program to find the squared results as the first program did in 1949.\n";
-  for (int num{}; num < 100; ++num)
-  {
-    std::cout << num << " squared = " << square(num) << std::endl;
-  }
+    std::cout << "Program to find the squared results as the first program did in 1949.\n";
+    for( int num{}; num < 100; ++num )
+    {
+        std::cout << std::format( "{:>3} squared = {}\n", num, square( num ) );
+    }
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }
 
 // do repeat addition not multiplication function
-int square(int i)
+int square( int i )
 {
-  int result{};
-  for (int j{}; j < i; j++)
-  {
-    result += i;
-  }
-  return result;
+    int result{};
+    for( int j{}; j < i; j++ )
+    {
+        result += i;
+    }
+    return result;
 }

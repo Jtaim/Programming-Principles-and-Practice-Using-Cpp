@@ -27,15 +27,15 @@ int main()
 
   if (val1 < val2)
   {
-    cout << std::format("{} is smaller than {}\n", val1, val2);
+    cout << std::format("{} < {}\n", val1, val2);
   }
   else if (val1 > val2)
   {
-    cout << std::format("{1} is smaller than {0}\n", val1, val2);
+    cout << std::format("{} > {}\n", val1, val2);
   }
   else if (val1 == val2)
   {
-    cout << std::format("{} is equal to {}\n", val1, val2);
+    cout << std::format("{} == {}\n", val1, val2);
   }
   else
   {

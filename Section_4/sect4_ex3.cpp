@@ -15,29 +15,31 @@ Find and print the mean distance between two neighboring cities.
 
 int main()
 {
-  std::vector<double> distances;
+    std::vector<double> distances;
 
-  std::cout << "Please enter a sequence of numbers (representing distances).\n";
+    std::cout << "Please enter a sequence of numbers (representing distances).\n";
 
-  for (double distance{}; std::cin >> distance; )
-  {
-    distances.push_back(distance);
-  }
+    for( double distance{}; std::cin >> distance; )
+    {
+        distances.push_back( distance );
+    }
 
-  if (distances.empty())
-  {
-    std::cout << "no distances entered\n";
-  }
-  else
-  {
-    double sum{std::accumulate(distances.begin(), distances.end(), 0.0)};
-    std::cout << "The total distance: " << sum << std::endl;
-    std::sort(distances.begin(), distances.end());
-    std::cout << "The smallest distance: " << distances.front() << std::endl;
-    std::cout << "The greatest distance: " << distances.back() << std::endl;
-    std::cout << "The mean distance: " << sum / distances.size() << std::endl;
-  }
+    std::string output;
+    if( distances.empty() )
+    {
+        output = std::format( "no distances entered\n" );
+    }
+    else
+    {
+        auto sum{ std::accumulate( distances.begin(), distances.end(), 0.0 ) };
+        output = std::format( "The total distance: {}\n", sum );
+        std::sort( distances.begin(), distances.end() );
+        output = std::format( "{}The smallest distance: {}\n", output, distances.front() );
+        output = std::format( "{}The greatest distance: {}\n", output, distances.back() );
+        output = std::format( "{}The mean distance: {}\n", output, sum / distances.size() );
+    }
+    std::cout << output << std::endl;
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

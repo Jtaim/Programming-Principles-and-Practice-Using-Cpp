@@ -35,99 +35,100 @@ Section 4 Drill step 9.
 
 int main()
 {
-  using inputType = double;
-  constexpr char terminationChar = '|';		//termination character
-  constexpr double tolerance = 1.0 / 100;	//close enough for floating point comparison
+    using inputType = double;
+    constexpr char terminationChar = '|';		//termination character
+    constexpr double tolerance = 1.0 / 100;	//close enough for floating point comparison
 
-  constexpr auto convert = std::to_array<std::pair<std::string_view, inputType>>({
-    {"m", 1},             //covert to m
-    {"cm", .01},          //leave as is
-    {"in", .0254},        //convert to m
-    {"ft", 12.0 * .0254}  //convert to cm
-    });
+    constexpr auto convert = std::to_array<std::pair<std::string_view, inputType>>( {
+      {"m", 1},             //covert to m
+      {"cm", .01},          //leave as is
+      {"in", .0254},        //convert to m
+      {"ft", 12.0 * .0254}  //convert to cm
+                                                                                    } );
 
-  bool first_loop{true};
-  inputType smallest{};
-  inputType largest{};
-  inputType sum{};
-  std::size_t how_many_entered{};
+    bool first_loop{ true };
+    inputType smallest{};
+    inputType largest{};
+    inputType sum{};
+    std::size_t how_many_entered{};
 
-  std::stringstream ss;
-  char c{};
-  while (c != terminationChar)
-  {
-    std::cout << "Enter a number and unit of measure (12in) or enter " << terminationChar << " to exit.\n";
-    auto pos = ss.tellg();  // position in the ss buffer
-    if (pos == 0 || ss.eof())
+    std::stringstream ss;
+    char c{};
+    while( c != terminationChar )
     {
-      ss.clear();
-      ss.str("");
-      std::string input;
-      std::getline(std::cin, input);
-      ss.str(input);
+        std::cout << std::format( "Enter a number and unit of measure (12in) or enter {} to exit.\n", terminationChar );
+        auto pos = ss.tellg();  // position in the ss buffer
+        if( pos == 0 || ss.eof() )
+        {
+            ss.clear();
+            ss.str( "" );
+            std::string input;
+            std::getline( std::cin, input );
+            ss.str( input );
+        }
+
+        inputType enteredNumber;
+        // check for valid input
+        if( !( ss >> enteredNumber ) )
+        {
+            ss.clear();
+            ss >> c;
+            if( c != terminationChar )
+            {
+                std::cout << "Incomplete entry or invalid termination, please try again.\n\n";
+            }
+            continue; //skip rest of loop iteration and start next loop cycle
+        }
+
+        // get unit of measure
+        std::string unitOfMeasure;
+        ss >> unitOfMeasure;
+        // convert unit of measure to lower case
+        std::for_each( unitOfMeasure.begin(), unitOfMeasure.end(),
+                       []( char& c ) { c = static_cast<char>( std::tolower( static_cast<unsigned char>( c ) ) ); } );
+
+        // check for valid unit of measure and convert
+        auto itr = std::find_if( convert.begin(), convert.end(),
+                                 [&unitOfMeasure]( const auto& um ) { return um.first == unitOfMeasure; } );
+        if( itr == convert.end() )
+        {
+            std::cout << std::format( "{} is an unknown unit of measure\n\n", unitOfMeasure );
+            continue; //skip rest of loop iteration and start next loop cycle
+        }
+
+        // convert measurement to cm
+        inputType convertedMeasurement{};
+        convertedMeasurement = enteredNumber * itr->second;
+        auto output = std::format( "Entered number {}{} was converted {}m", enteredNumber, unitOfMeasure, convertedMeasurement );
+        sum += convertedMeasurement;
+        ++how_many_entered;
+
+        //determine if have new smallest or largest number
+        if( first_loop )
+        {
+            first_loop = false;
+            smallest = largest = convertedMeasurement;
+            output += " and is the smallest and largest so far.";
+        }
+        if( smallest > convertedMeasurement && std::fabs( smallest - convertedMeasurement ) > tolerance )
+        {
+            smallest = convertedMeasurement;
+            output += " and is the smallest so far.";
+        }
+        else if( largest < convertedMeasurement && std::fabs( largest - convertedMeasurement ) > tolerance )
+        {
+            largest = convertedMeasurement;
+            output += " and is the largest so far.";
+        }
+        std::cout << output << "\n\n";
     }
-    inputType enteredNumber;
-    ss >> enteredNumber;
 
-    // check for valid input
-    if (!ss.good())
-    {
-      ss.clear();
-      ss >> c;
-      if (c != terminationChar)
-      {
-        std::cout << "Incomplete entry or invalid termination, please try again.\n";
-      }
-      continue; //goto next loop cycle
-    }
+    // print measurements
+    std::cout << std::format( "Number of values entered: {}\n", how_many_entered );
+    std::cout << std::format( "The smallest valid value entered is {}m\n", smallest );
+    std::cout << std::format( "The largest valid value entered is {}m\n", largest );
+    std::cout << std::format( "The sum of all valid entered measurements is {}m\n", sum );
 
-    // get unit of measure
-    std::string unitOfMeasure;
-    ss >> unitOfMeasure;
-    // convert unit of measure to lower case
-    std::for_each(unitOfMeasure.begin(), unitOfMeasure.end(), [](auto& c) {c = static_cast<char>(std::tolower(static_cast<unsigned char>(c))); });
-
-    // check for valid unit of measure and convert
-    auto itr = std::find_if(convert.begin(), convert.end(), [&unitOfMeasure](const auto& um) {return um.first == unitOfMeasure; });
-    if (itr == convert.end())
-    {
-      std::cout << unitOfMeasure << " is an unknown unit of measure\n";
-      continue; //goto next loop cycle
-    }
-
-    // convert measurement to cm
-    inputType convertedMeasurement{};
-    convertedMeasurement = enteredNumber * itr->second;
-    std::cout << "Entered number " << enteredNumber << unitOfMeasure << " was converted to " << convertedMeasurement << "m";
-    sum += convertedMeasurement;
-    ++how_many_entered;
-
-    //determine if have new smallest or largest number
-    if (first_loop)
-    {
-      first_loop = false;
-      smallest = largest = convertedMeasurement;
-      std::cout << " and is the smallest and largest so far.";
-    }
-    if (smallest > convertedMeasurement && std::fabs(smallest - convertedMeasurement) > tolerance)
-    {
-      smallest = convertedMeasurement;
-      std::cout << " and is the smallest so far.";
-    }
-    else if (largest < convertedMeasurement && std::fabs(largest - convertedMeasurement) > tolerance)
-    {
-      largest = convertedMeasurement;
-      std::cout << " and is the largest so far.";
-    }
-    std::cout << "\n\n";
-  }
-
-  // print measurements
-  std::cout << "Number of values entered: " << how_many_entered << '\n';
-  std::cout << "The smallest valid value entered is " << smallest << "m\n";
-  std::cout << "The largest valid value entered is " << largest << "m\n";
-  std::cout << "The sum of all valid entered measurements is " << sum << "m\n";
-
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

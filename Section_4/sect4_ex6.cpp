@@ -13,45 +13,36 @@ Have the same program, using the same input loop, convert spelled-out numbers in
 
 int main()
 {
-  const std::vector<std::string> spelledNumbers{
-    "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"
-  };
+    const std::vector<std::string_view> spelledNumbers{
+      "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"
+    };
 
-  std::cout << "Enter a number between 0 and 9 either spelled out or as the number.\n";
-  int number{};
-  if (std::cin >> number)
-  {
-    if (number >= 0 && number <= 9)
+    std::cout << "Enter a number between 0 and 9 either spelled out or as the number.\n";
+
+    std::string number;
+    if( std::cin >> number && number.size() == 1 && std::isdigit( static_cast<unsigned char>( number[0] ) ) )
     {
-      std::cout << number << " == " << spelledNumbers[number] << "\n\n";
+        auto num{ atoi(number.data())};
+        std::cout << num << " == " << spelledNumbers[num] << "\n\n";
     }
+    // check if number is spelled out
     else
     {
-      std::cout << "numbered entered could not be spelled out.\n";
-    }
-  }
-  // check if number is spelled out
-  else
-  {
-    std::cin.clear();
-    std::string spelledNumber;
-    std::cin >> spelledNumber;
+        // convert to lower
+        std::for_each( number.begin(), number.end(), []( auto& c ) { c = static_cast<char>( tolower( static_cast<unsigned char>( c ) ) ); } );
 
-    // convert to lower
-    std::for_each(spelledNumber.begin(), spelledNumber.end(), [](auto& c) { c = static_cast<char>(tolower(static_cast<unsigned char>(c))); });
-
-    // check if has a spelled out number
-    auto spelledIndex = std::find(spelledNumbers.begin(), spelledNumbers.end(), spelledNumber);
-    if (spelledIndex != spelledNumbers.end())
-    {
-      std::cout << spelledNumber << " == " << (spelledIndex - spelledNumbers.begin()) << "\n\n";
+        // check if has a spelled out number
+        auto spelledIndex = std::find( spelledNumbers.begin(), spelledNumbers.end(), number );
+        if( spelledIndex != spelledNumbers.end() )
+        {
+            std::cout << number << " == " << ( spelledIndex - spelledNumbers.begin() ) << "\n\n";
+        }
+        else
+        {
+            simple_error( std::format( "{} is undefined input", number ) );
+        }
     }
-    else
-    {
-      std::cout << "could not find the spelled out " << spelledNumber << ".\n";
-    }
-  }
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

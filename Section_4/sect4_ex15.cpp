@@ -11,36 +11,36 @@
 
 int main()
 {
-  // container to store the prime numbers
-  std::vector<int> primes{};
+    // container to store the prime numbers
+    std::vector<std::size_t> primes{};
 
-  std::size_t howManyToFind{};
-  std::cout << "enter number of primes you want to find." << std::endl;
-  if (!(std::cin >> howManyToFind))
-  {
-    simple_error("entered invalid integer value\n");
-  }
-
-  // loop to found n primes and start with 2.
-  for (std::size_t i{2}; primes.size() < howManyToFind; ++i)
-  {
-    auto check = std::find_if(primes.cbegin(), primes.cend(), [i](auto p) { return i % p == 0; });
-    if (check == primes.cend())
+    std::size_t wantedPrimes{};
+    std::cout << "enter number of primes you want to find." << std::endl;
+    if( !( std::cin >> wantedPrimes ) )
     {
-      primes.push_back(i);
+        simple_error( "entered invalid integer value\n" );
     }
-  }
 
-  // print out the prime numbers
-  std::cout << "The number of primes found is " << primes.size() << ".\n";
-  for (int j{1}; auto x : primes)
-  {
-    //10 per row
-    std::cout << x << (j % 10 != 0 ? '\t' : '\n');
-    ++j;
-  }
-  std::cout << std::endl;
+    // loop to found n primes and start with 2.
+    for( std::size_t i{ 2 }; primes.size() < wantedPrimes; ++i )
+    {
+        auto check = std::find_if( primes.cbegin(), primes.cend(), [i]( auto p ) { return i % p == 0; } );
+        if( check == primes.cend() )
+        {
+            primes.push_back( i );
+        }
+    }
 
-  keep_window_open();
-  return 0;
+    // print out the prime numbers
+    std::cout << std::format("The number of primes found is {}.\n", primes.size());
+    for( int j{ 1 }; auto x : primes )
+    {
+        //10 per row
+        std::cout << x << ( j % 10 != 0 ? '\t' : '\n' );
+        ++j;
+    }
+    std::cout << std::endl;
+
+    keep_window_open();
+    return 0;
 }

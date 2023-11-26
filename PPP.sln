@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28917.181
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Section_2", "Section_2\Section_2.vcxproj", "{CEC19A41-4817-423B-B9AD-47B29A6D1671}"
 EndProject
@@ -25,6 +25,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "includes", "includes", "{C1503D09-FF17-4A5F-B468-66EEF5477CD1}"
 	ProjectSection(SolutionItems) = preProject
 		includes\ppp.h = includes\ppp.h
+		std_lib_facilities.h = std_lib_facilities.h
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Section_9", "Section_9\Section_9.vcxproj", "{C9F85D23-3C43-40ED-9486-56DD991037FA}"

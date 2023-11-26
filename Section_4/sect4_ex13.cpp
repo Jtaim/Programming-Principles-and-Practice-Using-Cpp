@@ -14,37 +14,37 @@ Section 4 exercise 13.
 
 int main()
 {
-  std::size_t constexpr max{100};
+    std::size_t constexpr max{ 100 };
 
-  // build table
-  std::vector<bool> sieve(max, true);
+    // build table
+    std::vector<bool> sieve( max, true );
 
-  // set first 2 elements representing 0 and 1 to false as not prime
-  sieve[0] = sieve[1] = false;
+    // set first 2 elements representing 0 and 1 to false as not prime
+    sieve[0] = sieve[1] = false;
 
-  for (std::size_t i{}; i < sieve.size(); ++i)
-  {
-    if (sieve[i] == true)
+    for( std::size_t i{}; i < sieve.size(); ++i )
     {
-      for (std::size_t j{2}; (j * i) < sieve.size(); ++j)
-      {
-        sieve[i * j] = false;
-      }
+        if( sieve[i] == true )
+        {
+            for( std::size_t j{ 2 }; ( j * i ) < sieve.size(); ++j )
+            {
+                sieve[i * j] = false;
+            }
+        }
     }
-  }
 
-  // print out the prime numbers
-  for (std::size_t columnSize{1}, index{}; index != sieve.size(); ++index)
-  {
-    //10 columns 
-    if (sieve[index] == true)
+    // print out the prime numbers
+    for( std::size_t columnSize{ 1 }, index{}; index != sieve.size(); ++index )
     {
-      std::cout << index << (columnSize % 10 != 0 ? '\t' : '\n');
-      ++columnSize;
+        //10 columns 
+        if( sieve[index] == true )
+        {
+            std::cout << index << ( columnSize % 10 != 0 ? '\t' : '\n' );
+            ++columnSize;
+        }
     }
-  }
 
-  std::cout << std::endl;
-  keep_window_open();
-  return 0;
+    std::cout << std::endl;
+    keep_window_open();
+    return 0;
 }

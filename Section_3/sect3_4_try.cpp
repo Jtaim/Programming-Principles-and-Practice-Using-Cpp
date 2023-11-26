@@ -10,13 +10,15 @@ Section 3.4 try this exercise
 
 int main()
 {
-  std::cout << "Please enter a value: ";
-  int n;
-  std::cin >> n;
+    using namespace std;
 
-  std::cout << std::format("n == {} \nn + 1 == {} \nthree * n == {} \ntwice n == {} \nn squared == {} \nhalf of n == {} \nsquare root of n == {} \n",
-    n, n + 1, n * 3, n + n, n * n, n / 2.0, std::sqrt(n));
+    cout << "Please enter a value: ";
+    int n;
+    cin >> n;
 
-  keep_window_open();
-  return 0;
+    cout << format( "n == {} \nn + 1 == {} \nthree * n == {} \ntwice n == {} \nn squared == {} \nhalf of n == {} \nsquare root of n == {} \n",
+                    n, n + 1, n * 3, n + n, n * n, n / 2.0, std::sqrt( n ) );
+
+    keep_window_open();
+    return 0;
 }

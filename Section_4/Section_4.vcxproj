@@ -51,6 +51,7 @@
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -66,6 +67,7 @@
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -77,7 +79,7 @@
     <ClInclude Include="section4.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sect4_4_try2.cpp" />
+    <ClCompile Include="sect4_ex21.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

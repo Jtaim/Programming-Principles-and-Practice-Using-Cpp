@@ -16,13 +16,15 @@ z     122
 
 int main()
 {
-  char character{'a'};	// 97 = 'a' lower case letters 122 = 'z'
-  while (character <= 'z')
-  {
-    std::cout << character << "\t" << static_cast<int>(character) << std::endl;
-    ++character;
-  }
+    // 97 = 'a' lower case letters 122 = 'z'
+    unsigned char character{ 'a' };
+    while( character <= 'z' )
+    {
+        std::cout << std::format( "'{0}' = {0:<3d}    '{1}' = {1:<3d}\n",
+                                  static_cast<char>( character ), static_cast<char>( std::toupper( character ) ) );
+        ++character;
+    }
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

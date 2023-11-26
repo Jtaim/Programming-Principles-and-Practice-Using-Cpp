@@ -15,22 +15,22 @@ something that doesn't correspond, such as stupid computer!.
 
 int main()
 {
-  using namespace std;
+    using namespace std;
 
-  constexpr string_view lookup[]{"zero", "one", "two", "three", "four"};
+    constexpr string_view lookup[]{ "zero", "one", "two", "three", "four" };
 
-  cout << "Enter a spelled out number (example \"two\" for 2)\n";
-  for (string spell_num; cin >> spell_num; )
-  {
-    auto const val = find(cbegin(lookup), cend(lookup), spell_num);
-    if (val == cend(lookup))
+    cout << "Enter a spelled out number (example \"two\" for 2)\n";
+    for( string spell_num; cin >> spell_num; )
     {
-      cout << spell_num << " is not a number I know!\n";
-      break;
+        auto const val = find( cbegin( lookup ), cend( lookup ), spell_num );
+        if( val == cend( lookup ) )
+        {
+            cout << spell_num << " is not a number I know!\n";
+            break;
+        }
+        cout << std::format( "The entered number {} is the number {}.\n", spell_num, val - cbegin( lookup ) );
     }
-    cout << std::format("The entered number {} is the number {}.\n", spell_num, val - cbegin(lookup));
-  }
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

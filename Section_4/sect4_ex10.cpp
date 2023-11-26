@@ -16,77 +16,83 @@ Section 4 exercise 10.
 
 #include "section4.h"
 
+constexpr auto rps = std::to_array<std::string_view>( { "rock", "paper", "scissors" } );
+
+static int getSelection()
+{
+    std::string input;
+    int number{};
+    if( std::cin >> input && input.size() == 1 && std::isdigit( static_cast<unsigned char>( input[0] ) ) )
+    {
+        number = atoi( input.data() ) - 1;  // minus one to get proper index from rps[]
+        if( number < 0 || number > 2 )
+        {
+            simple_error( std::format( "{} is an invalid selection", input ) );
+        }
+    }
+    // check if number is spelled out
+    else
+    {
+        std::for_each( input.begin(), input.end(), []( auto& c ) { c = static_cast<char>( tolower( static_cast<unsigned char>( c ) ) ); } );
+
+        // check if has a spelled out number
+        auto spelledIndex = std::find( rps.begin(), rps.end(), input );
+        if( spelledIndex != rps.end() )
+        {
+            number = static_cast<int>( spelledIndex - rps.begin() );
+        }
+        else
+        {
+            simple_error( std::format( "{} is an invalid selection", input ) );
+        }
+    }
+    return number;
+}
 int main()
 {
-  //Will be used to obtain a seed for the random number engine
-  std::random_device rd;
-  //Standard mersenne_twister_engine seeded with rd()
-  std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0, 2);
+    //Will be used to obtain a seed for the random number engine
+    std::random_device rd;
+    //Standard mersenne_twister_engine seeded with rd()
+    std::mt19937 gen( rd() );
+    std::uniform_int_distribution<> dis( 0, 2 );
 
-  constexpr auto rps = std::to_array<std::string_view>({"rock", "paper", "scissors"});
 
-  bool playAgain{false};
-  do
-  {
-    std::cout << "Select (1)Rock (2)Paper (3)Scissors ";
-    // check for proper input
-    unsigned playersSelection{};
-    std::cin >> playersSelection;
-
-    // if is an integer select -1 to adjust so can just index the array.
-    // else cin failed will check if player entered a string.
-    if (std::cin.good())
+    bool playAgain{ false };
+    do
     {
-      playersSelection -= 1;
-    }
-    else
-    {
-      std::cin.clear();
-      std::string selection;
-      std::cin >> selection;
-      std::transform(selection.begin(), selection.end(), selection.begin(),
-        [](unsigned char c) { return static_cast<unsigned char>(std::tolower(c)); });
-      playersSelection = static_cast<unsigned>(std::find(rps.cbegin(), rps.cend(), selection) - rps.begin());
-    }
+        std::cout << "Select (1)Rock (2)Paper (3)Scissors ";
+        // get players input
+        int playersSelection{ getSelection() };
+        // get computer input
+        int computersSelection{ dis( gen ) };  //have only 3 selections gets random selection between 0 and 2
 
-    if (playersSelection >= rps.size())
-    {
-      simple_error("player selection was not valid");
-    }
-    else
-    {
-      auto computersSelection{dis(gen)};  //have only 3 selections gets random selection between 0 and 2
+        std::cout << std::format( "Your selection was {} the computer selected was {}",
+                                  rps.at( playersSelection ), rps.at( computersSelection ) ) << std::endl;
 
-      std::cout << "Your selection was " << rps.at(playersSelection) << " the computer selected was "
-        << rps.at(computersSelection) << std::endl;
+        std::cout << "The winner is ";
+        switch( playersSelection )
+        {
+            case 0:
+                std::cout << ( computersSelection == 0 ? "a tie" : computersSelection == 2 ? "player" : "computer" ) << std::endl;
+                break;
+            case 1:
+                std::cout << ( computersSelection == 1 ? "a tie" : computersSelection == 0 ? "player" : "computer" ) << std::endl;
+                break;
+            case 2:
+                std::cout << ( computersSelection == 2 ? "a tie" : computersSelection == 1 ? "player" : "computer" ) << std::endl;
+                break;
+            default:
+                // should never reach this state with previous if statement
+                break;
+        }
 
-      std::cout << "The winner is ";
-      switch (playersSelection)
-      {
-      case 0:
-        std::cout << (computersSelection == 0 ? "a tie" : computersSelection == 2 ? "player" : "computer");
-        break;
-      case 1:
-        std::cout << (computersSelection == 1 ? "a tie" : computersSelection == 0 ? "player" : "computer");
-        break;
-      case 2:
-        std::cout << (computersSelection == 2 ? "a tie" : computersSelection == 1 ? "player" : "computer");
-        break;
-      default:
-        // should never reach this state with previous if statement
-        break;
-      }
-      std::cout << std::endl;
-    }
+        std::cout << "\nWould you like to play again (y or n)" << std::endl;
+        char c;
+        std::cin >> c;
+        // check for proper input
+        c == 'y' ? playAgain = true : playAgain = false;
+    } while( playAgain );
 
-    std::cout << "\nWould you like to play again (y or n)" << std::endl;
-    char c;
-    std::cin >> c;
-    // check for proper input
-    c == 'y' ? playAgain = true : playAgain = false;
-  } while (playAgain);
-
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

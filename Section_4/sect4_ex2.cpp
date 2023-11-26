@@ -14,40 +14,41 @@ Hint: A median need not be an element of the sequence.
 // read some temperatures into a vector
 int main()
 {
-  std::vector<double> temperatures;	// store history of temperatures
-  std::cout << "Enter some temperature values and find the medium.\n";
+    std::vector<double> temperatures;	// store history of temperatures
+    std::cout << "Enter some temperature values and find the medium.\n";
 
-  for (double temperature{}; std::cin >> temperature; )
-  {
-    temperatures.push_back(temperature);
-  }
-
-  // compute mean temperature:
-  if (temperatures.empty())
-  {
-    std::cout << "No temperature data was found\n";
-  }
-  else
-  {
-    double sum = std::accumulate(temperatures.begin(), temperatures.end(), 0.0);
-    std::cout << "Average number: " << sum / temperatures.size() << std::endl;
-
-    // compute median temperature:
-    // If n is odd then Median (M) = value of ((n + 1)/2)th item term.
-    // If n is even then Median (M) = value of [((n)/2)th item term + ((n)/2 + 1)th item term ]/2
-    sort(temperatures.begin(), temperatures.end());	// sort numbers
-    if ((temperatures.size() % 2) != 0)
+    for( double temperature{}; std::cin >> temperature; )
     {
-      std::cout << "Median number: " << temperatures[temperatures.size() / 2] << std::endl;
+        temperatures.push_back( temperature );
+    }
+
+    // compute mean temperature:
+    if( temperatures.empty() )
+    {
+        std::cout << "No temperature data was found\n";
     }
     else
     {
-      // if have even amount, remember vector index starts at zero
-      // get 2 middle indexes and divide by 2
-      std::cout << "Median number: " << (temperatures[temperatures.size() / 2 - 1] + temperatures[temperatures.size() / 2]) / 2 << std::endl;
-    }
-  }
+        auto sum = std::accumulate( temperatures.begin(), temperatures.end(), 0.0 );
+        std::cout << std::format( "Average number: {}\n", sum / temperatures.size() );
 
-  keep_window_open();
-  return 0;
+        // compute median temperature:
+        // If n is odd then Median (M) = value of ((n + 1)/2)th item term.
+        // If n is even then Median (M) = value of [((n)/2)th item term + ((n)/2 + 1)th item term ]/2
+        sort( temperatures.begin(), temperatures.end() );	// sort numbers
+        if( ( temperatures.size() % 2 ) != 0 )
+        {
+            std::cout << std::format( "Median number: {}\n", temperatures[temperatures.size() / 2] );
+        }
+        else
+        {
+            // if have even amount, remember vector index starts at zero
+            // get 2 middle indexes and divide by 2
+            std::cout << std::format( "Median number: {}\n",
+                                      ( temperatures[temperatures.size() / 2 - 1] + temperatures[temperatures.size() / 2] ) / 2 );
+        }
+    }
+
+    keep_window_open();
+    return 0;
 }

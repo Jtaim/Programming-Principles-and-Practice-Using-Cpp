@@ -17,21 +17,21 @@ x = -b +/- sqrt(b^2-4ac)/2a
 
 int main()
 {
-  std::cout << "Enter the a, b and c variables to solve the quadratic equation:\n";
-  double a{0.0};
-  double b{1.0};
-  double c{0.0};
+    std::cout << "Enter the a, b and c variables to solve the quadratic equation:\n";
+    double a{ 0.0 };
+    double b{ 1.0 };
+    double c{ 0.0 };
 
-  std::cin >> a >> b >> c;
-  if (!std::cin)
-  {
-    simple_error("Entered invalid numbers");
-  }
+    std::cin >> a >> b >> c;
+    if( !std::cin )
+    {
+        simple_error( "Entered invalid numbers" );
+    }
 
-  double x1 = (-1.0 * b + std::sqrt(b * b - 4.0 * a * c)) / (2.0 * a);
-  double x2 = (-1.0 * b - std::sqrt(b * b - 4.0 * a * c)) / (2.0 * a);
-  std::cout << "x = " << x1 << " and x = " << x2 << '\n';
+    double x1 = ( -1.0 * b + std::sqrt( b * b - 4.0 * a * c ) ) / ( 2.0 * a );
+    double x2 = ( -1.0 * b - std::sqrt( b * b - 4.0 * a * c ) ) / ( 2.0 * a );
+    std::cout << "x = " << x1 << " and x = " << x2 << '\n';
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

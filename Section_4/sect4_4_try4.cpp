@@ -16,12 +16,12 @@ z     122
 
 int main()
 {
-  for (char character{'a'}; character <= 'z'; ++character)
-  {
-    std::cout << character << '\t' << static_cast<int>(character) << '\t';								//lower case letters
-    std::cout << static_cast<char>(character - 32) << '\t' << static_cast<int>(character - 32) << std::endl;	//upper case letters
-  }
+    for( unsigned char character{ 'a' }; character <= 'z'; ++character )
+    {
+        std::cout << std::format( "'{0}' = {0:<3d}    '{1}' = {1:<3d}\n",
+                                  static_cast<char>( character ), static_cast<char>( std::toupper( character ) ) );
+    }
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

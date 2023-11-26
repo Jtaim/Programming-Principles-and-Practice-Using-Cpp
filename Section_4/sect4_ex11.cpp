@@ -17,30 +17,30 @@ Section 4 exercise 11.
 
 int main()
 {
-  int constexpr max{100};
+    int constexpr max{ 100 };
 
-  // container to store the prime numbers
-  std::vector<int> primes{};
+    // container to store the prime numbers
+    std::vector<int> primes{};
 
-  // start with 2
-  for (int i{2}; i <= max; ++i)
-  {
-    auto check = std::find_if(primes.cbegin(), primes.cend(), [i](auto p) { return i % p == 0; });
-    if (check == primes.cend())
+    // start with 2
+    for( int i{ 2 }; i <= max; ++i )
     {
-      primes.push_back(i);
+        auto check = std::find_if( primes.cbegin(), primes.cend(), [i]( auto p ) { return i % p == 0; } );
+        if( check == primes.cend() )
+        {
+            primes.push_back( i );
+        }
     }
-  }
 
-  // print out the prime numbers
-  for (int j{1}; auto x : primes)
-  {
-    //10 per row
-    std::cout << x << (j % 10 != 0 ? '\t' : '\n');
-    ++j;
-  }
+    // print out the prime numbers
+    for( int j{ 1 }; auto x : primes )
+    {
+        //10 per row
+        std::cout << x << ( j % 10 != 0 ? '\t' : '\n' );
+        ++j;
+    }
 
-  std::cout << '\n';
-  keep_window_open();
-  return 0;
+    std::cout << '\n';
+    keep_window_open();
+    return 0;
 }

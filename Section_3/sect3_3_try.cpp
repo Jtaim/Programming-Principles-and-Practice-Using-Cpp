@@ -15,16 +15,16 @@ proud of being five and a half years old rather than just five.
 
 int main()
 {
-  std::cout << "Please enter your first name: ";
-  std::string first_name;
-  std::cin >> first_name;
+    std::cout << "Please enter your first name: ";
+    std::string first_name;
+    std::cin >> first_name;
 
-  std::cout << "Please enter your age: ";
-  double age;
-  std::cin >> age;
+    std::cout << "Please enter your age: ";
+    double age;
+    std::cin >> age;
 
-  std::cout << std::format("Hello, {} you are {} months old.\n", first_name, age * 12);
+    std::cout << std::format( "Hello, {} you are {} months old.\n", first_name, age * 12 );
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

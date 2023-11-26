@@ -14,67 +14,62 @@ Refer to drill 3
 
 int main()
 {
-  constexpr char termination{'|'};
+    using vType = std::vector<int>;
+    std::cout << "Enter a sequence of positive numbers to find the MODE. (enter any non numeric to indicate last number)\n";
 
-  using vType = std::vector<int>;
-  std::cout << "Enter a sequence of numbers to find the MODE. (use '|' to indicate last number)\n";
-
-  vType sequence;  // vector to hold input sequence
-  char c{};
-  while (c != termination)
-  {
-    vType::value_type enteredValue{};
-    std::cin >> enteredValue;
-    if (!std::cin.good())
+    vType sequence;  // vector to hold input sequence
+    do
     {
-      std::cin.clear();
-      std::cin.get(c);
-      if (c != termination)
-      {
-        std::cout << "Invalid number or termination, please try again.\n";
-      }
+        vType::value_type number{};
+        if( !( std::cin >> number ) )
+        {
+            break;
+        }
+        else if( number >= 0 )
+        {
+            sequence.push_back( number );
+            continue;
+        }
+        else
+        {
+            simple_error( std::format( "{} is less than zero", number ) );
+        }
+    } while( true );
+
+    if( sequence.empty() )
+    {
+        std::cout << "nothing entered\n";
     }
     else
     {
-      sequence.push_back(enteredValue);
+        std::sort( sequence.begin(), sequence.end() );
+        vType::value_type mode{};
+        vType::difference_type count{};
+
+        // search sorted vector for most duplicates
+        for( auto i{ sequence.cbegin() }, next{ sequence.cbegin() }; i != sequence.end(); i = next )
+        {
+            // find_if_not searches for an element for which the predicate returns false.
+            next = std::find_if_not( i, sequence.cend(), [i]( auto comp ) { return *i == comp; } );
+            auto temp_count{ next - i };
+            if( temp_count >= count )
+            {
+                count = temp_count;
+                mode = *i;
+            }
+        }
+
+        // print out the MODE
+        if( count > 1 )
+        {
+            std::cout << std::format( "The MODE of entered sequence is {0}.\nThe number {0} was found {1} times.\n", mode, count );
+        }
+        else
+        {
+            std::cout << "There is no MODE from this set.\n";
+        }
     }
-  }
 
-  if (sequence.empty())
-  {
-    std::cout << "nothing entered\n";
-  }
-  else
-  {
-    std::sort(sequence.begin(), sequence.end());
-    vType::value_type mode{};
-    vType::difference_type count{};
-
-    // search sorted vector for most duplicates
-    for (auto i{sequence.cbegin()}, next{sequence.cbegin()}; i != sequence.end(); i = next)
-    {
-      next = std::find_if_not(i, sequence.cend(), [i](auto comp) {return *i == comp; });
-      auto temp_count{next - i};
-      if (temp_count >= count)
-      {
-        count = temp_count;
-        mode = *i;
-      }
-    }
-
-    // print out the MODE
-    if (count > 1)
-    {
-      std::cout << "The MODE of entered sequence is " << mode << ".\n";
-      std::cout << mode << " was found " << count << " times.\n";
-    }
-    else
-    {
-      std::cout << "There is no MODE from this set.\n";
-    }
-  }
-
-
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

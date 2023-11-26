@@ -13,46 +13,42 @@ Store these values in int variables named val1 and val2.
 
 int main()
 {
-  using namespace std;
+    using namespace std;
 
-  cout << "Enter two integer values:\n";
-  int val1{};
-  int val2{};
+    cout << "Enter two integer values:\n";
+    int val1{};
+    int val2{};
 
-  if (!(cin >> val1 >> val2))
-  {
-    simple_error("Invalid entry!");
-  }
+    if( !( cin >> val1 >> val2 ) )
+    {
+        simple_error( "Invalid entry!" );
+    }
 
-  if (val1 < val2)
-  {
-    cout << std::format("{} is smaller than {}\n", val1, val2);
-  }
-  else if (val1 > val2)
-  {
-    cout << std::format("{1} is smaller than {0}\n", val1, val2);
-  }
-  else if (val1 == val2)
-  {
-    cout << std::format("{} is equal to {}\n", val1, val2);
-  }
-  else
-  {
-    simple_error("Not sure how I got here?");
-  }
+    if( val1 < val2 )
+    {
+        cout << std::format( "{} < {}\n", val1, val2 );
+    }
+    else if( val1 > val2 )
+    {
+        cout << std::format( "{} > {}\n", val1, val2 );
+    }
+    else
+    {
+        cout << std::format( "{} == {}\n", val1, val2 );
+    }
 
-  cout << std::format("{} + {} = {}\n", val1, val2, val1 + val2);
-  cout << std::format("{} - {} = {}\n", val1, val2, val1 - val2);
-  cout << std::format("{} * {} = {}\n", val1, val2, val1 * val2);
-  if (val2 == 0)
-  {
-    simple_error("I don't divide by zero");
-  }
-  else
-  {
-    cout << std::format("{} / {} = {}\n", val1, val2, static_cast<double>(val1) / static_cast<double>(val2));
-  }
+    cout << std::format( "{} + {} = {}\n", val1, val2, val1 + val2 );
+    cout << std::format( "{} - {} = {}\n", val1, val2, val1 - val2 );
+    cout << std::format( "{} * {} = {}\n", val1, val2, val1 * val2 );
+    if( val2 == 0 )
+    {
+        simple_error( "I don't divide by zero" );
+    }
+    else
+    {
+        cout << std::format( "{} / {} = {}\n", val1, val2, static_cast<double>( val1 ) / static_cast<double>( val2 ) );
+    }
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }

@@ -4,124 +4,130 @@
 
 /*
 Section 5 exercise 14
-read (day-of-the-week,value) pairs, collect values for each day in a separate vector.
+Read (day-of-the-week,value) pairs from standard input.
+Collect all the values for each day of the week in a vector<int>.
+Write out the values of the seven day-of-the-week vectors.
+Print out the sum of the values
 Ignore illegal days, but accept common synonyms.
-escape by "q 5" for day value entry
-Print sum and list of values for each day when there is no more input
-count of and output rejected entries.
+escape by "quit" for day value entry
+print number of rejected entries.
+
+Tuesday 23 Friday 56 Tuesday –3 Thursday 24 Funday 12 mon 3
 */
 
 #include "section5.h"
 
-using pType = std::pair <std::vector<std::string>, std::vector<int>>;
+using pType = std::pair<std::string, int>;
 using vType = std::vector<pType>;
-using numType = pType::second_type::value_type;
+using valueType = pType::second_type;
 
-numType add(numType n1, numType n2)
+/*	addition function.
+  Inputs:		two numbers
+  outputs:	    valid resulting number
+  Errors:		element overflow
+*/
+[[nodiscard]] static valueType add( valueType n1, valueType n2 )
 {
-  if (((n2 > 0) && (n1 > (std::numeric_limits< numType>::max() - n2))) ||
-    ((n2 < 0) && (n1 < (std::numeric_limits< numType>::min() - n2))))
-  {
-    error("overflow error");
-  }
-  return n1 + n2;
+    if( ( ( n2 > 0 ) && ( n1 > ( std::numeric_limits< valueType>::max() - n2 ) ) ) ||
+        ( ( n2 < 0 ) && ( n1 < ( std::numeric_limits< valueType>::min() - n2 ) ) ) )
+    {
+        error( "overflow error" );
+    }
+    return n1 + n2;
 }
 
 int main()
 try
 {
-  constexpr std::string_view termination{"q"};
+    constexpr std::array weekdays
+    {
+        std::array{ "sun","sunday"    },
+        std::array{ "mon","monday"    },
+        std::array{ "tue","tuesday"   },
+        std::array{ "wed","wednesday" },
+        std::array{ "thu","thursday"  },
+        std::array{ "fri","friday"    },
+        std::array{ "sat","saturday"  },
+    };
 
-  vType weekdays{
-  { {"sun","sunday"   }, {} },
-  { {"mon","monday"   }, {} },
-  { {"tue","tuesday"  }, {} },
-  { {"wed","wednesday"}, {} },
-  { {"thu","thursday" }, {} },
-  { {"fri","friday"   }, {} },
-  { {"sat","saturday" }, {} }
-  };
+    constexpr std::string_view termination{ "quit" };
 
-  unsigned rejects{};
-  std::string q{};
-  while (q != termination)
-  {
     std::cout << "Enter a day of the week (ex:Mon or Monday) and a value. Enter " << termination << " to exit\n";
-
-    std::string day_info;
-    (std::getline(std::cin, day_info));
-    std::stringstream ss(day_info);
-    ss >> day_info;
-    std::for_each(day_info.begin(), day_info.end(), [](auto& c) {c = narrow_cast<char>(std::tolower(static_cast<unsigned char>(c))); });
-
-    if (day_info == termination)
+    unsigned rejects{};
+    vType day_value_pairs;
+    std::string q{};
+    while( q != termination )
     {
-      q = day_info;
-      continue;
+        pType day_value_pair;
+        std::cin >> day_value_pair.first;
+        if( !std::cin.good() || day_value_pair.first == termination )
+        {
+            if( std::cin.eof() || day_value_pair.first == termination ) break;
+            else error( "input failure" );
+        }
+        std::for_each( day_value_pair.first.begin(), day_value_pair.first.end(),
+                       []( auto& c ) { c = narrow_cast<char>( std::tolower( static_cast<unsigned char>( c ) ) ); } );
+
+        // check for matching day
+        auto valid_day = std::find_if( weekdays.begin(), weekdays.end(), [&day_value_pair]( const auto& wd )
+        {
+            return std::find( wd.begin(), wd.end(), day_value_pair.first ) != wd.end();
+        } );
+
+        // check if valid weekday was found?
+        bool good_day = valid_day != weekdays.end();
+        if( !good_day )
+        {
+            ++rejects;
+        }
+        else
+        {
+            day_value_pair.first = valid_day->back();
+        }
+
+        // check if valid weekday value was found?
+        std::cin >> day_value_pair.second;
+        if( !std::cin.good() )
+        {
+            // Visual Studio detects an overflow with a failed input flag and leaves the space or new line character in the buffer. 
+            std::cin.clear();
+            char c{};
+            std::cin.get( c );
+            if( c == ' ' || c == '\n' )
+            {
+                error( "overflow input integer!" );
+            }
+            else
+            {
+                error( "entered invalid day data value" );
+            }
+        }
+        if( good_day ) day_value_pairs.push_back( day_value_pair );
     }
 
-    // check for matching day
-    auto validDay = std::find_if(weekdays.begin(), weekdays.end(),
-      [&day_info](const auto& wd)
-      { return std::find(wd.first.begin(), wd.first.end(), day_info) != wd.first.end(); });
-
-    // check if valid weekday was found?
-    if (validDay == weekdays.end())
+    //print the results
+    valueType sum{};
+    for( auto p : day_value_pairs )
     {
-      ++rejects;
-      continue;
+        sum = add( sum, p.second );
+        p.first[0] = static_cast<char>( std::toupper( static_cast<unsigned char>( p.first[0] ) ) );
+        std::cout << std::format( "{} has data of{}.\n", p.first, p.second );
     }
+    std::cout << "The total sum of the data is " << sum << std::endl;
+    std::cout << "\n\n" << std::left << std::setfill( '.' ) << std::setw( 20 ) << "rejects" << " " << rejects << std::endl;
 
-    // check if valid weekday value was found?
-    numType value{};
-    if (ss >> value)
-    {
-      validDay->second.push_back(value);
-    }
-    else
-    {
-      if (value == std::numeric_limits<numType>::max() ||
-        value == std::numeric_limits<numType>::min())
-      {
-        error("Entered number overflowed number type!");
-      }
-      else if (ss.eof())
-      {
-        std::cout << "given no value for the day\n";
-      }
-      else
-      {
-        error("unknown stream failure or entered invalid value");
-      }
-      ++rejects;
-    }
-  }
-
-  //print the results
-  std::cout << std::endl;
-  for (const auto& d : weekdays)
-  {
-    numType sum{};
-    for (auto num : d.second)
-    {
-      sum = add(sum, num);
-    }
-    std::cout << std::left << std::setfill('.') << std::setw(20) << d.first.at(1) << " " << sum << '\n';
-  }
-  std::cout << "\n\n" << std::left << std::setfill('.') << std::setw(20) << "rejects" << " " << rejects << std::endl;
-
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }
-catch (std::exception& e)
+catch( std::exception& e )
 {
-  std::cerr << "error: " << e.what() << '\n';
-  keep_window_open();
-  return 1;
+    std::cerr << "error: " << e.what() << '\n';
+    keep_window_open();
+    return 1;
 }
-catch (...)
+catch( ... )
 {
-  std::cerr << "Oops: unknown exception!\n";
-  keep_window_open();
-  return 2;
+    std::cerr << "Oops: unknown exception!\n";
+    keep_window_open();
+    return 2;
 }

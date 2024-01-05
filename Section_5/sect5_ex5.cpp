@@ -10,81 +10,79 @@ Added Kelvin to Celsius converter
 #include "section5.h"
 
 // converts Celsius to Kelvin
-double ctok(double c)
+// throws an exception if input is below -273.15C
+static double ctok( double c )
 {
-  if (c < -273.15)
-  {
-    //throw error if value given in Celsius is below -273.15
-    error("Can not be below absolute zero!\n");
-  }
-  constexpr double conversion_constant{273.15};
-  double celsiusToKelvin{c + conversion_constant};
-  return celsiusToKelvin;
+    if( c < -273.15 )
+    {
+        error( "Can not be below absolute zero!" );
+    }
+    constexpr double conversion_constant{ 273.15 };
+    double c_to_k{ c + conversion_constant };
+    return c_to_k;
 }
 
 // converts Kelvin to Celsius
-double ktoc(double k)
+// throws an exception if input is below 0k
+static double ktoc( double k )
 {
-  if (k < 0)
-  {
-    //there are no negative kelvin values
-    error("Can not be below absolute zero!\n");
-  }
-  constexpr double conversion_constant{273.15};
-  double kelvinToCelsius{k - conversion_constant};
-  return kelvinToCelsius;
+    if( k < 0 )
+    {
+        error( "Can not be below absolute zero!" );
+    }
+    constexpr double conversion_constant{ 273.15 };
+    double k_to_c{ k - conversion_constant };
+    return k_to_c;
 }
 
 int main()
 {
-  using pType = std::pair<char, double>;
-  pType inputTempearure{};
-
-  try
-  {
-    std::cout << "Enter a temperature and unit of temperature (c = Celsius, k = Kelvin)\n";
-
-    // get measurement
-    if (!(std::cin >> inputTempearure.second))
+    try
     {
-      error("entered non-numeric temperature.");
+        std::cout << "Enter a temperature and unit of temperature (c = Celsius, k = Kelvin)\n";
+
+        // get measurement
+        double temperature{};
+        if( !( std::cin >> temperature ) )
+        {
+            error( "entered non-numeric temperature." );
+        }
+
+        // get unit
+        char unit{};
+        std::cin >> unit;
+        unit = narrow_cast<char, int>( tolower( static_cast<unsigned char>(unit) ) );
+
+        // convert temperatures
+        switch( unit )
+        {
+            case 'c':
+                temperature = ctok( temperature );
+                unit = 'k';
+                break;
+            case 'k':
+                temperature = ktoc( temperature );
+                unit = 'c';
+                break;
+            default:
+                error( "Unknown unit of measure for temperature." );
+        }
+
+        std::cout << "Converted temperature is " << temperature << unit << std::endl;
+
+        keep_window_open();
     }
-
-    // get unit
-    std::cin >> inputTempearure.first;
-    inputTempearure.first = narrow_cast<char, int>(tolower(static_cast<unsigned char>(inputTempearure.first)));
-
-    // convert temperatures
-    pType temperatureConverted{};
-    switch (inputTempearure.first)
+    catch( std::exception& e )
     {
-    case 'c':
-      temperatureConverted.second = ctok(inputTempearure.second);
-      temperatureConverted.first = 'k';
-      break;
-    case 'k':
-      temperatureConverted.second = ktoc(inputTempearure.second);
-      temperatureConverted.first = 'c';
-      break;
-    default:
-      error("Unknown unit of measure for temperature.");
+        std::cerr << "error: " << e.what() << '\n';
+        keep_window_open();
+        return 1;
     }
-
-    std::cout << "Converted temperature is " << temperatureConverted.second << temperatureConverted.first << std::endl;
-
-    keep_window_open();
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << "error: " << e.what() << '\n';
-    keep_window_open();
-    return 1;
-  }
-  catch (...)
-  {
-    std::cerr << "Oops: unknown exception!\n";
-    keep_window_open();
-    return 2;
-  }
-  return 0;
+    catch( ... )
+    {
+        std::cerr << "Oops: unknown exception!\n";
+        keep_window_open();
+        return 2;
+    }
+    return 0;
 }

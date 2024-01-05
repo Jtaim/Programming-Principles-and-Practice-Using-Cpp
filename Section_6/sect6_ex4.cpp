@@ -16,98 +16,97 @@ Write out all the (name, score) pairs, one per line.
 
 #include "section6.h"
 
-class NameValue
+struct NameValue
 {
-public:
-  std::string name;
-  double score{};
-  NameValue(std::string n = "", double val = 0)
-    : name{n}, score(val) {}
-  friend std::istream& operator>>(std::istream& is, NameValue& nv);
-  friend std::ostream& operator<<(std::ostream& os, const NameValue& nv);
+    bool operator==( const NameValue& nv );
+    bool operator!=( const NameValue& nv );
+    friend std::istream& operator>>( std::istream& is, NameValue& nv );
+    friend std::ostream& operator<<( std::ostream& os, const NameValue& nv );
+    std::string name;
+    double score;
 };
 
-bool operator==(const NameValue& nv1, const NameValue& nv2)
+bool NameValue::operator==( const NameValue& nv )
 {
-  return (nv1.name == nv2.name && nv1.score == nv2.score);
+    return this->name == nv.name && this->score == nv.score;
 }
 
-bool operator!=(const NameValue& nv1, const NameValue& nv2)
+bool NameValue::operator!=( const NameValue& nv )
 {
-  return !(nv1 == nv2);
+    return !( *this == nv );
 }
 
-std::istream& operator>>(std::istream& is, NameValue& nv)
+std::istream& operator>>( std::istream& is, NameValue& nv )
 {
-  is >> nv.name >> nv.score;
-  if (!is.good() && !is.eof())
-  {
-    error("Data input failure");
-  }
+    is >> nv.name >> nv.score;
+    if( !is.good() && !is.eof() )
+    {
+        error( "Data input failure" );
+    }
 
-  std::transform(nv.name.begin(), nv.name.end(), nv.name.begin(),
-    [](unsigned char c) { return narrow_cast<char>(::tolower(c)); });
+    std::transform( nv.name.begin(), nv.name.end(), nv.name.begin(),
+                    []( unsigned char c ) { return narrow_cast<char>( ::tolower( c ) ); } );
 
-  return is;
+    return is;
 }
 
-std::ostream& operator<<(std::ostream& os, const NameValue& nv)
+std::ostream& operator<<( std::ostream& os, const NameValue& nv )
 {
-  os << "name: " << nv.name << "\tscore: " << nv.score;
-  return os;
+    os << "name: " << nv.name << "\tscore: " << nv.score;
+    return os;
 }
 
 
-const NameValue termination{"noname", 0};
+const NameValue termination{ "noname", 0 };
 
 int main()
 {
-  using namespace std;
+    using namespace std;
 
-  try
-  {
-    vector<NameValue> ranks;
-    cout << "Enter names and scores. Terminate input with \"NoName 0\"\n";
-    // collect valid data
-    for (NameValue nv; cin >> nv && nv != termination;)
+    try
     {
-      // check if duplicated
-      if (ranks.cend() != std::find_if(ranks.cbegin(), ranks.cend(),
-        [&nv](const auto& ns) { return ns.name == nv.name; }))
-      {
-        error("found a duplicated name");
-      }
+        vector<NameValue> ranks;
+        cout << "Enter names and scores. Terminate input with \"NoName 0\"\n";
+        // collect valid data
+        for( NameValue nv; cin >> nv && nv != termination;)
+        {
+            // check if duplicated
+            if( ranks.cend() != std::find_if( ranks.cbegin(), ranks.cend(),
+                [&nv]( const auto& ns ) { return ns.name == nv.name; } ) )
+            {
+                error( "found a duplicated name" );
+            }
 
-      ranks.push_back({nv.name, nv.score});
+            ranks.push_back( { nv.name, nv.score } );
+        }
+
+        // print contents to screen
+        if( ranks.empty() )
+        {
+            std::cout << "nothing entered\n";
+        }
+        else
+        {
+            // print contents to screen
+            for( const auto& i : ranks )
+            {
+                std::cout << i << std::endl;
+            }
+        }
+    }
+    catch( std::exception& e )
+    {
+        std::cerr << "error: " << e.what() << '\n';
+        keep_window_open();
+        return 1;
+    }
+    catch( ... )
+    {
+        std::cerr << "Oops: unknown exception!\n";
+        keep_window_open();
+        return 2;
     }
 
-    // print contents to screen
-    if (ranks.empty())
-    {
-      std::cout << "nothing entered\n";
-    }
-    else
-    {
-      // print contents to screen
-      for (const auto& i : ranks)
-      {
-        std::cout << i << std::endl;
-      }
-    }
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << "error: " << e.what() << '\n';
     keep_window_open();
-    return 1;
-  }
-  catch (...)
-  {
-    std::cerr << "Oops: unknown exception!\n";
-    keep_window_open();
-    return 2;
-  }
-
-  keep_window_open();
-  return 0;
+    return 0;
 }

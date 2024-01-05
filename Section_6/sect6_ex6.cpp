@@ -33,57 +33,57 @@ Article:
 class str
 {
 private:
-  std::string in_str;
+    std::string in_str;
 public:
-  str() {}
-  str(std::string s) : in_str(s) {}
-  bool compare(const std::vector<std::string>& vs);
+    str() {}
+    str( std::string s ) : in_str( s ) {}
+    bool compare( const std::vector<std::string>& vs );
 };
 
-bool str::compare(const std::vector<std::string>& vs)
+bool str::compare( const std::vector<std::string>& vs )
 {
-  return (find(begin(vs), end(vs), in_str) != end(vs));
+    return ( find( begin( vs ), end( vs ), in_str ) != end( vs ) );
 }
 
 //------------------------------------------------------------------------------
 class str_stream
 {
 private:
-  bool full;
-  str buffer;
+    bool full;
+    str buffer;
 public:
-  std::stringstream stream;
+    std::stringstream stream;
 
-  str_stream() : full(false), buffer() {}
-  str get();
-  void putback(str old);
+    str_stream() : full( false ), buffer() {}
+    str get();
+    void putback( str old );
 };
 
 //------------------------------------------------------------------------------
-void str_stream::putback(str s)
+void str_stream::putback( str s )
 {
-  // precondition check
-  if (full)
-  {
-    error("putback() into full buffer");
-  }
-  buffer = s;
-  full = true;
+    // precondition check
+    if( full )
+    {
+        error( "putback() into full buffer" );
+    }
+    buffer = s;
+    full = true;
 }
 
 //------------------------------------------------------------------------------
 str str_stream::get()
 {
-  // do we already have a string ready
-  if (full)
-  {
-    full = false;
-    return buffer;
-  }
-  std::string new_string;
-  stream >> new_string;
-  std::transform(new_string.begin(), new_string.end(), new_string.begin(), [](unsigned char c) { return narrow_cast<char>(tolower(c)); });
-  return str(new_string);
+    // do we already have a string ready
+    if( full )
+    {
+        full = false;
+        return buffer;
+    }
+    std::string new_string;
+    stream >> new_string;
+    std::transform( new_string.begin(), new_string.end(), new_string.begin(), []( unsigned char c ) { return narrow_cast<char>( tolower( c ) ); } );
+    return str( new_string );
 }
 
 //------------------------------------------------------------------------------
@@ -99,89 +99,89 @@ bool verb();
 //------------------------------------------------------------------------------
 int main()
 {
-  try
-  {
-    std::cout << "Enter a sentence terminated with \" . \" surrounded by whitespace\n";
-    std::string input;
-    std::getline(std::cin, input);
-    ss.stream.str(input);
-    if (conjunction())
+    try
     {
-      std::cout << "Sentence is OK.\n";
+        std::cout << "Enter a sentence terminated with \" . \" surrounded by whitespace\n";
+        std::string input;
+        std::getline( std::cin, input );
+        ss.stream.str( input );
+        if( conjunction() )
+        {
+            std::cout << "Sentence is OK.\n";
+        }
+        else
+        {
+            std::cout << "Sentence is Not OK.\n";
+        }
+        keep_window_open();
+        return 0;
     }
-    else
+    catch( std::exception& e )
     {
-      std::cout << "Sentence is Not OK.\n";
+        std::cerr << "error: " << e.what() << '\n';
+        keep_window_open();
+        return 1;
     }
-    keep_window_open();
-    return 0;
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << "error: " << e.what() << '\n';
-    keep_window_open();
-    return 1;
-  }
-  catch (...)
-  {
-    std::cerr << "Oops: unknown exception!\n";
-    keep_window_open();
-    return 2;
-  }
+    catch( ... )
+    {
+        std::cerr << "Oops: unknown exception!\n";
+        keep_window_open();
+        return 2;
+    }
 }
 
 //------------------------------------------------------------------------------
 bool conjunction()
 {
-  bool check = verb();
-  if (check)
-  {
-    str s = ss.get();
-    std::vector<std::string> test{"and","or","but"};
-    if (s.compare(test))
+    bool check = verb();
+    if( check )
     {
-      check = verb();
+        str s = ss.get();
+        std::vector<std::string> test{ "and","or","but" };
+        if( s.compare( test ) )
+        {
+            check = verb();
+        }
+        else
+        {
+            check = s.compare( { "." } );
+        }
     }
-    else
-    {
-      check = s.compare({"."});
-    }
-  }
-  return check;
+    return check;
 }
 
 //------------------------------------------------------------------------------
 bool verb()
 {
-  bool check = noun();
-  if (check)
-  {
-    str s = ss.get();
-    std::vector<std::string> test{"rules","fly","swim"};
-    check = s.compare(test);
-  }
-  return check;
+    bool check = noun();
+    if( check )
+    {
+        str s = ss.get();
+        std::vector<std::string> test{ "rules","fly","swim" };
+        check = s.compare( test );
+    }
+    return check;
 }
 
 //------------------------------------------------------------------------------
 bool noun()
 {
-  article();
-  std::vector<std::string> test{"birds","fish","c++"};
-  str s = ss.get();
-  // check for a noun
-  return s.compare(test);
+    article();
+    std::vector<std::string> test{ "birds","fish","c++" };
+    str s = ss.get();
+    // check for a noun
+    return s.compare( test );
 }
 
 //------------------------------------------------------------------------------
 bool article()
 {
-  std::vector<std::string> test{"the"};
-  auto s = ss.get();
-  auto check = s.compare(test);
-  if (check == false)
-  {
-    ss.putback(s);
-  }
-  return check;
+    std::vector<std::string> test{ "the" };
+    auto s = ss.get();
+    auto check = s.compare( test );
+    if( check == false )
+    {
+        ss.putback( s );
+    }
+    return check;
 }

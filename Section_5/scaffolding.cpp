@@ -11,19 +11,19 @@ Add comments here
 int main()
 try
 {
-  /*<<your code here>>*/
-  keep_window_open();
-  return 0;
+    /*<<your code here>>*/
+    keep_window_open();
+    return 0;
 }
-catch (std::exception& e)
+catch( std::exception& e )
 {
-  std::cerr << "error: " << e.what() << '\n';
-  keep_window_open();
-  return 1;
+    std::cerr << "error: " << e.what() << '\n';
+    keep_window_open();
+    return 1;
 }
-catch (...)
+catch( ... )
 {
-  std::cerr << "Oops: unknown exception!\n";
-  keep_window_open();
-  return 2;
+    std::cerr << "Oops: unknown exception!\n";
+    keep_window_open();
+    return 2;
 }

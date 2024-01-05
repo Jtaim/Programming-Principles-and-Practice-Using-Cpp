@@ -10,37 +10,42 @@ find errors and document
 #include "section5.h"
 
 // converts Celsius to Kelvin
-double ctok(double c)
+// throws an exception if input is below -273.15C
+static double ctok( double c )
 {
-  constexpr double conversion_constant{273.15};
+    if( c < 273.15 )
+    {
+        error( std::format( "{} Can not be below absolute zero!", c ) );
+    }
+    constexpr double conversion_constant{ 273.15 };
 
-  double celsiusToKelvin{c + conversion_constant};
+    double celsiusToKelvin{ c + conversion_constant };
 
-  return celsiusToKelvin;
+    return celsiusToKelvin;
 }
 
 int main()
 try
 {
-  std::cout << "Enter a temperature in Celsius to covert to Kelvin:\n";
-  double celsius{};
-  std::cin >> celsius;
-  double kelvin{ctok(celsius)};
-  std::cout << kelvin << '\n';
+    std::cout << "Enter a temperature in Celsius to covert to Kelvin:\n";
+    double celsius{};
+    std::cin >> celsius;
+    double kelvin{ ctok( celsius ) };
+    std::cout << kelvin << '\n';
 
-  keep_window_open();
-  return 0;
+    keep_window_open();
+    return 0;
 }
 
-catch (std::exception& e)
+catch( std::exception& e )
 {
-  std::cerr << "error: " << e.what() << '\n';
-  keep_window_open();
-  return 1;
+    std::cerr << "error: " << e.what() << '\n';
+    keep_window_open();
+    return 1;
 }
-catch (...)
+catch( ... )
 {
-  std::cerr << "Oops: unknown exception!\n";
-  keep_window_open();
-  return 2;
+    std::cerr << "Oops: unknown exception!\n";
+    keep_window_open();
+    return 2;
 }

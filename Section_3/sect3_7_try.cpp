@@ -7,7 +7,7 @@ Section 3.7 try this exercise
 find and fix the errors
 */
 
-#include "section3.h" //custom header
+#include "section3.hpp" //custom header
 
 //int Main()
 int main()

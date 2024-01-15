@@ -6,7 +6,7 @@
 Section 3.4 try this exercise
 */
 
-#include "section3.h"	//custom header
+#include "section3.hpp"	//custom header
 
 int main()
 {

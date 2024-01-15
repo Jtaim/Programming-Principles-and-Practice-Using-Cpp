@@ -9,7 +9,7 @@ random generate the numbers to guess
 Guess the 4 numbers range(0 to 9)
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 using vType = std::vector<int>;
 bool get_guesses( vType& input, std::size_t length );

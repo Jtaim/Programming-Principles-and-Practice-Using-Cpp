@@ -15,7 +15,7 @@ Section 4 Drill step 5.
    out which is the larger and the smaller if the two numbers differ by less than 1.0 / 100.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

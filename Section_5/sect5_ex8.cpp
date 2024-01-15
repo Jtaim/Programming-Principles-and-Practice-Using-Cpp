@@ -12,7 +12,7 @@ Instruct user to terminate series with '|' when finished entering numbers.
 Handle all inputs and provide and error N is larger than input vector
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 int main()
 try

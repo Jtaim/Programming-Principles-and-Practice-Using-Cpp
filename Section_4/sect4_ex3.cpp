@@ -11,7 +11,7 @@ Find and print the smallest and greatest distance between two neighboring cities
 Find and print the mean distance between two neighboring cities.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

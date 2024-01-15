@@ -24,8 +24,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Section_8", "Section_8\Sect
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "includes", "includes", "{C1503D09-FF17-4A5F-B468-66EEF5477CD1}"
 	ProjectSection(SolutionItems) = preProject
-		includes\ppp.h = includes\ppp.h
 		std_lib_facilities.h = std_lib_facilities.h
+		includes\ppp.hpp = includes\ppp.hpp
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Section_9", "Section_9\Section_9.vcxproj", "{C9F85D23-3C43-40ED-9486-56DD991037FA}"

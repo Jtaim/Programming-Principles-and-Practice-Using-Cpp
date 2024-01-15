@@ -7,7 +7,7 @@ Section 4 exercise 17.
 finds the min, max and mode of a sequence of strings
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

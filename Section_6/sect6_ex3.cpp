@@ -7,7 +7,7 @@
   Section 6 exercise 3  Add factorials
 */
 
-#include "section6.h"
+#include "section6.hpp"
 
 constexpr char quit = 'x';
 constexpr char print = '=';

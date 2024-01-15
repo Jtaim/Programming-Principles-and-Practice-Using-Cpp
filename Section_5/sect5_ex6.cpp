@@ -8,7 +8,7 @@ Celsius to Fahrenheit converter
 Fahrenheit to Celsius converter
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 // converts Celsius to Fahrenheit
 // throws an exception if input is below -273.15C

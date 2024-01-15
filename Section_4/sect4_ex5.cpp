@@ -10,7 +10,7 @@ Your program should prompt the user to enter three arguments: two double values 
 If the entry arguments are 35.6, 24.1, and '+', the program output should be The sum of 35.6 and 24.1 is 59.7.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 static double add( double arg1, double arg2 )
 {

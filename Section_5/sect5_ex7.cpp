@@ -15,7 +15,7 @@ example of 2 real square roots is x^2 - 3x + 2
 example of 2 complex roots is -3x^2 + 2x - 1
 */
 
-#include "section5.h"
+#include "section5.hpp"
 #include <complex>
 
 static void quadratic( const double a, const double b, const double c )

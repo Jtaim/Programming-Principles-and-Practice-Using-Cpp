@@ -12,7 +12,7 @@ c(a,b) = p(a,b)/b!
 https://www.mathsisfun.com/combinatorics/combinations-permutations.html
 */
 
-#include "section6.h"
+#include "section6.hpp"
 
 // do factorial to a selected stop
 int factoral( int start, int end )

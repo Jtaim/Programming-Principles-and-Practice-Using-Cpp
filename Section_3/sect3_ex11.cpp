@@ -17,7 +17,7 @@ You have 3 half dollars.
 The value of all of your coins is 573 cents.
 */
 
-#include "section3.h"
+#include "section3.hpp"
 
 long long getInput()
 {

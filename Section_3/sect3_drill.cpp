@@ -8,7 +8,7 @@
  * simple form letter based on user input.
  */
 
-#include "section3.h"
+#include "section3.hpp"
 
 int main()
 {

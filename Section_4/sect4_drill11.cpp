@@ -34,7 +34,7 @@ Section 4 Drill step 11.
    in increasing order).
 */
 
-#include "section4.h"
+#include "section4.hpp"
 #include <sstream>
 
 int main()

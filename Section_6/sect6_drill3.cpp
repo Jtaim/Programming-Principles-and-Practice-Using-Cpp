@@ -7,7 +7,7 @@
   Replace ; with = to indicate end of expression
 */
 
-#include "section6.h"
+#include "section6.hpp"
 
 constexpr char quit = 'x';
 constexpr char print = '=';

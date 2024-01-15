@@ -7,7 +7,7 @@ Section 5 Try This 5.6
 See what an uncaught exception error looks like using the error() function.
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 int main()
 {

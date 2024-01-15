@@ -11,12 +11,14 @@
 #include <cctype>
 #include <cmath>
 #include <cstdlib>
+#include <format>
 #include <forward_list>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <list>
 #include <numeric>
+#include <numbers>
 #include <random>
 #include <regex>
 #include <sstream>
@@ -51,14 +53,12 @@ namespace ppp
 
     inline void error( const std::string s, const std::string s2 )
     {
-        error( s + s2 );
+        error( std::format( "{}{}", s, s2 ) );
     }
 
     inline void error( const std::string s, int i )
     {
-        std::ostringstream os;
-        os << s << ": " << i;
-        error( os.str() );
+        error( std::format( "{}: {}", s, i ) );
     }
 
     // run-time checked narrowing cast (type conversion).

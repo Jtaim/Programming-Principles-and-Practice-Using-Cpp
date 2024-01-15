@@ -7,7 +7,7 @@ Section 5 exercise 11
 A program that writes out the Fibonacci series up to largest to fit in an int type
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 using vType = std::vector<int>;
 vType::value_type add( vType::value_type n1, vType::value_type n2 );

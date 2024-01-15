@@ -7,7 +7,7 @@ sect 5 exercise 2
 find errors and document
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 // converts Celsius to Kelvin
 // throws an exception if input is below -273.15C

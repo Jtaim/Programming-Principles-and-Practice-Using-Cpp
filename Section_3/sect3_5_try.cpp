@@ -7,7 +7,7 @@
 Section 3.5 try this exercise
 */
 
-#include "section3.h" //custom header
+#include "section3.hpp" //custom header
 #include <algorithm>
 
 int main()

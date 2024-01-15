@@ -19,7 +19,7 @@
   program will eat 3+2 and 6 but give answer to 2+5
 */
 
-#include "section6.h"
+#include "section6.hpp"
 
 class Token
 {

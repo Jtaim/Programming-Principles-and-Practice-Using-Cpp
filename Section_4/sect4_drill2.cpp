@@ -10,7 +10,7 @@ reads in two INTs and then prints them. Exit the program when a terminating '|' 
 numbers and the larger value is: followed by the larger value.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

@@ -11,7 +11,7 @@ Read the age into a double to allow for children who can be very
 proud of being five and a half years old rather than just five.
 */
 
-#include "section3.h"	//custom header
+#include "section3.hpp"	//custom header
 
 int main()
 {

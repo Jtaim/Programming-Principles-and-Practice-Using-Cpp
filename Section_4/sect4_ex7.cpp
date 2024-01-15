@@ -8,7 +8,7 @@ Modify the "mini calculator from exercise 5 to accept (just) single-digit number
 or spelled out.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 static double add( double arg1, double arg2 )
 {

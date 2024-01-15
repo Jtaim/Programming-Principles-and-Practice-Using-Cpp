@@ -11,7 +11,7 @@ numbers and the larger value is: followed by the larger value.
 3. Augment the program so that it writes the line the numbers are equal (only) if they are equal.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

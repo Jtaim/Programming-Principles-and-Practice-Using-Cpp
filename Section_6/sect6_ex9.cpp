@@ -12,7 +12,7 @@ Handle up to 4 digits.
 terminate program with '|'.
 */
 
-#include "section6.h"
+#include "section6.hpp"
 
 int main()
 {

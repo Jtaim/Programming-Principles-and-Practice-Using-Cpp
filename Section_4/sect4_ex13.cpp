@@ -10,7 +10,7 @@ Section 4 exercise 13.
  https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

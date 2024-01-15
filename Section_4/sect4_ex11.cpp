@@ -13,7 +13,7 @@ Section 4 exercise 11.
  You might check your result by comparing your vector of prime numbers with primes. Consider 2 the first prime.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

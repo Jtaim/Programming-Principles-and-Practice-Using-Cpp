@@ -6,7 +6,7 @@
 Section 3.9 try this exercise
 */
 
-#include "section3.h"
+#include "section3.hpp"
 
 //exit EOF or ctrl-z
 int main()

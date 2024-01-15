@@ -9,7 +9,7 @@ Use that in a program that converts a digit to its corresponding spelled-out val
 Have the same program, using the same input loop, convert spelled-out numbers into their digit form; e.g., the input seven gives the output 7.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

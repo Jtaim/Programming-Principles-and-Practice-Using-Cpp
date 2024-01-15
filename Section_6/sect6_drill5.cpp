@@ -7,7 +7,7 @@
   Add an improved greeting when program is launched
 */
 
-#include "section6.h"
+#include "section6.hpp"
 
 constexpr char quit = 'x';
 constexpr char print = '=';

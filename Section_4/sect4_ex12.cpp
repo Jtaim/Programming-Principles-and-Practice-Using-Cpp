@@ -8,7 +8,7 @@
  and then find all prime numbers from 1 to max.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

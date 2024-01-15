@@ -9,7 +9,7 @@ that is, do the x*x by repeated addition (start a variable result at 0 and add x
 Then run some version of “the first program” using that square().
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 // function forward declaration
 int square( int );

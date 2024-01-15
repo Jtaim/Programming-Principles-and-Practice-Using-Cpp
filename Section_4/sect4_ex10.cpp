@@ -14,7 +14,7 @@ Section 4 exercise 10.
  Try variations to make it less easy for the user to guess which move the machine will make next.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 constexpr auto rps = std::to_array<std::string_view>( { "rock", "paper", "scissors" } );
 

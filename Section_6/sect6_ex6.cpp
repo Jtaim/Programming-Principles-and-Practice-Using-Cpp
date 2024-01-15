@@ -27,7 +27,7 @@ Article:
   "the"
 */
 
-#include "section6.h" // custom header
+#include "section6.hpp" // custom header
 
 //------------------------------------------------------------------------------
 class str

@@ -7,7 +7,7 @@ Section 6 exercise 8
 Rewrite Section 5 exercise 12 Bulls and Cows game to use 4 letters not 4 numbers.
 */
 
-#include "section6.h"
+#include "section6.hpp"
 
 using vType = std::vector<char>;
 bool get_guesses( vType& input, std::size_t length );

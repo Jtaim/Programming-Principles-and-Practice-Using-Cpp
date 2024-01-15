@@ -9,7 +9,7 @@ the values Steinbeck, Hemingway, Fitzgerald, the output should be
 Fitzgerald, Hemingway, Steinbeck.
 */
 
-#include "section3.h"
+#include "section3.hpp"
 
 int main()
 {

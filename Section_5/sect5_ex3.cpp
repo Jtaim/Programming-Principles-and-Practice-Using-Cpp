@@ -8,7 +8,7 @@ Celsius to Kelvin converter
 throws error in main if input is below absolute 0
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 // converts Celsius to Kelvin
 static double ctok( double c )

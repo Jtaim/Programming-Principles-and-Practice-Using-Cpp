@@ -10,7 +10,7 @@ Write your program to determine the smaller, larger, sum, difference,
 product, and ratio of these values and report them to the user.
 */
 
-#include "section3.h"
+#include "section3.hpp"
 
 int main()
 {

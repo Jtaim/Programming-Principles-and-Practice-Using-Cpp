@@ -13,7 +13,7 @@ Section 4 Drill step 4.
 4. Change the program so that it uses double instead of int.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

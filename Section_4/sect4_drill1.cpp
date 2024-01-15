@@ -8,7 +8,7 @@ Write a program that consists of a while-loop that (each time around the loop) r
 two INTs and then prints them. Exit the program when a terminating '|' is entered.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

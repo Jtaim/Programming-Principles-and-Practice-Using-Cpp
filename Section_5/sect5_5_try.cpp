@@ -7,7 +7,7 @@ Section 5 Try This 5.5
 compile and test the program from this section.
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 //****************************************************************************
 // calculate area of a rectangle

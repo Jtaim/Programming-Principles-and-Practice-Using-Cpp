@@ -76,7 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="section4.h" />
+    <ClInclude Include="section4.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sect4_ex21.cpp" />

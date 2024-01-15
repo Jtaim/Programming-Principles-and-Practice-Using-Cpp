@@ -13,7 +13,7 @@ Instruct user to terminate series with '|' when finished entering numbers.
 Handle all inputs and provide and error N is larger than input vector
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 using vType = std::vector<double>;
 vType::value_type add( vType::value_type n1, vType::value_type n2 );

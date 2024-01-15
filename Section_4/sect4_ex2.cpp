@@ -9,7 +9,7 @@ it in the sequence as come after it," fix the program in §4.6.3 so that it alwa
 Hint: A median need not be an element of the sequence.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 // read some temperatures into a vector
 int main()

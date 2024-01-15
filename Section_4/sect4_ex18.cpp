@@ -13,7 +13,7 @@ x^2 + bx/a + (b/2a)^2 = -c/a + (b/2a)^2  complete the square
 x = -b +/- sqrt(b^2-4ac)/2a
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

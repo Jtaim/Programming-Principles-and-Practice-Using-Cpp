@@ -8,7 +8,7 @@
   Replace q with x
 */
 
-#include "section6.h"
+#include "section6.hpp"
 
 constexpr char quit = 'x';
 

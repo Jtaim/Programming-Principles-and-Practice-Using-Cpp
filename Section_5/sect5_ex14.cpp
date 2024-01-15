@@ -15,7 +15,7 @@ print number of rejected entries.
 Tuesday 23 Friday 56 Tuesday –3 Thursday 24 Funday 12 mon 3
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 using pType = std::pair<std::string, int>;
 using vType = std::vector<pType>;

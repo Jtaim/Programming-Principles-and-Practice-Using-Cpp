@@ -14,7 +14,7 @@ of type double. Implement this for operations called +, –, *, /, add, subtract
 with their obvious meanings.
 */
 
-#include "section3.h"
+#include "section3.hpp"
 
 int main()
 {

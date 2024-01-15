@@ -14,7 +14,7 @@ Section 4 exercise 8.
  We suggest that you write out the value of all your variables for each iteration of the loop so that you can see what’s going on.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

@@ -11,7 +11,7 @@ Section 4 exercise 9.
  What is the largest number of squares for which you can calculate the approximate number of grains (using a double)?
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

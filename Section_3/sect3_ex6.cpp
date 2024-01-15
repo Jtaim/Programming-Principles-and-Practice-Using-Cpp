@@ -11,7 +11,7 @@ If two values are the same, they should just be ordered together.
 So, the input 4 5 4 should give 4, 4, 5.
 */
 
-#include "section3.h"
+#include "section3.hpp"
 
 int main()
 {

@@ -8,7 +8,7 @@ Modify exercise 19 so that when you enter a number, the program will output all 
 names with that score or score not found.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

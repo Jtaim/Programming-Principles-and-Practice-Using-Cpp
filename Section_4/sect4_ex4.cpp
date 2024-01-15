@@ -11,7 +11,7 @@ Your program should be able to identify the number after asking no more than sev
 Hint: Use the < and <= operators and the if-else construct.
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

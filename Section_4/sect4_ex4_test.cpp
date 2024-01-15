@@ -16,7 +16,7 @@ Hint: Use the < and <= operators and the if-else construct.
 // so ln(100)/ln(2) = 6.6438561898 or 7 needed for guess all numbers in that range
 //********************************************************************************************
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

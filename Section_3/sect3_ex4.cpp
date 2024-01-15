@@ -9,7 +9,7 @@ A program that prompts the user to enter two integer values.
 Store these values in int variables named val1 and val2.
 */
 
-#include "section3.h"
+#include "section3.hpp"
 
 int main()
 {

@@ -7,7 +7,7 @@ Section 3 exercise 2.
 converts from miles to kilometers (1.609 kilometers to the mile)
 */
 
-#include "section3.h"
+#include "section3.hpp"
 
 int main()
 {

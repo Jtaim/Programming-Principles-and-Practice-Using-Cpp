@@ -14,7 +14,7 @@ Check that each name is unique and terminated with an error message if a name is
 Write out all the (name, score) pairs, one per line.
 */
 
-#include "section6.h"
+#include "section6.hpp"
 
 struct NameValue
 {

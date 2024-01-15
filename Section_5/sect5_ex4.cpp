@@ -7,7 +7,7 @@ sect 5 exercise 4
 Celsius to Kelvin converter
 throws error in function if input is below absolute 0
 */
-#include "section5.h"
+#include "section5.hpp"
 
 // converts Celsius to Kelvin
 // throws an exception if input is below -273.15C

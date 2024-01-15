@@ -7,7 +7,7 @@
  A program that takes an input value n and then finds the first n primes
 */
 
-#include "section4.h"
+#include "section4.hpp"
 
 int main()
 {

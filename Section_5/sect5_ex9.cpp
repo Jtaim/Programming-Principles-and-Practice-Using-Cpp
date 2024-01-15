@@ -14,7 +14,7 @@ Handle all inputs and provide and error N is larger than input vector
 Added overflow error when summing
 */
 
-#include "section5.h"
+#include "section5.hpp"
 
 using vType = std::vector<int>;
 

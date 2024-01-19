@@ -1,14 +1,16 @@
-#include "../../includes/ppp.h"
-#include "my.h"
+// Drill 1 of section 8
 
-int foo{};
+#include "my.hpp"
+#include "../../includes/ppp.hpp"
+
+int foo = 0;    // initialize global variable
 
 void print_foo()
 {
-	std::cout << foo << "\n";
+    std::cout << foo << "\n";
 }
 
-void print(int i)
+void print( int i )
 {
-	std::cout << i << "\n";
+    std::cout << i << "\n";
 }

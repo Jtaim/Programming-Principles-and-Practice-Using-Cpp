@@ -1,15 +1,16 @@
-#include "my.h"
+// Drill 1 of section 8
 
+#include "my.hpp"
 #include <iostream>
 
 int main()
 {
-	extern int foo;
-	foo = 7;
-	print_foo();
-	print(99);
+    foo = 7;
+    print_foo();
+    print( 99 );
 
-	char cc;
-	std::cin >> cc;
-	return 0;
+    // to keep output open to see results of the program
+    char cc;
+    std::cin >> cc;
+    return 0;
 }

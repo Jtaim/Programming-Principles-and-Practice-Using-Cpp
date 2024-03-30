@@ -20,12 +20,12 @@
     <ClCompile Include="sect9_ex16.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Book.h" />
-    <ClInclude Include="Chrono.h" />
-    <ClInclude Include="Library.h" />
-    <ClInclude Include="Money.h" />
-    <ClInclude Include="Patron.h" />
-    <ClInclude Include="Rational.h" />
+    <ClInclude Include="Book.hpp" />
+    <ClInclude Include="Chrono.hpp" />
+    <ClInclude Include="Library.hpp" />
+    <ClInclude Include="Money.hpp" />
+    <ClInclude Include="Patron.hpp" />
+    <ClInclude Include="Rational.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -72,7 +72,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>false</EnableModules>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -86,7 +86,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>false</EnableModules>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>

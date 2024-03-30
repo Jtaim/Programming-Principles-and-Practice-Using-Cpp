@@ -38,22 +38,22 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Book.h">
+    <ClInclude Include="Book.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Patron.h">
+    <ClInclude Include="Patron.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Chrono.h">
+    <ClInclude Include="Chrono.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Library.h">
+    <ClInclude Include="Library.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rational.h">
+    <ClInclude Include="Rational.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Money.h">
+    <ClInclude Include="Money.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

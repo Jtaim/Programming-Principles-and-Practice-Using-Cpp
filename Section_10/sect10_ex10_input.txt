@@ -21,7 +21,10 @@ Mary had a little lamb
 srtvrqtiewcbet7rewaewre-wqcntrretewru754389652743nvcqnwq;
 !@#$%^&*()~:;
 
+let x = 5.2;
 +1;
+x;
+pow(x-.2,2);
 ()
 !+2
 1++2;q

@@ -1,2 +1,2 @@
-Hello World! 
-C++ is awesome! 
+Hello World 
+Is this great? 

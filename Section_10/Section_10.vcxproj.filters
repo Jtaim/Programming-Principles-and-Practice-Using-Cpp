@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Point.h">
+    <ClInclude Include="Point.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Roman_int.h">
+    <ClInclude Include="Roman_int.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,12 +35,13 @@
     <Text Include="sect10_ex11.txt" />
     <Text Include="sect10_ex10_input.txt" />
     <Text Include="sect10_ex10_output.txt" />
+    <Text Include="sect10_ex1.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Roman_int.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sect10_ex10.cpp">
+    <ClCompile Include="sect10_ex11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

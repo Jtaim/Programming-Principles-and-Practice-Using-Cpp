@@ -11,11 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="Roman_int.h" />
+    <ClInclude Include="Point.hpp" />
+    <ClInclude Include="Roman_int.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="mydata.txt" />
+    <Text Include="sect10_ex1.txt" />
     <Text Include="sect10_ex10_input.txt" />
     <Text Include="sect10_ex10_output.txt" />
     <Text Include="sect10_ex11.txt" />
@@ -30,7 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Roman_int.cpp" />
-    <ClCompile Include="sect10_ex10.cpp" />
+    <ClCompile Include="sect10_ex11.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -77,7 +78,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -90,7 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>

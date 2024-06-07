@@ -44,10 +44,10 @@ Right or wrong, I removed the syncing of the cpp streams to the c streams by def
 Normally all C++ streams have this set to true. This will provide better reliability into the cin.rdbuf()->in_avail() function.
 Seems to be compiler dependent on how count is reported if set to true. Again right or wrong I don't know but I needed to see if anything is in the cin.rdbuf,  see ppp.h for additional details.
 Also set up namespace (ppp) for functions unique to this books exercises.<br>
-<b>section 8</b><br>
-<b>section 9</b>
+<b>section 8</b> complete<br>
+<b>section 9</b> complete
 Exercises 17 and 18 are incomplete.<br>
-<b>section 10</b><br>
+<b>section 10</b> complete<br>
 <b>section 11</b>
 Exercises are not completed.<br>
 <b>section 12</b>

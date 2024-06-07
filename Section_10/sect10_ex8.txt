@@ -9,8 +9,6 @@ Contents of file sect10_ex5_in.txt
 	{ month feb (1 1 68)(2 3 66.66)(1 0 67.2) }
 	{ month dec (15 15 -9.2)(15 14 -8.8)(14 0 -2)}}
 
-
-
 Contents of file sect10_ex5_out.txt
 year: 1990
 
@@ -49,7 +47,5 @@ year: 2000
                 temp: -8.8
             hour: 15
                 temp: -9.2
-
-
 
 

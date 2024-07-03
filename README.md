@@ -51,8 +51,8 @@ Exercises 17 and 18 are incomplete.<br>
 <b>section 11</b> complete<br>
 <b>section 12</b>
 For help using the FLTK library I'm using [vcpkg](https://github.com/microsoft/vcpkg) C/C++ library manager.
-See section_12.vcxproj to see how I set FLTK includes and libs files.
-I have mine one folder up from my project root folder ($(SolutionDir)..\vcpkg\installed\x64-windows-static\include) this may vary depending on OS and other options, refer to [vcpkg documentation](https://vcpkg.readthedocs.io/en/latest/)  
+Project properties use vcpkg and manifest to help manage the FLTK libraries and its dependencies.
+Refer to the project properties and the vcpkg.json as part of the solution.  
 Before including classes needed for this section you can compile and run the fltk_test_window.cpp file to check that you linked the libraries correctly.
 
 I'm working my way through the classes used for this section. The files from the books website don't seem to work correctly.

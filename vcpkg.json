@@ -1,0 +1,7 @@
+{
+    "name": "ppp",
+    "version-string": "0",
+    "dependencies": [
+        "fltk"
+    ]
+}

@@ -20,31 +20,87 @@
     Run the result on a multi-page text file, look at the result, and see if you can improve the program to make a better dictionary.
 */
 
-#include "ppp.h"
-#include "Punct_stream.h"
+#include "ppp.hpp"
+#include "Punct_stream.hpp"
 
-
+std::unordered_map<std::string, std::string> contractions{
+    {"aren't", "are not"},
+    {"can't", "cannot"},
+    {"couldn't", "could not"},
+    {"could've", "could have"},
+    {"didn't", "did not"},
+    {"doesn't", "does not"},
+    {"don't", "do not"},
+    {"hadn't", "had not"},
+    {"hasn't", "has not"},
+    {"haven't", "have not"},
+    {"i'm", "i am"},
+    {"i've", "i have"},
+    {"isn't", "is not"},
+    {"let's", "let us"},
+    {"shan't", "shall not"},
+    {"shouldn't", "should not"},
+    {"should've", "should have"},
+    {"they're", "they are"},
+    {"they've", "they have"},
+    {"wasn't", "was not"},
+    {"we'll", "we will"},
+    {"we're", "we are"},
+    {"we've", "we have"},
+    {"weren't", "were not"},
+    {"who've", "who have"},
+    {"won't", "will not"},
+    {"wouldn't", "would not"},
+    {"would've", "would have"},
+    {"you're", "you are"},
+    {"you've", "you have"}
+};
 
 int main()
-try {
-    Punct_stream ps{std::cin};  //ps reads from cin
-    ps.whitespace(".;,?'-");
-    ps.case_sensitive(false);
+// given text input, produce a sorted list of all words in that text
+// ignore punctuation and case differences
+// eliminate duplicates from the output
+try
+{
+    Punct_stream ps{ std::cin };                    // ps reads from cin
+    //ps.whitespace( ";:,.?!()\"{}<>/&$@#%^*|~" );    // note \“ means ” in string
+    ps.case_sensitive( false );
 
-    std::cout << "Please enter a string\n";
-    for(std::string str; ps >> str; ) {
-        std::cout << str << " ";
+    std::cout << "Please enter words\n";
+    std::vector<std::string> vs;
+    for( std::string word; ps >> word; )            // read words
+    {
+        auto index{ contractions.find( word ) };
+        if( index != contractions.end() )
+        {
+            std::istringstream ct{ index->second };
+            while( ct >> word )
+            {
+                vs.push_back( word );
+            }
+        }
+        vs.push_back( word );
+    }
+    std::sort( vs.begin(), vs.end() );              // sort in lexicographical order
+    for( std::size_t i{}; i < vs.size(); ++i )      // write dictionary
+    {
+        if( i == 0 || vs.at( i ) != vs.at( i - 1 ) )
+        {
+            std::cout << vs.at( i ) << '\n';
+        }
     }
 
-    ppp::keep_window_open();
-    return 0;
+ppp::keep_window_open();
+return 0;
 }
-catch(std::exception& e) {
+catch( std::exception &e )
+{
     std::cerr << "exception: " << e.what() << std::endl;
     ppp::keep_window_open();
     return 1;
 }
-catch(...) {
+catch( ... )
+{
     std::cerr << "exception\n";
     ppp::keep_window_open();
     return 2;

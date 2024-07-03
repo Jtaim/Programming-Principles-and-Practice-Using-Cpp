@@ -1,26 +1,26 @@
 /*
     Written by Jtaim
-    Date 21 Sept 2019
+    Date 30 June 2024
     Stroustrup, Bjarne. Programming: Principles and Practice Using C++. Pearson Education. Kindle Edition.
 
-    Section 11 Exercise 5
-    Write a program that reads strings and for each string outputs the character classification of each character,
-    as defined by the character classification functions presented in section 11.6.
-    Note that a character can have several classifications (e.g., x is both a letter and an alphanumeric).
+    Section 11 Exercise 14
+    Write a program that reads a text file and writes out how many characters of each character
+    classification are in the file, refer to section 11.6.
 */
 
 #include "ppp.hpp"
 #include <print>
- 
+
 using Function = int( * )( int );
 
 struct Classification_Functions
 {
-    Function funtion;
+    Function funtion{};
     std::string_view name;
+    int total_found_classification{};
 };
 
-constexpr std::array char_classification
+std::array char_classification
 {
     Classification_Functions{std::isalnum,"number"},
     Classification_Functions{std::isalpha,"alpha_numeric"},
@@ -36,34 +36,46 @@ constexpr std::array char_classification
     Classification_Functions{std::isxdigit,"hex_digit"}
 };
 
+constexpr std::string_view file{ "sect11_ex14.cpp" };
+
 int main()
 try
 {
-    std::ifstream ifs{ "sect11_ex5.cpp" };
+    std::ifstream ifs{ file.data()};
+    if( !ifs )
+    {
+        ppp::error( std::format( "could not open {}", file.data() ) );
+    }
     for( char c{}; ifs.get( c ); )
     {
-        std::print("{} (int)c {:#0x} is a ", (c == 0xa ? ' ' : c ), static_cast<int>( c ));  // to keep output lined up linefeed is a space
-        for( const auto &f : char_classification )
+        for( auto &f : char_classification )
         {
             if( f.funtion( static_cast<unsigned char>( c ) ) )
             {
-                std::cout << f.name << " ";
+                f.total_found_classification += 1;
             }
         }
-        std::cout << "\n";
     }
+
+    std::println( "{:15}| {}", "Classification", "Found" );
+    std::println( "{:_<25}", '_' );
+    for( auto &f : char_classification )
+    {
+        std::println( "{:15}| {}", f.name, f.total_found_classification );
+    }
+
     ppp::keep_window_open();
     return 0;
 }
 catch( std::exception &e )
 {
-    std::cerr << "exception: " << e.what() << std::endl;
+    std::println( "exception: {}", e.what() );
     ppp::keep_window_open();
     return 1;
 }
 catch( ... )
 {
-    std::cerr << "exception\n";
+    std::println( "exception" );
     ppp::keep_window_open();
     return 2;
 }

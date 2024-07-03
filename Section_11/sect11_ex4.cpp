@@ -10,45 +10,54 @@
     Then your program should output the values in properly spaced columns.
 */
 
-#include "ppp.h"
+#include "ppp.hpp"
 
 int main()
-try {
+try
+{
     std::cout << "Enter several integers in any combination of "
         << "octal, decimal, or hexadecimal, using the 0 and 0x base suffixes.\n";
     std::ostringstream oss;
-    for(std::string str_num; std::cin >> str_num; ) {
-        std::istringstream iss{str_num};
-        iss.exceptions(iss.exceptions() | std::ios::badbit);
-
+    std::cin.exceptions( std::cin.exceptions() | std::ios::badbit );
+    for( std::string str_num; std::cin >> str_num; )
+    {
         std::string base_name;
-        auto base_flag{std::dec};
-        int number{};
-        if(str_num.at(0) == '0' && str_num.at(1) == 'x') {
-            for(unsigned char c : str_num.substr(2)) {
-                if(!isxdigit(c)) {
-                    oss << std::setw(8) << std::left << str_num << "is an invalid hexadecimal number!\n";
-                    iss.clear(std::ios_base::failbit);
+        auto base_flag{ std::dec };
+        bool is_valid{ true };
+
+        if( str_num.find( "0x" ) == 0 )
+        {
+            for( unsigned char c : str_num.substr( 2 ) )
+            {
+                if( !isxdigit( c ) )
+                {
+                    is_valid = false;
                     break;
                 }
             }
             base_flag = std::hex;
             base_name = "hexadecimal";
-        } else if(str_num.at(0) == '0') {
-            for(char c : str_num.substr(1)) {
-                if(c < '0' || c > '7') {
-                    oss << std::setw(8) << std::left << str_num << "is an invalid octal number!\n";
-                    iss.clear(std::ios_base::failbit);
+        }
+        else if( str_num.find( "0" ) == 0 )
+        {
+            for( char c : str_num.substr( 1 ) )
+            {
+                if( c < '0' || c > '7' )
+                {
+                    is_valid = false;
                     break;
                 }
             }
             base_flag = std::oct;
             base_name = "octal";
-        } else {
-            for(unsigned char c : str_num) {
-                if(!isdigit(c)) {
-                    oss << std::setw(8) << std::left << str_num << "is an invalid number!\n";
-                    iss.clear(std::ios_base::failbit);
+        }
+        else
+        {
+            for( unsigned char c : str_num )
+            {
+                if( !isdigit( c ) )
+                {
+                    is_valid = false;
                     break;
                 }
             }
@@ -56,11 +65,17 @@ try {
             base_name = "decimal";
         }
 
-        if(iss) {
+        if( is_valid )
+        {
+            std::istringstream iss{ str_num };
+            iss.exceptions( iss.exceptions() | std::ios::badbit );
+            int number{};
             iss >> base_flag >> number;
-            oss << std::setw(8) << std::left << str_num
-                << std::setw(12) << std::left << base_name
-                << " converts to " << number << " decimal\n";
+            std::print( oss, "{:8}{:12}converts to {} decimal\n", str_num, base_name, number );
+        }
+        else
+        {
+            std::print( oss, "{:8}is an invalid {} number!\n", str_num, base_name );
         }
     }
 
@@ -69,12 +84,14 @@ try {
     ppp::keep_window_open();
     return 0;
 }
-catch(std::exception& e) {
+catch( std::exception &e )
+{
     std::cerr << "exception: " << e.what() << std::endl;
     ppp::keep_window_open();
     return 1;
 }
-catch(...) {
+catch( ... )
+{
     std::cerr << "exception\n";
     ppp::keep_window_open();
     return 2;

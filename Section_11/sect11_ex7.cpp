@@ -17,14 +17,15 @@
     https://www.thoughtco.com/contractions-commonly-used-informal-english-1692651
 */
 
-#include "ppp.h"
+#include "ppp.hpp"
+#include <print>
 
 using uchar = unsigned char;
 
-constexpr char no_modify{'"'};
-constexpr char replacement{' '};
+constexpr char no_modify{ '"' };
+constexpr char replacement{ ' ' };
 
-std::unordered_map<std::string, std::string> contraction{
+std::unordered_map<std::string, std::string> contractions{
     {"aren't", "are not"},
     {"can't", "cannot"},
     {"couldn't", "could not"},
@@ -35,8 +36,8 @@ std::unordered_map<std::string, std::string> contraction{
     {"hadn't", "had not"},
     {"hasn't", "has not"},
     {"haven't", "have not"},
-    {"I'm", "I am"},
-    {"I've", "I have"},
+    {"i'm", "I am"},
+    {"i've", "I have"},
     {"isn't", "is not"},
     {"let's", "let us"},
     {"shan't", "shall not"},
@@ -58,32 +59,40 @@ std::unordered_map<std::string, std::string> contraction{
 };
 
 int main()
-try {
+try
+{
     std::cout << "Please enter a string\n";
     std::string str;
-    std::getline(std::cin, str);
+    std::getline( std::cin, str );
 
-    std::transform(str.begin(), str.end(), str.begin(),
-                   [](uchar c) { return static_cast<uchar>(std::tolower(c)); });
+    std::transform( str.begin(), str.end(), str.begin(),
+                    []( uchar c ) { return static_cast<char>( std::tolower( c ) ); } );
 
-    std::istringstream iss{str};
     std::ostringstream oss;
-
-    for(std::string s; iss >> s; ) {
-        auto search{contraction.find(s)};
-        if(search != contraction.end()) {
-            oss << search->second << " ";
-        } else {
-            const auto how_big{s.size()};
-            for(std::string::size_type i{}; i < how_big; ++i) {
-                auto ch{static_cast<uchar>(s.at(i))};
-                switch(ch) {
+    std::istringstream iss{ str };
+    std::string s;
+    while( iss >> s )
+    {
+        auto index{ contractions.find( s ) };
+        if( index != contractions.end() )
+        {
+            std::print( oss, "{}", index->second );
+        }
+        else
+        {
+            for( std::string::size_type i{}; i < s.size(); ++i )
+            {
+                switch( s.at( i ) )
+                {
                     case no_modify:
-                        if((i + 2) < how_big && s.at(i + 2) == no_modify) {
-                            oss << s.at(i + 1);
+                        if( ( i + 2 ) < s.size() && s.at( i + 2 ) == no_modify )
+                        {
+                            oss << s.at( i + 1 );
                             i += 2;
-                        } else {
-                            oss << ch;
+                        }
+                        else
+                        {
+                            std::print( oss, "{}", s.at( i ) );
                         }
                         break;
                     case '.':
@@ -91,35 +100,41 @@ try {
                     case ',':
                     case '?':
                     case '\'':
-                        oss << replacement;
+                        std::print( oss, "{}", replacement );
                         break;
                     case '-':
-                        if(i != 0 && (i + 1) < how_big && std::isalpha(s.at(i - 1)) && std::isalpha(s.at(i + 1))) {
-                            oss << s.at(i) << s.at(i + 1);
+                        if( i != 0 && ( i + 1 ) < s.size()
+                            && std::isalpha( static_cast<uchar>( s.at( i - 1 ) ) )
+                            && std::isalpha( static_cast<uchar>( s.at( i + 1 ) ) ) )
+                        {
+                            std::print( oss, "{}{}", s.at( i ), s.at( i + 1 ) );
                             ++i;
-                        } else {
-                            oss << replacement;
+                        }
+                        else
+                        {
+                            std::print( oss, "{}", replacement );
                         }
                         break;
                     default:
-                        oss << ch;
+                        std::print( oss, "{}", s.at( i ) );
                 }
             }
-            oss << " ";
         }
+        oss << " ";
     }
-
-    std::cout << oss.str() << "\n";
+    std::print( "{}\n", oss.str() );
 
     ppp::keep_window_open();
     return 0;
 }
-catch(std::exception& e) {
+catch( std::exception &e )
+{
     std::cerr << "exception: " << e.what() << std::endl;
     ppp::keep_window_open();
     return 1;
 }
-catch(...) {
+catch( ... )
+{
     std::cerr << "exception\n";
     ppp::keep_window_open();
     return 2;

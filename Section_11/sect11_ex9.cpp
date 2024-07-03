@@ -9,32 +9,56 @@
     Test these programs by comparing a text file with what you get by converting it to binary and back.
 */
 
-#include "ppp.h"
+#include "ppp.hpp"
+#include <print>
+
+constexpr std::string_view ascii_file{ "sect11_ex9.cpp" };
+constexpr std::string_view binary_file{ "sect11_ex9_bin" };
 
 int main()
-try {
-    std::ifstream ifs_ascii{ "sect11_ex9.cpp" };
-    if (!ifs_ascii) {
-        ppp::error("could not open sect11_ex9.cpp");
+try
+{
+    std::ifstream ifs{ ascii_file.data(), std::ios_base::binary };
+    if( !ifs )
+    {
+        ppp::error( std::format( "could not open {}", ascii_file ) );
     }
-    std::ofstream ifs_bin{ "sect11_ex9_bin", std::ios_base::binary };
-    if (!ifs_bin) {
-        ppp::error("could not open sect11_ex9_bin");
-    }
-    for (char ch{}; ifs_ascii.get(ch); ) {
-        ifs_bin << ch;
+    std::ofstream ofs{ binary_file.data(), std::ios_base::binary };
+    if( !ofs )
+    {
+        ppp::error( std::format( "could not open {}", binary_file ) );
     }
 
+    for( char c{}; ifs.get(c); )
+    {
+        ofs << c;
+    }
+
+    ifs.close();
+    ofs.close();
+
+    ifs = std::ifstream{ binary_file.data(), std::ios_base::binary };
+    if( !ifs )
+    {
+        ppp::error( std::format( "could not open {}", binary_file ) );
+    }
+
+    for( char c{}; ifs.read( &c, sizeof( char ) ); )
+    {
+        std::print( "{}", c );
+    }
 
     ppp::keep_window_open();
     return 0;
 }
-catch (std::exception & e) {
+catch( std::exception &e )
+{
     std::cerr << "exception: " << e.what() << std::endl;
     ppp::keep_window_open();
     return 1;
 }
-catch (...) {
+catch( ... )
+{
     std::cerr << "exception\n";
     ppp::keep_window_open();
     return 2;

@@ -10,26 +10,30 @@
     Run this code with the input 1234 1234 1234 1234 Explain the results.
 */
 
-#include "ppp.h"
+#include "ppp.hpp"
 
 int main()
-try {
+try
+{
     int a{}, b{}, c{}, d{};
     std::cin >> a >> std::oct >> b >> std::hex >> c >> d;
     std::cout << a << '\t' << b << '\t' << c << '\t' << d << '\n';
 
     // the output keeps previous set base until it is changed or program restarted.
     // you have to explicitly change the base.
+    // the value is stored as the base value, so be careful
 
     ppp::keep_window_open();
     return 0;
 }
-catch(std::exception &e) {
+catch( std::exception &e )
+{
     std::cerr << "exception: " << e.what() << std::endl;
     ppp::keep_window_open();
     return 1;
 }
-catch(...) {
+catch( ... )
+{
     std::cerr << "exception\n";
     ppp::keep_window_open();
     return 2;

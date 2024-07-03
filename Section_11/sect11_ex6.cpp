@@ -10,24 +10,28 @@
     For example, " - don't use the as-if rule." becomes " don t use the as if rule ".
 */
 
-#include "ppp.h"
+#include "ppp.hpp"
 
 int main()
-try {
-    //constexpr std::string_view str{" - don't use the as-if rule. "};
+try
+{
+    //constexpr std::string_view str{""" - don't use the as-if rule. """};
     std::ostringstream oss;
 
     std::cout << "Please enter a string\n";
     std::string str;
-    std::getline(std::cin, str);
+    std::getline( std::cin, str );
 
-    const auto how_big{str.size()};
-    for(std::string::size_type i{}; i < how_big; ++i) {
-        char ch{str.at(i)};
-        switch(ch) {
+    const auto how_big{ str.size() };
+    for( std::string::size_type i{}; i < how_big; ++i )
+    {
+        char ch{ str.at( i ) };
+        switch( ch )
+        {
             case '"':
-                if((i + 2) < how_big && str.at(i + 2) == '"') {
-                    oss << str.at(i + 1);
+                if( ( i + 2 ) < how_big && str.at( i + 2 ) == '"' )
+                {
+                    oss << str.at( i + 1 );
                     i += 2;
                 }
                 break;
@@ -49,12 +53,14 @@ try {
     ppp::keep_window_open();
     return 0;
 }
-catch(std::exception& e) {
+catch( std::exception &e )
+{
     std::cerr << "exception: " << e.what() << std::endl;
     ppp::keep_window_open();
     return 1;
 }
-catch(...) {
+catch( ... )
+{
     std::cerr << "exception\n";
     ppp::keep_window_open();
     return 2;

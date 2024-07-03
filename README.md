@@ -48,8 +48,7 @@ Also set up namespace (ppp) for functions unique to this books exercises.<br>
 <b>section 9</b> complete
 Exercises 17 and 18 are incomplete.<br>
 <b>section 10</b> complete<br>
-<b>section 11</b>
-Exercises are not completed.<br>
+<b>section 11</b> complete<br>
 <b>section 12</b>
 For help using the FLTK library I'm using [vcpkg](https://github.com/microsoft/vcpkg) C/C++ library manager.
 See section_12.vcxproj to see how I set FLTK includes and libs files.
@@ -77,7 +76,7 @@ I'm currently debugging these files to get them to work, stay tuned.<br>
 
 ### Some web sites I found helpful
 - [Markdown Cheat sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet)
-- [CPP reference](http://en.cppreference.com/w/Main_Page) is a good C and C++ reference
+- [cppreference](http://en.cppreference.com/w/Main_Page) is a good C and C++ reference
 - [LearnCpp.com](http://www.learncpp.com/) is a good C++ reference with good examples
 - [Microsoft CPP](https://docs.microsoft.com/en-us/cpp/cpp/?view=msvc-170)
 - [fltk documentation](https://www.fltk.org/documentation.php) is good reference but when have to use this library use vcpkg

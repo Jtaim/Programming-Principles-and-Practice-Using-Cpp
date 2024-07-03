@@ -14,14 +14,13 @@
     <Text Include="sect11_ex1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Punct_stream.cpp" />
-    <ClCompile Include="sect11_ex11.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Punct_stream.h" />
+    <ClInclude Include="Punct_stream.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="sect11_ex9_bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sect11_ex16.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -68,7 +67,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>%(SolutionDir)../includes;</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -82,7 +81,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>%(SolutionDir)../includes;</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>

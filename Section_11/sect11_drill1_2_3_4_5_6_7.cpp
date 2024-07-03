@@ -25,31 +25,45 @@
     Go back to 2 and cause your output to show the base for each output.
 */
 
-#include "ppp.h"
+#include "ppp.hpp"
+#include <chrono>
+#include <print>
 
 int main()
-try {
-    int birth_year{1970};
+try
+{
+    int birth_year{ 1970 };
 
+    /*
     std::cout << "The year " << birth_year << " in decimal:\t" << birth_year << '\n'
         << "The year " << birth_year << " in hexadecimal:\t" << std::hex << std::showbase << birth_year << std::dec << '\n'
         << "The year " << birth_year << " in octal:\t\t" << std::oct << std::showbase << birth_year << std::dec << '\n';
+    */
 
-    std::time_t t{std::time(nullptr)};
-    struct tm buf;
-    localtime_s(&buf, &t);
-    auto current_year = buf.tm_year + 1900;
-    std::cout << "My age is " << current_year - birth_year;
+    // new in stdc++23 https://en.cppreference.com/w/cpp/io/basic_ostream/print 
+    // https://en.cppreference.com/w/cpp/utility/format/spec
+    std::print( "The year {1} {0:17}{1}\n", "in decimal:", birth_year );
+    std::print( "The year {1} {0:17}{1:#0x}\n", "in hexadecimal:", birth_year );
+    std::print( "The year {1} {0:17}{1:#0o}\n", "in octal:", birth_year );
+    std::print( "The year {1} {0:17}{1:#0b}\n", "in binary:", birth_year );
+
+    const auto now = std::chrono::system_clock::now();
+    const std::chrono::year_month_day ymd{ std::chrono::floor<std::chrono::days>( now ) };
+
+    //std::cout << "My age is " << static_cast<int>( ymd.year() ) - birth_year << "\n";
+    std::print( "My age is {}\n", static_cast<int>( ymd.year() ) - birth_year );
 
     ppp::keep_window_open();
     return 0;
 }
-catch(std::exception &e) {
+catch( std::exception &e )
+{
     std::cerr << "exception: " << e.what() << std::endl;
     ppp::keep_window_open();
     return 1;
 }
-catch(...) {
+catch( ... )
+{
     std::cerr << "exception\n";
     ppp::keep_window_open();
     return 2;

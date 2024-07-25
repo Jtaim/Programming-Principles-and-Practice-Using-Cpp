@@ -1,361 +1,427 @@
-#include "Graph.h"
+#include "Graph.hpp"
 #include <fstream>
 #include <map>
 
-namespace Graph_lib
+namespace GraphLib
 {
+    void Shape::Draw_Lines() const
+    {
+        if( Get_Color().Get_Transparency() == Color::Transparency::visible && 1 < points.size() )	// draw sole pixel?
+        {
+            for( size_t index{ 1 }; index < points.size(); ++index )
+            {
+                fl_line( points[index - 1].x, points[index - 1].y, points[index].x, points[index].y );
+            }
+        }
+    }
 
-	void Shape::draw_lines() const
-	{
-		if(color().visibility() == Color::Transparency::visible && 1 < points.size())	// draw sole pixel?
-			for(size_t i{1}; i < points.size(); ++i)
-				fl_line(points[i - 1].x, points[i - 1].y, points[i].x, points[i].y);
-	}
+    Shape::Shape( std::initializer_list<Point> lst )
+    {
+        for( const auto &p : lst )
+        {
+            Add( p );
+        }
+    }
 
-	void Shape::draw() const
-	{
-		Fl_Color old_color{fl_color()};
-		// there is no good portable way of retrieving the current style
-		fl_color(lcolor.as_int());
-		fl_line_style(static_cast<int>(ls.style()), ls.width());
-		draw_lines();
-		fl_color(old_color);	// reset color (to previous) and style (to default)
-		fl_line_style(0);
-	}
+    void Shape::Draw() const
+    {
+        Fl_Color old_color{ fl_color() };
+        // there is no good portable way of retrieving the current style
+        fl_color( line_color.As_Int() );
+        fl_line_style( static_cast<int>( line_style.Get_Style() ), line_style.Get_Width() );
+        Draw_Lines();
+        fl_color( old_color );	// reset color (to previous) and style (to default)
+        fl_line_style( static_cast<int>( Line_Style::Line_Style_Type::solid ) );
+    }
 
+    // does two lines (p1,p2) and (p3,p4) intersect?
+    // if false return the distance of the intersect point as distances from p1
+    std::pair<double, double> line_intersect( Point p1, Point p2, Point p3, Point p4, bool &parallel )
+    {
+        auto x1{ narrow_cast<double, decltype( Point::x )>( p1.x ) };
+        auto x2{ narrow_cast<double, decltype( Point::x )>( p2.x ) };
+        auto x3{ narrow_cast<double, decltype( Point::x )>( p3.x ) };
+        auto x4{ narrow_cast<double, decltype( Point::x )>( p4.x ) };
+        auto y1{ narrow_cast<double, decltype( Point::y )>( p1.y ) };
+        auto y2{ narrow_cast<double, decltype( Point::y )>( p2.y ) };
+        auto y3{ narrow_cast<double, decltype( Point::y )>( p3.y ) };
+        auto y4{ narrow_cast<double, decltype( Point::y )>( p4.y ) };
 
-	// does two lines (p1,p2) and (p3,p4) intersect?
-	// if false return the distance of the intersect point as distances from p1
-	inline std::pair<double, double> line_intersect(Point p1, Point p2, Point p3, Point p4, bool& parallel)
-	{
-		auto x1{narrow_cast<double, decltype(Point::x)>(p1.x)};
-		auto x2{narrow_cast<double, decltype(Point::x)>(p2.x)};
-		auto x3{narrow_cast<double, decltype(Point::x)>(p3.x)};
-		auto x4{narrow_cast<double, decltype(Point::x)>(p4.x)};
-		auto y1{narrow_cast<double, decltype(Point::y)>(p1.y)};
-		auto y2{narrow_cast<double, decltype(Point::y)>(p2.y)};
-		auto y3{narrow_cast<double, decltype(Point::y)>(p3.y)};
-		auto y4{narrow_cast<double, decltype(Point::y)>(p4.y)};
+        auto denom{ ( y4 - y3 ) * ( x2 - x1 ) - ( x4 - x3 ) * ( y2 - y1 ) };
+        if( denom == 0 )    // TODO fix comparing to a floating point
+        {
+            parallel = true;
+            return std::pair<double, double>{ 0.0, 0.0 };
+        }
+        parallel = false;
+        return std::pair<double, double>
+        { ( ( x4 - x3 ) *( y1 - y3 ) - ( y4 - y3 ) * ( x1 - x3 ) ) / denom,
+            ( ( x2 - x1 ) *( y1 - y3 ) - ( y2 - y1 ) * ( x1 - x3 ) ) / denom };
+    }
 
-		auto denom{(y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1)};
-		if(denom == 0){
-			parallel = true;
-			return std::pair<double, double>(0.0, 0.0);
-		}
-		parallel = false;
-		return std::pair<double, double>
-			{((x4 - x3)* (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom,
-			((x2 - x1)* (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom};
-	}
+    //intersection between two line segments
+    //Returns true if the two segments intersect,
+    //in which case intersection is set to the point of intersection
+    bool line_segment_intersect( Point p1, Point p2, Point p3, Point p4, Point &intersection )
+    {
+        bool parallel;
+        auto u{ line_intersect( p1, p2, p3, p4, parallel ) };
+        if( parallel || u.first < 0 || u.first > 1 || u.second < 0 || u.second > 1 ) // TODO fix comparing to a floating point
+        {
+            return false;
+        }
+        intersection.x = static_cast<int>( p1.x + u.first * narrow_cast<double, decltype( Point::x )>( p2.x - p1.x ) );
+        intersection.y = static_cast<int>( p1.y + u.first * narrow_cast<double, decltype( Point::y )>( p2.y - p1.y ) );
+        return true;
+    }
 
+    void Polygon::Add( Point p )
+    {
+        auto np{ Number_Of_Points() };
 
-	//intersection between two line segments
-	//Returns true if the two segments intersect,
-	//in which case intersection is set to the point of intersection
-	bool line_segment_intersect(Point p1, Point p2, Point p3, Point p4, Point& intersection)
-	{
-		bool parallel;
-		std::pair<double, double> u{line_intersect(p1, p2, p3, p4, parallel)};
-		if(parallel || u.first < 0 || u.first > 1 || u.second < 0 || u.second > 1){ return false; }
-		intersection.x = p1.x + u.first * narrow_cast<double, decltype(Point::x)>(p2.x - p1.x);
-		intersection.y = p1.y + u.first * narrow_cast<double, decltype(Point::y)>(p2.y - p1.y);
-		return true;
-	}
+        if( 1 < np )
+        {	// check that the new line isn't parallel to the previous one
+            if( p == Get_Point( np - 1 ) )
+            {
+                throw std::runtime_error( "polygon point equal to previous point" );
+            }
+            bool parallel{};
+            line_intersect( Get_Point( np - 1 ), p, Get_Point( np - 2 ), Get_Point( np - 1 ), parallel );
+            if( parallel )
+            {
+                throw std::runtime_error( "two polygon points lie in a straight line" );
+            }
+        }
 
-	void Polygon::add(Point p)
-	{
-		int np{number_of_points()};
+        for( int i{ 1 }; i < np - 1; ++i )
+        {	// check that new segment doesn't intersect and old point
+            Point ignore( 0, 0 );
+            if( line_segment_intersect( Get_Point( np - 1 ), p, Get_Point( i - 1 ), Get_Point( i ), ignore ) )
+            {
+                throw std::runtime_error( "intersect in polygon" );
+            }
+        }
 
-		if(1 < np){	// check that the new line isn't parallel to the previous one
-			if(p == point(np - 1)){ throw std::runtime_error("polygon point equal to previous point"); }
-			bool parallel{};
-			line_intersect(point(np - 1), p, point(np - 2), point(np - 1), parallel);
-			if(parallel){ throw std::runtime_error("two polygon points lie in a straight line"); }
-		}
+        Closed_Polyline::Add( p );
+    }
 
-		for(int i{1}; i < np - 1; ++i){	// check that new segment doesn't intersect and old point
-			Point ignore(0, 0);
-			if(line_segment_intersect(point(np - 1), p, point(i - 1), point(i), ignore)){
-				throw std::runtime_error("intersect in polygon");
-			}
-		}
+    void Polygon::Draw_Lines() const
+    {
+        if( Number_Of_Points() < 3 )
+        {
+            throw std::runtime_error( "less than 3 points in a Polygon" );
+        }
+        Closed_Polyline::Draw_Lines();
+    }
 
-		Closed_polyline::add(p);
-	}
+    void Open_Polyline::Draw_Lines() const
+    {
+        if( Get_Fill_Color().Get_Transparency() == Color::Transparency::visible )
+        {
+            fl_color( Get_Fill_Color().As_Int() );
+            fl_begin_complex_polygon();
+            for( int i{}; i < Number_Of_Points(); ++i )
+            {
+                fl_vertex( Get_Point( i ).x, Get_Point( i ).y );
+            }
+            fl_end_complex_polygon();
+            fl_color( Get_Color().As_Int() );	// reset color
+        }
 
-	void Polygon::draw_lines() const
-	{
-		if(number_of_points() < 3){ throw std::runtime_error("less than 3 points in a Polygon"); }
-		Closed_polyline::draw_lines();
-	}
+        if( Get_Color().Get_Transparency() == Color::Transparency::visible )
+        {
+            Shape::Draw_Lines();
+        }
+    }
 
-	void Open_polyline::draw_lines() const
-	{
-		if(fill_color().visibility() == Color::Transparency::visible){
-			fl_color(fill_color().as_int());
-			fl_begin_complex_polygon();
-			for(int i{}; i < number_of_points(); ++i){
-				fl_vertex(point(i).x, point(i).y);
-			}
-			fl_end_complex_polygon();
-			fl_color(color().as_int());	// reset color
-		}
+    void Closed_Polyline::Draw_Lines() const
+    {
+        Open_Polyline::Draw_Lines();
 
-		if(color().visibility() == Color::Transparency::visible)
-			Shape::draw_lines();
-	}
+        if( Get_Color().Get_Transparency() == Color::Transparency::visible )	// draw closing line:
+        {
+            fl_line( Get_Point( Number_Of_Points() - 1 ).x, Get_Point( Number_Of_Points() - 1 ).y,
+                     Get_Point( 0 ).x, Get_Point( 0 ).y );
+        }
+    }
 
-	void Closed_polyline::draw_lines() const
-	{
-		Open_polyline::draw_lines();
+    void Shape::Move( int dx, int dy )
+    {
+        for( size_t index{}; index < points.size(); ++index )
+        {
+            points[index].x += dx;
+            points[index].y += dy;
+        }
+    }
 
-		if(color().visibility() == Color::Transparency::visible)	// draw closing line:
-			fl_line(point(number_of_points() - 1).x, point(number_of_points() - 1).y, point(0).x, point(0).y);
-	}
+    void Lines::Draw_Lines() const
+    {
+        //	if (number_of_points()%2==1) error("odd number of points in set of lines");
+        if( Get_Color().Get_Transparency() == Color::Transparency::visible )
+        {
+            for( int i{ 1 }; i < Number_Of_Points(); i += 2 )
+            {
+                fl_line( Get_Point( i - 1 ).x, Get_Point( i - 1 ).y,
+                         Get_Point( i ).x, Get_Point( i ).y );
+            }
+        }
+    }
 
-	void Shape::move(int dx, int dy)
-	{
-		for(size_t i{}; i < points.size(); ++i){
-			points[i].x += dx;
-			points[i].y += dy;
-		}
-	}
+    void Text::Draw_Lines() const
+    {
+        auto ofnt{ fl_font() };
+        auto osz{ fl_size() };
+        fl_font( font.As_Int(), font_size );
+        fl_draw( label.c_str(), Get_Point( 0 ).x, Get_Point( 0 ).y );
+        fl_font( ofnt, osz );
+    }
 
-	void Lines::draw_lines() const
-	{
-	//	if (number_of_points()%2==1) error("odd number of points in set of lines");
-		if(color().visibility() == Color::Transparency::visible)
-			for(int i{1}; i < number_of_points(); i += 2)
-				fl_line(point(i - 1).x, point(i - 1).y, point(i).x, point(i).y);
-	}
+    Function::Function( Fct funct, double r1, double r2, Point xy, int count, double xscale, double yscale )
+        // graph f(x) for x in [r1:r2) using count line segments with (0,0) displayed at xy
+        // x coordinates are scaled by xscale and y coordinates scaled by yscale
+    {
+        if( r2 - r1 <= 0 )  // TODO fix float compare
+        {
+            throw std::runtime_error( "bad graphing range" );
+        }
+        if( count <= 0 )
+        {
+            throw std::runtime_error( "non-positive graphing count" );
+        }
+        auto dist{ ( r2 - r1 ) / count };
+        auto r{ r1 };
+        for( int i{}; i < count; ++i )
+        {
+            Add( Point( xy.x + static_cast<int>( r * xscale ), xy.y - static_cast<int>( funct( r ) * yscale ) ) );
+            r += dist;
+        }
+    }
 
-	void Text::draw_lines() const
-	{
-		auto ofnt{fl_font()};
-		auto osz{fl_size()};
-		fl_font(fnt.as_int(), fnt_sz);
-		fl_draw(lab.c_str(), point(0).x, point(0).y);
-		fl_font(ofnt, osz);
-	}
+    void Rectangle::Draw_Lines() const
+    {
+        if( Get_Fill_Color().Get_Transparency() == Color::Transparency::visible )
+        {	// fill
+            fl_color( Get_Fill_Color().As_Int() );
+            fl_rectf( Get_Point( 0 ).x, Get_Point( 0 ).y, width, height );
+            fl_color( Get_Color().As_Int() );	// reset color
+        }
 
-	Function::Function(Fct funct, double r1, double r2, Point xy, int count, double xscale, double yscale)
-	// graph f(x) for x in [r1:r2) using count line segments with (0,0) displayed at xy
-	// x coordinates are scaled by xscale and y coordinates scaled by yscale
-	{
-		if(r2 - r1 <= 0){ throw std::runtime_error("bad graphing range"); }
-		if(count <= 0){ throw std::runtime_error("non-positive graphing count"); }
-		auto dist{(r2 - r1) / count};
-		auto r{r1};
-		for(int i{}; i < count; ++i){
-			add(Point(xy.x + static_cast<int>(r * xscale), xy.y - static_cast<int>(funct(r) * yscale)));
-			r += dist;
-		}
-	}
+        if( Get_Color().Get_Transparency() == Color::Transparency::visible )
+        {	// edge on top of fill
+            fl_color( Get_Color().As_Int() );
+            fl_rect( Get_Point( 0 ).x, Get_Point( 0 ).y, width, height );
+        }
+    }
 
-	void Rectangle::draw_lines() const
-	{
-		if(fill_color().visibility() == Color::Transparency::visible){	// fill
-			fl_color(fill_color().as_int());
-			fl_rectf(point(0).x, point(0).y, w, h);
-			fl_color(color().as_int());	// reset color
-		}
+    Axis::Axis( Orientation d, Point xy, int length, int n, std::string lab )
+        :label{ Point( 0, 0 ), lab }
+    {
+        if( length < 0 )
+        {
+            throw std::runtime_error( "bad axis length" );
+        }
+        switch( d )
+        {
+            case Axis::Orientation::x:
+            {
+                Shape::Add( xy );	// axis line
+                Shape::Add( Point( xy.x + length, xy.y ) );	// axis line
+                if( 1 < n )
+                {
+                    int dist = length / n;  // will truncate
+                    int x = xy.x + dist;
+                    for( int i = 0; i < n; ++i )
+                    {
+                        notches.Add( Point( x, xy.y ), Point( x, xy.y - 5 ) );
+                        x += dist;
+                    }
+                }
+                // label under the line
+                label.Move( length / 3, xy.y + 20 );
+                break;
+            }
+            case Axis::Orientation::y:
+            {
+                Shape::Add( xy );	// a y-axis goes up
+                Shape::Add( Point( xy.x, xy.y - length ) );
+                if( 1 < n )
+                {
+                    int dist = length / n;
+                    int y = xy.y - dist;
+                    for( int i = 0; i < n; ++i )
+                    {
+                        notches.Add( Point( xy.x, y ), Point( xy.x + 5, y ) );
+                        y -= dist;
+                    }
+                }
+                // label at top
+                label.Move( xy.x - 10, xy.y - length - 10 );
+                break;
+            }
+            case Axis::Orientation::z:
+                throw std::runtime_error( "z axis not implemented" );
+        }
+    }
 
-		if(color().visibility() == Color::Transparency::visible){	// edge on top of fill
-			fl_color(color().as_int());
-			fl_rect(point(0).x, point(0).y, w, h);
-		}
-	}
+    void Axis::Draw_Lines() const
+    {
+        Shape::Draw_Lines();	// the line
+        notches.Draw();	// the notches may have a different color from the line
+        label.Draw();	// the label may have a different color from the line
+    }
 
-	Axis::Axis(Orientation d, Point xy, int length, int n, std::string lab)
-		:label{Point(0, 0), lab}
-	{
-		if(length < 0) throw std::runtime_error("bad axis length");
-		switch(d){
-			case Axis::Orientation::x:
-				{
-					Shape::add(xy);	// axis line
-					Shape::add(Point(xy.x + length, xy.y));	// axis line
-					if(1 < n){
-						int dist = length / n;
-						int x = xy.x + dist;
-						for(int i = 0; i < n; ++i){
-							notches.add(Point(x, xy.y), Point(x, xy.y - 5));
-							x += dist;
-						}
-					}
-					// label under the line
-					label.move(length / 3, xy.y + 20);
-					break;
-				}
-			case Axis::Orientation::y:
-				{
-					Shape::add(xy);	// a y-axis goes up
-					Shape::add(Point(xy.x, xy.y - length));
-					if(1 < n){
-						int dist = length / n;
-						int y = xy.y - dist;
-						for(int i = 0; i < n; ++i){
-							notches.add(Point(xy.x, y), Point(xy.x + 5, y));
-							y -= dist;
-						}
-					}
-					// label at top
-					label.move(xy.x - 10, xy.y - length - 10);
-					break;
-				}
-			case Axis::Orientation::z:
-				throw std::runtime_error("z axis not implemented");
-		}
-	}
+    void Axis::Set_Color( Color c )
+    {
+        Shape::Set_Color( c );
+        notches.Set_Color( c );
+        label.Set_Color( c );
+    }
 
-	void Axis::draw_lines() const
-	{
-		Shape::draw_lines();	// the line
-		notches.draw();	// the notches may have a different color from the line
-		label.draw();	// the label may have a different color from the line
-	}
+    void Axis::Move( int dx, int dy )
+    {
+        Shape::Move( dx, dy );
+        notches.Move( dx, dy );
+        label.Move( dx, dy );
+    }
 
+    void Circle::Draw_Lines() const
+    {
+        if( Get_Fill_Color().Get_Transparency() == Color::Transparency::visible )
+        {	// fill
+            fl_color( Get_Fill_Color().As_Int() );
+            fl_pie( Get_Point( 0 ).x, Get_Point( 0 ).y, radius + radius - 1, radius + radius - 1, 0, 360 );
+            fl_color( Get_Color().As_Int() );	// reset color
+        }
 
-	void Axis::set_color(Color c)
-	{
-		Shape::set_color(c);
-		notches.set_color(c);
-		label.set_color(c);
-	}
+        if( Get_Color().Get_Transparency() == Color::Transparency::visible )
+        {
+            fl_color( Get_Color().As_Int() );
+            fl_arc( Get_Point( 0 ).x, Get_Point( 0 ).y, radius + radius, radius + radius, 0, 360 );
+        }
+    }
 
-	void Axis::move(int dx, int dy)
-	{
-		Shape::move(dx, dy);
-		notches.move(dx, dy);
-		label.move(dx, dy);
-	}
+    void Ellipse::Draw_Lines() const
+    {
+        if( Get_Fill_Color().Get_Transparency() == Color::Transparency::visible )
+        {	// fill
+            fl_color( Get_Fill_Color().As_Int() );
+            fl_pie( Get_Point( 0 ).x, Get_Point( 0 ).y, width + width - 1, height + height - 1, 0, 360 );
+            fl_color( Get_Color().As_Int() );	// reset color
+        }
 
-	void Circle::draw_lines() const
-	{
-		if(fill_color().visibility() == Color::Transparency::visible){	// fill
-			fl_color(fill_color().as_int());
-			fl_pie(point(0).x, point(0).y, r + r - 1, r + r - 1, 0, 360);
-			fl_color(color().as_int());	// reset color
-		}
+        if( Get_Color().Get_Transparency() == Color::Transparency::visible )
+        {
+            fl_color( Get_Color().As_Int() );
+            fl_arc( Get_Point( 0 ).x, Get_Point( 0 ).y, width + width, height + height, 0, 360 );
+        }
+    }
 
-		if(color().visibility() == Color::Transparency::visible){
-			fl_color(color().as_int());
-			fl_arc(point(0).x, point(0).y, r + r, r + r, 0, 360);
-		}
-	}
+    void draw_mark( Point xy, char c )
+    {
+        static const int dx = 4;
+        static const int dy = 4;
+        std::string m( 1, c );
+        fl_draw( m.c_str(), xy.x - dx, xy.y + dy );
+    }
 
+    void Marked_polyline::Draw_Lines() const
+    {
+        Open_Polyline::Draw_Lines();
+        for( int i = 0; i < Number_Of_Points(); ++i )
+            draw_mark( Get_Point( i ), mark[i % mark.size()] );
+    }
+    /*
+    void Marks::draw_lines() const
+    {
+        for (int i=0; i<number_of_points(); ++i)
+            fl_draw(mark.c_str(),point(i).x-4,point(i).y+4);
+    }
+    */
 
-	void Ellipse::draw_lines() const
-	{
-		if(fill_color().visibility() == Color::Transparency::visible){	// fill
-			fl_color(fill_color().as_int());
-			fl_pie(point(0).x, point(0).y, w + w - 1, h + h - 1, 0, 360);
-			fl_color(color().as_int());	// reset color
-		}
+    std::map<std::string, Suffix::Encoding> suffix_map;
 
-		if(color().visibility() == Color::Transparency::visible){
-			fl_color(color().as_int());
-			fl_arc(point(0).x, point(0).y, w + w, h + h, 0, 360);
-		}
-	}
+    int init_suffix_map()
+    {
+        suffix_map["jpg"] = Suffix::Encoding::jpg;
+        suffix_map["JPG"] = Suffix::Encoding::jpg;
+        suffix_map["jpeg"] = Suffix::Encoding::jpg;
+        suffix_map["JPEG"] = Suffix::Encoding::jpg;
+        suffix_map["gif"] = Suffix::Encoding::gif;
+        suffix_map["GIF"] = Suffix::Encoding::gif;
+        suffix_map["bmp"] = Suffix::Encoding::bmp;
+        suffix_map["BMP"] = Suffix::Encoding::bmp;
+        return 0;
+    }
 
-	void draw_mark(Point xy, char c)
-	{
-		static const int dx = 4;
-		static const int dy = 4;
-		std::string m(1, c);
-		fl_draw(m.c_str(), xy.x - dx, xy.y + dy);
-	}
+    Suffix::Encoding Get_Encoding( const std::string &s )
+        // try to deduce type from file name using a lookup table
+    {
+        static int x = init_suffix_map();
 
-	void Marked_polyline::draw_lines() const
-	{
-		Open_polyline::draw_lines();
-		for(int i = 0; i < number_of_points(); ++i)
-			draw_mark(point(i), mark[i % mark.size()]);
-	}
-	/*
-	void Marks::draw_lines() const
-	{
-		for (int i=0; i<number_of_points(); ++i)
-			fl_draw(mark.c_str(),point(i).x-4,point(i).y+4);
-	}
-	*/
+        std::string::const_iterator p = find( s.begin(), s.end(), '.' );
+        if( p == s.end() ) return Suffix::Encoding::none;	// no suffix
 
+        std::string suf( p + 1, s.end() );
+        return suffix_map[suf];
+    }
 
-	std::map<std::string, Suffix::Encoding> suffix_map;
+    bool can_open( const std::string &s )
+        // check if a file named s exists and can be opened for reading
+    {
+        std::ifstream ff{ s.c_str() };
+        return ff.is_open();
+    }
 
-	int init_suffix_map()
-	{
-		suffix_map["jpg"] = Suffix::jpg;
-		suffix_map["JPG"] = Suffix::jpg;
-		suffix_map["jpeg"] = Suffix::jpg;
-		suffix_map["JPEG"] = Suffix::jpg;
-		suffix_map["gif"] = Suffix::gif;
-		suffix_map["GIF"] = Suffix::gif;
-		suffix_map["bmp"] = Suffix::bmp;
-		suffix_map["BMP"] = Suffix::bmp;
-		return 0;
-	}
+    // somewhat over elaborate constructor
+    // because errors related to image files can be such a pain to debug
+    Image::Image( Point xy, std::string s, Suffix::Encoding e )
+        : w{}, h{}, cx{}, cy{}, fn( xy, "" )
+    {
+        Add( xy );
+        if( !can_open( s ) )
+        {
+            fn.Set_Labels( "cannot open \"" + s + '\"' );
+            p = new Bad_image( 30, 20 );	// the "error image"
+            return;
+        }
 
-	Suffix::Encoding get_encoding(const std::string& s)
-			// try to deduce type from file name using a lookup table
-	{
-		static int x = init_suffix_map();
+        if( e == Suffix::Encoding::none )
+        {
+            e = Get_Encoding( s );
+        }
 
-		std::string::const_iterator p = find(s.begin(), s.end(), '.');
-		if(p == s.end()) return Suffix::none;	// no suffix
+        switch( e )
+        {
+            case Suffix::Encoding::jpg:
+                p = new Fl_JPEG_Image( s.c_str() );
+                break;
+            case Suffix::Encoding::gif:
+                p = new Fl_GIF_Image( s.c_str() );
+                break;
+                //case Suffix::Encoding::bmp:
+                //    p = std::make_unique<Fl_Image>( Fl_BMP_Image( s.c_str() ) );
+                //    break;
+            default:	// Unsupported image encoding
+                fn.Set_Labels( "unsupported file type \"" + s + '\"' );
+                p = new Bad_image( 30, 20 );	// the "error image"
+                break;
+        }
+    }
 
-		std::string suf(p + 1, s.end());
-		return suffix_map[suf];
-	}
+    void Image::Draw_Lines() const
+    {
+        if( fn.Get_Label() != "" )
+        {
+            fn.Draw_Lines();
+        }
+        if( w && h )
+        {
+            p->draw( Get_Point( 0 ).x, Get_Point( 0 ).y, w, h, cx, cy );
+        }
+        else
+        {
+            p->draw( Get_Point( 0 ).x, Get_Point( 0 ).y );
+        }
+    }
 
-	bool can_open(const std::string& s)
-				// check if a file named s exists and can be opened for reading
-	{
-		std::ifstream ff{s.c_str()};
-		return ff.is_open();
-	}
-
-
-	// somewhat over elaborate constructor
-	// because errors related to image files can be such a pain to debug
-	Image::Image(Point xy, std::string s, Suffix::Encoding e)
-		:w{}, h{}, cx{}, cy{}, fn(xy, "")
-	{
-		add(xy);
-
-		if(!can_open(s)){
-			fn.set_label("cannot open \"" + s + '\"');
-			p = new Bad_image(30, 20);	// the "error image"
-			return;
-		}
-
-		if(e == Suffix::none) e = get_encoding(s);
-
-		switch(e){
-			case Suffix::jpg:
-				p = new Fl_JPEG_Image(s.c_str());
-				break;
-			case Suffix::gif:
-				p = new Fl_GIF_Image(s.c_str());
-				break;
-		//	case Suffix::bmp:
-		//		p = new Fl_BMP_Image(s.c_str());
-		//		break;
-			default:	// Unsupported image encoding
-				fn.set_label("unsupported file type \"" + s + '\"');
-				p = new Bad_image(30, 20);	// the "error image"
-		}
-	}
-
-	void Image::draw_lines() const
-	{
-		if(fn.label() != "") fn.draw_lines();
-
-		if(w && h)
-			p->draw(point(0).x, point(0).y, w, h, cx, cy);
-		else
-			p->draw(point(0).x, point(0).y);
-	}
-
-} // Graph
+} // GraphLib

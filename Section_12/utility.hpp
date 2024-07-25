@@ -1,5 +1,4 @@
-#ifndef UTILITY_GUARD_H
-#define UTILITY_GUARD_H
+#pragma once
 
 #include <iostream>
 #include <stdexcept>
@@ -15,5 +14,3 @@
 		}
 		return r;
 	}
-
-#endif // UTILITY_GUARD_H
